@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Live Darshan</title>
+<meta name="description" content="Today's darshan, live video, events and photos, from the official sites of Shree Swaminarayan Mandir Kalupur and the Nar Narayan Dev Gadi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:ital,wght@0,400;0,500;0,600;1,400&family=Shrikhand&display=swap">
+<style>
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.07);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:14px; --maxw:1180px; --live:#d92d20; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.28); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.28); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--f-ui)}
+a{color:var(--peacock);text-decoration:none}
+a:hover{text-decoration:underline}
+button,select,input{font:inherit;color:inherit}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:4px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:16px}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top::after{content:"";display:block;height:2px;background:linear-gradient(90deg,var(--saffron),#d9a93a 50%,var(--saffron))}
+.top .wrap{display:flex;align-items:center;gap:14px;padding-block:9px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;white-space:nowrap;color:var(--ink);margin-right:auto}
+.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}
+.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}
+.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--live);margin-right:6px;vertical-align:1px;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--live) 55%,transparent)}60%{box-shadow:0 0 0 6px transparent}}
+main{padding-block:22px 60px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;margin-bottom:14px}
+.head h1{font-family:var(--f-read);font-weight:600;font-size:clamp(28px,4.4vw,42px);line-height:1.1}
+.head h1 .gu{font-family:var(--f-display);font-weight:400;color:var(--saffron)}
+.status{font-size:14px;color:var(--ink-2);margin-top:4px}
+.ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ctrl select,.ctrl input{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font-size:15px;min-width:0}
+.ib{border:1px solid var(--line);background:var(--surface);border-radius:10px;min-width:40px;height:40px;padding:0 10px;cursor:pointer;color:var(--ink);display:inline-grid;place-items:center}
+.ib:hover:not(:disabled){border-color:var(--ink-3)}
+.ib:disabled{opacity:.4;cursor:default}
+/* darshan viewer: the murti is never cropped */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 212px;gap:10px}
+.view{position:relative;background:#120c09;border-radius:var(--r);overflow:hidden;height:min(74vh,680px);box-shadow:var(--shadow)}
+.view button.big{all:unset;position:absolute;inset:0;cursor:zoom-in;display:block}
+.view button.big:focus-visible{outline:3px solid var(--saffron);outline-offset:-3px}
+.view img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .5s ease}
+.view img.on{opacity:1}
+.view .cnt{position:absolute;left:12px;bottom:12px;background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:3px 10px;border-radius:999px;font-variant-numeric:tabular-nums;pointer-events:none}
+.view .nv{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;font-size:22px;cursor:pointer;display:grid;place-items:center}
+.view .nv:hover{background:rgba(0,0,0,.75)}
+.view .pv{left:10px}.view .nx{right:10px}
+.view .pp{position:absolute;right:12px;bottom:12px;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:5px 12px;border-radius:999px;cursor:pointer}
+.msg{position:absolute;inset:0;display:grid;place-items:center;color:#e9dcc9;text-align:center;padding:24px}
+.rail{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;align-content:start;overflow:auto;height:min(74vh,680px);padding-right:2px}
+.rail button{border:0;padding:0;background:#120c09;border-radius:8px;overflow:hidden;cursor:pointer;aspect-ratio:3/4;position:relative}
+.rail img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:.82;transition:opacity .2s}
+.rail button:hover img,.rail button[aria-current="true"] img{opacity:1}
+.rail button[aria-current="true"]{outline:2px solid var(--saffron);outline-offset:1px}
+section{margin-top:40px}
+section>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+section h2{font-family:var(--f-read);font-weight:600;font-size:25px}
+section h2 small{font:500 14px var(--f-ui);color:var(--ink-3);margin-left:6px}
+.muted{color:var(--ink-2);font-size:14px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px}
+.yt{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:#120c09;box-shadow:var(--shadow)}
+.yt button{all:unset;position:absolute;inset:0;cursor:pointer;display:block}
+.yt button:focus-visible{outline:3px solid var(--saffron);outline-offset:-3px}
+.yt img{width:100%;height:100%;object-fit:cover;display:block}
+.yt .pl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.62);color:#fff;display:grid;place-items:center;font-size:24px;transition:transform .2s}
+.yt button:hover .pl{transform:translate(-50%,-50%) scale(1.08)}
+.yt .tt{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;color:#fff;font-size:15px;font-weight:600;background:linear-gradient(transparent,rgba(0,0,0,.8))}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.next{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);border:1px solid var(--line);background:var(--surface);border-radius:var(--r);overflow:hidden;color:var(--ink);box-shadow:var(--shadow)}
+.next:hover{text-decoration:none;border-color:var(--ink-3)}
+.next .pic{background:#120c09;min-height:230px;position:relative}
+.next .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.next .tx{padding:18px 20px;display:grid;gap:8px;align-content:center}
+.next h3{font-family:var(--f-read);font-size:25px;font-weight:600;line-height:1.15}
+.cd{display:flex;gap:10px}
+.cd div{background:var(--saffron-soft);color:var(--saffron-strong);border-radius:10px;padding:6px 12px;text-align:center;min-width:62px}
+.cd b{display:block;font:600 24px/1.1 var(--f-read);font-variant-numeric:tabular-nums}
+.cd span{font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.now{display:inline-block;background:var(--live);color:#fff;font-size:12px;font-weight:600;padding:2px 10px;border-radius:999px;justify-self:start}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:14px;margin-top:14px}
+.card{display:grid;grid-template-rows:auto 1fr;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;color:var(--ink);transition:transform .2s,border-color .2s}
+.card:hover{text-decoration:none;transform:translateY(-3px);border-color:var(--ink-3)}
+.card .im{aspect-ratio:16/10;background:var(--sunk);overflow:hidden}
+.card .im img{width:100%;height:100%;object-fit:cover;display:block}
+.card .im.fit{background:#120c09}.card .im.fit img{object-fit:contain}
+.card .tx{padding:10px 12px 12px;display:grid;gap:2px;align-content:start}
+.card b{font-weight:600;line-height:1.25}
+.card span{font-size:13px;color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:40;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:10px 18px;font-weight:600;box-shadow:var(--shadow);cursor:pointer}
+dialog{border:0;padding:0;background:#000;max-width:100vw;max-height:100dvh;width:100vw;height:100dvh;color:#fff}
+dialog::backdrop{background:#000}
+dialog img{width:100%;height:100%;object-fit:contain;display:block}
+dialog button{position:absolute;border:0;background:rgba(255,255,255,.14);color:#fff;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer}
+dialog .x{top:14px;right:14px}dialog .l{left:14px;top:50%;margin-top:-24px}dialog .r{right:14px;top:50%;margin-top:-24px}
+footer{border-top:1px solid var(--line);padding-block:18px 28px;font-size:14px;color:var(--ink-2)}
+@media (max-width:820px){
+  .stage{grid-template-columns:minmax(0,1fr)}
+  .view{height:min(68vh,560px)}
+  .rail{display:flex;height:auto;overflow-x:auto;padding-bottom:4px}
+  .rail button{flex:0 0 66px}
+  .next{grid-template-columns:minmax(0,1fr)}
+  .ctrl{width:100%}.ctrl select{flex:1 1 100%}.ctrl input{flex:1 1 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="live.html"><span class="gu">દર્શન</span><span class="en">Live</span></a>
+  <nav class="nav" aria-label="Site">
+    <a href="live.html" class="on"><span class="dot"></span>Live</a>
+    <a href="library.html">Library</a>
+    <a href="ebooks.html">E-books</a>
+    <a href="index.html">Vachanamrut</a>
+    <a href="index.html#nondh">Nondh</a>
+    <a href="timeline.html">Timeline</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Change theme"></button>
+</div></header>
+<main class="wrap">
+  <div class="head">
+    <div>
+      <div class="eyebrow">Nar Narayan Dev Gadi · Kalupur</div>
+      <h1><span class="gu">આજનાં દર્શન</span> <span id="ttl">Today's darshan</span></h1>
+      <div class="status" id="status" role="status">Loading today's darshan…</div>
+    </div>
+    <div class="ctrl">
+      <select id="temple" aria-label="Mandir"></select>
+      <button class="ib" id="dprev" aria-label="Previous day">‹</button>
+      <input type="date" id="date" aria-label="Darshan date">
+      <button class="ib" id="dnext" aria-label="Next day">›</button>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="view" id="view"><div class="msg" id="msg">Loading…</div></div>
+    <div class="rail" id="rail" aria-label="All darshan photos"></div>
+  </div>
+  <section id="s-live" hidden><header><h2>Live from the mandir <small>જીવંત પ્રસારણ</small></h2><span class="muted">Plays from the Kalupur Mandir YouTube channel</span></header><div class="two" id="streams"></div></section>
+  <section id="s-events" hidden><header><h2>Coming up <small>આગામી ઉત્સવો</small></h2><a href="https://www.swaminarayan.info/events/calendar" target="_blank" rel="noopener">Full calendar ↗</a></header><div id="nextev"></div><div class="cards" id="events"></div></section>
+  <section id="s-photos" hidden><header><h2>Latest photos <small>તાજેતરની તસવીરો</small></h2><a href="https://www.swaminarayan.info/media-gallery/picture-gallery" target="_blank" rel="noopener">All galleries ↗</a></header><div class="cards" id="photos" style="margin-top:0"></div></section>
+  <section id="s-videos" hidden><header><h2>Latest videos <small>તાજેતરના વીડિયો</small></h2><a href="https://www.youtube.com/@swaminarayantemplekalupur" target="_blank" rel="noopener">YouTube channel ↗</a></header><div class="cards" id="videos" style="margin-top:0"></div></section>
+</main>
+<footer class="wrap">Darshan, events, photos and videos come only from the official channels of <a href="https://www.swaminarayan.info" target="_blank" rel="noopener">Shree Swaminarayan Mandir Kalupur</a> and <a href="https://www.swaminarayan.faith" target="_blank" rel="noopener">Shree Swaminarayan Mandir Bhuj</a> of the Nar Narayan Dev Gadi. They are shown from those sites, not copied, and belong to them. <span id="fresh"></span></footer>
+<dialog id="lb" aria-label="Darshan photo"><img id="lbimg" alt=""><button class="x" aria-label="Close">✕</button><button class="l" aria-label="Previous photo">‹</button><button class="r" aria-label="Next photo">›</button></dialog>
+<button class="toast" id="toast" hidden></button>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const API="https://dailydarshanserver.nnd.media/temple/dailydarshan";
+// mandirs of the Nar Narayan Dev Gadi only; the darshan server also carries other dioceses
+const TEMPLES=[["63d045f0d9918f9bc9dea12f","Kalupur, Ahmedabad"],["63d0453cd9918f9bc9dea12d","Bhuj"],["648a3220188dc33c12ae91ed","Bhuj (Prasadi)"],["64639a5d70517e68fe1363a2","Chhapaiya"],
+ ["64640052d9cce8aac1f72e92","Dholera"],["646401384fb1bca0f0a35fa5","Dholka"],["646399fc70517e68fe1363a0","Jetalpur"],["64639aa570517e68fe1363a4","Muli"],["646402354cf0188c317a3ad4","Loj"],
+ ["6418d24d2f3684db68add419","Mandvi"],["6418d2e82f3684db68add41b","Anjar"],["6463fe0a4fb1bca0f0a35fa3","Ayodhya"]];
+const calm=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const S={id:TEMPLES[0][0],latest:null,date:null,imgs:[],i:0,play:!calm,timer:null};
+if(TEMPLES.some(t=>t[0]===store.get("vc-temple")))S.id=store.get("vc-temple");
+const day=d=>new Date(d+"T12:00:00");
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const today=()=>iso(new Date());
+const shift=(d,n)=>{const x=day(d);x.setDate(x.getDate()+n);return iso(x)};
+const nice=d=>day(d).toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+const short=d=>day(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+const name=()=>TEMPLES.find(t=>t[0]===S.id)[1];
+const getJSON=async u=>{const r=await fetch(u);if(!r.ok)throw new Error(r.status);return r.json()};
+const lastDate=async id=>{const v=await getJSON(`${API}/lastupdated/${id}`);const m=/^(\d\d)\/(\d\d)\/(\d{4})$/.exec(v);if(!m)throw new Error("date");return `${m[3]}-${m[2]}-${m[1]}`};
+function message(t){$("#view").innerHTML=`<div class="msg">${esc(t)}</div>`;$("#rail").innerHTML=""}
+async function load(date){
+  clearInterval(S.timer);S.date=date;S.i=0;S.imgs=[];
+  $("#date").value=date;$("#date").max=S.latest;$("#dnext").disabled=date>=S.latest;
+  $("#ttl").textContent=date===today()?"Today's darshan":"Darshan";
+  $("#status").textContent=`Loading ${name()}…`;
+  const req=`${S.id}/${date}`;let a=[];
+  try{a=await getJSON(`${API}/${S.id}/${date}`)}catch(e){}
+  if(req!==`${S.id}/${S.date}`)return;   // a newer choice arrived while this one loaded
+  S.imgs=Array.isArray(a)?a.filter(u=>/^https:\/\/[\w.-]+\.backblazeb2\.com\//.test(u)):[];
+  if(!S.imgs.length){message("No darshan photos were uploaded for this day.");$("#status").textContent=`${name()} · ${nice(date)}`;return}
+  $("#status").textContent=`${name()} · ${nice(date)} · ${S.imgs.length} photos`;
+  $("#view").innerHTML=`<button class="big" aria-label="Open this photo full screen"></button><button class="nv pv" aria-label="Previous photo">‹</button><button class="nv nx" aria-label="Next photo">›</button><span class="cnt" id="cnt"></span><button class="pp" id="pp"></button>`;
+  $("#rail").innerHTML=S.imgs.map((u,i)=>`<button data-i="${i}" aria-label="Photo ${i+1}"><img src="${esc(u)}" alt="" loading="lazy"></button>`).join("");
+  show(0);autoplay();
+}
+function show(i){
+  const n=S.imgs.length;if(!n)return;S.i=(i+n)%n;
+  const v=$("#view"),old=v.querySelector("img.on"),im=new Image();
+  im.alt=`Darshan at ${name()}, photo ${S.i+1} of ${n}`;im.src=S.imgs[S.i];
+  v.querySelector(".big").appendChild(im);
+  const on=()=>{im.classList.add("on");if(old){old.classList.remove("on");setTimeout(()=>old.remove(),600)}};
+  im.decode?im.decode().then(on,on):on();
+  $("#cnt").textContent=`${S.i+1} / ${n}`;
+  $$rail();
+  const nx=new Image();nx.src=S.imgs[(S.i+1)%n];
+}
+function $$rail(){document.querySelectorAll("#rail button").forEach((b,k)=>{const on=k===S.i;b.setAttribute("aria-current",on);if(on&&S.play===false)b.scrollIntoView({block:"nearest",inline:"nearest"})})}
+function autoplay(){clearInterval(S.timer);const p=$("#pp");if(p)p.textContent=S.play?"❚❚ Pause":"▶ Play";if(S.play&&S.imgs.length>1)S.timer=setInterval(()=>{if(!document.hidden&&!$("#lb").open)show(S.i+1)},6000)}
+$("#view").addEventListener("click",e=>{
+  if(e.target.closest(".pv")){S.play=false;autoplay();show(S.i-1)}
+  else if(e.target.closest(".nx")){S.play=false;autoplay();show(S.i+1)}
+  else if(e.target.closest("#pp")){S.play=!S.play;autoplay()}
+  else if(e.target.closest(".big"))zoom();
+});
+$("#rail").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.play=false;autoplay();show(+b.dataset.i)});
+/* full screen, in the HD version */
+const hd=u=>u.replace("/sd/","/hd/");
+function zoom(){$("#lbimg").src=hd(S.imgs[S.i]);$("#lbimg").alt=`Darshan at ${name()}`;$("#lb").showModal()}
+function step(n){show(S.i+n);$("#lbimg").src=hd(S.imgs[S.i])}
+$("#lb").addEventListener("click",e=>{if(e.target.closest(".x"))$("#lb").close();else if(e.target.closest(".l"))step(-1);else if(e.target.closest(".r"))step(1)});
+addEventListener("keydown",e=>{if(/INPUT|SELECT/.test(document.activeElement.tagName))return;if(e.key==="ArrowLeft"){S.play=false;autoplay();$("#lb").open?step(-1):show(S.i-1)}else if(e.key==="ArrowRight"){S.play=false;autoplay();$("#lb").open?step(1):show(S.i+1)}});
+/* mandir and date */
+async function openTemple(id){
+  S.id=id;store.set("vc-temple",id);$("#toast").hidden=true;
+  try{S.latest=await lastDate(id);load(S.latest)}catch(e){message("The darshan server could not be reached. Please try again shortly.");$("#status").textContent=name()}
+}
+$("#temple").innerHTML=TEMPLES.map(t=>`<option value="${t[0]}">${esc(t[1])}</option>`).join("");$("#temple").value=S.id;
+$("#temple").onchange=e=>openTemple(e.target.value);
+$("#dprev").onclick=()=>S.date&&load(shift(S.date,-1));
+$("#dnext").onclick=()=>S.date&&S.date<S.latest&&load(shift(S.date,1));
+$("#date").onchange=e=>{const v=e.target.value;if(v&&v<=S.latest)load(v)};
+/* the feed: data/live.json, refreshed by a scheduled job */
+const left=d=>Math.round((day(d)-day(today()))/864e5);
+function nextEvent(e){
+  const n=left(e.start),now=n<=0;
+  const d=now?`<span class="now">Happening now · until ${esc(short(e.end))}</span>`:`<div class="cd"><div><b>${n}</b><span>${n===1?"day":"days"} to go</span></div></div>`;
+  return `<a class="next" href="${esc(e.u)}" target="_blank" rel="noopener"><div class="pic">${e.img?`<img src="${esc(e.img)}" alt="">`:""}</div><div class="tx">${d}<h3>${esc(e.t)}</h3><div class="muted">${esc(e.when)}${e.place?` · ${esc(e.place)}`:""}</div><p class="muted">${esc(e.desc)}</p></div></a>`;
+}
+function drawFeed(D){
+  const t=today(),up=(D.events||[]).filter(e=>e.end>=t);
+  $("#s-events").hidden=!up.length;
+  if(up.length){$("#nextev").innerHTML=nextEvent(up[0]);$("#events").innerHTML=up.slice(1).map(e=>`<a class="card" href="${esc(e.u)}" target="_blank" rel="noopener"><div class="im fit">${e.img?`<img src="${esc(e.img)}" alt="" loading="lazy">`:""}</div><div class="tx"><b>${esc(e.t)}</b><span>${left(e.start)<=0?"Happening now":`In ${left(e.start)} days`} · ${esc(short(e.start))}</span></div></a>`).join("")}
+  $("#s-photos").hidden=!D.galleries?.length;
+  $("#photos").innerHTML=(D.galleries||[]).map(g=>`<a class="card" href="${esc(g.u)}" target="_blank" rel="noopener"><div class="im"><img src="${esc(g.img)}" alt="" loading="lazy"></div><div class="tx"><b>${esc(g.t)}</b><span>${g.date?esc(short(g.date)):""}</span></div></a>`).join("");
+  $("#s-videos").hidden=!D.videos?.length;
+  $("#videos").innerHTML=(D.videos||[]).slice(0,8).map(v=>`<a class="card" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener"><div class="im"><img src="https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg" alt="" loading="lazy"></div><div class="tx"><b>${esc(v.t)}</b><span>${v.date?esc(short(v.date)):""}</span></div></a>`).join("");
+  $("#s-live").hidden=!D.streams?.length;
+  if(!$("#streams iframe"))$("#streams").innerHTML=(D.streams||[]).map(v=>`<div class="yt"><button data-v="${esc(v.id)}" aria-label="Play ${esc(v.t)}"><img src="https://i.ytimg.com/vi/${esc(v.id)}/hqdefault.jpg" alt="" loading="lazy"><span class="pl">▶</span><span class="tt"><span class="dot"></span>${esc(v.t.replace(/^🔴\s*(LIVE\s*-\s*)?/,""))}</span></button></div>`).join("");
+  if(D.updated)$("#fresh").textContent=`Events and photos last changed ${new Date(D.updated.replace("Z",":00Z")).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}.`;
+}
+$("#streams").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;
+  S.play=false;autoplay();
+  b.parentNode.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${esc(b.dataset.v)}?autoplay=1" title="Live darshan" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>`});
+let feedStamp=null;
+async function feed(){try{const D=await getJSON(`data/live.json?t=${Math.floor(Date.now()/9e5)}`);if(D.updated!==feedStamp||feedStamp===null){feedStamp=D.updated;drawFeed(D)}}catch(e){}}
+/* live: look for new darshan and news while the page is open */
+async function poll(){
+  if(document.hidden)return;
+  try{const d=await lastDate(S.id);if(d>S.latest){const was=S.date===S.latest;S.latest=d;$("#date").max=d;$("#dnext").disabled=false;
+    if(was){const t=$("#toast");t.textContent=`New darshan: ${short(d)} · Show`;t.hidden=false;t.onclick=()=>{t.hidden=true;load(d)}}}}catch(e){}
+  feed();
+}
+setInterval(poll,5*60*1000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)poll()});
+openTemple(S.id);feed();
+</script>
+</body>
+</html>

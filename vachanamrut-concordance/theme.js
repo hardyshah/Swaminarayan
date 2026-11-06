@@ -4,8 +4,11 @@
 (function(){
 "use strict";
 const r=document.documentElement;
-// token sets per palette; "kesar" is the pages' own default, so it needs none
+// token sets per palette; "kesar" is the colours written into the pages, so it needs none
 const P={
+ mandir:{en:"Mandir",gu:"મંદિર",sw:["#a3341a","#d9a93a"],
+  l:"--paper:#fbf6ec;--surface:#fffdf8;--sunk:#f3ead9;--ink:#2a1a12;--ink-2:#61493a;--ink-3:#7f6a58;--line:#e8dcc6;--saffron:#a3341a;--saffron-strong:#832612;--saffron-soft:#f8e0cc;--peacock:#7d5a0c;--peacock-soft:#f3e7c8;--mark:#fadcae;--mark-ink:#55240a;--grid:#efe5d3;--empty:#f1e8d8",
+  d:"--paper:#140c0a;--surface:#1e1310;--sunk:#281a15;--ink:#f3e8da;--ink-2:#c9b6a2;--ink-3:#94806d;--line:#3b2a22;--saffron:#f2a65a;--saffron-strong:#ffc07c;--saffron-soft:#3f2614;--peacock:#e3c16f;--peacock-soft:#352a14;--mark:#6a3a14;--mark-ink:#ffe8cc;--grid:#2a1c16;--empty:#241712"},
  kesar:{en:"Saffron",gu:"કેસર",sw:["#b9560c","#0e5a61"]},
  chandan:{en:"Sandalwood",gu:"ચંદન",sw:["#a0521a","#6b4a1f"],
   l:"--paper:#f4ecdc;--surface:#fffaf0;--sunk:#ece2cd;--ink:#2b2014;--ink-2:#65553f;--ink-3:#8a7a62;--line:#dfd2b8;--saffron:#a0521a;--saffron-strong:#83400f;--saffron-soft:#f3dcc0;--peacock:#6b4a1f;--peacock-soft:#eadcc2;--mark:#f6d7a8;--mark-ink:#4d2a06;--grid:#e8dec9;--empty:#ebe2cf",
@@ -22,9 +25,9 @@ const P={
 const MODES=[["system","Auto","આપમેળે"],["light","Light","દિવસ"],["dark","Dark","રાત્રિ"]];
 const get=(k,d)=>{try{return localStorage.getItem(k)||d}catch(e){return d}};
 const put=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
-let mode=get("vc-theme","system"),pal=get("vc-palette","kesar");
+let mode=get("vc-theme","system"),pal=get("vc-palette","mandir");
 if(!MODES.some(m=>m[0]===mode))mode="system";
-if(!P[pal])pal="kesar";
+if(!P[pal])pal="mandir";
 // html:root[...] outranks the pages' own :root rules, which come later in <head>
 let css="";
 for(const[k,p]of Object.entries(P)){if(!p.l)continue;const s=`html:root[data-palette="${k}"]`;

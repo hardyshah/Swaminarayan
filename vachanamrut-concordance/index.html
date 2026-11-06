@@ -250,6 +250,68 @@ footer{border-top:1px solid var(--line);padding-block:20px 40px;color:var(--ink-
   .secbar{grid-template-columns:6.5rem minmax(0,1fr) 2.6rem}
 }
 @media (min-width:621px){.kwic .line{display:contents}}
+/* top bar accent, motion */
+.top::after{content:"";display:block;height:2px;background:linear-gradient(90deg,var(--saffron),#d9a93a 50%,var(--saffron))}
+.ldot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#d92d20;margin-right:6px;vertical-align:1px;animation:lpulse 1.8s ease-in-out infinite}
+@keyframes lpulse{0%,100%{box-shadow:0 0 0 0 rgba(217,45,32,.5)}60%{box-shadow:0 0 0 6px transparent}}
+#main.in{animation:rise .32s ease}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+#prog{position:fixed;left:0;right:0;top:0;height:3px;z-index:30;background:var(--saffron);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
+#totop{position:fixed;right:16px;bottom:18px;z-index:25;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--shadow);cursor:pointer;font-size:18px}
+/* home */
+.hero2{display:grid;grid-template-columns:minmax(0,1fr);gap:26px;padding-block:14px 8px;align-items:center}
+.hero2.has{grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr)}
+.hero2 .hl{display:grid;gap:16px;min-width:0}
+.hero2 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(44px,7.4vw,84px);line-height:1.05;color:var(--saffron)}
+.hero2 h1 span{display:block;font-family:var(--f-read);font-size:clamp(20px,3vw,28px);color:var(--ink);font-weight:500;margin-top:6px}
+.hero2 p{max-width:58ch;font-size:17px;color:var(--ink-2);margin:0}
+.dcard{position:relative;display:block;aspect-ratio:4/5;max-height:560px;width:100%;border-radius:18px;overflow:hidden;background:#120c09;box-shadow:var(--shadow);color:#fff}
+.dcard:hover{text-decoration:none}
+.dcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .9s ease}
+.dcard img.on{opacity:1}
+.dcap{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:30px 14px 11px;background:linear-gradient(transparent,rgba(0,0,0,.82));font-size:14px}
+.dcap b{font-weight:600}.dcap em{font-style:normal;white-space:nowrap}
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+.statrow div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.statrow b{display:block;font-family:var(--f-read);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1;color:var(--saffron-strong)}
+.statrow span{font-size:13px;color:var(--ink-2)}
+.day3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px;margin-top:26px}
+.dc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);min-width:0}
+.dc h3{font-family:var(--f-read);font-size:21px;font-weight:600;line-height:1.2}
+.dc .q{font-family:var(--f-read);font-size:17px;line-height:1.5;color:var(--ink-2);margin:0;flex:1}
+.dc .ft{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px}
+.dc button{border:1px solid var(--line);background:none;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px;color:var(--ink-2)}
+.dc button:hover{border-color:var(--ink-3);color:var(--ink)}
+.dc .ev{width:100%;height:120px;object-fit:contain;background:#120c09;border-radius:10px}
+.rail2{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+.rail2 a{flex:0 0 min(240px,70vw);scroll-snap-align:start;color:var(--ink);display:grid;align-content:start;gap:6px;font-size:14px;line-height:1.25}
+.rail2 a:hover{text-decoration:none}
+.rail2 img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:12px;background:var(--sunk);display:block;transition:transform .2s}
+.rail2 a:hover img{transform:translateY(-3px)}
+.rail2 small{color:var(--ink-3);display:block}
+/* index */
+.ixbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 16px}
+.ixbar input{flex:1 1 220px;min-width:0;font:inherit;font-size:16px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+.ixbar input:focus{outline:none;border-color:var(--saffron);box-shadow:0 0 0 3px var(--saffron-soft)}
+.seg2{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg2 button{border:0;background:none;padding:7px 12px;cursor:pointer;color:var(--ink-2);font-size:14px}
+.seg2 button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.alpha.off button.on{background:none;color:inherit}
+.ixgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+.peek{display:none}
+@media (min-width:1000px) and (hover:hover){.ixgrid{grid-template-columns:minmax(0,1fr) 320px}
+  .peek{display:grid;gap:10px;position:sticky;top:84px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);max-height:calc(100vh - 110px);overflow:auto}}
+.peek h3{font-family:var(--f-read);font-size:32px;font-weight:600;line-height:1.1}
+.peek .sub{font-size:14px;color:var(--ink-2)}
+.peek a.pkq{display:block;font-family:var(--f-read);font-size:15.5px;line-height:1.45;color:var(--ink-2);border-top:1px dashed var(--line);padding-top:8px}
+.peek a.pkq:hover{text-decoration:none;color:var(--ink)}
+.peek a.pkq b{color:var(--saffron-strong);font-weight:600}
+.peek a.pkq small{display:block;font:500 12px var(--f-ui);color:var(--ink-3)}
+.cloud{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;line-height:1.25}
+.cloud a{font-family:var(--f-read);color:var(--ink);padding:0 2px;border-radius:4px}
+.cloud a:hover,.cloud a:focus-visible{text-decoration:none;background:var(--saffron-soft);color:var(--saffron-strong)}
+@media (max-width:760px){.hero2.has{grid-template-columns:minmax(0,1fr)}.dcard{aspect-ratio:1/1;max-height:62vh}.statrow{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion:reduce){#main.in,.ldot{animation:none}.dcard img,.rail2 img{transition:none}}
 </style>
 </head>
 <body>
@@ -269,6 +331,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 40px;color:var(--ink-
       <a href="#glossary" data-v="glossary">Glossary</a>
       <a href="#sources" data-v="sources">Sources</a>
       <a href="#nondh" data-v="n">Nondh</a>
+      <a href="live.html"><span class="ldot"></span>Live</a>
       <a href="library.html">Library</a>
       <a href="ebooks.html">E-books</a>
       <a href="timeline.html">Timeline</a>
@@ -279,6 +342,8 @@ footer{border-top:1px solid var(--line);padding-block:20px 40px;color:var(--ink-
 <main class="wrap" id="main"><div class="loading">Loading the Vachanamrut…</div></main>
 <footer class="wrap">Text decoded from the Gujarati Vachanamrut PDF (Shree Swaminarayan Mandir, Bhuj edition, 704 pages). Page numbers are PDF pages. Sanskrit passages are OCR text. Common function words are not indexed; use full-text search for them. The Vachanamrut Nondh section reproduces the reference index compiled by Ashwin Babubhai Shah, with special guidance / inspiration from Nathji Mandal and (Bhaiji Dada and Dadaji).</footer>
 <div class="tip" id="tip" hidden></div>
+<div id="prog" aria-hidden="true"></div>
+<button id="totop" aria-label="Back to top" hidden>↑</button>
 
 <script>
 "use strict";
@@ -423,19 +488,28 @@ function viewHome(){
   const top=IX.filter(e=>!/^(સંવત્|ઈતિ|વચનામૃતમ્|વિરાજમાન|બેઠી|ભરાઈ|દેશદેશના|દરબાર|શ્વેત|ધારણ|મુખારવિંદ|સભા|પ્રશ્ન|ઉત્તર|દિવસ|સુદિ|વદિ|પૂછ્યો|પૂછ્યું)$/.test(e.h)).slice(0,30);
   const tmax=top[0].c;
   $("#main").innerHTML=`
-  <div class="hero">
-    <div class="eyebrow">Gujarati Vachanamrut · word index</div>
-    <h1>વચનામૃત<span>Every word, every place it is spoken.</span></h1>
-    <p>Look up a term in Gujarati script or in Latin letters (try <i>ishvar</i>, <i>akshar</i>, <i>maya</i>) to see every occurrence across the ${nv} discourses, in context, with the page it is on.</p>
-    <form class="bigsearch" id="bigf"><input id="bigq" type="search" autocomplete="off" placeholder="ઈશ્વર · ishvar" aria-label="Search a word"><button>Search</button></form>
-    <div class="chips">${FEATURED.map(w=>{const i=lemmaOf(w);return i==null?"":`<a class="chip" href="#w-${i}"><span class="gu">${w}</span><small>${esc(IX[i].r)}</small></a>`}).join("")}</div>
-    <div class="stats">
-      <div><b>${nv}</b><span>Vachanamruts</span></div>
-      <div><b>${fmt(total)}</b><span>words of text</span></div>
-      <div><b>${fmt(IX.length)}</b><span>indexed headwords</span></div>
-      <div><b>${fmt(occ)}</b><span>indexed occurrences</span></div>
+  <div class="hero2" id="hero2">
+    <div class="hl">
+      <div class="eyebrow">Gujarati Vachanamrut · word index</div>
+      <h1>વચનામૃત<span>Every word, every place it is spoken.</span></h1>
+      <p>Look up a term in Gujarati script or in Latin letters (try <i>ishvar</i>, <i>akshar</i>, <i>maya</i>) to see every occurrence across the ${nv} discourses, in context, with the page it is on.</p>
+      <form class="bigsearch" id="bigf"><input id="bigq" type="search" autocomplete="off" placeholder="ઈશ્વર · ishvar" aria-label="Search a word"><button>Search</button></form>
+      <div class="chips">${FEATURED.map(w=>{const i=lemmaOf(w);return i==null?"":`<a class="chip" href="#w-${i}"><span class="gu">${w}</span><small>${esc(IX[i].r)}</small></a>`}).join("")}</div>
     </div>
+    <a class="dcard" id="dcard" href="live.html" hidden aria-label="Open today's darshan"><span id="dimgs"></span><span class="dcap"><span><span class="ldot"></span><b>Today's darshan</b> · Kalupur</span><em id="dwhen"></em></span></a>
   </div>
+  <div class="statrow">
+    <div><b data-n="${nv}">${nv}</b><span>Vachanamruts</span></div>
+    <div><b data-n="${total}">${fmt(total)}</b><span>words of text</span></div>
+    <div><b data-n="${IX.length}">${fmt(IX.length)}</b><span>indexed headwords</span></div>
+    <div><b data-n="${occ}">${fmt(occ)}</b><span>indexed occurrences</span></div>
+  </div>
+  <div class="day3">
+    <article class="dc" id="vod"></article>
+    <article class="dc" id="wod"></article>
+    <article class="dc" id="nev" hidden></article>
+  </div>
+  <section class="block" id="hphotos" hidden><header><h2>From the mandir</h2><a href="live.html">Darshan, events and video →</a></header><div class="rail2" id="hrail"></div></section>
   <section class="block"><header><h2>The book at a glance</h2><span class="muted">Length of each discourse, in order. Colours alternate by section.</span></header>
     ${strip(T.wc,{label:"Words per discourse"})}</section>
   <section class="block"><header><h2>Most frequent significant words</h2><a href="#index">Browse the full index →</a></header>
@@ -446,6 +520,57 @@ function viewHome(){
     <div class="chips">${GL.map(g=>`<a class="chip" href="#w-${g.lemmas[0]}"><span class="gu">${esc(g.term)}</span><small>${esc(g.gloss)}</small></a>`).join("")}</div></section>`;
   wireStrip($("#main"),i=>{state.hl=null;go("v-"+T.v[i].id)},"words");
   $("#bigf").addEventListener("submit",e=>{e.preventDefault();submitQuery($("#bigq").value)});
+  const dayNo=Math.floor(Date.now()/864e5);
+  const pool=T.v.map((v,i)=>i).filter(i=>MAIN.includes(T.v[i].sec));
+  drawVod(pool[dayNo%pool.length],"Vachanamrut of the day",pool);
+  drawWod(dayNo%GL.length,"Term of the day");
+  countUp();homeLive();
+}
+function excerpt(t,n){t=clean(t);return t.length<=n?t:t.slice(0,t.lastIndexOf(" ",n))+" …"}
+function drawVod(i,label,pool){
+  const v=T.v[i],p=v.paras[1]||v.paras[0];
+  $("#vod").innerHTML=`<div class="eyebrow">${esc(label)}</div><h3>${esc(vlabel(v))}${v.title?` · ${esc(v.title)}`:""}</h3><p class="q">${esc(excerpt(p[1],230))}</p><div class="ft"><a href="#v-${v.id}">Read it →</a><button type="button">Another one ↻</button></div>`;
+  $("#vod button").onclick=()=>drawVod(pool[Math.floor(Math.random()*pool.length)],"A Vachanamrut for you",pool);
+}
+function drawWod(k,label){
+  const g=GL[k];
+  $("#wod").innerHTML=`<div class="eyebrow">${esc(label)}</div><h3>${esc(g.term)} · ${esc(g.gloss)}</h3><p class="q">${esc(excerpt(g.definition,200))}</p><div class="ft"><a href="#w-${g.lemmas[0]}">See every use →</a><button type="button">Another one ↻</button></div>`;
+  $("#wod button").onclick=()=>drawWod(Math.floor(Math.random()*GL.length),"A term for you");
+}
+function countUp(){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+  const bs=[...document.querySelectorAll(".statrow b[data-n]")],t0=performance.now();
+  (function tick(t){const k=Math.min(1,(t-t0)/900),e=1-Math.pow(1-k,3);
+    bs.forEach(b=>b.textContent=fmt(Math.round(+b.dataset.n*e)));if(k<1&&bs[0].isConnected)requestAnimationFrame(tick)})(t0);
+}
+/* live panels: official Kalupur sources only, see live.html; left out quietly when offline */
+const DARSHAN="https://dailydarshanserver.nnd.media/temple/dailydarshan",KALUPUR="63d045f0d9918f9bc9dea12f";
+let homeTimer=null;
+async function homeLive(){
+  clearInterval(homeTimer);
+  const json=async u=>{const r=await fetch(u);if(!r.ok)throw new Error(r.status);return r.json()};
+  json(`data/live.json?t=${Math.floor(Date.now()/9e5)}`).then(D=>{
+    if(!$("#nev"))return;
+    const t=new Date(),td=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
+    const e=(D.events||[]).find(x=>x.end>=td);
+    if(e){const n=Math.round((new Date(e.start+"T12:00")-new Date(td+"T12:00"))/864e5);
+      $("#nev").hidden=false;
+      $("#nev").innerHTML=`<div class="eyebrow">${n<=0?"Happening now":n===1?"Tomorrow":`In ${n} days`}</div>${e.img?`<img class="ev" src="${esc(e.img)}" alt="">`:""}<h3>${esc(e.t)}</h3><div class="ft"><span class="muted">${esc(e.when)}</span><a href="live.html">All events →</a></div>`}
+    if(D.galleries?.length){$("#hphotos").hidden=false;
+      $("#hrail").innerHTML=D.galleries.map(g=>`<a href="${esc(g.u)}" target="_blank" rel="noopener"><img src="${esc(g.img)}" alt="" loading="lazy"><span>${esc(g.t)}<small>${g.date?esc(new Date(g.date+"T12:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"})):""}</small></span></a>`).join("")}
+  }).catch(()=>{});
+  try{
+    const m=/^(\d\d)\/(\d\d)\/(\d{4})$/.exec(await json(`${DARSHAN}/lastupdated/${KALUPUR}`));if(!m)return;
+    const date=`${m[3]}-${m[2]}-${m[1]}`;
+    const a=(await json(`${DARSHAN}/${KALUPUR}/${date}`)).filter(u=>/^https:\/\/[\w.-]+\.backblazeb2\.com\//.test(u)).slice(0,8);
+    if(!a.length||!$("#dimgs"))return;
+    $("#dimgs").innerHTML=a.map((u,i)=>`<img src="${esc(u)}" alt="Darshan at Kalupur Mandir" class="${i?"":"on"}"${i?' loading="lazy"':""}>`).join("");
+    $("#dwhen").textContent=new Date(date+"T12:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+    $("#dcard").hidden=false;$("#hero2").classList.add("has");
+    if(a.length>1&&!matchMedia("(prefers-reduced-motion:reduce)").matches){let k=0;homeTimer=setInterval(()=>{
+      const is=document.querySelectorAll("#dimgs img");if(!is.length){clearInterval(homeTimer);return}
+      if(document.hidden)return;is[k].classList.remove("on");k=(k+1)%is.length;is[k].classList.add("on")},5000)}
+  }catch(e){}
 }
 function submitQuery(q){
   q=q.trim();if(!q)return;
@@ -604,18 +729,41 @@ function viewIndex(){
   $("#main").innerHTML=`<div class="eyebrow">Index</div><h1 style="font-family:var(--f-read);font-size:40px;font-weight:600;margin:6px 0 6px">${fmt(IX.length)} headwords, A to ળ</h1>
    <p class="note">Spelling variants (ઈ/ઇ, ી/િ, ૂ/ુ, ન્દ/ંદ, દૃ/દ્ર) and case endings (-ને, -નો, -ની, -નું, -ના, -માં, -થી, -એ, plural -ઓ) are grouped under one headword.</p>
    <div class="alpha" id="alpha">${LETTERS.filter(l=>groups[l]).map(l=>`<button data-l="${l}" class="${l===cur?"on":""}">${l}</button>`).join("")}</div>
-   <div class="toolbar" style="margin:10px 0 16px"><label>Sort <select id="srt"><option value="az">A–Z</option><option value="freq">Most frequent</option></select></label>
-     <label>Minimum occurrences <select id="minc"><option>1</option><option>2</option><option>5</option><option>10</option><option>25</option></select></label><span class="muted num" id="cnt"></span></div>
-   <div class="azlist" id="az"></div>`;
+   <div class="ixbar"><input id="ixq" type="search" autocomplete="off" placeholder="Filter all ${fmt(IX.length)} words: ભક્તિ or bhakti" aria-label="Filter the index">
+     <label>Sort <select id="srt"><option value="az">A–Z</option><option value="freq">Most frequent</option></select></label>
+     <label>At least <select id="minc"><option>1</option><option>2</option><option>5</option><option>10</option><option>25</option></select></label>
+     <div class="seg2" role="group" aria-label="View"><button type="button" data-w="list">List</button><button type="button" data-w="cloud">Cloud</button></div><span class="muted num" id="cnt"></span></div>
+   <div class="ixgrid"><div id="az"></div><aside class="peek" id="peek" aria-live="polite"></aside></div>`;
+  let q="",view=state.ixview||"list",pk=null;
   $("#srt").value=sort;$("#minc").value=String(min);
-  const draw=()=>{let g=(groups[cur]||[]).filter(e=>e.c>=min);
+  const seg=()=>document.querySelectorAll(".seg2 button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.w===view));
+  const peek=i=>{
+    if(i===pk||getComputedStyle($("#peek")).display==="none")return;pk=i;
+    const e=IX[i],c=new Array(T.v.length).fill(0),o=e.o,seen=new Set(),qs=[];
+    for(let j=0;j<o.length;j+=4){c[o[j]]++;if(!seen.has(o[j])&&qs.length<3){seen.add(o[j]);qs.push(j)}}
+    const nv=c.filter(Boolean).length;
+    $("#peek").innerHTML=`<div><h3>${esc(e.h)}</h3><div class="sub">${esc(e.r)} · ${fmt(e.c)} uses in ${nv} Vachanamruts</div></div>${strip(c,{label:"Uses per discourse"})}
+      ${qs.map(j=>{const v=T.v[o[j]],t=v.paras[o[j+1]][1],f=o[j+2],l=o[j+3];return `<a class="kwic pkq" href="#v-${v.id}" data-v="${o[j]}" data-p="${o[j+1]}" data-o="${f}" data-l="${i}"><small>${esc(vlabel(v))}</small>…${esc(clean(t.slice(Math.max(0,f-55),f)))}<b>${esc(t.substr(f,l))}</b>${esc(clean(t.slice(f+l,f+l+55)))}…</a>`}).join("")}
+      <a href="#w-${i}">See all ${fmt(e.c)} uses →</a>`;
+  };
+  const draw=()=>{const k=q.toLowerCase();
+    let g=(k?IX.filter(e=>e.h.includes(q)||e.r.includes(k)):(groups[cur]||[])).filter(e=>e.c>=min);
     g=sort==="az"?g.slice().sort((a,b)=>a.h.localeCompare(b.h,"gu")):g.slice().sort((a,b)=>b.c-a.c);
-    $("#cnt").textContent=`${g.length} headwords`;
-    $("#az").innerHTML=g.map(e=>`<a class="az" href="#w-${e.i}"><span>${esc(e.h)}</span><small>${e.c}</small></a>`).join("")};
-  $("#alpha").onclick=e=>{const b=e.target.closest("button");if(!b)return;cur=state.letter=b.dataset.l;$("#alpha").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));draw()};
+    $("#alpha").classList.toggle("off",!!k);
+    const all=g.length;if(all>600)g=g.slice(0,600);
+    $("#cnt").textContent=`${fmt(all)} headwords`+(all>g.length?`, first ${g.length} shown`:"");
+    if(view==="cloud"){const mx=Math.log(1+Math.max(1,...g.map(e=>e.c)));
+      $("#az").innerHTML=`<div class="cloud">${g.map(e=>`<a href="#w-${e.i}" data-i="${e.i}" title="${e.c} uses" style="font-size:${(15+Math.log(1+e.c)/mx*25).toFixed(1)}px">${esc(e.h)}</a>`).join("")}</div>`}
+    else $("#az").innerHTML=`<div class="azlist">${g.map(e=>`<a class="az" href="#w-${e.i}" data-i="${e.i}"><span>${esc(e.h)}</span><small>${e.c}</small></a>`).join("")}</div>`;
+    pk=null;if(g.length)peek(g.slice().sort((a,b)=>b.c-a.c)[0].i);else $("#peek").innerHTML=`<div class="sub">No word matches.</div>`};
+  $("#alpha").onclick=e=>{const b=e.target.closest("button");if(!b)return;cur=state.letter=b.dataset.l;q="";$("#ixq").value="";$("#alpha").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));draw()};
   $("#srt").onchange=e=>{sort=state.sort=e.target.value;draw()};
   $("#minc").onchange=e=>{min=state.minc=+e.target.value;draw()};
-  draw();
+  $("#ixq").oninput=e=>{q=e.target.value.trim();draw()};
+  document.querySelector(".seg2").onclick=e=>{const b=e.target.closest("button");if(!b)return;view=state.ixview=b.dataset.w;seg();draw()};
+  let ht;const over=e=>{const a=e.target.closest("[data-i]");if(!a)return;clearTimeout(ht);ht=setTimeout(()=>peek(+a.dataset.i),80)};
+  $("#az").addEventListener("mouseover",over);$("#az").addEventListener("focusin",over);
+  seg();draw();
 }
 /* ---- glossary ---- */
 function viewGlossary(){
@@ -815,6 +963,11 @@ function nondhPanelForWord(e){
   inp.addEventListener("blur",()=>setTimeout(()=>box.hidden=true,150));
   document.addEventListener("keydown",e=>{if(e.key==="/"&&document.activeElement!==inp&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();inp.focus()}});
 })();
+window.addEventListener("hashchange",()=>{const m=$("#main");m.classList.remove("in");void m.offsetWidth;m.classList.add("in")});
+{let tick=false;const onScroll=()=>{tick=false;const d=document.documentElement,y=d.scrollTop,max=d.scrollHeight-innerHeight;
+   $("#prog").style.transform=`scaleX(${/^#(v|n)-/.test(location.hash)&&max>0?y/max:0})`;$("#totop").hidden=y<900};
+ addEventListener("scroll",()=>{if(!tick){tick=true;requestAnimationFrame(onScroll)}},{passive:true});
+ $("#totop").onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"})}
 load().then(route).catch(err=>{$("#main").innerHTML=`<div class="loading">Could not load the data files (${esc(err.message)}). If you opened this file directly from disk, serve the folder over HTTP instead, for example with <code>python3 -m http.server</code> inside the site folder.</div>`});
 </script>
 
