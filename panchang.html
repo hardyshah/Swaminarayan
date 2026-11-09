@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Panchang Science</title>
+<meta name="description" content="Tithi, vaar, nakshatra, yoga and karana, live, with the astronomy behind each and how close the old astronomers got.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<style>
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --good:#2f7d32; --bad:#b3261e;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.06);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:12px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+main{padding-block:22px 64px}
+.jay{text-align:center;font-family:var(--f-read);font-weight:600;color:var(--saffron-strong);font-size:clamp(17px,3.4vw,22px);margin:4px 0 18px;letter-spacing:.02em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+/* live panel */
+.live{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);overflow:hidden}
+.pan{padding:20px 22px;background:linear-gradient(160deg,var(--saffron-soft),transparent 70%)}
+.eng{padding:20px 22px;border-left:1px solid var(--line);display:flex;flex-direction:column}
+.vaar{font-family:var(--f-display);color:var(--saffron);font-size:clamp(30px,6vw,44px);line-height:1.1;margin:6px 0 2px}
+.tithi{font-family:var(--f-read);font-size:clamp(22px,4vw,30px);font-weight:600;line-height:1.2}
+.tithi small{font-family:var(--f-ui);font-size:14px;font-weight:500;color:var(--ink-2);display:block;margin-top:2px}
+.samvat{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:14px;color:var(--ink-2)}
+.pill b{color:var(--ink);font-weight:600}
+.clockrow{display:flex;gap:18px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.dial{width:148px;height:148px;flex:none}
+.ghadi .big{font-family:var(--f-read);font-weight:600;font-size:clamp(30px,6vw,40px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.ghadi .lab{font-size:13px;color:var(--ink-2);margin-top:4px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:14px;margin-top:12px}
+.facts dt{color:var(--ink-3)} .facts dd{margin:0;color:var(--ink)}
+.chog{font-weight:600} .chog.g{color:var(--good)} .chog.b{color:var(--bad)}
+.loc{margin-top:12px;font-size:13px;color:var(--ink-3);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lnk{background:none;border:0;padding:0;color:var(--peacock);cursor:pointer;font-size:13px;text-decoration:underline}
+.wd{font-size:15px;color:var(--ink-2);font-weight:500}
+.date{font-family:var(--f-read);font-size:clamp(24px,4.4vw,32px);font-weight:600;line-height:1.15;margin:4px 0 8px}
+.time{font-family:var(--f-read);font-size:clamp(40px,8vw,58px);font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--peacock)}
+.time span{font-size:.45em;color:var(--ink-3);margin-left:6px}
+.tz{font-size:13px;color:var(--ink-3);margin-top:6px}
+.go{margin-top:auto;padding-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
+.btn:hover{background:var(--sunk);text-decoration:none}
+/* today in history */
+.sech{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:38px 0 6px}
+.sech h2{margin:0;font-family:var(--f-read);font-size:clamp(26px,5vw,34px);font-weight:600;line-height:1.15}
+.sech h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.daynav{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.daynav input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--surface);color:var(--ink)}
+.sub{color:var(--ink-2);margin:0 0 16px;max-width:70ch}
+.feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;overflow:hidden;margin-bottom:16px}
+.feature svg{display:block;width:100%;height:auto}
+.feature .txt{padding:18px 20px;align-self:center}
+.feature h3{font-family:var(--f-read);font-size:26px;margin:4px 0 6px;line-height:1.2}
+.feature p{margin:0;color:var(--ink-2)}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.col{padding:16px 18px}
+.col h3{font-family:var(--f-read);font-size:21px;margin:0;line-height:1.2}
+.col h3 small{display:block;font-family:var(--f-ui);font-size:13px;font-weight:500;color:var(--ink-3);margin-top:2px}
+.list{list-style:none;margin:12px 0 0;padding:0}
+.list li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.yr{font-variant-numeric:tabular-nums;line-height:1.2}
+.yr b{display:block;font-size:15px;color:var(--saffron-strong)} .yr span{font-size:12px;color:var(--ink-3)}
+.ev{font-family:var(--f-read);font-size:17px;line-height:1.5}
+.ev .m{display:block;font-family:var(--f-ui);font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.tag{display:inline-block;font-family:var(--f-ui);font-size:11.5px;font-weight:600;border-radius:999px;padding:0 8px;margin-right:6px;vertical-align:2px}
+.tag.life{background:var(--saffron-soft);color:var(--saffron-strong)} .tag.vach{background:var(--peacock-soft);color:var(--peacock)}
+.more{margin-top:8px}
+.empty{color:var(--ink-3);font-size:14px;padding:10px 0}
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
+.pg{padding:14px 16px;color:var(--ink);display:block}
+.pg:hover{text-decoration:none;border-color:var(--saffron)}
+.pg b{display:block;font-family:var(--f-read);font-size:19px} .pg span{font-size:13.5px;color:var(--ink-2)}
+.pg .g{font-family:var(--f-display);color:var(--saffron);font-size:15px}
+.ttl{font-family:var(--f-read);font-size:clamp(28px,5.4vw,40px);font-weight:600;line-height:1.15;margin:6px 0 10px}
+.ttl .gu,.h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.h2{font-family:var(--f-read);font-size:clamp(24px,4.6vw,30px);font-weight:600;line-height:1.15;margin:38px 0 6px}
+.vt{margin-top:16px;overflow:hidden}
+.clkcard{margin-top:16px;padding:20px 18px}
+.rbcard{padding:16px 16px 12px}
+.vh,.vr{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,1fr) minmax(0,1fr)}
+.vh{background:var(--sunk);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.vh div{padding:10px 14px} .vh div:first-child{grid-column:2;color:var(--saffron-strong)} .vh div:last-child{color:var(--peacock)}
+.vr{border-top:1px solid var(--line)} .vr>div{padding:10px 14px}
+.vk{color:var(--ink-2);font-size:14px;font-weight:500}
+.vv{background:color-mix(in srgb,var(--saffron-soft) 45%,transparent);font-family:var(--f-read);font-size:18px;font-weight:600}
+.vs{font-family:var(--f-read);font-size:18px;font-weight:600;color:var(--peacock);font-variant-numeric:tabular-nums}
+.vv small,.vs small{display:block;font-family:var(--f-ui);font-size:12.5px;font-weight:400;color:var(--ink-3);margin-top:2px}
+.vr .big{font-size:22px}
+.tbl{overflow-x:auto} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--ink-3);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:var(--sunk)}
+tbody tr:last-child td{border-bottom:0}
+td .en{display:block;font-size:12.5px;color:var(--ink-3)} td b{font-family:var(--f-read);font-size:16px}
+td.t{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+tr.now td{background:var(--saffron-soft)} tr.now td.t{color:var(--ink);font-weight:600}
+.kind{font-size:12px;font-weight:600;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.kind.fx{background:var(--peacock-soft);color:var(--peacock)} .kind.sn{background:var(--saffron-soft);color:var(--saffron-strong)}
+.sched{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.note{margin-top:28px}
+@media (max-width:640px){.vh{display:none}.vr{grid-template-columns:1fr 1fr}.vk{grid-column:1/-1;padding-bottom:0!important;font-size:13px}.sched{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-3);font-size:13px}
+footer p{margin:0 0 6px;max-width:80ch}
+@media (max-width:760px){.live{grid-template-columns:1fr}.eng{border-left:0;border-top:1px solid var(--line)}.feature,.cols{grid-template-columns:1fr}}
+@media (max-width:420px){.dial{width:120px;height:120px}.pan,.eng{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* panchang page */
+.cite{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;border:1px solid color-mix(in srgb,var(--saffron) 40%,var(--line));background:color-mix(in srgb,var(--saffron-soft) 60%,transparent);color:var(--saffron-strong);border-radius:999px;padding:2px 10px;margin:2px 4px 2px 0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.cite:hover{text-decoration:none;border-color:var(--saffron)}
+.cite.tx{background:var(--peacock-soft);color:var(--peacock);border-color:color-mix(in srgb,var(--peacock) 35%,var(--line))}
+.cites{margin:6px 0 12px}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
+.limb{padding:14px 14px 12px;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden}
+.limb .k{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.limb .g{font-family:var(--f-display);color:var(--saffron);font-size:15px;line-height:1.1}
+.limb .v{font-family:var(--f-read);font-size:21px;font-weight:600;line-height:1.2;margin-top:6px}
+.limb .e{font-size:12.5px;color:var(--ink-2)}
+.limb .f{font-size:12px;color:var(--ink-3);margin-top:auto;padding-top:8px;border-top:1px dashed var(--line)}
+.limb .bar{height:4px;border-radius:2px;background:var(--sunk);margin:8px 0 4px;overflow:hidden}.limb .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--saffron),var(--peacock))}
+.sky{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;overflow:hidden;margin-top:16px}
+.sky .w{padding:14px;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--peacock-soft) 70%,transparent),transparent 70%)}
+.sky svg{width:100%;height:auto;display:block;max-width:520px;margin:0 auto}
+.sky .r{padding:18px 20px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.sky .ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sky input[type=range]{flex:1;min-width:140px;accent-color:var(--saffron)}
+.sky .when{font-family:var(--f-read);font-size:18px;font-weight:600}
+.rd2{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}
+.rd2 dt{color:var(--ink-3)}.rd2 dd{margin:0}.rd2 b{font-family:var(--f-read);font-size:16px}
+.wl .nk{fill:var(--ink-2);font-size:8.6px;font-family:var(--f-ui);text-anchor:middle;dominant-baseline:central}
+.wl .rs{fill:var(--saffron-strong);font-size:10px;font-family:var(--f-ui);text-anchor:middle;dominant-baseline:central;font-weight:600}
+.wl .ln{stroke:var(--line)} .wl .ring{fill:none;stroke:var(--line)}
+.ex{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:14px}
+.exc{padding:18px 20px}
+.exc h3{font-family:var(--f-read);font-size:23px;margin:0 0 2px;line-height:1.2}.exc h3 .gu{font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.8em;margin-right:8px}
+.exc .fx{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:var(--sunk);border-radius:8px;padding:8px 10px;margin:10px 0;overflow-x:auto}
+.exc p{margin:8px 0;color:var(--ink-2)} .exc p b{color:var(--ink)}
+.names{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.names span{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;background:var(--surface)}
+.names span.on{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.names span small{color:var(--ink-3);margin-left:4px}.names span.on small{color:#fff;opacity:.85}
+.wide{grid-column:1/-1}
+.hep{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:18px;align-items:center}
+.hep svg{width:100%;height:auto}
+.hep .pl{fill:var(--ink);font-family:var(--f-ui);font-size:12px;text-anchor:middle;dominant-baseline:central;font-weight:600}
+.stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.st{padding:14px 16px}.st b{display:block;font-family:var(--f-read);font-size:26px;line-height:1.1;color:var(--saffron-strong)}.st span{font-size:13px;color:var(--ink-2)}
+.yrs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.yrs span{font-size:13px;border-radius:999px;padding:2px 10px;background:var(--saffron-soft);color:var(--saffron-strong);font-weight:600}
+.yrs span.past{background:var(--sunk);color:var(--ink-3);font-weight:500}
+.ny{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.ny .card{padding:16px 18px}.ny h3{font-family:var(--f-read);margin:0;font-size:21px}.ny .d{font-family:var(--f-read);font-size:24px;font-weight:600;color:var(--peacock);margin:6px 0 2px}
+td.ok{color:var(--good);font-weight:600;white-space:nowrap}
+.srcs{padding:6px 18px 12px}.srcs h3{font-family:var(--f-read);font-size:19px;margin:14px 0 4px}
+.srcs ol{margin:0;padding-left:20px}.srcs li{margin:6px 0;font-size:14.5px;line-height:1.45}.srcs li small{display:block;color:var(--ink-3);font-size:12.5px}
+.honest{font-size:13px;color:var(--ink-3);margin:8px 0 0}
+@media (max-width:900px){.five{grid-template-columns:repeat(2,minmax(0,1fr))}.five .limb:first-child{grid-column:1/-1}}
+@media (max-width:760px){.sky,.ex,.ny{grid-template-columns:minmax(0,1fr)}.sky .r{border-left:0;border-top:1px solid var(--line)}.hep{grid-template-columns:minmax(0,1fr)}.hep svg{max-width:240px;margin:0 auto}.stat{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Home</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="./">Today</a>
+    <a href="vedic-time.html">Vedic time</a>
+    <a class="on" href="panchang.html">Panchang</a>
+    <a href="kaal-patrak/">Kaal Patrak</a>
+    <a href="vicharan/">Vicharan</a>
+    <a href="vachanamrut-concordance/">Vachanamrut</a>
+    <a href="vachanamrut-concordance/library.html">Library</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+
+<main class="wrap">
+  <p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+  <div class="eyebrow">પંચાંગ · Panchang · <a href="vedic-time.html">part of Vedic time</a></div>
+  <h1 class="ttl"><span class="gu">પંચાંગ અને તેનું વિજ્ઞાન</span>The Panchang, and the science behind it</h1>
+  <p class="sub">A panchang (પંચ + અંગ, "five limbs") describes each day with five numbers: <b>tithi, vaar, nakshatra, yoga and karana</b>. Four of them come from just two things you can see in the sky: where the sun is, and where the moon is. The fifth, the vaar, comes from the seven moving lights the ancients could see with the naked eye. Below, today's five limbs run live, then the sky that produces them, then each limb explained.</p>
+  <div class="cites"><a class="cite" href="#src-E">▶ Hyper Quest × Ashish Naredi: Hindu New Year and science</a><a class="cite" href="#src-F">▶ Ravindra Godbole: Tithi</a><a class="cite" href="#src-G">▶ Future IQ: The logic of the Hindu calendar</a></div>
+
+  <h2 class="h2"><span class="gu">આજનાં પાંચ અંગ</span>Today's five limbs, live</h2>
+  <p class="sub" id="fivesub">Times are in IST. Each limb ends at its own moment, so they do not change together at midnight or at sunrise.</p>
+  <div class="five" id="five"></div>
+
+  <h2 class="h2"><span class="gu">આકાશ જે પંચાંગ બનાવે છે</span>The sky that makes the panchang</h2>
+  <p class="sub">The outer ring is the 27 nakshatras and the inner ring the 12 rashis, measured against the fixed stars. The <b style="color:var(--saffron)">sun</b> moves about 1° a day; the <b style="color:var(--peacock)">moon</b> moves about 13° a day. The shaded wedge is the gap between them. Every 12° of that gap is one tithi. Drag the slider to watch a month go by.</p>
+  <section class="card sky">
+    <div class="w"><svg id="wheel" viewBox="0 0 400 400" role="img" aria-label="Sun and moon among the nakshatras"></svg></div>
+    <div class="r">
+      <div class="when" id="w-when"></div>
+      <div class="ctl"><button class="btn" id="w-play" type="button">▶ Play a month</button><button class="btn" id="w-now" type="button">Now</button></div>
+      <div class="ctl"><span style="font-size:13px;color:var(--ink-3)">−15 days</span><input type="range" id="w-slide" min="-360" max="360" value="0" step="1" aria-label="Days from now"><span style="font-size:13px;color:var(--ink-3)">+15</span></div>
+      <dl class="rd2" id="w-read"></dl>
+      <p class="honest">The wheel uses a short orbit formula, good to about half a degree, so it can be a little off at a boundary. The cards above use full ephemeris tables.</p>
+    </div>
+  </section>
+
+  <h2 class="h2"><span class="gu">પાંચ અંગ, એક પછી એક</span>The five limbs, one by one</h2>
+  <div class="ex">
+    <section class="card exc" id="x-tithi">
+      <h3><span class="gu">તિથિ</span>Tithi, the lunar day</h3>
+      <div class="fx">tithi = ⌊ (moon − sun) ÷ 12° ⌋ + 1 &nbsp;→ 1 … 30</div>
+      <p>When the moon has pulled 12° ahead of the sun, one tithi is over. Thirty tithis make one lunar month, from new moon to new moon: 15 in the bright half (<b>sud</b>, waxing) and 15 in the dark half (<b>vad</b>, waning).</p>
+      <p><b>Why a tithi is 19 to 26 hours long.</b> The moon's orbit is an ellipse. Near its closest point (perigee) it moves up to 15° a day and a tithi is short; near its farthest point it slows to about 12° a day and a tithi is long. The sun's speed varies a little too.</p>
+      <p><b>Skipped and repeated tithis.</b> The day takes the name of the tithi running at sunrise. A short tithi that starts after one sunrise and ends before the next is never "at sunrise", so it is skipped (kshaya). A long tithi that covers two sunrises names two days (vriddhi). That is why the panchang sometimes jumps from 3 to 5, or has two 11s.</p>
+      <p><b>Why it is clever.</b> A tithi is a clock you can read by looking up: the moon's phase tells you the tithi to within a day, anywhere in the world, with no instrument.</p>
+      <div class="cites"><a class="cite" href="#src-F">▶ Ravindra Godbole: Tithi, a unique feature of the Indian panchang</a></div>
+      <div class="names" id="n-tithi"></div>
+    </section>
+    <section class="card exc" id="x-vaar">
+      <h3><span class="gu">વાર</span>Vaar, the weekday</h3>
+      <div class="fx">day's lord = lord of the first hora after sunrise</div>
+      <div class="hep"><svg id="hept" viewBox="0 0 260 260" role="img" aria-label="Seven planets in order of speed, and the weekday order"></svg>
+      <div><p>The seven naked-eye "planets" (grahas) are placed in order of how slowly they move against the stars: <b>Shani, Guru, Mangal, Surya, Shukra, Budh, Chandra</b>. Each hour (hora) of the day is ruled by the next one in this ring.</p>
+      <p>A day has 24 horas. 24 = 3 × 7 + 3, so the first hora of the next day lands <b>three steps further</b> round the ring. Follow the star line, jumping three each time, and you get Ravi → Som → Mangal → Budh → Guru → Shukra → Shani: the week, in the same order used all over the world.</p></div></div>
+      <p>The vaar runs from sunrise to sunrise, not midnight to midnight.</p>
+      <div class="names" id="n-vaar"></div>
+    </section>
+    <section class="card exc" id="x-nak">
+      <h3><span class="gu">નક્ષત્ર</span>Nakshatra, the moon's star</h3>
+      <div class="fx">nakshatra = ⌊ moon (sidereal) ÷ 13°20′ ⌋ + 1 &nbsp;→ 1 … 27</div>
+      <p>The moon takes 27.32 days to go once round the stars (the sidereal month), so the sky was split into <b>27 equal parts of 13°20′</b>, one for each night. Each is named after a bright star or group in it: Krittika is the Pleiades, Rohini is Aldebaran, Chitra is Spica.</p>
+      <p>Because the moon's speed varies, a nakshatra lasts about 20 to 27 hours. Each nakshatra has 4 padas of 3°20′, and 27 × 4 = 108, which fits the 12 rashis exactly (9 padas each).</p>
+      <div class="names" id="n-nak"></div>
+    </section>
+    <section class="card exc" id="x-yoga">
+      <h3><span class="gu">યોગ</span>Yoga, sun plus moon</h3>
+      <div class="fx">yoga = ⌊ (sun + moon) ÷ 13°20′ ⌋ + 1 &nbsp;→ 1 … 27</div>
+      <p>Where the tithi uses the <b>difference</b> between moon and sun, the yoga uses their <b>sum</b>. Both are measured against the stars. The sum grows by about 14° a day, so a yoga lasts roughly a day and there are 27 of them.</p>
+      <p>Two yogas, Vyatipata and Vaidhriti, mark moments when the sun and moon are at equal declination on opposite sides of a solstice or equinox, which is why the old texts single them out.</p>
+      <div class="names" id="n-yoga"></div>
+    </section>
+    <section class="card exc" id="x-kar">
+      <h3><span class="gu">કરણ</span>Karana, half a tithi</h3>
+      <div class="fx">karana = ⌊ (moon − sun) ÷ 6° ⌋ + 1 &nbsp;→ 1 … 60</div>
+      <p>Each tithi is split into two karanas, so a month has 60. There are only 11 names: <b>four fixed</b> ones that fall once a month around the new moon (Shakuni, Chatushpada, Naga, Kimstughna), and <b>seven moving</b> ones that repeat eight times through the other 56 halves.</p>
+      <p>Vishti, also called Bhadra, is the karana panchangs warn about when choosing a time to start something.</p>
+      <div class="names" id="n-kar"></div>
+    </section>
+    <section class="card exc" id="x-months">
+      <h3><span class="gu">માસ અને અધિક માસ</span>Months and the adhik maas</h3>
+      <div class="fx">12 × 29.531 = 354.37 days &nbsp;vs&nbsp; 365.26 days → 10.9 days short each year</div>
+      <p>A Gujarati month runs from new moon to new moon (amanta). Each lunar month is named after the <b>sankranti</b>, the sun's entry into a new rashi, that happens during it. Chaitra is the month in which the sun enters Mesh.</p>
+      <p>Twelve lunar months fall about 11 days short of a solar year. After about 32½ months the gap adds up to a whole month, and one lunar month passes with <b>no sankranti at all</b>. That month has no name of its own, so it is called <b>adhik</b> ("extra") and the next month takes the name. This keeps Diwali in autumn and Holi in spring for ever. There are 7 adhik months every 19 years.</p>
+      <div id="adhik"></div>
+    </section>
+  </div>
+
+  <h2 class="h2"><span class="gu">બે નવાં વર્ષ</span>Why there are two Hindu new years</h2>
+  <p class="sub">The same Vikram Samvat is counted from two starting points. Most of North India begins the year on <b>Chaitra sud 1</b>, the first new moon after the sun nears the spring equinox (Hindu Nav Varsh, Gudi Padwa, Ugadi). Gujarat begins it on <b>Kartak sud 1</b>, the day after Diwali (Bestu varas). Both mark a new moon close to a turning point of the sun's year.</p>
+  <div class="cites"><a class="cite" href="#src-E">▶ Hyper Quest × Ashish Naredi: Science behind Hindu New Year (1:13:23) and Surya Siddhanta (1:24:05)</a></div>
+  <div class="ny" id="ny"></div>
+
+  <h2 class="h2"><span class="gu">નિરયન અને સાયન</span>Fixed stars, and the slowly drifting Sankranti</h2>
+  <p class="sub">The panchang measures the sun against the <b>fixed stars</b> (nirayan, sidereal). Western calendars measure it from the <b>spring equinox</b> (sayan, tropical). The Earth's axis wobbles like a slowing top, one turn every ~25,800 years, so the equinox slides back against the stars by 50.3″ a year. The gap between the two zodiacs is the <b>ayanamsa</b>.</p>
+  <div class="stat">
+    <div class="card st"><b id="ayan"></b><span>ayanamsa today (Lahiri): the gap between the star zodiac and the season zodiac</span></div>
+    <div class="card st"><b>~71.6 years</b><span>for the gap to grow by 1°, which moves every sankranti one day later in the English calendar</span></div>
+    <div class="card st"><b>Dec → Jan</b><span>Makar Sankranti fell near the winter solstice (21–22 December) around 285 CE; it now falls on 14–15 January</span></div>
+  </div>
+  <div class="cites"><a class="cite" href="#src-G">▶ Future IQ: The logic of the Hindu calendar</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Axial_precession" target="_blank" rel="noopener">📖 Axial precession</a></div>
+
+  <h2 class="h2"><span class="gu">પ્રાચીન ગણિત કેટલું ચોક્કસ?</span>How close did the old astronomers get?</h2>
+  <p class="sub">Indian astronomers did not measure single orbits; they counted how many times each body goes round in a <b>mahayuga of 43,20,000 years</b>, then divided. The Surya Siddhanta and Aryabhata's Aryabhatiya (499 CE) give these counts. Here they are against today's measured values.</p>
+  <div class="card tbl"><table>
+    <thead><tr><th>Quantity</th><th>Ancient count</th><th>Gives</th><th>Measured today</th><th>Off by</th></tr></thead>
+    <tbody>
+      <tr><td><b>Sidereal year</b><span class="en">Sun once round the stars</span></td><td>1,57,79,17,828 days ÷ 43,20,000 years (Surya Siddhanta)</td><td class="t">365.25876 d</td><td class="t">365.25636 d</td><td class="ok">3½ min</td></tr>
+      <tr><td><b>Synodic month</b><span class="en">New moon to new moon</span></td><td>1,57,79,17,828 days ÷ 5,34,33,336 lunar months (Surya Siddhanta)</td><td class="t">29.530588 d</td><td class="t">29.530589 d</td><td class="ok">under 1 s</td></tr>
+      <tr><td><b>Sidereal month</b><span class="en">Moon once round the stars</span></td><td>1,57,79,17,828 days ÷ 5,77,53,336 moon turns (Surya Siddhanta)</td><td class="t">27.321674 d</td><td class="t">27.321662 d</td><td class="ok">1 s</td></tr>
+      <tr><td><b>Sidereal day</b><span class="en">Earth turns once against the stars</span></td><td>1,57,79,17,500 days ÷ 1,58,22,37,500 Earth turns (Aryabhata, who said the Earth spins)</td><td class="t">23 h 56 m 4.1 s</td><td class="t">23 h 56 m 4.09 s</td><td class="ok">0.01 s</td></tr>
+      <tr><td><b>Moon's nodes</b><span class="en">Rahu and Ketu go round once</span></td><td>43,20,000 years ÷ 2,32,238 node turns (Surya Siddhanta)</td><td class="t">18.60 yr</td><td class="t">18.61 yr</td><td class="ok">4 days</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sub" style="margin-top:12px"><b>Rahu and Ketu</b> are the two points where the moon's tilted path crosses the sun's path. An eclipse can only happen when a new moon or full moon falls near one of them. That is the astronomy behind the old picture of Rahu "swallowing" the sun.</p>
+  <div class="cites"><a class="cite" href="#src-E">▶ Hyper Quest × Ashish Naredi: Surya Siddhanta explained (1:24:05)</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Surya_Siddhanta" target="_blank" rel="noopener">📖 Surya Siddhanta</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Aryabhatiya" target="_blank" rel="noopener">📖 Aryabhatiya</a><a class="cite tx" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html" target="_blank" rel="noopener">📖 NASA Moon fact sheet</a></div>
+
+  <h2 class="h2" id="sources"><span class="gu">સંદર્ભ</span>Sources</h2>
+  <section class="card srcs">
+    <h3>Videos this page draws on</h3>
+    <ol>
+      <li id="src-E"><a href="https://www.youtube.com/watch?v=HHtrqqIxPV0&t=809s" target="_blank" rel="noopener">Hindu New Year Reveals Why India Fell Behind Science! | Hindu Nav Varsh Podcast ft. Ashish Naredi</a> · Hyper Quest, 18 Mar 2026<small>Used for: the two new years, Surya Siddhanta, Panchang calculation. Chapters: Science behind Hindu New Year 1:13:23; Surya Siddhanta 1:24:05.</small></li>
+      <li id="src-F"><a href="https://www.youtube.com/watch?v=OZRMJA2i5JU" target="_blank" rel="noopener">तिथि – भारतीय पंचांग की अनोखी देन (Tithi, a unique feature of the Hindu calendar)</a> · Ravindra Godbole<small>Used for: what a tithi is and why it varies in length.</small></li>
+      <li id="src-G"><a href="https://www.youtube.com/watch?v=4MdPgt_jdno" target="_blank" rel="noopener">The Logic of the Hindu Calendar</a> · Future IQ<small>Used for: lunar months, adhik maas, sidereal reckoning.</small></li>
+    </ol>
+    <h3>Texts and measured values</h3>
+    <ol>
+      <li><a href="https://en.wikipedia.org/wiki/Surya_Siddhanta" target="_blank" rel="noopener">Surya Siddhanta</a>, revolution counts per mahayuga (ch. 1); E. Burgess's 1860 English translation is on <a href="https://archive.org/search?query=Surya+Siddhanta+Burgess" target="_blank" rel="noopener">archive.org</a>.</li>
+      <li><a href="https://en.wikipedia.org/wiki/Aryabhatiya" target="_blank" rel="noopener">Aryabhatiya</a> of Aryabhata (499 CE), Gitikapada; W. E. Clark's 1930 translation is on <a href="https://archive.org/search?query=Aryabhatiya+Clark" target="_blank" rel="noopener">archive.org</a>.</li>
+      <li><a href="https://en.wikipedia.org/wiki/Panchangam" target="_blank" rel="noopener">Panchangam</a> and <a href="https://en.wikipedia.org/wiki/Hindu_calendar" target="_blank" rel="noopener">Hindu calendar</a>: names and definitions of the five limbs, adhik maas.</li>
+      <li><a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html" target="_blank" rel="noopener">NASA Moon fact sheet</a> (sidereal and synodic month, node period) and <a href="https://en.wikipedia.org/wiki/Axial_precession" target="_blank" rel="noopener">axial precession</a>.</li>
+      <li>Live values: sunrise by the NOAA formula; tithi, nakshatra, yoga and karana end times computed with the PyEphem library and the Lahiri ayanamsa, at Ahmedabad, for 2024–2046.</li>
+    </ol>
+    <p class="honest">YouTube does not let our build server play videos or read their captions, so each video is cited for the topic its title and chapters cover. The facts and numbers on this page are checked against the texts and measured values listed above.</p>
+  </section>
+  <p class="note"><a href="vedic-time.html">← Vedic time</a> · <a href="./">Home</a></p>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Calculation.</b> End times are for Ahmedabad and shown in IST. A printed panchang can differ by a few minutes, because some panchangs use a different ayanamsa or older formulas.</p>
+</div></footer>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const GD="૦૧૨૩૪૫૬૭૮૯", gu=n=>String(n).replace(/\d/g,d=>GD[d]);
+const TZ="Asia/Kolkata";
+const MON=["ચૈત્ર","વૈશાખ","જેઠ","અષાઢ","શ્રાવણ","ભાદરવો","આસો","કારતક","માગશર","પોષ","મહા","ફાગણ"];
+const MON_EN=["Chaitra","Vaishakh","Jeth","Ashadh","Shravan","Bhadarvo","Aso","Kartak","Magshar","Posh","Maha","Fagan"];
+const TI=["પડવો","બીજ","ત્રીજ","ચોથ","પાંચમ","છઠ","સાતમ","આઠમ","નોમ","દશમ","અગિયારસ","બારસ","તેરસ","ચૌદશ"];
+const tithiName=t=>{const p=t<=15?"સુદ":"વદ",n=t<=15?t:t-15;return `${p} ${n===15?(t===15?"પૂનમ":"અમાસ"):TI[n-1]}`};
+const tithiEn=t=>t===15?"Purnima":t===30?"Amas":`${t<=15?"sud":"vad"} ${t<=15?t:t-15}`;
+const NAK=[["અશ્વિની","Ashwini"],["ભરણી","Bharani"],["કૃત્તિકા","Krittika"],["રોહિણી","Rohini"],["મૃગશીર્ષ","Mrigashirsha"],["આર્દ્રા","Ardra"],["પુનર્વસુ","Punarvasu"],["પુષ્ય","Pushya"],["આશ્લેષા","Ashlesha"],["મઘા","Magha"],["પૂર્વા ફાલ્ગુની","Purva Phalguni"],["ઉત્તરા ફાલ્ગુની","Uttara Phalguni"],["હસ્ત","Hasta"],["ચિત્રા","Chitra"],["સ્વાતિ","Swati"],["વિશાખા","Vishakha"],["અનુરાધા","Anuradha"],["જ્યેષ્ઠા","Jyeshtha"],["મૂળ","Mula"],["પૂર્વાષાઢા","Purva Ashadha"],["ઉત્તરાષાઢા","Uttara Ashadha"],["શ્રવણ","Shravan"],["ધનિષ્ઠા","Dhanishtha"],["શતભિષા","Shatabhisha"],["પૂર્વા ભાદ્રપદા","Purva Bhadrapada"],["ઉત્તરા ભાદ્રપદા","Uttara Bhadrapada"],["રેવતી","Revati"]];
+const YOG=[["વિષ્કંભ","Vishkambha"],["પ્રીતિ","Priti"],["આયુષ્માન","Ayushman"],["સૌભાગ્ય","Saubhagya"],["શોભન","Shobhana"],["અતિગંડ","Atiganda"],["સુકર્મા","Sukarma"],["ધૃતિ","Dhriti"],["શૂળ","Shula"],["ગંડ","Ganda"],["વૃદ્ધિ","Vriddhi"],["ધ્રુવ","Dhruva"],["વ્યાઘાત","Vyaghata"],["હર્ષણ","Harshana"],["વજ્ર","Vajra"],["સિદ્ધિ","Siddhi"],["વ્યતિપાત","Vyatipata"],["વરીયાન","Variyan"],["પરિઘ","Parigha"],["શિવ","Shiva"],["સિદ્ધ","Siddha"],["સાધ્ય","Sadhya"],["શુભ","Shubha"],["શુક્લ","Shukla"],["બ્રહ્મ","Brahma"],["ઐન્દ્ર","Indra"],["વૈધૃતિ","Vaidhriti"]];
+const KAR=[["કિંસ્તુઘ્ન","Kimstughna"],["બવ","Bava"],["બાલવ","Balava"],["કૌલવ","Kaulava"],["તૈતિલ","Taitila"],["ગર","Gara"],["વણિજ","Vanija"],["વિષ્ટિ (ભદ્રા)","Vishti (Bhadra)"],["શકુનિ","Shakuni"],["ચતુષ્પાદ","Chatushpada"],["નાગ","Naga"]];
+const karIdx=k=>k===0?0:k>=57?k-49:((k-1)%7)+1;
+const RAS=["મેષ","વૃષભ","મિથુન","કર્ક","સિંહ","કન્યા","તુલા","વૃશ્ચિક","ધન","મકર","કુંભ","મીન"];
+const VAAR=[["રવિવાર","Sunday","સૂર્ય · Sun"],["સોમવાર","Monday","ચંદ્ર · Moon"],["મંગળવાર","Tuesday","મંગળ · Mars"],["બુધવાર","Wednesday","બુધ · Mercury"],["ગુરુવાર","Thursday","ગુરુ · Jupiter"],["શુક્રવાર","Friday","શુક્ર · Venus"],["શનિવાર","Saturday","શનિ · Saturn"]];
+const fmt=t=>new Date(t).toLocaleString("en-IN",{weekday:"short",hour:"numeric",minute:"2-digit",timeZone:TZ});
+const fmtD=t=>new Date(t).toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:TZ});
+const hm=ms=>{const m=Math.round(ms/6e4);return `${Math.floor(m/60)} h ${m%60} min`};
+const pad=n=>String(n).padStart(2,"0");
+const istDay=t=>{const p=new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date(t));return p};
+
+/* sunrise (NOAA) at Ahmedabad */
+const LAT=23.0225,LON=72.5714;
+function sunTimes(y,m,d){const R=Math.PI/180;const J=Date.UTC(y,m,d,12)/864e5+2440587.5-LON/360,n=Math.round(J-2451545.0009);
+  const Js=2451545.0009-LON/360+n,M=(357.5291+0.98560028*(Js-2451545))%360;const C=1.9148*Math.sin(M*R)+0.02*Math.sin(2*M*R)+0.0003*Math.sin(3*M*R);
+  const L=(M+C+180+102.9372)%360,Jt=Js+0.0053*Math.sin(M*R)-0.0069*Math.sin(2*L*R);const dec=Math.asin(Math.sin(L*R)*Math.sin(23.4397*R));
+  const cw=(Math.sin(-0.833*R)-Math.sin(LAT*R)*Math.sin(dec))/(Math.cos(LAT*R)*Math.cos(dec));const w=Math.acos(Math.max(-1,Math.min(1,cw)))/R/360;
+  return [(Jt-w-2440587.5)*864e5,(Jt+w-2440587.5)*864e5]}
+function riseBefore(t){const [y,m,d]=istDay(t).split("-").map(Number);let r=sunTimes(y,m-1,d)[0];if(r>t){const p=new Date(Date.UTC(y,m-1,d-1));r=sunTimes(p.getUTCFullYear(),p.getUTCMonth(),p.getUTCDate())[0]}return r}
+
+/* end-time tables */
+let E={};
+function seq(base,i0,deltas,n){let acc=0;return {i0,n,ends:deltas.map(d=>base+(acc+=d)*6e4)}}
+function at(s,t){const a=s.ends;let lo=0,hi=a.length-1;if(t<a[0]||t>=a[hi])return null;while(lo<hi){const mid=(lo+hi)>>1;if(a[mid]>t)hi=mid;else lo=mid+1}
+  return {i:(s.i0+lo)%s.n,start:lo?a[lo-1]:null,end:a[lo],next:(s.i0+lo+1)%s.n}}
+
+/* approximate sun and moon (for the wheel) */
+const D2R=Math.PI/180,nrm=x=>((x%360)+360)%360;
+function sky(t){const d=t/864e5+2440587.5-2451545;
+  const g=357.528+0.9856003*d,sun=nrm(280.460+0.9856474*d+1.915*Math.sin(g*D2R)+0.020*Math.sin(2*g*D2R));
+  const L=218.316+13.176396*d,M=134.963+13.064993*d,F=93.272+13.229350*d,D=297.850+12.190749*d;
+  const moon=nrm(L+6.289*Math.sin(M*D2R)+1.274*Math.sin((2*D-M)*D2R)+0.658*Math.sin(2*D*D2R)+0.214*Math.sin(2*M*D2R)-0.186*Math.sin(g*D2R)-0.114*Math.sin(2*F*D2R));
+  const ay=23.853+0.0139689*d/365.25;return {sun:nrm(sun-ay),moon:nrm(moon-ay),ay}}
+
+/* five limb cards */
+function five(){const now=Date.now(),cards=[];
+  const bar=(c)=>c&&c.start?`<div class="bar"><i style="width:${Math.min(100,(now-c.start)/(c.end-c.start)*100).toFixed(1)}%"></i></div>`:`<div class="bar"></div>`;
+  const tt=at(E.t,now);if(tt){const t=tt.i+1;cards.push(`<div class="card limb"><div class="k">Tithi</div><div class="g">તિથિ</div><div class="v">${tithiName(t)}</div><div class="e">${tithiEn(t)} · ends ${fmt(tt.end)}</div>${bar(tt)}<div class="e">then ${tithiName(tt.next+1)}</div><div class="f">(moon − sun) ÷ 12°</div></div>`)}
+  const r=riseBefore(now),wd=new Date(r+5.5*36e5).getUTCDay(),[y,m,d]=istDay(now).split("-").map(Number),nr=(()=>{let x=sunTimes(y,m-1,d)[0];if(x<=now){const p=new Date(Date.UTC(y,m-1,d+1));x=sunTimes(p.getUTCFullYear(),p.getUTCMonth(),p.getUTCDate())[0]}return x})();
+  cards.push(`<div class="card limb"><div class="k">Vaar</div><div class="g">વાર</div><div class="v">${VAAR[wd][0]}</div><div class="e">${VAAR[wd][1]} · lord ${VAAR[wd][2]}</div>${bar({start:r,end:nr})}<div class="e">ends at sunrise, ${fmt(nr)}</div><div class="f">sunrise to sunrise</div></div>`);
+  const n=at(E.n,now);if(n)cards.push(`<div class="card limb"><div class="k">Nakshatra</div><div class="g">નક્ષત્ર</div><div class="v">${NAK[n.i][0]}</div><div class="e">${NAK[n.i][1]} · ends ${fmt(n.end)}</div>${bar(n)}<div class="e">then ${NAK[n.next][0]}</div><div class="f">moon ÷ 13°20′</div></div>`);
+  const yg=at(E.y,now);if(yg)cards.push(`<div class="card limb"><div class="k">Yoga</div><div class="g">યોગ</div><div class="v">${YOG[yg.i][0]}</div><div class="e">${YOG[yg.i][1]} · ends ${fmt(yg.end)}</div>${bar(yg)}<div class="e">then ${YOG[yg.next][0]}</div><div class="f">(sun + moon) ÷ 13°20′</div></div>`);
+  const k=at(E.k,now);if(k){const a=KAR[karIdx(k.i)],b=KAR[karIdx(k.next)];cards.push(`<div class="card limb"><div class="k">Karana</div><div class="g">કરણ</div><div class="v">${a[0]}</div><div class="e">${a[1]} · ends ${fmt(k.end)}</div>${bar(k)}<div class="e">then ${b[0]}</div><div class="f">(moon − sun) ÷ 6°</div></div>`)}
+  $("five").innerHTML=cards.join("");
+  // highlight current names
+  const on=(id,arr,i,fn)=>{$(id).innerHTML=arr.map((x,j)=>`<span class="${j===i?"on":""}">${fn(x,j)}</span>`).join("")};
+  on("n-tithi",Array.from({length:30}),tt?tt.i:-1,(x,j)=>`${gu(j+1)} ${tithiName(j+1)}`);
+  on("n-vaar",VAAR,wd,x=>`${x[0]}<small>${x[2].split(" · ")[1]}</small>`);
+  on("n-nak",NAK,n?n.i:-1,(x,j)=>`${gu(j+1)} ${x[0]}<small>${x[1]}</small>`);
+  on("n-yoga",YOG,yg?yg.i:-1,(x,j)=>`${gu(j+1)} ${x[0]}<small>${x[1]}</small>`);
+  on("n-kar",KAR,k?karIdx(k.i):-1,(x,j)=>`${x[0]}<small>${j===0||j>=8?"fixed":"moving"}</small>`);
+}
+
+/* the wheel */
+const C=200,P=(deg,r)=>{const a=(deg-90)*D2R;return [C+r*Math.cos(a),C+r*Math.sin(a)]},f=n=>n.toFixed(1);
+function wedge(a0,a1,r){if(a1<a0)a1+=360;const [x0,y0]=P(a0,r),[x1,y1]=P(a1,r);return `M${C} ${C}L${f(x0)} ${f(y0)}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${f(x1)} ${f(y1)}Z`}
+function wheelStatic(){let s=`<g class="wl"><circle class="ring" cx="${C}" cy="${C}" r="190"/><circle class="ring" cx="${C}" cy="${C}" r="160"/><circle class="ring" cx="${C}" cy="${C}" r="128"/>`;
+  for(let i=0;i<27;i++){const a=i*360/27,[x0,y0]=P(a,160),[x1,y1]=P(a,190),[tx,ty]=P(a+180/27,175);s+=`<line class="ln" x1="${f(x0)}" y1="${f(y0)}" x2="${f(x1)}" y2="${f(y1)}"/><text class="nk" x="${f(tx)}" y="${f(ty)}">${NAK[i][0].split(" ")[0].slice(0,6)}</text>`}
+  for(let i=0;i<12;i++){const a=i*30,[x0,y0]=P(a,128),[x1,y1]=P(a,160),[tx,ty]=P(a+15,144);s+=`<line class="ln" x1="${f(x0)}" y1="${f(y0)}" x2="${f(x1)}" y2="${f(y1)}"/><text class="rs" x="${f(tx)}" y="${f(ty)}">${RAS[i]}</text>`}
+  // tithi ticks inside (relative to sun, drawn dynamically)
+  s+=`</g><path id="wd" fill="color-mix(in srgb,var(--saffron) 18%,transparent)" stroke="var(--saffron)" stroke-width=".8"/><g id="wt"></g>
+  <circle cx="${C}" cy="${C}" r="12" fill="color-mix(in srgb,var(--peacock) 55%,var(--surface))"/><text x="${C}" y="${C+24}" text-anchor="middle" font-size="9" fill="var(--ink-3)">પૃથ્વી · Earth</text>
+  <g id="ws"><circle r="11" fill="var(--saffron)"/><circle r="15" fill="none" stroke="var(--saffron)" stroke-opacity=".35" stroke-width="3"/></g>
+  <g id="wm"><circle r="9" fill="var(--ink-3)"/><path id="wph" fill="#f7f3e6"/></g>`;
+  $("wheel").innerHTML=s}
+let OFF=0,play=null;
+function wheel(){const t=Date.now()+OFF*3600e3,s=sky(t),el=nrm(s.moon-s.sun);
+  $("wd").setAttribute("d",wedge(s.sun,s.moon,120));
+  let tk="";for(let i=1;i<30;i++){const [x0,y0]=P(s.sun+i*12,112),[x1,y1]=P(s.sun+i*12,120);tk+=`<line x1="${f(x0)}" y1="${f(y0)}" x2="${f(x1)}" y2="${f(y1)}" stroke="var(--ink-3)" stroke-width="${i%15?0.6:1.6}"/>`}
+  $("wt").innerHTML=tk;
+  const [sx,sy]=P(s.sun,104),[mx,my]=P(s.moon,86);$("ws").setAttribute("transform",`translate(${f(sx)} ${f(sy)})`);$("wm").setAttribute("transform",`translate(${f(mx)} ${f(my)})`);
+  // moon phase: lit fraction, terminator ellipse
+  const k=(1-Math.cos(el*D2R))/2,r=9,w=r*(1-2*k),wax=el<180;
+  const sweepA=wax?1:0;$("wph").setAttribute("d",`M0 ${-r}A${r} ${r} 0 0 ${sweepA} 0 ${r}A${f(Math.abs(w))} ${r} 0 0 ${(w>0)===wax?0:1} 0 ${-r}Z`);
+  const ti=Math.floor(el/12)+1,nk=Math.floor(s.moon/(360/27)),yo=Math.floor(nrm(s.sun+s.moon)/(360/27));
+  $("w-when").textContent=(OFF?`${OFF>0?"+":"−"}${Math.abs(OFF/24).toFixed(1)} days · `:"Now · ")+fmtD(t);
+  $("w-read").innerHTML=`<dt>Sun</dt><dd><b>${s.sun.toFixed(1)}°</b> in ${RAS[Math.floor(s.sun/30)]}</dd><dt>Moon</dt><dd><b>${s.moon.toFixed(1)}°</b> in ${NAK[nk][0]}, ${RAS[Math.floor(s.moon/30)]}</dd>
+   <dt>Gap</dt><dd><b>${el.toFixed(1)}°</b> ÷ 12 → tithi <b>${gu(ti)}</b>, ${tithiName(ti)}</dd><dt>Sum</dt><dd><b>${nrm(s.sun+s.moon).toFixed(1)}°</b> ÷ 13°20′ → yoga <b>${YOG[yo][0]}</b></dd><dt>Moon lit</dt><dd><b>${Math.round(k*100)}%</b> ${wax?"waxing (sud)":"waning (vad)"}</dd>`;
+  $("w-slide").value=OFF;}
+function hept(){const ord=[["શનિ","Saturn"],["ગુરુ","Jupiter"],["મંગળ","Mars"],["સૂર્ય","Sun"],["શુક્ર","Venus"],["બુધ","Mercury"],["ચંદ્ર","Moon"]],c=130,R=96;
+  const p=i=>{const a=(i*360/7-90)*D2R;return [c+R*Math.cos(a),c+R*Math.sin(a)]};let s=`<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="var(--line)" stroke-dasharray="3 4"/>`;
+  let pts=[];for(let j=0;j<=7;j++)pts.push(p((3+3*j)%7));s+=`<polyline points="${pts.map(q=>q.map(f).join(",")).join(" ")}" fill="none" stroke="var(--saffron)" stroke-width="1.6" stroke-linejoin="round" opacity=".85"/>`;
+  ord.forEach((o,i)=>{const [x,y]=p(i);s+=`<circle cx="${f(x)}" cy="${f(y)}" r="21" fill="var(--surface)" stroke="var(--ink-3)"/><text class="pl" x="${f(x)}" y="${f(y-4)}">${o[0]}</text><text class="pl" x="${f(x)}" y="${f(y+8)}" style="font-size:8.5px;font-weight:400;fill:var(--ink-3)">${o[1]}</text>`});
+  s+=`<text x="${c}" y="${c-6}" text-anchor="middle" font-size="10" fill="var(--ink-2)">slowest → fastest</text><text x="${c}" y="${c+8}" text-anchor="middle" font-size="10" fill="var(--saffron-strong)">star = the week</text>`;$("hept").innerHTML=s}
+
+/* adhik months and new years from the panchang table */
+function fromPan(P){const s=Date.parse(P.start+"T00:00:00+05:30"),today=Date.now();const runs=[];let cur=null;
+  P.d.forEach((v,i)=>{const adh=(v%10000)>=5000,m=Math.floor((v%5000)/100),t=v%100;if(adh){if(!cur||cur.m!==m){cur={m,from:s+i*864e5};runs.push(cur)}cur.to=s+i*864e5}else cur=null});
+  $("adhik").innerHTML=`<p style="margin-bottom:4px"><b>Adhik months in our table (2024–2046):</b></p><div class="yrs">${runs.map(r=>`<span class="${r.to<today?"past":""}" title="${fmtD(r.from)} to ${fmtD(r.to)}">અધિક ${MON[r.m]} · ${new Date(r.from).getFullYear()}</span>`).join("")}</div><p class="honest">Gaps: ${runs.slice(1).map((r,i)=>Math.round((r.from-runs[i].from)/864e5/30.44)).join(", ")} months. The average works out to about 32½.</p>`;
+  const find=(mm)=>{for(let i=Math.max(0,Math.floor((today-s)/864e5));i<P.d.length;i++){const v=P.d[i],prev=P.d[i-1],m=Math.floor((v%5000)/100),pm=Math.floor((prev%5000)/100);if(m===mm&&pm!==mm&&(v%10000)<5000)return {t:s+i*864e5,ti:v%100,m}}return null};
+  const ch=find(0),ka=find(7),vs=y=>y;const t0=Date.parse(istDay(today)+"T00:00:00+05:30"),cd=x=>Math.max(0,Math.round((x-t0)/864e5));
+  const box=(g,e,x,yr,txt)=>x?`<div class="card"><div class="eyebrow">${e}</div><h3>${g}</h3><div class="d">${fmtD(x.t)}</div><div class="sub" style="margin:0">${cd(x.t)===0?"Today":cd(x.t)===1?"Tomorrow":`In ${cd(x.t)} days`} · Vikram Samvat ${gu(yr)} (${yr}) begins${x.ti!==1?` · sud 1 is skipped this year, so the year opens on ${tithiEn(x.ti)}`:""}</div><p style="font-size:14px;color:var(--ink-2);margin:8px 0 0">${txt}</p></div>`:"";
+  const ky=new Date(ka.t).getFullYear()+57,cy=new Date(ch.t).getFullYear()+57;
+  $("ny").innerHTML=box("બેસતું વર્ષ · Kartak sud 1","Gujarat's new year",ka,ky,"The new moon after Diwali, near the middle of the sun's southward half-year. Gujarat, and the Swaminarayan sampraday, start the Samvat year here.")+box("ચૈત્ર સુદ ૧ · Hindu Nav Varsh","North India's new year",ch,cy,"The first new moon of the season after the spring equinox (Mesh sankranti falls inside Chaitra). Ram Navami and Swaminarayan Jayanti fall eight days later, on Chaitra sud 9.");}
+
+/* boot */
+wheelStatic();hept();wheel();
+$("ayan").textContent=(()=>{const a=sky(Date.now()).ay;const d=Math.floor(a),m=Math.floor((a-d)*60);return `${d}° ${m}′`})();
+$("w-slide").addEventListener("input",e=>{OFF=+e.target.value;if(play){clearInterval(play);play=null;$("w-play").textContent="▶ Play a month"}wheel()});
+$("w-now").addEventListener("click",()=>{OFF=0;wheel()});
+$("w-play").addEventListener("click",()=>{if(play){clearInterval(play);play=null;$("w-play").textContent="▶ Play a month";return}
+  if(OFF>=300)OFF=-360;$("w-play").textContent="❚❚ Pause";play=setInterval(()=>{OFF+=2;if(OFF>360){OFF=360;clearInterval(play);play=null;$("w-play").textContent="▶ Play a month"}wheel()},40)});
+setInterval(()=>{if(!play&&OFF===0)wheel()},60000);
+Promise.all([fetch("data/home/tithi_ends.json").then(r=>r.json()),fetch("data/home/panchang_ends.json").then(r=>r.json()),fetch("data/home/panchang.json").then(r=>r.json())]).then(([te,pe,pan])=>{
+  const b=Date.parse(te.base);E.t=seq(b,te.t0-1,te.e,30);const b2=Date.parse(pe.base);E.n=seq(b2,pe.n.i0,pe.n.e,27);E.y=seq(b2,pe.y.i0,pe.y.e,27);E.k=seq(b2,pe.k.i0,pe.k.e,60);
+  five();setInterval(five,30000);fromPan(pan)}).catch(e=>{console.error(e);$("five").innerHTML=`<p class="empty">Could not load the panchang tables.</p>`});
+</script>
+</body>
+</html>
