@@ -60,6 +60,12 @@ main{padding-block:22px 64px}
 .pill b{color:var(--ink);font-weight:600}
 .clockrow{display:flex;gap:18px;align-items:center;margin-top:16px;flex-wrap:wrap}
 .dial{width:148px;height:148px;flex:none}
+.ghadi .big{display:inline-flex;align-items:flex-start;gap:6px}
+.ghadi .big span{display:flex;flex-direction:column;align-items:center;min-width:1.6em}
+.ghadi .big b{font-weight:600}
+.ghadi .big i{font-style:normal;font-family:var(--f-ui);font-size:12px;font-weight:600;line-height:1.15;color:var(--saffron-strong);letter-spacing:.04em;text-align:center;margin-top:4px}
+.ghadi .big em{font-style:normal;color:var(--ink-3)}
+.clk2{grid-column:1/-1;border-top:1px solid var(--line);padding:20px 22px 22px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--peacock-soft) 35%,transparent))}
 .ghadi .big{font-family:var(--f-read);font-weight:600;font-size:clamp(30px,6vw,40px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.01em}
 .ghadi .lab{font-size:13px;color:var(--ink-2);margin-top:4px}
 .facts{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:14px;margin-top:12px}
@@ -140,11 +146,10 @@ footer p{margin:0 0 6px;max-width:80ch}
       <div class="tithi" id="tithi">…</div>
       <div class="samvat" id="samvat"></div>
       <div class="clockrow">
-        <svg class="dial" id="dial" viewBox="0 0 200 200" role="img" aria-label="Vedic clock"></svg>
         <div class="ghadi">
           <div class="eyebrow">વૈદિક ઘડિયાળ · Vedic clock</div>
           <div class="big" id="gpv">–</div>
-          <div class="lab">ઘડી : પળ : વિપળ <span id="gsince">since sunrise</span> · <a href="vedic-time.html">compare with clock time →</a></div>
+          <div class="lab"><span id="gsince">since sunrise</span> · <a href="vedic-time.html">compare with clock time →</a></div>
           <dl class="facts">
             <dt>પ્રહર</dt><dd id="prahar">–</dd>
             <dt>મુહૂર્ત</dt><dd id="muhurt">–</dd>
@@ -161,12 +166,14 @@ footer p{margin:0 0 6px;max-width:80ch}
       <div class="date" id="edate">…</div>
       <div class="time" id="etime">–</div>
       <div class="tz" id="etz"></div>
+      <div class="rbwrap"><div class="eyebrow" style="margin:14px 0 6px">Today on the clock and in Vedic time</div><div id="rbDay"></div></div>
       <div class="go">
         <a class="btn" id="kaalToday" href="kaal-patrak/">Kaal Patrak</a>
         <a class="btn" href="vedic-time.html">Vedic vs clock time</a>
         <a class="btn" href="#history">Today in history ↓</a>
       </div>
     </div>
+    <div class="clk2"><div id="clocks"></div></div>
   </section>
 
   <section id="history" aria-labelledby="hh">
@@ -205,6 +212,8 @@ footer p{margin:0 0 6px;max-width:80ch}
   <p><b>Panchang.</b> Tithi and month are calculated for sunrise at Ahmedabad (amanta months, Lahiri ayanamsa, Kartiki Vikram Samvat). A printed calendar can differ by one tithi on days when a tithi is skipped or repeated. The ghadi, prahar and choghadiya follow sunrise and sunset at the place shown.</p>
 </div></footer>
 
+<script src="site/clocks.js"></script>
+<script src="site/ribbons.js"></script>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
@@ -268,7 +277,7 @@ function tick(){
   // Ghadi
   const el=(now-H.rise)/1000, total=(H.next-H.rise)/1000;
   const g=Math.floor(el/1440), p=Math.floor((el%1440)/24), v=Math.floor((el%24)/0.4);
-  $("gpv").textContent=`${gu(pad(g))} : ${gu(pad(p))} : ${gu(pad(v))}`;
+  $("gpv").innerHTML=`<span><b>${gu(pad(g))}</b><i>ghadi<br>ઘડી</i></span><em>:</em><span><b>${gu(pad(p))}</b><i>pal<br>પળ</i></span><em>:</em><span><b>${gu(pad(v))}</b><i>vipal<br>વિપળ</i></span>`;
   const isDay=now<H.set, dayLen=(H.set-H.rise)/1000, nightLen=(H.next-H.set)/1000;
   const part=isDay? el/dayLen : (now-H.set)/1000/nightLen;
   const pr=Math.min(3,Math.floor(part*4));
@@ -277,7 +286,6 @@ function tick(){
   $("muhurt").textContent=`${gu(mi+1)}. ${MUH[mi]}`;
   const wd=day.getDay(), ci=Math.min(7,Math.floor(part*8)), c=CH[((isDay?CH_DAY[wd]+ci:CH_NIGHT[wd]+ci*5))%7];
   $("chog").innerHTML=`<span class="chog ${c[2]}">${c[0]}</span> <span style="color:var(--ink-3)">· ${c[1]}, ${isDay?"day":"night"} ${ci+1} of 8</span>`;
-  drawDial(el/total, dayLen/total, g);
   // Panchang text: once per Hindu day / location
   const key=iso(day)+LOC.name;
   if(key!==lastKey){lastKey=key;
@@ -293,21 +301,6 @@ function tick(){
     $("locname").textContent=`Sunrise for ${LOC.name}`;
   }
   $("etz").textContent=Intl.DateTimeFormat().resolvedOptions().timeZone||"";
-}
-function drawDial(frac,dayFrac,g){
-  const cx=100,cy=100,r=84, a=f=>(-90+360*f)*Math.PI/180, pt=(f,rr)=>[cx+rr*Math.cos(a(f)),cy+rr*Math.sin(a(f))];
-  const arc=(f0,f1,rr)=>{const [x0,y0]=pt(f0,rr),[x1,y1]=pt(f1,rr);return `M${x0} ${y0}A${rr} ${rr} 0 ${f1-f0>.5?1:0} 1 ${x1} ${y1}`};
-  let ticks="";for(let i=0;i<60;i++){const [x0,y0]=pt(i/60,r-4),[x1,y1]=pt(i/60,r-(i%5?9:15));ticks+=`<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}" stroke="var(--ink-3)" stroke-width="${i%5?1:2}"/>`;}
-  let nums="";for(let i=0;i<60;i+=15){const [x,y]=pt(i/60,r-27);nums+=`<text x="${x}" y="${y+5}" text-anchor="middle" font-size="14" fill="var(--ink-2)" font-family="var(--f-ui)">${gu(i)}</text>`;}
-  const [hx,hy]=pt(frac,r-18);
-  $("dial").innerHTML=`<circle cx="100" cy="100" r="${r+8}" fill="var(--surface)" stroke="var(--line)"/>
-   <path d="${arc(0,dayFrac,r+3)}" fill="none" stroke="var(--saffron)" stroke-width="6" stroke-linecap="round" opacity=".85"/>
-   <path d="${arc(dayFrac,1,r+3)}" fill="none" stroke="var(--peacock)" stroke-width="6" stroke-linecap="round" opacity=".55"/>
-   ${ticks}${nums}
-   <line x1="100" y1="100" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="var(--saffron-strong)" stroke-width="3.5" stroke-linecap="round"/>
-   <circle cx="100" cy="100" r="6" fill="var(--saffron-strong)"/>
-   <text x="100" y="134" text-anchor="middle" font-size="22" font-weight="600" fill="var(--ink)" font-family="var(--f-read)">${gu(g)}</text>
-   <text x="100" y="150" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--f-ui)">ઘડી</text>`;
 }
 $("useloc").addEventListener("click",()=>{
   if(!navigator.geolocation)return;
@@ -389,9 +382,11 @@ $("today").onclick=()=>renderHistory(hinduDay(new Date()).day);
 $("pick").onchange=e=>{if(e.target.value)renderHistory(new Date(e.target.value+"T00:00:00"))};
 
 Promise.all([fetch("data/home/panchang.json").then(r=>r.json()),fetch("data/home/history.json").then(r=>r.json())])
- .then(([p,h])=>{PAN=p;H=h;lastKey="";tick();renderHistory(hinduDay(new Date()).day);})
+ .then(([p,h])=>{PAN=p;H=h;lastKey="";tick();renderHistory(hinduDay(new Date()).day);
+   SPRib.init({root:"",sun:d=>sunTimes(d,LOC.lat,LOC.lon),tz:()=>LOC.tz,pan:panFor,life:h.life}).then(()=>{const dr=()=>SPRib.day($("rbDay"),true);dr();setInterval(dr,60000);$("useloc").addEventListener("click",()=>setTimeout(dr,1500))});})
  .catch(()=>{$("hsub").textContent="The history data could not be loaded.";});
 tick(); setInterval(tick,400);
+SPClocks.mount($("clocks"),hinduDay,()=>LOC.tz);
 </script>
 </body>
 </html>

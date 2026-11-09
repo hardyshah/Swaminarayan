@@ -111,6 +111,8 @@ main{padding-block:22px 64px}
 .ttl .gu,.h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
 .h2{font-family:var(--f-read);font-size:clamp(24px,4.6vw,30px);font-weight:600;line-height:1.15;margin:38px 0 6px}
 .vt{margin-top:16px;overflow:hidden}
+.clkcard{margin-top:16px;padding:20px 18px}
+.rbcard{padding:16px 16px 12px}
 .vh,.vr{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,1fr) minmax(0,1fr)}
 .vh{background:var(--sunk);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
 .vh div{padding:10px 14px} .vh div:first-child{grid-column:2;color:var(--saffron-strong)} .vh div:last-child{color:var(--peacock)}
@@ -162,6 +164,20 @@ footer p{margin:0 0 6px;max-width:80ch}
   <p class="sub">Vedic time starts at sunrise and divides the day by the sun, so some units stretch in summer and shrink in winter. Clock time starts at midnight, and every hour is the same length all year. Both columns below run live, for the same moment.</p>
   <div class="loc"><span id="locname">Sunrise for Ahmedabad (Kalupur)</span><button class="lnk" id="useloc" type="button">Use my location</button></div>
 
+  <section class="card clkcard" aria-label="Analog clocks"><div id="clocks"></div></section>
+
+  <h2 class="h2"><span class="gu">એક દિવસ, બે પંચાંગ</span>One day, two calendars</h2>
+  <p class="sub">Today from midnight to midnight on the clock, with the Vedic day laid over it: where ghadi ૦ falls, when each choghadiya and prahar runs, when the tithi changes, and why the date and the vaar change at different moments.</p>
+  <section class="card rbcard" aria-label="Today on the clock and in Vedic time"><div id="rbDay"></div></section>
+
+  <h2 class="h2"><span class="gu">આજનો અર્થ</span>What today means</h2>
+  <div id="rbIns"></div>
+
+  <h2 class="h2"><span class="gu">એક વર્ષ, બે પંચાંગ</span>One year, two calendars</h2>
+  <p class="sub">This Vikram Samvat year against the English calendar: Gujarati months start at each new moon, so they drift against the English months and an adhik month is added about every three years to keep them in step with the seasons.</p>
+  <section class="card rbcard" aria-label="This year in both calendars"><div id="rbYear"></div></section>
+
+  <h2 class="h2"><span class="gu">અત્યારે</span>Right now, unit by unit</h2>
   <section class="card vt" aria-label="Right now">
     <div class="vh"><div>વૈદિક · Vedic</div><div>વૈજ્ઞાનિક · Clock (scientific)</div></div>
     <div class="vr"><div class="vk">દિવસનો આરંભ · Day begins</div><div class="vv" id="r-start-v"></div><div class="vs" id="r-start-s"></div></div>
@@ -221,6 +237,8 @@ footer p{margin:0 0 6px;max-width:80ch}
   <p><b>Calculation.</b> Sunrise and sunset are worked out for the place shown, at the upper edge of the sun with normal refraction. Tithi and month come from the same table as the home page (sunrise at Ahmedabad, Lahiri ayanamsa). A printed panchang can differ by a minute or two for sunrise, or by one tithi on days when a tithi is skipped or repeated.</p>
 </div></footer>
 
+<script src="site/clocks.js"></script>
+<script src="site/ribbons.js"></script>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
@@ -355,8 +373,10 @@ $("useloc").addEventListener("click",()=>{
   navigator.geolocation.getCurrentPosition(p=>{LOC={lat:p.coords.latitude,lon:p.coords.longitude,name:"your location",tz:null};schedKey="";tick();$("useloc").textContent="Back to Ahmedabad";$("useloc").onclick=()=>location.reload()},
     ()=>{$("useloc").textContent="Location not available"},{timeout:10000});
 },{once:true});
-fetch("data/home/panchang.json").then(r=>r.json()).then(p=>{PAN=p;schedKey="";tick()}).catch(()=>{});
+Promise.all([fetch("data/home/panchang.json").then(r=>r.json()),fetch("data/home/history.json").then(r=>r.json()).catch(()=>({life:[]}))]).then(([p,h])=>{PAN=p;schedKey="";tick();
+  SPRib.init({root:"",sun:d=>sunTimes(d,LOC.lat,LOC.lon),tz:()=>LOC.tz,pan:panFor,life:h.life}).then(()=>{const dr=()=>{SPRib.day($("rbDay"),false);SPRib.insights($("rbIns"))};dr();SPRib.year($("rbYear"));setInterval(dr,60000);$("useloc").addEventListener("click",()=>setTimeout(dr,1500))});}).catch(()=>{});
 tick();setInterval(tick,400);
+SPClocks.mount($("clocks"),hinduDay,()=>LOC.tz);
 </script>
 </body>
 </html>

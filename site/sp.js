@@ -104,7 +104,7 @@ function sparks(){if(RM.matches)return;if(!document.getElementById("hero2")&&!do
   document.body.appendChild(s);s.addEventListener("animationend",()=>s.remove())}
 function start(){const a=document.createElement("div");a.className="sp-aura";a.setAttribute("aria-hidden","true");document.body.prepend(a);
   document.body.appendChild(SB);paintSnd();motif();decorate();
-  let t=null;new MutationObserver(ms=>{if(!ms.some(m=>!(m.target.closest&&m.target.closest('.live,.vt,.sched,.sp-mandala,.sp-orbit'))&&![...m.addedNodes].every(n=>n.classList&&n.classList.contains('sp-spark'))))return;clearTimeout(t);t=setTimeout(decorate,80)}).observe(document.body,{childList:true,subtree:true});
+  let t=null;new MutationObserver(ms=>{if(!ms.some(m=>!(m.target.closest&&m.target.closest('.live,.vt,.sched,.spc,.sp-mandala,.sp-orbit'))&&![...m.addedNodes].every(n=>n.classList&&n.classList.contains('sp-spark'))))return;clearTimeout(t);t=setTimeout(decorate,80)}).observe(document.body,{childList:true,subtree:true});
   setInterval(sparks,2600);addEventListener("sp-theme",()=>setTimeout(motif,30))}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();
