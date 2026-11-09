@@ -1,98 +1,102 @@
-/* Site theme: colour theme (data-palette) and light/dark mode (data-theme), shared by every page.
-   Loaded in <head> so the saved choice applies before the page paints. Choices live in localStorage
-   (vc-theme: system|light|dark, vc-palette: one of P below) and follow you across pages and tabs. */
+/* Site theme for the Vachanamrut concordance and the Swaminarayan home pages: the same colour themes, light/dark and
+   accent picker as Kaal Patrak (choices shared across the whole site through localStorage sp-mode / sp-palette / sp-accent),
+   plus the shared look-and-sound layer in ../site/sp.js and sp.css. Loaded in <head> so the theme applies before paint. */
+window.SP_THEME_MAP={bg:"--paper",card:"--surface",ink:"--ink",muted:"--ink-2",line:"--line",acc:"--saffron",accS:"--saffron-soft",acc2:"--peacock",acc2S:"--peacock-soft",c1:"--sunk",warn:"--saffron-strong"};
+(function(){const me=document.currentScript&&document.currentScript.src;if(!me)return;const base=new URL("../site/",me).href;
+  const l=document.createElement("link");l.rel="stylesheet";l.href=base+"sp.css?v=1";document.head.appendChild(l);
+  const s=document.createElement("script");s.src=base+"sp.js?v=1";s.defer=true;document.head.appendChild(s);})();
+/* Theme menu for Kaal Patrak and Satsang Parichay: pastel colour themes, light/dark, and a custom accent colour.
+   Default: light + Lavender. Choices are saved per viewer in localStorage (sp-mode, sp-palette, sp-accent). */
 (function(){
 "use strict";
 const r=document.documentElement;
-// token sets per palette; "kesar" is the colours written into the pages, so it needs none
-const P={
- mandir:{en:"Mandir",gu:"મંદિર",sw:["#a3341a","#d9a93a"],
-  l:"--paper:#fbf6ec;--surface:#fffdf8;--sunk:#f3ead9;--ink:#2a1a12;--ink-2:#61493a;--ink-3:#7f6a58;--line:#e8dcc6;--saffron:#a3341a;--saffron-strong:#832612;--saffron-soft:#f8e0cc;--peacock:#7d5a0c;--peacock-soft:#f3e7c8;--mark:#fadcae;--mark-ink:#55240a;--grid:#efe5d3;--empty:#f1e8d8",
-  d:"--paper:#140c0a;--surface:#1e1310;--sunk:#281a15;--ink:#f3e8da;--ink-2:#c9b6a2;--ink-3:#94806d;--line:#3b2a22;--saffron:#f2a65a;--saffron-strong:#ffc07c;--saffron-soft:#3f2614;--peacock:#e3c16f;--peacock-soft:#352a14;--mark:#6a3a14;--mark-ink:#ffe8cc;--grid:#2a1c16;--empty:#241712"},
- kesar:{en:"Saffron",gu:"કેસર",sw:["#b9560c","#0e5a61"]},
- chandan:{en:"Sandalwood",gu:"ચંદન",sw:["#a0521a","#6b4a1f"],
-  l:"--paper:#f4ecdc;--surface:#fffaf0;--sunk:#ece2cd;--ink:#2b2014;--ink-2:#65553f;--ink-3:#8a7a62;--line:#dfd2b8;--saffron:#a0521a;--saffron-strong:#83400f;--saffron-soft:#f3dcc0;--peacock:#6b4a1f;--peacock-soft:#eadcc2;--mark:#f6d7a8;--mark-ink:#4d2a06;--grid:#e8dec9;--empty:#ebe2cf",
-  d:"--paper:#17120c;--surface:#1f1810;--sunk:#281f15;--ink:#eee3d0;--ink-2:#b6a68d;--ink-3:#85765f;--line:#3a2f22;--saffron:#e9a25a;--saffron-strong:#f7ba78;--saffron-soft:#3c2a16;--peacock:#d6b47a;--peacock-soft:#34291a;--mark:#6a4513;--mark-ink:#ffe9c7;--grid:#2a2117;--empty:#241c13"},
- mor:{en:"Peacock",gu:"મોર",sw:["#1d5f9c","#0d6b63"],
-  l:"--paper:#eef3f5;--surface:#ffffff;--sunk:#e1e9ec;--ink:#10202a;--ink-2:#4c5f69;--ink-3:#778891;--line:#d2dde2;--saffron:#1d5f9c;--saffron-strong:#164c7f;--saffron-soft:#d9e6f3;--peacock:#0d6b63;--peacock-soft:#d3e9e6;--mark:#cfe2f5;--mark-ink:#0d2f52;--grid:#e2eaed;--empty:#e5ecef",
-  d:"--paper:#0b1320;--surface:#111b2b;--sunk:#172336;--ink:#e3e9f0;--ink-2:#9fb0c2;--ink-3:#6f8296;--line:#22324a;--saffron:#6aa9ec;--saffron-strong:#8cc0f5;--saffron-soft:#16294a;--peacock:#5fc4b8;--peacock-soft:#133536;--mark:#1e3d66;--mark-ink:#dcebff;--grid:#192638;--empty:#152133"},
- tulsi:{en:"Tulsi green",gu:"તુલસી",sw:["#2f7a3b","#6b5a12"],
-  l:"--paper:#f0f4ec;--surface:#ffffff;--sunk:#e3eadb;--ink:#142216;--ink-2:#4f6151;--ink-3:#7a897c;--line:#d3ddcc;--saffron:#2f7a3b;--saffron-strong:#23602d;--saffron-soft:#dcefd9;--peacock:#6b5a12;--peacock-soft:#eee6c9;--mark:#d5ecc9;--mark-ink:#173d1c;--grid:#e4eadc;--empty:#e6ecdf",
-  d:"--paper:#0c140e;--surface:#121d14;--sunk:#19261b;--ink:#e4ebe2;--ink-2:#a2b3a3;--ink-3:#718472;--line:#243527;--saffron:#7cc98a;--saffron-strong:#98dba4;--saffron-soft:#18331d;--peacock:#d9c16a;--peacock-soft:#2f2a14;--mark:#23502c;--mark-ink:#def5e0;--grid:#1a271c;--empty:#172319"},
- kumkum:{en:"Kumkum red",gu:"કુમકુમ",sw:["#b0262f","#7a4a10"],
-  l:"--paper:#f7f0ee;--surface:#ffffff;--sunk:#efe3df;--ink:#261413;--ink-2:#6a4f4c;--ink-3:#927874;--line:#e6d4cf;--saffron:#b0262f;--saffron-strong:#8f1b23;--saffron-soft:#f7dcdc;--peacock:#7a4a10;--peacock-soft:#f1e2c9;--mark:#f9d4d2;--mark-ink:#5c0e13;--grid:#efe4e0;--empty:#f0e6e2",
-  d:"--paper:#160d0d;--surface:#201313;--sunk:#2a1a1a;--ink:#f0e4e2;--ink-2:#c1a5a1;--ink-3:#8f7470;--line:#3d2524;--saffron:#f07a7f;--saffron-strong:#ff9da0;--saffron-soft:#3d1a1c;--peacock:#e7b468;--peacock-soft:#3a2a14;--mark:#5e1e22;--mark-ink:#ffe1e1;--grid:#2a1a1a;--empty:#251616"}};
-const MODES=[["system","Auto","આપમેળે"],["light","Light","દિવસ"],["dark","Dark","રાત્રિ"]];
+const MAP=window.SP_THEME_MAP; // generic key -> this page's CSS variable
+// generic keys: bg card ink muted line acc accS acc2 acc2S c1 c2 c3 c4 warn warnS
+const NIGHT={bg:"#1A1922",card:"#23222E",ink:"#EEEAF6",muted:"#ABA6BF",line:"#363445",c1:"#2A2640",c2:"#3A2733",c3:"#38331F",c4:"#1F3532",warn:"#F5A27A",warnS:"#3A2218"};
+const REC={
+ ivory:{en:"Mandir ivory",gu:"હાથીદાંત",grp:"rec",l:{bg:"#FAF7F2",card:"#FFFFFF",ink:"#1F1B16",muted:"#6B6257",line:"#ECE4D8",acc:"#C2410C",accS:"#FDEBDD",acc2:"#7C2D12",acc2S:"#F7E6DC",c1:"#FBF1E3",c2:"#F4EEE6",c3:"#FFF7E0",c4:"#EEF4EE",warn:"#9A3412",warnS:"#FFEDD5"},d:{bg:"#17130F",card:"#211C17",ink:"#F4ECDF",muted:"#B5A897",line:"#3A3128",acc:"#FB923C",accS:"#3B2414",acc2:"#FDBA74",acc2S:"#3A2618",c1:"#2A2219",c2:"#26201A",c3:"#2E2716",c4:"#1E2A22"}},
+ kesar:{en:"Kesar dawn",gu:"કેસર",grp:"rec",l:{bg:"#FFF8EF",card:"#FFFFFF",ink:"#231A12",muted:"#715F4E",line:"#F2E3CF",acc:"#D9480F",accS:"#FFE8D9",acc2:"#0F766E",acc2S:"#DDF3EF",c1:"#FFEFD9",c2:"#FDF3E7",c3:"#FFF6D6",c4:"#E3F4F0",warn:"#9A3412",warnS:"#FFEDD5"},d:{acc:"#FF8A4C",accS:"#3D2416",acc2:"#5EEAD4",acc2S:"#12332F"}},
+ tulsi:{en:"Tulsi green",gu:"તુલસી",grp:"rec",l:{bg:"#F5F8F3",card:"#FFFFFF",ink:"#18231B",muted:"#5B6B5E",line:"#DFE8DC",acc:"#2F6B3A",accS:"#E1EFE2",acc2:"#A16207",acc2S:"#FBF0D9",c1:"#E8F2E6",c2:"#F3F6EC",c3:"#FDF5DE",c4:"#E6F1F2",warn:"#9A3412",warnS:"#FFEDD5"},d:{acc:"#86D49A",accS:"#183224",acc2:"#FACC15",acc2S:"#33290F"}},
+ neel:{en:"Neel indigo",gu:"નીલ",grp:"rec",l:{bg:"#F6F7FB",card:"#FFFFFF",ink:"#1B1E2E",muted:"#5D6280",line:"#E2E5F0",acc:"#C2410C",accS:"#FDEBDD",acc2:"#3730A3",acc2S:"#E5E4FA",c1:"#E9EBFA",c2:"#F7EDF2",c3:"#FFF6E0",c4:"#E5F3F0",warn:"#9A3412",warnS:"#FFEDD5"},d:{acc:"#FB923C",accS:"#3B2414",acc2:"#A5B4FC",acc2S:"#25284A"}},
+ chandan:{en:"Chandan night",gu:"ચંદન રાત્રિ",grp:"rec",dark:true,l:{bg:"#16130F",card:"#201B16",ink:"#F3EBDD",muted:"#B3A693",line:"#372E25",acc:"#F59E0B",accS:"#3A2A0E",acc2:"#FCA5A5",acc2S:"#3A2020",c1:"#28211A",c2:"#2A1F20",c3:"#2D2614",c4:"#1C2722",warn:"#FDBA74",warnS:"#3A2418"},d:{bg:"#16130F",card:"#201B16",ink:"#F3EBDD",muted:"#B3A693",line:"#372E25",acc:"#F59E0B",accS:"#3A2A0E",acc2:"#FCA5A5",acc2S:"#3A2020",c1:"#28211A",c2:"#2A1F20",c3:"#2D2614",c4:"#1C2722"}}
+};
+const P0={
+ lavender:{en:"Lavender",gu:"લવંડર",l:{bg:"#F7F4FB",card:"#FFFFFF",ink:"#2A2838",muted:"#6B6880",line:"#E7E2F0",acc:"#B4533A",accS:"#FDE6DD",acc2:"#4F55B8",acc2S:"#E8E9FB",c1:"#ECE6FA",c2:"#FCE6EF",c3:"#FFF3D6",c4:"#E2F3EF",warn:"#A14A2A",warnS:"#FFEDE3"},d:{acc:"#F5A88C",accS:"#3D2A27",acc2:"#B4B8FF",acc2S:"#2B2D4D"}},
+ mint:{en:"Mint",gu:"ફુદીનો",l:{bg:"#F1F8F4",card:"#FFFFFF",ink:"#1F2E2A",muted:"#5E716B",line:"#D9EAE2",acc:"#2E7D62",accS:"#DCF1E7",acc2:"#3A6EA5",acc2S:"#E3EEF8",c1:"#E1F2EA",c2:"#E6F0FA",c3:"#FFF5DC",c4:"#F1EAF7",warn:"#9A4A2A",warnS:"#FCEDE4"},d:{acc:"#7FD3B2",accS:"#183A2F",acc2:"#9CC3F0",acc2S:"#1D2E44"}},
+ peach:{en:"Peach",gu:"પીચ",l:{bg:"#FFF6F1",card:"#FFFFFF",ink:"#33241F",muted:"#7A6259",line:"#F1E0D6",acc:"#C2562F",accS:"#FFE3D6",acc2:"#8A4FA0",acc2S:"#F1E6F6",c1:"#FFE9DE",c2:"#FDE8EE",c3:"#FFF4D2",c4:"#E6F2EC",warn:"#A3402A",warnS:"#FFEDE3"},d:{acc:"#FFB08F",accS:"#3F2A22",acc2:"#D9A9EA",acc2S:"#35263D"}},
+ sky:{en:"Sky",gu:"આકાશ",l:{bg:"#F2F7FC",card:"#FFFFFF",ink:"#1E2A3A",muted:"#5D6B80",line:"#DCE6F2",acc:"#2F6DB5",accS:"#DDE9F8",acc2:"#B4533A",acc2S:"#FDE6DD",c1:"#E3ECF9",c2:"#F0E6F8",c3:"#FFF4D9",c4:"#E1F3EF",warn:"#A14A2A",warnS:"#FFEDE3"},d:{acc:"#8EC0F5",accS:"#1C2D47",acc2:"#F5A88C",acc2S:"#3D2A27"}},
+ rose:{en:"Rose",gu:"ગુલાબ",l:{bg:"#FCF4F7",card:"#FFFFFF",ink:"#34222B",muted:"#7A6070",line:"#EFDDE5",acc:"#B23A6A",accS:"#FBE0EB",acc2:"#5B5BB0",acc2S:"#E9E8FA",c1:"#F9E3EC",c2:"#EDE6FA",c3:"#FFF2D9",c4:"#E2F2EE",warn:"#A3402A",warnS:"#FFEDE3"},d:{acc:"#F59BBF",accS:"#40232F",acc2:"#B9B8FF",acc2S:"#2B2B4D"}},
+ lemon:{en:"Lemon",gu:"લીંબુ",l:{bg:"#FBFAEF",card:"#FFFFFF",ink:"#2C2A1C",muted:"#6C6A55",line:"#ECE8CF",acc:"#8A6A00",accS:"#FAF0C6",acc2:"#2F7A6B",acc2S:"#DFF1EC",c1:"#F6F0D2",c2:"#FBE9E3",c3:"#FFF6CF",c4:"#E3F2EC",warn:"#9A4A2A",warnS:"#FCEDE4"},d:{acc:"#EBCB62",accS:"#3A3218",acc2:"#86D3C2",acc2S:"#173A33"}},
+ orchid:{en:"Orchid",sw:["#E7B0DE","#400849","#FF5A0A"],gu:"ઓર્કિડ",l:{bg:"#E7B0DE",card:"#FBEFF8",ink:"#400849",muted:"#6E3F72",line:"#D69BCB",acc:"#FF5A0A",accS:"#FFE1D2",acc2:"#400849",acc2S:"#F1D3EC",c1:"#F4D7EE",c2:"#FFE6D9",c3:"#FAF0F7",c4:"#EBC6E4",warn:"#B23A0A",warnS:"#FFE6D9"},d:{acc:"#FF7A33",accS:"#3F2214",acc2:"#E7B0DE",acc2S:"#3A1F38"}},
+ electric:{en:"Electric",sw:["#030407","#1558C8","#D4FF24"],gu:"વીજળી",l:{bg:"#030407",card:"#0E1118",ink:"#F2F4F8",muted:"#9AA3B5",line:"#1F2534",acc:"#D4FF24",accS:"#262E0C",acc2:"#5C8FEA",acc2S:"#0F1E3D",c1:"#0F1730",c2:"#141A26",c3:"#1A2210",c4:"#0B1A2E",warn:"#FF9A6B",warnS:"#2E1A12"},d:{bg:"#030407",card:"#0E1118",ink:"#F2F4F8",muted:"#9AA3B5",line:"#1F2534",acc:"#D4FF24",accS:"#262E0C",acc2:"#5C8FEA",acc2S:"#0F1E3D",c1:"#0F1730",c2:"#141A26",c3:"#1A2210",c4:"#0B1A2E"},dark:true},
+ sage:{en:"Sage and sand",sw:["#A5A79B","#E8D2B5","#590907"],gu:"સેજ",l:{bg:"#A5A79B",card:"#F3E7D6",ink:"#2B1C14",muted:"#5E5246",line:"#CDB89B",acc:"#590907",accS:"#EBD3C6",acc2:"#4A5240",acc2S:"#DCDDD2",c1:"#E8D2B5",c2:"#EFDCC3",c3:"#F5EADB",c4:"#D7D8CC",warn:"#7A1E10",warnS:"#F1D9CD"},d:{acc:"#E6A79B",accS:"#3A1D1A",acc2:"#C9CDB5",acc2S:"#2C2F27"}},
+ cocoa:{en:"Cocoa",sw:["#5B4632","#F4D9A0","#C8792C"],gu:"કોકો",l:{"bg":"#5B4632","card":"#6A5440","ink":"#F4D9A0","muted":"#D2BC8E","line":"#7E6649","acc":"#F0A65A","accS":"#7A4E25","acc2":"#F4D9A0","acc2S":"#4A3828","c1":"#66503B","c2":"#6E5338","c3":"#735C40","c4":"#5F4C37","warn":"#FFB27A","warnS":"#6E3E22"},d:{"bg":"#5B4632","card":"#6A5440","ink":"#F4D9A0","muted":"#D2BC8E","line":"#7E6649","acc":"#F0A65A","accS":"#7A4E25","acc2":"#F4D9A0","acc2S":"#4A3828","c1":"#66503B","c2":"#6E5338","c3":"#735C40","c4":"#5F4C37","warn":"#FFB27A","warnS":"#6E3E22"},dark:true},
+ highlighter:{en:"Highlighter",sw:["#FFF21A","#171717","#A66BFF"],gu:"પીળો",l:{"bg":"#FFF21A","card":"#FFFBC4","ink":"#171717","muted":"#4A4630","line":"#E3D500","acc":"#6E2FD6","accS":"#EBDDFF","acc2":"#171717","acc2S":"#F5EE8A","c1":"#FFF7A0","c2":"#F1E6FF","c3":"#FFFCD6","c4":"#FFF36B","warn":"#9A2A10","warnS":"#FFE3C2"},d:{acc:"#C49BFF",accS:"#33264A",acc2:"#FFF21A",acc2S:"#3A3714"}},
+ mist:{en:"Mist",gu:"ધુમ્મસ",sw:["#DEE3E8","#3A0F34","#EAAA00"],l:{"bg":"#DEE3E8","card":"#F6F8FA","ink":"#3A0F34","muted":"#5E4A5C","line":"#C9D0D8","acc":"#8A5F00","accS":"#FCEFC7","acc2":"#3A0F34","acc2S":"#E9DDE7","c1":"#E8ECF0","c2":"#F1E7EF","c3":"#FFF4D1","c4":"#E3EAF1","warn":"#9A3412","warnS":"#FDEBDD"},d:{acc:"#EAAA00",accS:"#3A2E12",acc2:"#E7C8E2",acc2S:"#3A2236"}},
+ blaze:{en:"Blaze",gu:"જ્વાળા",sw:["#F04400","#FFD91A","#D0F030"],l:{"bg":"#F04400","card":"#FFD91A","ink":"#000000","muted":"#3A2A00","line":"#E0A800","acc":"#A82E00","accS":"#D0F030","acc2":"#000000","acc2S":"#FFEE8A","c1":"#FFE45C","c2":"#FFEE8A","c3":"#E4F77A","c4":"#FFF4B8","warn":"#7A1F00","warnS":"#FFEE8A"},d:{acc:"#FF7A3D",accS:"#3A4A0C",acc2:"#FFD91A",acc2S:"#3A3310"}},
+ sunflower:{en:"Sunflower",gu:"સૂરજમુખી",sw:["#FFC900","#F5F3EF","#08090B"],l:{"bg":"#FFC900","card":"#F5F3EF","ink":"#08090B","muted":"#4A4740","line":"#E2D9C4","acc":"#7A4E00","accS":"#FFE680","acc2":"#08090B","acc2S":"#ECE8E0","c1":"#FFF1B3","c2":"#FBF9F5","c3":"#FFE680","c4":"#ECE8E0","warn":"#8A2A00","warnS":"#FFE3C2"},d:{acc:"#FFC900",accS:"#3A3010",acc2:"#F5F3EF",acc2S:"#2E2D2A"}},
+ saffron:{en:"Saffron (original)",gu:"કેસર",l:{bg:"#F4F5F1",card:"#FFFFFF",ink:"#1F2330",muted:"#5E6373",line:"#D8DBD2",acc:"#B85A00",accS:"#FBE7CC",acc2:"#2B3A8C",acc2S:"#E3E6F6",c1:"#E6E3F2",c2:"#F5E2E9",c3:"#F6EFCC",c4:"#E1EDF4",warn:"#9A3412",warnS:"#FDEBDD"},d:{acc:"#F2A541",accS:"#3A2A14",acc2:"#A9B4F5",acc2S:"#232A4D"}}};
+const BOLD=["orchid","electric","sage","cocoa","highlighter","mist","blaze","sunflower"];
+const P=Object.assign({},REC,P0);for(const k in P)if(!P[k].grp)P[k].grp=BOLD.includes(k)?"bold":"pastel";
+const MODES=[["light","Light","દિવસ"],["dark","Dark","રાત્રિ"],["system","Auto","આપમેળે"]];
 const get=(k,d)=>{try{return localStorage.getItem(k)||d}catch(e){return d}};
-const put=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
-let mode=get("vc-theme","system"),pal=get("vc-palette","mandir");
-if(!MODES.some(m=>m[0]===mode))mode="system";
-if(!P[pal])pal="mandir";
-// html:root[...] outranks the pages' own :root rules, which come later in <head>
+const put=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
+let mode=get("sp-mode","light"),pal=get("sp-palette","ivory"),accent=get("sp-accent","");
+if(!MODES.some(m=>m[0]===mode))mode="light";if(!P[pal])pal="ivory";
+const decl=o=>Object.entries(o).filter(([k])=>MAP[k]).map(([k,v])=>`${MAP[k]}:${v}`).join(";");
 let css="";
-for(const[k,p]of Object.entries(P)){if(!p.l)continue;const s=`html:root[data-palette="${k}"]`;
-  css+=`${s}{${p.l}}@media (prefers-color-scheme:dark){${s}:not([data-theme="light"]){${p.d}}}${s}[data-theme="dark"]{${p.d}}`}
-css+=`.vc-tm{position:fixed;z-index:90;width:min(300px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;
-  box-shadow:0 18px 48px rgba(0,0,0,.22);padding:14px;font:14px/1.35 var(--f-ui,system-ui,sans-serif)}
-.vc-tm h3{margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.vc-tm h3+div{margin-bottom:14px}.vc-tm div:last-child{margin-bottom:0}
-.vc-tm .md{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--sunk);border-radius:10px;padding:3px}
-.vc-tm .md button{border:0;background:none;border-radius:8px;padding:7px 4px;cursor:pointer;color:var(--ink-2);font:inherit;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:2px}
-.vc-tm .md button small{font-size:11px;color:var(--ink-3)}
-.vc-tm .md button[aria-checked="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
-.vc-tm .pl{display:grid;gap:4px}
-.vc-tm .pl button{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:10px;border:1px solid transparent;background:none;border-radius:10px;padding:6px 8px;cursor:pointer;color:var(--ink);font:inherit;text-align:left}
-.vc-tm .pl button:hover{background:var(--sunk)}
-.vc-tm .pl button[aria-checked="true"]{border-color:var(--saffron);background:var(--saffron-soft)}
-.vc-tm .pl i{width:30px;height:30px;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-.vc-tm .pl small{color:var(--ink-3);font-size:12.5px}
-.vc-tm .pl b{font-weight:600}
-.vc-tm button:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
-.vc-tm .ck{color:var(--saffron);visibility:hidden}.vc-tm [aria-checked="true"] .ck{visibility:visible}`;
-const st=document.createElement("style");st.id="vc-theme-css";st.textContent=css;
-(document.head||r).appendChild(st);
+for(const[k,p]of Object.entries(P)){const s=`html:root[data-palette="${k}"]`,L=decl(p.l),D=decl({...p.l,...NIGHT,...p.d})+";color-scheme:dark";
+  css+=`${s}{${L};color-scheme:${p.dark?"dark":"light"}}${s}[data-mode="dark"]{${D}}@media (prefers-color-scheme:dark){${s}[data-mode="system"]{${D}}}`}
+css+=`.sp-tb{position:fixed;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:95;width:44px;height:44px;border-radius:50%;border:1px solid ${"var("+MAP.line+")"};background:${"var("+MAP.card+")"};color:${"var("+MAP.ink+")"};display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 20px rgba(40,30,70,.18)}
+.sp-tm{position:fixed;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 54px);z-index:96;width:min(300px,calc(100vw - 28px));max-height:calc(100vh - 90px);overflow:auto;background:var(${MAP.card});color:var(${MAP.ink});border:1px solid var(${MAP.line});border-radius:14px;box-shadow:0 18px 48px rgba(30,20,60,.22);padding:14px;font:14px/1.35 system-ui,sans-serif}
+.sp-tm h3{margin:0 0 8px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(${MAP.muted})}
+.sp-tm .grp{margin-bottom:14px}.sp-tm .grp:last-child{margin-bottom:0}
+.sp-tm .md{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(${MAP.bg});border-radius:10px;padding:3px}
+.sp-tm .md button{border:0;background:none;border-radius:8px;padding:7px 4px;cursor:pointer;color:var(${MAP.muted});font:inherit;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.sp-tm .md button[aria-checked="true"]{background:var(${MAP.card});color:var(${MAP.ink});box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.sp-tm .md small,.sp-tm .pl small{font-size:11.5px;color:var(${MAP.muted})}
+.sp-tm .pl{display:grid;gap:3px}
+.sp-tm .pl button{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;border:1px solid transparent;background:none;border-radius:10px;padding:5px 8px;cursor:pointer;color:var(${MAP.ink});font:inherit;text-align:left}
+.sp-tm .pl button:hover{background:var(${MAP.bg})}
+.sp-tm .pl button[aria-checked="true"]{border-color:var(${MAP.acc});background:var(${MAP.accS})}
+.sp-tm .pl i{width:28px;height:28px;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.sp-tm .ck{color:var(${MAP.acc});visibility:hidden}.sp-tm [aria-checked="true"] .ck{visibility:visible}
+.sp-tm .ac{display:flex;align-items:center;gap:10px}.sp-tm input[type=color]{width:44px;height:32px;border:1px solid var(${MAP.line});border-radius:8px;background:none;padding:2px;cursor:pointer}
+.sp-tm .ac button{font:inherit;font-size:13px;border:1px solid var(${MAP.line});background:none;color:var(${MAP.ink});border-radius:8px;padding:5px 10px;cursor:pointer}
+.sp-tb:focus-visible,.sp-tm button:focus-visible,.sp-tm input:focus-visible{outline:2px solid var(${MAP.acc});outline-offset:2px}
+@media print{.sp-tb,.sp-tm{display:none}}`;
+const st=document.createElement("style");st.textContent=css;(document.head||r).appendChild(st);
 function apply(){
-  if(mode==="system")r.removeAttribute("data-theme");else r.setAttribute("data-theme",mode);
-  if(pal==="kesar")r.removeAttribute("data-palette");else r.setAttribute("data-palette",pal);
+  r.setAttribute("data-palette",pal);r.setAttribute("data-mode",mode);
+  if(accent){r.style.setProperty(MAP.acc,accent);r.style.setProperty(MAP.accS,`color-mix(in srgb, ${accent} 16%, var(${MAP.card}))`);}
+  else{r.style.removeProperty(MAP.acc);r.style.removeProperty(MAP.accS);}
   if(menu)paint();
+  try{window.dispatchEvent(new Event("sp-theme"))}catch(e){}
 }
-let menu=null,btn=null;
-const ICON='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="10.5" cy="7.2" r="1.2" fill="currentColor"/><circle cx="15" cy="7.5" r="1.2" fill="currentColor"/></svg>';
-function paint(){
-  menu.querySelectorAll("[data-m]").forEach(b=>b.setAttribute("aria-checked",b.dataset.m===mode));
+let menu=null;
+const btn=document.createElement("button");btn.type="button";btn.className="sp-tb";btn.title="Theme and colours · રંગ";btn.setAttribute("aria-label","Change theme and colours");btn.setAttribute("aria-haspopup","dialog");btn.setAttribute("aria-expanded","false");
+btn.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="10.5" cy="7.2" r="1.2" fill="currentColor"/><circle cx="15" cy="7.5" r="1.2" fill="currentColor"/></svg>';
+function paint(){menu.querySelectorAll("[data-m]").forEach(b=>b.setAttribute("aria-checked",b.dataset.m===mode));
   menu.querySelectorAll("[data-p]").forEach(b=>b.setAttribute("aria-checked",b.dataset.p===pal));
-}
-function place(){const b=btn.getBoundingClientRect(),w=menu.offsetWidth;
-  menu.style.top=Math.round(b.bottom+8)+"px";menu.style.left=Math.round(Math.max(12,Math.min(innerWidth-w-12,b.right-w)))+"px"}
+  const c=menu.querySelector("input[type=color]");c.value=accent||P[pal].l.acc;}
 function open(){
-  menu=document.createElement("div");menu.className="vc-tm";menu.setAttribute("role","dialog");menu.setAttribute("aria-label","Page theme");
-  menu.innerHTML=`<h3>Appearance · દેખાવ</h3><div class="md" role="radiogroup" aria-label="Light or dark">${MODES.map(([k,en,gu])=>`<button role="radio" data-m="${k}">${en}<small>${gu}</small></button>`).join("")}</div>
-    <h3>Colour theme · રંગ</h3><div class="pl" role="radiogroup" aria-label="Colour theme">${Object.entries(P).map(([k,p])=>`<button role="radio" data-p="${k}"><i style="background:linear-gradient(135deg,${p.sw[0]} 50%,${p.sw[1]} 50%)"></i><span><b>${p.en}</b> <small>${p.gu}</small></span><span class="ck">✓</span></button>`).join("")}</div>`;
-  document.body.appendChild(menu);paint();place();
-  btn.setAttribute("aria-expanded","true");
+  menu=document.createElement("div");menu.className="sp-tm";menu.setAttribute("role","dialog");menu.setAttribute("aria-label","Theme and colours");
+  menu.innerHTML=`${[["rec","Recommended · ભલામણ"],["pastel","Pastel · હળવા"],["bold","Bold · ઘાટા"]].map(([G,T])=>`<div class="grp"><h3>${T}</h3><div class="pl" role="radiogroup" aria-label="${T}">${Object.entries(P).filter(([k,p])=>p.grp===G).map(([k,p])=>`<button type="button" role="radio" data-p="${k}"><i style="background:linear-gradient(135deg,${(p.sw||[p.l.c1,p.l.acc,p.l.acc2])[0]} 0 33%,${(p.sw||[p.l.c1,p.l.acc,p.l.acc2])[1]} 33% 66%,${(p.sw||[p.l.c1,p.l.acc,p.l.acc2])[2]} 66%)"></i><span><b>${p.en}</b> <small>${p.gu}</small></span><span class="ck">✓</span></button>`).join("")}</div></div>`).join("")}
+   <div class="grp"><h3>Accent colour · મુખ્ય રંગ</h3><div class="ac"><input type="color" aria-label="Pick an accent colour"><button type="button" data-reset>Use theme colour</button></div></div>
+   <div class="grp"><h3>Light or dark · દેખાવ</h3><div class="md" role="radiogroup" aria-label="Light or dark">${MODES.map(([k,en,gu])=>`<button type="button" role="radio" data-m="${k}">${en}<small>${gu}</small></button>`).join("")}</div></div>`;
+  document.body.appendChild(menu);paint();btn.setAttribute("aria-expanded","true");
   menu.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
-    if(b.dataset.m){mode=b.dataset.m;put("vc-theme",mode)}else if(b.dataset.p){pal=b.dataset.p;put("vc-palette",pal)}apply()});
-  // arrow keys move within each radio group
-  menu.addEventListener("keydown",e=>{const g=e.target.closest("[role=radiogroup]");if(!g||!/Arrow/.test(e.key))return;e.preventDefault();
-    const bs=[...g.children],i=bs.indexOf(e.target),n=/Right|Down/.test(e.key)?1:-1;bs[(i+n+bs.length)%bs.length].focus()});
+    if(b.dataset.m){if(b.dataset.m===mode)return;mode=b.dataset.m;put("sp-mode",mode)}else if(b.dataset.p){if(b.dataset.p===pal&&!accent)return;pal=b.dataset.p;put("sp-palette",pal);accent="";put("sp-accent",null)}else if("reset" in b.dataset){accent="";put("sp-accent",null)}apply()});
+  menu.querySelector("input[type=color]").addEventListener("input",e=>{accent=e.target.value;put("sp-accent",accent);apply()});
   (menu.querySelector('[aria-checked="true"][data-p]')||menu.querySelector("button")).focus();
   setTimeout(()=>{document.addEventListener("pointerdown",outside,true);document.addEventListener("keydown",esc,true)});
-  addEventListener("resize",place);
 }
 function close(refocus){if(!menu)return;menu.remove();menu=null;btn.setAttribute("aria-expanded","false");
-  document.removeEventListener("pointerdown",outside,true);document.removeEventListener("keydown",esc,true);removeEventListener("resize",place);
-  if(refocus)btn.focus()}
+  document.removeEventListener("pointerdown",outside,true);document.removeEventListener("keydown",esc,true);if(refocus)btn.focus()}
 function outside(e){if(!menu.contains(e.target)&&!btn.contains(e.target))close(false)}
 function esc(e){if(e.key==="Escape"){e.stopPropagation();close(true)}}
-function wire(){
-  const old=document.getElementById("theme");if(!old)return;
-  btn=old.cloneNode(false);old.replaceWith(btn);  // a fresh button drops any older one-click toggle
-  btn.innerHTML=ICON;btn.title="Theme · રંગ અને દેખાવ";btn.setAttribute("aria-label","Change theme");
-  btn.setAttribute("aria-haspopup","dialog");btn.setAttribute("aria-expanded","false");
-  btn.addEventListener("click",()=>menu?close(true):open());
-}
+btn.addEventListener("click",()=>menu?close(true):open());
 apply();
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire);else wire();
-// keep other open tabs in step
-addEventListener("storage",e=>{if(e.key==="vc-theme"&&e.newValue)mode=e.newValue;else if(e.key==="vc-palette"&&e.newValue&&P[e.newValue])pal=e.newValue;else return;apply()});
+const add=()=>document.body.appendChild(btn);
+if(document.body)add();else document.addEventListener("DOMContentLoaded",add);
 })();
