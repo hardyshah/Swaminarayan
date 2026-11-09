@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vedic Time</title>
+<meta name="description" content="Ghadi, pal, vipal, prahar, muhurta and choghadiya, live, side by side with clock time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<style>
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --good:#2f7d32; --bad:#b3261e;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.06);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:12px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+main{padding-block:22px 64px}
+.jay{text-align:center;font-family:var(--f-read);font-weight:600;color:var(--saffron-strong);font-size:clamp(17px,3.4vw,22px);margin:4px 0 18px;letter-spacing:.02em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+/* live panel */
+.live{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);overflow:hidden}
+.pan{padding:20px 22px;background:linear-gradient(160deg,var(--saffron-soft),transparent 70%)}
+.eng{padding:20px 22px;border-left:1px solid var(--line);display:flex;flex-direction:column}
+.vaar{font-family:var(--f-display);color:var(--saffron);font-size:clamp(30px,6vw,44px);line-height:1.1;margin:6px 0 2px}
+.tithi{font-family:var(--f-read);font-size:clamp(22px,4vw,30px);font-weight:600;line-height:1.2}
+.tithi small{font-family:var(--f-ui);font-size:14px;font-weight:500;color:var(--ink-2);display:block;margin-top:2px}
+.samvat{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:14px;color:var(--ink-2)}
+.pill b{color:var(--ink);font-weight:600}
+.clockrow{display:flex;gap:18px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.dial{width:148px;height:148px;flex:none}
+.ghadi .big{font-family:var(--f-read);font-weight:600;font-size:clamp(30px,6vw,40px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.ghadi .lab{font-size:13px;color:var(--ink-2);margin-top:4px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:14px;margin-top:12px}
+.facts dt{color:var(--ink-3)} .facts dd{margin:0;color:var(--ink)}
+.chog{font-weight:600} .chog.g{color:var(--good)} .chog.b{color:var(--bad)}
+.loc{margin-top:12px;font-size:13px;color:var(--ink-3);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lnk{background:none;border:0;padding:0;color:var(--peacock);cursor:pointer;font-size:13px;text-decoration:underline}
+.wd{font-size:15px;color:var(--ink-2);font-weight:500}
+.date{font-family:var(--f-read);font-size:clamp(24px,4.4vw,32px);font-weight:600;line-height:1.15;margin:4px 0 8px}
+.time{font-family:var(--f-read);font-size:clamp(40px,8vw,58px);font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--peacock)}
+.time span{font-size:.45em;color:var(--ink-3);margin-left:6px}
+.tz{font-size:13px;color:var(--ink-3);margin-top:6px}
+.go{margin-top:auto;padding-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
+.btn:hover{background:var(--sunk);text-decoration:none}
+/* today in history */
+.sech{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:38px 0 6px}
+.sech h2{margin:0;font-family:var(--f-read);font-size:clamp(26px,5vw,34px);font-weight:600;line-height:1.15}
+.sech h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.daynav{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.daynav input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--surface);color:var(--ink)}
+.sub{color:var(--ink-2);margin:0 0 16px;max-width:70ch}
+.feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;overflow:hidden;margin-bottom:16px}
+.feature svg{display:block;width:100%;height:auto}
+.feature .txt{padding:18px 20px;align-self:center}
+.feature h3{font-family:var(--f-read);font-size:26px;margin:4px 0 6px;line-height:1.2}
+.feature p{margin:0;color:var(--ink-2)}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.col{padding:16px 18px}
+.col h3{font-family:var(--f-read);font-size:21px;margin:0;line-height:1.2}
+.col h3 small{display:block;font-family:var(--f-ui);font-size:13px;font-weight:500;color:var(--ink-3);margin-top:2px}
+.list{list-style:none;margin:12px 0 0;padding:0}
+.list li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.yr{font-variant-numeric:tabular-nums;line-height:1.2}
+.yr b{display:block;font-size:15px;color:var(--saffron-strong)} .yr span{font-size:12px;color:var(--ink-3)}
+.ev{font-family:var(--f-read);font-size:17px;line-height:1.5}
+.ev .m{display:block;font-family:var(--f-ui);font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.tag{display:inline-block;font-family:var(--f-ui);font-size:11.5px;font-weight:600;border-radius:999px;padding:0 8px;margin-right:6px;vertical-align:2px}
+.tag.life{background:var(--saffron-soft);color:var(--saffron-strong)} .tag.vach{background:var(--peacock-soft);color:var(--peacock)}
+.more{margin-top:8px}
+.empty{color:var(--ink-3);font-size:14px;padding:10px 0}
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
+.pg{padding:14px 16px;color:var(--ink);display:block}
+.pg:hover{text-decoration:none;border-color:var(--saffron)}
+.pg b{display:block;font-family:var(--f-read);font-size:19px} .pg span{font-size:13.5px;color:var(--ink-2)}
+.pg .g{font-family:var(--f-display);color:var(--saffron);font-size:15px}
+.ttl{font-family:var(--f-read);font-size:clamp(28px,5.4vw,40px);font-weight:600;line-height:1.15;margin:6px 0 10px}
+.ttl .gu,.h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.h2{font-family:var(--f-read);font-size:clamp(24px,4.6vw,30px);font-weight:600;line-height:1.15;margin:38px 0 6px}
+.vt{margin-top:16px;overflow:hidden}
+.vh,.vr{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,1fr) minmax(0,1fr)}
+.vh{background:var(--sunk);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.vh div{padding:10px 14px} .vh div:first-child{grid-column:2;color:var(--saffron-strong)} .vh div:last-child{color:var(--peacock)}
+.vr{border-top:1px solid var(--line)} .vr>div{padding:10px 14px}
+.vk{color:var(--ink-2);font-size:14px;font-weight:500}
+.vv{background:color-mix(in srgb,var(--saffron-soft) 45%,transparent);font-family:var(--f-read);font-size:18px;font-weight:600}
+.vs{font-family:var(--f-read);font-size:18px;font-weight:600;color:var(--peacock);font-variant-numeric:tabular-nums}
+.vv small,.vs small{display:block;font-family:var(--f-ui);font-size:12.5px;font-weight:400;color:var(--ink-3);margin-top:2px}
+.vr .big{font-size:22px}
+.tbl{overflow-x:auto} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--ink-3);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:var(--sunk)}
+tbody tr:last-child td{border-bottom:0}
+td .en{display:block;font-size:12.5px;color:var(--ink-3)} td b{font-family:var(--f-read);font-size:16px}
+td.t{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+tr.now td{background:var(--saffron-soft)} tr.now td.t{color:var(--ink);font-weight:600}
+.kind{font-size:12px;font-weight:600;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.kind.fx{background:var(--peacock-soft);color:var(--peacock)} .kind.sn{background:var(--saffron-soft);color:var(--saffron-strong)}
+.sched{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.note{margin-top:28px}
+@media (max-width:640px){.vh{display:none}.vr{grid-template-columns:1fr 1fr}.vk{grid-column:1/-1;padding-bottom:0!important;font-size:13px}.sched{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-3);font-size:13px}
+footer p{margin:0 0 6px;max-width:80ch}
+@media (max-width:760px){.live{grid-template-columns:1fr}.eng{border-left:0;border-top:1px solid var(--line)}.feature,.cols{grid-template-columns:1fr}}
+@media (max-width:420px){.dial{width:120px;height:120px}.pan,.eng{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Home</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="./">Today</a>
+    <a class="on" href="vedic-time.html">Vedic time</a>
+    <a href="kaal-patrak/">Kaal Patrak</a>
+    <a href="vicharan/">Vicharan</a>
+    <a href="vachanamrut-concordance/">Vachanamrut</a>
+    <a href="vachanamrut-concordance/timeline.html">Logbook</a>
+    <a href="vachanamrut-concordance/library.html">Library</a>
+    <a href="vachanamrut-concordance/live.html">Live</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+
+<main class="wrap">
+  <p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+  <div class="eyebrow">વૈદિક સમય · Vedic time</div>
+  <h1 class="ttl"><span class="gu">ઘડી, પળ અને ઘડિયાળ</span>Vedic timings and clock time, side by side</h1>
+  <p class="sub">Vedic time starts at sunrise and divides the day by the sun, so some units stretch in summer and shrink in winter. Clock time starts at midnight, and every hour is the same length all year. Both columns below run live, for the same moment.</p>
+  <div class="loc"><span id="locname">Sunrise for Ahmedabad (Kalupur)</span><button class="lnk" id="useloc" type="button">Use my location</button></div>
+
+  <section class="card vt" aria-label="Right now">
+    <div class="vh"><div>વૈદિક · Vedic</div><div>વૈજ્ઞાનિક · Clock (scientific)</div></div>
+    <div class="vr"><div class="vk">દિવસનો આરંભ · Day begins</div><div class="vv" id="r-start-v"></div><div class="vs" id="r-start-s"></div></div>
+    <div class="vr"><div class="vk">અત્યારે · Time now</div><div class="vv big" id="r-now-v"></div><div class="vs big" id="r-now-s"></div></div>
+    <div class="vr"><div class="vk">વાર · Day of the week</div><div class="vv" id="r-vaar-v"></div><div class="vs" id="r-vaar-s"></div></div>
+    <div class="vr"><div class="vk">દિનમાન · Length of daylight</div><div class="vv" id="r-dl-v"></div><div class="vs" id="r-dl-s"></div></div>
+    <div class="vr"><div class="vk">રાત્રિમાન · Length of night</div><div class="vv" id="r-nl-v"></div><div class="vs" id="r-nl-s"></div></div>
+    <div class="vr"><div class="vk">પ્રહર · Watch of the day</div><div class="vv" id="r-pr-v"></div><div class="vs" id="r-pr-s"></div></div>
+    <div class="vr"><div class="vk">મુહૂર્ત · Muhurta</div><div class="vv" id="r-mu-v"></div><div class="vs" id="r-mu-s"></div></div>
+    <div class="vr"><div class="vk">ચોઘડિયું · Choghadiya</div><div class="vv" id="r-ch-v"></div><div class="vs" id="r-ch-s"></div></div>
+    <div class="vr"><div class="vk">અભિજિત મુહૂર્ત · Abhijit</div><div class="vv" id="r-ab-v"></div><div class="vs" id="r-ab-s"></div></div>
+    <div class="vr"><div class="vk">તિથિ · Lunar day</div><div class="vv" id="r-ti-v"></div><div class="vs" id="r-ti-s"></div></div>
+    <div class="vr"><div class="vk">સંવત · Year</div><div class="vv" id="r-yr-v"></div><div class="vs" id="r-yr-s"></div></div>
+  </section>
+
+  <h2 class="h2"><span class="gu">એકમો</span>The units, and what they equal</h2>
+  <p class="sub">Fixed units are the same length every day. Sun-based units are a share of daylight or night, so their clock length changes through the year; today's length is shown for those.</p>
+  <div class="card tbl"><table>
+    <thead><tr><th>Vedic unit</th><th>Defined as</th><th>Clock equivalent</th><th>Kind</th></tr></thead>
+    <tbody id="units"></tbody>
+  </table></div>
+
+  <h2 class="h2"><span class="gu">ભાગવતના સૂક્ષ્મ એકમો</span>The smallest units, from the Shrimad Bhagavat</h2>
+  <p class="sub">Shrimad Bhagavat, skandh 3, adhyay 11, counts time down from the ghadi (nadika) to the paramanu. Taking one ghadi as 24 minutes gives these clock values.</p>
+  <div class="card tbl"><table>
+    <thead><tr><th>Unit</th><th>Defined as</th><th>Clock equivalent</th></tr></thead>
+    <tbody id="small"></tbody>
+  </table></div>
+
+  <h2 class="h2"><span class="gu">આજનાં ચોઘડિયાં</span>Today's choghadiya, prahar and muhurta</h2>
+  <p class="sub" id="schedsub"></p>
+  <div class="sched">
+    <div class="card tbl"><table><thead><tr><th colspan="3">Choghadiya · day</th></tr></thead><tbody id="ch-day"></tbody></table></div>
+    <div class="card tbl"><table><thead><tr><th colspan="3">Choghadiya · night</th></tr></thead><tbody id="ch-night"></tbody></table></div>
+    <div class="card tbl"><table><thead><tr><th colspan="3">Prahar</th></tr></thead><tbody id="prahars"></tbody></table></div>
+    <div class="card tbl"><table><thead><tr><th colspan="3">Muhurta</th></tr></thead><tbody id="muhs"></tbody></table></div>
+  </div>
+
+  <h2 class="h2"><span class="gu">ફરક</span>How the two systems differ</h2>
+  <div class="card tbl"><table>
+    <thead><tr><th></th><th>Vedic</th><th>Scientific</th></tr></thead>
+    <tbody>
+      <tr><td>Day starts</td><td>At sunrise</td><td>At midnight</td></tr>
+      <tr><td>Base unit</td><td>Ghadi (1/60 of a day), pal, vipal</td><td>Second, defined by the caesium atom (9,192,631,770 oscillations)</td></tr>
+      <tr><td>Parts of the day</td><td>Prahar and choghadiya divide daylight and night separately, so they change with the season</td><td>Hours are always 60 minutes</td></tr>
+      <tr><td>Day count</td><td>Vaar runs sunrise to sunrise; tithi follows the moon (12° of moon–sun distance) and can be 19 to 26 hours long</td><td>Date changes at midnight; every day is 24 hours</td></tr>
+      <tr><td>Month</td><td>Lunar: new moon to new moon (amanta), about 29.5 days; an adhik month is added about every 2½–3 years</td><td>Solar: 28 to 31 days, fixed</td></tr>
+      <tr><td>Year</td><td>Vikram Samvat, starting at Kartak sud 1 in Gujarat (Bestu varas); 57 years ahead of CE after Diwali, 56 before</td><td>Common Era, starting on 1 January</td></tr>
+      <tr><td>Place</td><td>Depends on where you are, because sunrise does</td><td>Same within a time zone (India uses IST, UTC+5:30, for the whole country)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><a href="./">← Back to the home page</a></p>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Sources.</b> Ghadi, pal and vipal as used in Gujarati panchangs (1 day = 60 ghadi, 1 ghadi = 60 pal, 1 pal = 60 vipal). Smallest units: Shrimad Bhagavat 3.11. Muhurta names and the choghadiya order as given in standard Gujarati panchangs.</p>
+  <p><b>Calculation.</b> Sunrise and sunset are worked out for the place shown, at the upper edge of the sun with normal refraction. Tithi and month come from the same table as the home page (sunrise at Ahmedabad, Lahiri ayanamsa). A printed panchang can differ by a minute or two for sunrise, or by one tithi on days when a tithi is skipped or repeated.</p>
+</div></footer>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const GD="૦૧૨૩૪૫૬૭૮૯", gu=n=>String(n).replace(/\d/g,d=>GD[d]);
+const MON=["ચૈત્ર","વૈશાખ","જેઠ","અષાઢ","શ્રાવણ","ભાદરવો","આસો","કારતક","માગશર","પોષ","મહા","ફાગણ"];
+const MON_EN=["Chaitra","Vaishakh","Jeth","Ashadh","Shravan","Bhadarvo","Aso","Kartak","Magshar","Posh","Maha","Fagan"];
+const TI=["પડવો","બીજ","ત્રીજ","ચોથ","પાંચમ","છઠ","સાતમ","આઠમ","નોમ","દશમ","અગિયારસ","બારસ","તેરસ","ચૌદશ"];
+const VAAR=["રવિવાર","સોમવાર","મંગળવાર","બુધવાર","ગુરુવાર","શુક્રવાર","શનિવાર"];
+const PRAHAR=["પહેલો","બીજો","ત્રીજો","ચોથો"];
+const MUH=["રુદ્ર","આહિ","મિત્ર","પિતૃ","વસુ","વારાહ","વિશ્વેદેવા","વિધિ (અભિજિત)","સતમુખી","પુરુહૂત","વાહિની","નક્તનકરા","વરુણ","અર્યમા","ભગ",
+           "ગિરીશ","અજપાદ","અહિર્બુધ્ન્ય","પૂષા","અશ્વિની","યમ","અગ્નિ","વિધાતા","કંડ","અદિતિ","જીવ/અમૃત","વિષ્ણુ","દ્યુમદ્ગદ્યુતિ","બ્રહ્મ","સમુદ્રમ"];
+const CH=[["ઉદ્વેગ","Udveg","b"],["ચલ","Chal",""],["લાભ","Labh","g"],["અમૃત","Amrut","g"],["કાળ","Kaal","b"],["શુભ","Shubh","g"],["રોગ","Rog","b"]];
+const CH_DAY=[0,3,6,2,5,1,4], CH_NIGHT=[5,1,4,0,3,6,2];
+const tithiName=t=>{const p=t<=15?"સુદ":"વદ",n=t<=15?t:t-15;return `${p} ${n===15?(t===15?"પૂનમ":"અમાસ"):TI[n-1]}`};
+const tithiEn=t=>t===15?"Purnima":t===30?"Amas":`${t<=15?"sud":"vad"} ${t<=15?t:t-15}`;
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const fmtT=d=>d.toLocaleTimeString("en-IN",{hour:"numeric",minute:"2-digit",timeZone:LOC.tz||undefined})+(LOC.tz?" IST":"");
+
+/* ---- sunrise / sunset (NOAA) ---- */
+let LOC={lat:23.0225,lon:72.5714,name:"Ahmedabad (Kalupur)",tz:"Asia/Kolkata"};
+function sunTimes(date,lat,lon){ // date: local calendar day; returns [rise,set] as Date
+  const R=Math.PI/180, y=date.getFullYear(), m=date.getMonth(), d=date.getDate();
+  const J=Date.UTC(y,m,d,12)/864e5+2440587.5 - lon/360, n=Math.round(J-2451545.0009);
+  const Js=2451545.0009-lon/360+n, M=(357.5291+0.98560028*(Js-2451545))%360;
+  const C=1.9148*Math.sin(M*R)+0.02*Math.sin(2*M*R)+0.0003*Math.sin(3*M*R);
+  const L=(M+C+180+102.9372)%360, Jt=Js+0.0053*Math.sin(M*R)-0.0069*Math.sin(2*L*R);
+  const dec=Math.asin(Math.sin(L*R)*Math.sin(23.4397*R));
+  const cw=(Math.sin(-0.833*R)-Math.sin(lat*R)*Math.sin(dec))/(Math.cos(lat*R)*Math.cos(dec));
+  const w=Math.acos(Math.max(-1,Math.min(1,cw)))/R/360;
+  const toD=j=>new Date((j-2440587.5)*864e5);
+  return [toD(Jt-w),toD(Jt+w)];
+}
+
+/* ---- panchang lookup ---- */
+let PAN=null;
+function panFor(day){ // day: Date (local calendar day)
+  if(PAN){const s=new Date(PAN.start+"T00:00:00");const i=Math.round((new Date(iso(day)+"T00:00:00")-s)/864e5);const v=PAN.d[i];
+    if(v!=null){const w=v%5000,adh=(v%10000)>=5000;return {m:Math.floor((w%5000)/100),t:w%100,adh,sk:v>=10000}}}
+  return null;
+}
+const vsOf=(m,day)=>{const y=day.getFullYear(),gm=day.getMonth()+1;return m>=7?(gm>=9?y+57:y+56):y+56};
+
+/* ---- Vedic vs clock ---- */
+const VAAR_EN=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const hms=s=>{s=Math.max(0,Math.floor(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return `${h} h ${pad(m)} min ${pad(x)} s`};
+const hm=s=>{s=Math.round(s/60);return s<60?`${s} min`:`${Math.floor(s/60)} h ${pad(s%60)} min`};
+const gpvOf=s=>{const g=Math.floor(s/1440),p=Math.floor(s%1440/24),v=Math.floor(s%24/0.4);return `${gu(g)} ઘડી ${gu(pad(p))} પળ ${gu(pad(v))} વિપળ`};
+const gpOf=s=>{const g=Math.floor(s/1440),p=Math.round(s%1440/24);return p===60?`${gu(g+1)} ઘડી`:`${gu(g)} ઘડી ${gu(p)} પળ`};
+const clk=d=>d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false,timeZone:LOC.tz||undefined});
+const rng=(a,b)=>`${fmtT(a).replace(" IST","")}–${fmtT(b)}`;
+function hinduDay(now){
+  let day=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  let [r,s]=sunTimes(day,LOC.lat,LOC.lon);
+  if(now<r){day=addDays(day,-1);[r,s]=sunTimes(day,LOC.lat,LOC.lon);}
+  const r2=sunTimes(addDays(day,1),LOC.lat,LOC.lon)[0];
+  return {day,rise:r,set:s,next:r2};
+}
+const set=(id,h)=>{const e=$(id);if(e.innerHTML!==h)e.innerHTML=h};
+let schedKey="";
+function tick(){
+  const now=new Date(),H=hinduDay(now),day=H.day,wd=day.getDay();
+  const el=(now-H.rise)/1000, dl=(H.set-H.rise)/1000, nl=(H.next-H.set)/1000, isDay=now<H.set;
+  set("r-start-v",`સૂર્યોદય · ${fmtT(H.rise)}`);
+  set("r-start-s",`Midnight · 00:00:00`);
+  set("r-now-v",gpvOf(el)+`<small>since sunrise</small>`);
+  set("r-now-s",clk(now)+`<small>${hms(el)} since sunrise</small>`);
+  set("r-vaar-v",`${VAAR[wd]}<small>sunrise ${fmtT(H.rise)} to sunrise ${fmtT(H.next)}</small>`);
+  const civ=new Date(now.toLocaleString("en-US",{timeZone:LOC.tz||undefined}));
+  set("r-vaar-s",`${VAAR_EN[civ.getDay()]}<small>midnight to midnight${civ.getDay()!==wd?" · the date has changed, the vaar hasn't":""}</small>`);
+  set("r-dl-v",`${gpOf(dl)}<small>${fmtT(H.rise)} to ${fmtT(H.set)}</small>`);
+  set("r-dl-s",`${hm(dl)}<small>1 ghadi = 24 min, always</small>`);
+  set("r-nl-v",`${gpOf(nl)}<small>${fmtT(H.set)} to ${fmtT(H.next)}</small>`);
+  set("r-nl-s",`${hm(nl)}<small>day + night = ${gu(60)} ઘડી ≈ 24 h</small>`);
+  const part=isDay?el/dl:(now-H.set)/1000/nl, len=isDay?dl:nl, base=isDay?H.rise:H.set;
+  const pr=Math.min(3,Math.floor(part*4)), prS=new Date(+base+pr*len/4*1000), prE=new Date(+base+(pr+1)*len/4*1000);
+  set("r-pr-v",`${isDay?"દિવસનો":"રાત્રિનો"} ${PRAHAR[pr]} પ્રહર<small>¼ of the ${isDay?"daylight":"night"} · ${gpOf(len/4)}</small>`);
+  set("r-pr-s",`${rng(prS,prE)}<small>${hm(len/4)} today (a clock "watch" is a fixed 3 h)</small>`);
+  const mi=Math.min(14,Math.floor(part*15)), muS=new Date(+base+mi*len/15*1000), muE=new Date(+base+(mi+1)*len/15*1000);
+  set("r-mu-v",`${gu((isDay?0:15)+mi+1)}. ${MUH[(isDay?0:15)+mi]}<small>1/15 of the ${isDay?"daylight":"night"} · ${gpOf(len/15)}</small>`);
+  set("r-mu-s",`${rng(muS,muE)}<small>${hm(len/15)} today (nominally 48 min)</small>`);
+  const ci=Math.min(7,Math.floor(part*8)), c=CH[(isDay?CH_DAY[wd]+ci:CH_NIGHT[wd]+ci*5)%7], chS=new Date(+base+ci*len/8*1000), chE=new Date(+base+(ci+1)*len/8*1000);
+  set("r-ch-v",`<span class="chog ${c[2]}">${c[0]}</span> · ${isDay?"દિવસ":"રાત્રિ"} ${gu(ci+1)}/${gu(8)}<small>1/8 of the ${isDay?"daylight":"night"} · ${gpOf(len/8)}</small>`);
+  set("r-ch-s",`${rng(chS,chE)}<small>${hm(len/8)} today (nominally 1 h 30 min)</small>`);
+  const abS=new Date(+H.rise+7*dl/15*1000), abE=new Date(+H.rise+8*dl/15*1000);
+  set("r-ab-v",`૮મું મુહૂર્ત, મધ્યાહ્ને<small>the muhurta around solar noon</small>`);
+  set("r-ab-s",`${rng(abS,abE)}<small>solar noon ${fmtT(new Date((+H.rise + +H.set)/2))}${now>=abS&&now<abE?" · <b>now</b>":""}</small>`);
+  const P=panFor(day);
+  if(P){const vs=vsOf(P.m,day);
+    set("r-ti-v",`${P.adh?"અધિક ":""}${MON[P.m]} ${tithiName(P.t)}<small>moon–sun distance grows 12° per tithi</small>`);
+    set("r-ti-s",`${civ.toLocaleDateString("en-GB",{day:"numeric",month:"long"})}<small>a tithi is 19–26 h; a date is 24 h</small>`);
+    set("r-yr-v",`વિક્રમ સંવત ${gu(vs)}<small>Kartiki year, from Bestu varas</small>`);
+    set("r-yr-s",`${civ.getFullYear()} CE<small>from 1 January · difference ${vs-civ.getFullYear()} years</small>`);}
+  const key=iso(day)+LOC.name;
+  if(key!==schedKey){schedKey=key;schedule(H,wd,dl,nl);units(dl,nl);}
+  document.querySelectorAll("[data-s]").forEach(r=>r.classList.toggle("now",now>=+r.dataset.s&&now<+r.dataset.e));
+  $("locname").textContent=`Sunrise for ${LOC.name}`;
+}
+function schedule(H,wd,dl,nl){
+  $("schedsub").textContent=`For ${VAAR[wd]}, ${H.day.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}: sunrise ${fmtT(H.rise)}, sunset ${fmtT(H.set)}, next sunrise ${fmtT(H.next)}. The row for now is highlighted.`;
+  const rows=(base,len,n,lab)=>{let h="";for(let i=0;i<n;i++){const a=new Date(+base+i*len/n*1000),b=new Date(+base+(i+1)*len/n*1000);h+=`<tr data-s="${+a}" data-e="${+b}">${lab(i)}<td class="t">${rng(a,b)}</td></tr>`}return h};
+  $("ch-day").innerHTML=rows(H.rise,dl,8,i=>{const c=CH[(CH_DAY[wd]+i)%7];return `<td>${gu(i+1)}</td><td><span class="chog ${c[2]}">${c[0]}</span> ${c[1]}</td>`});
+  $("ch-night").innerHTML=rows(H.set,nl,8,i=>{const c=CH[(CH_NIGHT[wd]+i*5)%7];return `<td>${gu(i+1)}</td><td><span class="chog ${c[2]}">${c[0]}</span> ${c[1]}</td>`});
+  $("prahars").innerHTML=rows(H.rise,dl,4,i=>`<td>${gu(i+1)}</td><td>દિવસ · ${PRAHAR[i]}</td>`)+rows(H.set,nl,4,i=>`<td>${gu(i+5)}</td><td>રાત્રિ · ${PRAHAR[i]}</td>`);
+  $("muhs").innerHTML=rows(H.rise,dl,15,i=>`<td>${gu(i+1)}</td><td>${MUH[i]}</td>`)+rows(H.set,nl,15,i=>`<td>${gu(i+16)}</td><td>${MUH[15+i]}</td>`);
+}
+function units(dl,nl){
+  const U=[
+    ["વિપળ","Vipal (vinadi)","1/60 pal","0.4 s","Fixed"],
+    ["પ્રાણ","Prana (asu)","6 prana = 1 pal; one calm breath","4 s","Fixed"],
+    ["પળ","Pal (vinadika)","60 vipal","24 s","Fixed"],
+    ["ઘડી","Ghadi (nadika, danda)","60 pal","24 min","Fixed"],
+    ["મુહૂર્ત","Muhurta","2 ghadi (nominal); 1/15 of daylight or night",`48 min nominal · today ${hm(dl/15)} by day, ${hm(nl/15)} by night`,"Sun-based"],
+    ["ચોઘડિયું","Choghadiya","1/8 of daylight or night",`1 h 30 min nominal · today ${hm(dl/8)} by day, ${hm(nl/8)} by night`,"Sun-based"],
+    ["પ્રહર","Prahar (yam)","1/4 of daylight or night (7½ ghadi nominal)",`3 h nominal · today ${hm(dl/4)} by day, ${hm(nl/4)} by night`,"Sun-based"],
+    ["દિનમાન","Dinman","Sunrise to sunset",`today ${hm(dl)} (${gpOf(dl)})`,"Sun-based"],
+    ["અહોરાત્ર","Ahoratra (vaar)","60 ghadi, sunrise to sunrise",`24 h nominal · today ${hm(dl+nl)}`,"Sun-based"],
+    ["તિથિ","Tithi","12° of moon–sun distance","19 to 26 h, average 23 h 37 min","Moon-based"],
+    ["પક્ષ","Paksha","15 tithi (sud or vad)","about 14.8 days","Moon-based"],
+    ["માસ","Mas (amanta)","30 tithi, new moon to new moon","29 d 12 h 44 min average","Moon-based"],
+    ["ઋતુ","Rutu","2 months","about 2 months (6 seasons a year)","Sun-based"],
+    ["અયન","Ayan","6 months (Uttarayan, Dakshinayan)","about 6 months","Sun-based"],
+    ["વર્ષ","Varsh","12 lunar months, plus an adhik month when needed","354 or about 384 days (solar year 365.25 days)","Moon and sun"]];
+  $("units").innerHTML=U.map(u=>`<tr><td><b>${u[0]}</b><span class="en">${u[1]}</span></td><td>${u[2]}</td><td>${u[3]}</td><td><span class="kind ${u[4]==="Fixed"?"fx":"sn"}">${u[4]}</span></td></tr>`).join("");
+  const nad=1440, S=[["ઘડી (નાડિકા)","Nadika",null,nad],["લઘુ","Laghu",15,nad/15],["કાષ્ઠા","Kashtha",15,nad/225],["ક્ષણ","Kshan",5,nad/1125],["નિમેષ","Nimesh",3,nad/3375],["લવ","Lav",3,nad/10125],["વેધ","Vedh",3,nad/30375],["ત્રુટિ","Truti",100,nad/3037500],["ત્રસરેણુ","Trasarenu",3,nad/9112500],["અણુ","Anu",3,nad/27337500],["પરમાણુ","Paramanu",2,nad/54675000]];
+  const fs=s=>s>=60?`${s/60} min`:s>=1?`${+s.toFixed(2)} s`:s>=1e-3?`${+(s*1e3).toPrecision(3)} ms`:`${+(s*1e6).toPrecision(3)} µs`;
+  $("small").innerHTML=S.map((x,i)=>`<tr><td><b>${x[0]}</b><span class="en">${x[1]}</span></td><td>${i?`1/${x[2]} of a ${S[i-1][1].toLowerCase()}`:"1/60 of a day"}</td><td>${fs(x[3])}</td></tr>`).join("");
+}
+$("useloc").addEventListener("click",()=>{
+  if(!navigator.geolocation)return;$("useloc").textContent="Finding you…";
+  navigator.geolocation.getCurrentPosition(p=>{LOC={lat:p.coords.latitude,lon:p.coords.longitude,name:"your location",tz:null};schedKey="";tick();$("useloc").textContent="Back to Ahmedabad";$("useloc").onclick=()=>location.reload()},
+    ()=>{$("useloc").textContent="Location not available"},{timeout:10000});
+},{once:true});
+fetch("data/home/panchang.json").then(r=>r.json()).then(p=>{PAN=p;schedKey="";tick()}).catch(()=>{});
+tick();setInterval(tick,400);
+</script>
+</body>
+</html>
