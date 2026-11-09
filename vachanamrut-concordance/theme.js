@@ -3,8 +3,8 @@
    plus the shared look-and-sound layer in ../site/sp.js and sp.css. Loaded in <head> so the theme applies before paint. */
 window.SP_THEME_MAP={bg:"--paper",card:"--surface",ink:"--ink",muted:"--ink-2",line:"--line",acc:"--saffron",accS:"--saffron-soft",acc2:"--peacock",acc2S:"--peacock-soft",c1:"--sunk",warn:"--saffron-strong"};
 (function(){const me=document.currentScript&&document.currentScript.src;if(!me)return;const base=new URL("../site/",me).href;
-  const l=document.createElement("link");l.rel="stylesheet";l.href=base+"sp.css?v=1";document.head.appendChild(l);
-  const s=document.createElement("script");s.src=base+"sp.js?v=1";s.defer=true;document.head.appendChild(s);})();
+  const l=document.createElement("link");l.rel="stylesheet";l.href=base+"sp.css?v=2";document.head.appendChild(l);
+  const s=document.createElement("script");s.src=base+"sp.js?v=2";s.defer=true;document.head.appendChild(s);})();
 /* Theme menu for Kaal Patrak and Satsang Parichay: pastel colour themes, light/dark, and a custom accent colour.
    Default: light + Lavender. Choices are saved per viewer in localStorage (sp-mode, sp-palette, sp-accent). */
 (function(){

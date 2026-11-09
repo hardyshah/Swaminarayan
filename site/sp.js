@@ -37,7 +37,7 @@ function droneOff(){if(!S.dr)return;clearInterval(S.timer);const a=S.ac,{pad,osc
 function bell(soft){if(!S.bell||!ctx())return;const a=S.ac,t=a.currentTime+.01,f=soft?1046.5:784,amp=soft?.05:.11;
   [[1,1],[2.01,.55],[2.76,.42],[5.4,.22],[8.93,.12]].forEach(([m,v])=>{const o=a.createOscillator(),g=a.createGain();o.type="sine";o.frequency.value=f*m;
     g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(amp*v,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+(soft?1.6:3.4)/Math.sqrt(m));o.connect(g);out(g,.6);o.start(t);o.stop(t+3.6)})}
-window.SP_SOUND={bell,droneOn,droneOff};
+window.SP_SOUND={bell,droneOn,droneOff};window.SP_LANG={set:m=>setLang(m),get:()=>L.mode};
 function setDrone(on){S.drone=on;put("sp-snd-drone",on?"1":"0");on?droneOn():droneOff();paintSnd()}
 // browsers need a tap before any sound: resume a saved drone on the first interaction
 addEventListener("pointerdown",function first(){if(S.drone&&!S.dr)droneOn();removeEventListener("pointerdown",first,true)},true);
@@ -59,6 +59,83 @@ new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.no
   g.addEventListener("click",e=>{const b=e.target.closest("[data-snd]");if(!b)return;e.stopPropagation();if(b.dataset.snd==="drone")setDrone(!S.drone);else{S.bell=!S.bell;put("sp-snd-bell",S.bell?"1":"0");paintSnd();bell()}});
   g.querySelector("input").addEventListener("input",e=>{S.vol=+e.target.value;put("sp-snd-vol",S.vol);if(S.master)S.master.gain.value=S.vol});
   paintSnd()}}}).observe(document.documentElement,{childList:true,subtree:true});
+
+
+/* ---------------- language: both (default), ગુજરાતી only, English only ----------------
+   Works on any page: bilingual pairs ("ગુજ · English", a Gujarati span beside its English label) show only the chosen
+   side, and common labels are swapped from a small dictionary. Text that exists in one language only stays as it is. */
+const GU=/[઀-૿]/,LA=/[A-Za-z]/;
+const kind=t=>{const g=GU.test(t),l=LA.test(t);return g&&!l?"g":l&&!g?"l":g&&l?"m":"n"};
+const DICT={"Today":"આજ","Home":"મુખ્ય પાનું","Vedic time":"વૈદિક સમય","Panchang":"પંચાંગ","Kaal Patrak":"કાળ પત્રક","Vicharan":"વિચરણ","Vachanamrut":"વચનામૃત","Logbook":"નોંધપોથી","Library":"પુસ્તકાલય","Live":"જીવંત","● Live":"● જીવંત",
+ "Search":"શોધો","Sources":"સંદર્ભ","Contents":"અનુક્રમ","Glossary":"શબ્દકોશ","Index":"સૂચિ","Timeline":"સમયરેખા","E-books":"ઈ-પુસ્તકો","Nondh":"નોંધ","List":"યાદી","Cloud":"શબ્દ-વાદળ","Table view":"કોષ્ટક","Clear":"સાફ કરો","Close":"બંધ","Cancel":"રદ","Delete":"કાઢી નાખો","Go":"જાઓ","Go to year":"વર્ષ પર જાઓ","Century":"સદી","Deep time":"ઊંડો સમય","Whole month":"આખો મહિનો","Whole year":"આખું વર્ષ",
+ "Open this day":"આ દિવસ ખોલો","Next day ›":"આવતો દિવસ ›","‹ Previous day":"‹ ગયો દિવસ","Page ›":"પાનું ›","‹ Page":"‹ પાનું","← Back":"← પાછા","See all ›":"બધું જુઓ ›","Another one ↻":"બીજું ↻","All sections":"બધા વિભાગ","Clear highlight":"પ્રકાશ હટાવો","Show the full opening":"આખી શરૂઆત બતાવો",
+ "Use my location":"મારું સ્થાન વાપરો","Back to Ahmedabad":"અમદાવાદ પાછા","▶ Play a month":"▶ એક માસ ચલાવો","Now":"હમણાં","All India":"આખું ભારત","Gujarat":"ગુજરાત","Saurashtra":"સૌરાષ્ટ્ર","Zoom here":"અહીં મોટું કરો","All days ↓":"બધા દિવસ ↓","Show all days ✕":"બધા દિવસ બતાવો ✕",
+ "Save event":"પ્રસંગ સાચવો","+ Record an event":"+ પ્રસંગ નોંધો","+ Record on this day":"+ આ દિવસે નોંધો","Use theme colour":"થીમનો રંગ વાપરો","Sunday":"રવિવાર","Monday":"સોમવાર","Tuesday":"મંગળવાર","Wednesday":"બુધવાર","Thursday":"ગુરુવાર","Friday":"શુક્રવાર","Saturday":"શનિવાર",
+ "Vedic vs clock time":"વૈદિક અને ઘડિયાળનો સમય","Panchang science":"પંચાંગ વિજ્ઞાન","Today in history ↓":"આજનો ઇતિહાસ ↓","Read it →":"વાંચો →","See every use →":"દરેક ઉપયોગ જુઓ →","All events →":"બધા પ્રસંગ →","compare with clock time →":"ઘડિયાળ સાથે સરખાવો →","since sunrise":"સૂર્યોદયથી","← Back to the home page":"← મુખ્ય પાને પાછા","All sources ↓":"બધા સંદર્ભ ↓","Videos this page draws on":"આ પાનાના વિડિયો","Texts":"ગ્રંથો","Texts and measured values":"ગ્રંથો અને માપેલાં મૂલ્યો","Calendar":"પંચાંગ","Day register":"નોંધપોથી",
+ "Sound":"ધ્વનિ","Language":"ભાષા","Theme":"થીમ","Light":"પ્રકાશ","Dark":"અંધારું"};
+const RDICT={};for(const k in DICT)RDICT[DICT[k]]=k;
+const L={mode:get("sp-lang","both"),orig:new WeakMap(),hidden:new Set(),busy:false};
+const SKIP="script,style,textarea,input,select,code,pre,svg,.sp-lang-keep,.brand,.jay,[contenteditable]";
+function setText(n,v){if(!L.orig.has(n))L.orig.set(n,n.nodeValue);if(n.nodeValue!==v)n.nodeValue=v}
+function hide(el){el.classList.add("sp-lh");L.hidden.add(el)}
+function nodeKind(n){const t=(n.nodeType===3?n.nodeValue:n.textContent)||"";return t.trim()?kind(t):"n"}
+function applyText(n){const o=L.orig.has(n)?L.orig.get(n):n.nodeValue;if(!o||!o.trim())return;
+  if(L.mode==="both"){if(L.orig.has(n)&&n.nodeValue!==o)n.nodeValue=o;return}
+  const lead=o.match(/^\s*/)[0],trail=o.match(/\s*$/)[0],core=o.trim();
+  const d=L.mode==="gu"?DICT[core]:RDICT[core];if(d){const pe=n.parentElement;if(pe&&pe.tagName==="SMALL"&&pe.parentElement&&[...pe.parentElement.childNodes].some(c=>c!==pe&&(L.orig.get(c)||c.textContent||"").trim()===core)){setText(n,"");return}setText(n,lead+d+trail);return}
+  // "ગુજ · English" or "English / ગુજ" inside one text node
+  const parts=core.split(/\s+[·|\/]\s+/);if(parts.length>1){const ks=parts.map(kind);if(ks.includes("g")&&ks.includes("l")&&!ks.includes("m")){
+    const keep=parts.filter((p,i)=>ks[i]===(L.mode==="gu"?"g":"l")||ks[i]==="n");setText(n,lead+keep.join(" · ")+trail);return}}
+  if(L.orig.has(n)&&n.nodeValue!==o)n.nodeValue=o}
+function applyPairs(el){// an element holding a short Gujarati label and its short English twin, side by side
+  const kids=[...el.childNodes].filter(n=>!(n.nodeType===3&&!n.nodeValue.trim())&&!(n.nodeType===1&&n.matches("br,i:empty")));
+  if(kids.length<2||kids.length>4)return;const ks=kids.map(nodeKind);if(!ks.includes("g")||!ks.includes("l")||ks.includes("m"))return;
+  const len=k=>kids.filter((n,i)=>ks[i]===k).reduce((a,n)=>a+(n.textContent||"").trim().length,0),lg=len("g"),ll=len("l");
+  if(lg>140||ll>160||ll>lg*4+24||lg>ll*4+24)return;
+  const drop=L.mode==="gu"?"l":"g";kids.forEach((n,i)=>{if(ks[i]!==drop)return;if(n.nodeType===1)hide(n);else setText(n,"")})}
+function applyLang(root){if(L.busy)return;L.busy=true;
+  try{document.documentElement.setAttribute("data-sp-lang",L.mode);document.documentElement.lang=L.mode==="en"?"en":"gu";
+    if(root===document.body){L.hidden.forEach(el=>el.classList.remove("sp-lh"));L.hidden.clear()}
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement&&n.parentElement.closest(SKIP)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+    const texts=[];while(w.nextNode())texts.push(w.currentNode);
+    // restore the original wording first, so pairs are judged on what the page wrote
+    texts.forEach(n=>{if(L.orig.has(n)&&n.nodeValue!==L.orig.get(n))n.nodeValue=L.orig.get(n)});
+    if(L.mode!=="both"){const els=root.querySelectorAll?[root,...root.querySelectorAll("*")]:[];els.forEach(el=>{if(el.nodeType===1&&!el.closest(SKIP))applyPairs(el)})}
+    texts.forEach(n=>{if(n.nodeValue!=="")applyText(n)});
+  }finally{L.busy=false}}
+let LT=null,LQ=new Set();
+function langObserve(){new MutationObserver(ms=>{if(L.busy||L.mode==="both")return;for(const m of ms){if(m.target.closest&&m.target.closest(".sp-tm,.sp-aura,.sp-spark,.sp-mandala"))continue;
+    if(m.type==="characterData"){if(!L.orig.has(m.target))LQ.add(m.target.parentElement);else continue}else m.addedNodes.forEach(n=>{if(n.nodeType===1)LQ.add(n);else if(n.nodeType===3&&n.parentElement)LQ.add(n.parentElement)})}
+  if(!LQ.size)return;clearTimeout(LT);LT=setTimeout(()=>{const q=[...LQ].filter(e=>e&&e.isConnected);LQ.clear();q.forEach(e=>applyLang(e.parentElement||e))},60)}).observe(document.body,{childList:true,subtree:true,characterData:true})}
+function setLang(m){L.mode=m;put("sp-lang",m);applyLang(document.body);paintLang()}
+const LB=document.createElement("button");LB.type="button";LB.className="sp-lb";LB.title="Language · ભાષા";LB.setAttribute("aria-label","Language: both, Gujarati or English");
+const LABEL={both:"ગુ+En",gu:"ગુજ",en:"EN"};
+LB.addEventListener("click",()=>setLang(L.mode==="both"?"gu":L.mode==="gu"?"en":"both"));
+function paintLang(){LB.textContent=LABEL[L.mode];document.querySelectorAll(".sp-tm .lng [data-lng]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lng===L.mode))}
+new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.nodeType===1&&n.classList.contains("sp-tm")&&!n.querySelector(".lng")){
+  const g=document.createElement("div");g.className="grp";g.innerHTML=`<h3 class="sp-lang-keep">Language · ભાષા</h3><div class="lng sp-lang-keep">
+   <button type="button" data-lng="both">ગુજરાતી + English</button><button type="button" data-lng="gu">ગુજરાતી</button><button type="button" data-lng="en">English</button></div>`;
+  n.insertBefore(g,n.firstChild);g.addEventListener("click",e=>{const b=e.target.closest("[data-lng]");if(!b)return;e.stopPropagation();setLang(b.dataset.lng)});paintLang()}}}).observe(document.documentElement,{childList:true,subtree:true});
+
+/* controls CSS, injected so pages without sp.css (Kaal Patrak, Vicharan) get it too */
+const CTRL_CSS=`.sp-lh{display:none!important}
+.sp-tm .snd,.sp-tm .lng{display:grid;gap:6px}.sp-tm .lng{grid-template-columns:1fr 1fr 1fr;gap:4px}
+.sp-tm .lng button{border:1px solid var(--sp-line,rgba(0,0,0,.14));background:none;border-radius:10px;padding:7px 4px;cursor:pointer;font:inherit;font-size:12.5px;color:inherit}
+.sp-tm .lng button[aria-pressed="true"]{background:var(--sp-acc,#c2410c);border-color:var(--sp-acc,#c2410c);color:#fff}
+.sp-tm .snd button{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid transparent;background:none;border-radius:10px;padding:7px 8px;cursor:pointer;font:inherit;color:inherit;text-align:left}
+.sp-tm .snd button:hover{background:rgba(127,127,127,.1)}.sp-tm .snd button small{display:block;font-size:11.5px;opacity:.7}
+.sp-tm .snd .sw{flex:none;width:34px;height:20px;border-radius:999px;background:rgba(127,127,127,.35);position:relative;transition:background .25s}
+.sp-tm .snd .sw::after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .25s}
+.sp-tm .snd [aria-pressed="true"] .sw{background:var(--sp-acc,#c2410c)}.sp-tm .snd [aria-pressed="true"] .sw::after{transform:translateX(14px)}
+.sp-tm .snd label{display:flex;align-items:center;gap:10px;font-size:13px;padding:2px 8px}.sp-tm .snd input[type=range]{flex:1;accent-color:var(--sp-acc,#c2410c)}
+.sp-sb,.sp-lb{position:fixed;right:max(14px,env(safe-area-inset-right,0px));z-index:94;width:44px;height:44px;border-radius:50%;border:1px solid var(--sp-line,rgba(0,0,0,.14));background:var(--sp-card,#fff);color:var(--sp-ink,#222);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 20px rgba(40,30,70,.18);font:600 12px/1 system-ui,sans-serif;padding:0}
+.sp-sb{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 54px)}.sp-lb{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 108px)}
+.sp-sb[aria-pressed="true"]{color:var(--sp-acc,#c2410c);border-color:var(--sp-acc,#c2410c);box-shadow:0 0 0 4px color-mix(in srgb,var(--sp-acc,#c2410c) 18%,transparent),0 6px 20px rgba(40,30,70,.18)}
+.sp-sb[aria-pressed="true"] svg .wv{animation:spWave 1.6s ease-in-out infinite}@keyframes spWave{0%,100%{opacity:.35}50%{opacity:1}}
+@media print{.sp-sb,.sp-lb{display:none}}`;
+function ctrlCss(){if(document.getElementById("sp-ctrl-css"))return;const st=document.createElement("style");st.id="sp-ctrl-css";
+  const M=window.SP_THEME_MAP||{};const v=k=>M[k]?`var(${M[k]})`:"";
+  st.textContent=`:root{${M.acc?`--sp-acc:${v("acc")};`:""}${M.line?`--sp-line:${v("line")};`:""}${M.card?`--sp-card:${v("card")};`:""}${M.ink?`--sp-ink:${v("ink")};`:""}}`+CTRL_CSS;document.head.appendChild(st)}
 
 /* ---------------- visuals ---------------- */
 // a small lotus motif, tinted by the theme, for the aura texture
@@ -102,8 +179,11 @@ function sparks(){if(RM.matches)return;if(!document.getElementById("hero2")&&!do
   const s=document.createElement("i");s.className="sp-spark";const sz=3+Math.random()*5;
   s.style.cssText=`left:${Math.random()*100}vw;width:${sz}px;height:${sz}px;--dx:${(Math.random()*16-8).toFixed(1)}vw;animation-duration:${14+Math.random()*12}s`;
   document.body.appendChild(s);s.addEventListener("animationend",()=>s.remove())}
-function start(){const a=document.createElement("div");a.className="sp-aura";a.setAttribute("aria-hidden","true");document.body.prepend(a);
-  document.body.appendChild(SB);paintSnd();motif();decorate();
+function start(){ctrlCss();document.body.appendChild(SB);document.body.appendChild(LB);paintSnd();paintLang();
+  if(L.mode!=="both")applyLang(document.body);langObserve();
+  if(window.SP_LITE)return; // Kaal Patrak and Vicharan keep their own look: sound, language and theme only
+  const a=document.createElement("div");a.className="sp-aura";a.setAttribute("aria-hidden","true");document.body.prepend(a);
+  motif();decorate();
   let t=null;new MutationObserver(ms=>{if(!ms.some(m=>!(m.target.closest&&m.target.closest('.live,.vt,.sched,.spc,.sp-mandala,.sp-orbit'))&&![...m.addedNodes].every(n=>n.classList&&n.classList.contains('sp-spark'))))return;clearTimeout(t);t=setTimeout(decorate,80)}).observe(document.body,{childList:true,subtree:true});
   setInterval(sparks,2600);addEventListener("sp-theme",()=>setTimeout(motif,30))}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
