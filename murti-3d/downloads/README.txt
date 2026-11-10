@@ -14,6 +14,6 @@ Printing tips
 - 36" and 1 m: larger than most printers; cut the model into parts in your slicer
   (e.g. PrusaSlicer / Bambu Studio / Cura "cut" tool), print hollow with 4+ walls and low infill, then glue and fill seams.
   For resin, hollow the model and add drain holes in the base.
-- Paint: black-stone gloss for Gopinathji Maharaj, warm skin tone for Ghanshyam Maharaj, gold for the arch and ornaments.
+- Paint: black-stone gloss for Gopinathji Maharaj, warm skin tone for Ghanshyam Maharaj, gold metal for Harikrishna Maharaj, gold for the arch and ornaments.
 
 Source site: https://hardyshah.github.io/Swaminarayan/murti-3d/

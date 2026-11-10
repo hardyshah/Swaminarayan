@@ -5,7 +5,7 @@
 <script src="../vachanamrut-concordance/theme.js"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Murti 3D Downloads</title>
-<meta name="description" content="Free 3D models and 3D-print files (4 inch to 1 metre) of Shri Gopinathji Maharaj, Gadhada and Shri Ghanshyam Maharaj, Rangmahol, Kalupur.">
+<meta name="description" content="Free 3D models, 3D-print STL and CAD STEP files (4 inch to 1 metre) of Shri Gopinathji Maharaj, Gadhada, Shri Ghanshyam Maharaj, Rangmahol, Kalupur and Shri Harikrishna Maharaj, Vadtal.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
@@ -56,6 +56,7 @@ th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);white-
 th{color:var(--ink-3);font-weight:500;font-size:13px}
 td.dl a{display:inline-block;background:var(--saffron);color:#fff;text-decoration:none;border-radius:8px;padding:3px 11px;font-weight:600;font-size:13.5px}
 td.dl a:hover{background:var(--saffron-strong)}
+td.dl a.step{background:var(--peacock)}
 .tablewrap{overflow-x:auto}
 .btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
 .btns a{border:1px solid var(--line);border-radius:8px;padding:5px 12px;text-decoration:none;color:var(--ink);background:var(--sunk);font-size:14px}
@@ -72,11 +73,12 @@ section.more li{margin:4px 0}
 <div class="wrap">
   <div class="top"><a class="home" href="../">← શ્રી સ્વામિનારાયણ · Home</a></div>
   <h1>મૂર્તિ 3D · Murti 3D</h1>
-  <p class="lede">Free 3D models of Shri Gopinathji Maharaj (Gadhada) and Shri Ghanshyam Maharaj (Rangmahol, Kalupur): turn them around below, download the full-colour model, or print your own murti at any height from 4 inches to 1 metre.</p>
+  <p class="lede">Free 3D models of Shri Gopinathji Maharaj (Gadhada), Shri Ghanshyam Maharaj (Rangmahol, Kalupur) and Shri Harikrishna Maharaj (Vadtal): turn them around below, download the full-colour model, or print your own murti at any height from 4 inches to 1 metre. STL and STEP files are free.</p>
 
   <div class="tabs" role="tablist">
     <button role="tab" data-m="gopinathji" aria-selected="true">શ્રી ગોપીનાથજી મહારાજ · ગઢડા</button>
     <button role="tab" data-m="ghanshyam" aria-selected="false">શ્રી ઘનશ્યામ મહારાજ · રંગમહોલ</button>
+    <button role="tab" data-m="harikrishna" aria-selected="false">શ્રી હરિકૃષ્ણ મહારાજ · વડતાલ</button>
   </div>
 
   <div class="grid">
@@ -86,9 +88,9 @@ section.more li{margin:4px 0}
       <p class="sub" id="msub"></p>
       <div class="pins"><img id="pin" width="64" height="88" alt="Map pin"><img id="car" width="150" height="164" alt="Caricature"></div>
       <div class="btns" id="btns"></div>
-      <h3 style="margin:16px 0 6px;font-size:16px">3D print files (STL, free)</h3>
-      <div class="tablewrap"><table><thead><tr><th>Height</th><th>Width × depth</th><th>Material*</th><th></th></tr></thead><tbody id="sizes"></tbody></table></div>
-      <p class="note">*Solid volume. Printed with normal infill it uses far less. Each zip holds one binary STL in millimetres, already scaled, plus printing tips. The mesh is one closed, watertight shell.</p>
+      <h3 style="margin:16px 0 6px;font-size:16px">3D print and CAD files (free)</h3>
+      <div class="tablewrap"><table><thead><tr><th>Height</th><th>Width × depth</th><th>Material*</th><th>Print</th><th>CAD</th></tr></thead><tbody id="sizes"></tbody></table></div>
+      <p class="note">*Solid volume. Printed with normal infill it uses far less. Each zip holds one file in millimetres, already scaled, plus tips. STL is the full-detail, watertight print mesh. STEP is for CAD programs (see below).</p>
     </div>
   </div>
 
@@ -97,12 +99,14 @@ section.more li{margin:4px 0}
       <h2>About these models</h2>
       <p class="note">These are <strong>stylised, hand-sculpted models</strong> made from darshan photographs, not 3D scans. A true copy of a murti needs dozens of photos from all sides in even light (or a laser scan), so faces, proportions and ornaments here are an approximation. The shringar shown is one representative set; in the mandir it changes every day.</p>
       <p class="note">Printing: supports are needed under the flute or raised hand, the crown and the garland. For 36 inch and 1 metre, cut the model into parts in your slicer and print hollow.</p>
+      <p class="note"><strong>About the STEP files:</strong> they are converted from the sculpted mesh, so the surface is about 100,000 small flat facets, not smooth CAD surfaces, and there are no editable features. They open as one closed solid in Fusion, SolidWorks, FreeCAD, Onshape and similar programs, which is useful for adding a base or name plate, cutting into parts or measuring. They are coarser than the STL and can be slow, so use the STL for printing.</p>
     </div>
     <div class="card">
       <h2>Sources · સ્ત્રોત</h2>
       <ul class="note">
         <li>Gopinathji Maharaj: 14 darshan photographs of Shri Gopinathji Maharaj, Gadhada, collected for this site, including <a href="https://in.pinterest.com/pin/775182154651345859/">this Pinterest pin</a>. Four other photos were set aside because they show a different murti.</li>
-        <li>Ghanshyam Maharaj: daily darshan photographs of Shri Ghanshyam Maharaj, Rangmahol, from <a href="https://www.swaminarayan.in/">Shri Swaminarayan Mandir, Kalupur (swaminarayan.in)</a>, and the <a href="https://in.pinterest.com/dhruvsoni95/rangmahol-ghanshyam-maharaj/">Rangmahol Ghanshyam Maharaj Pinterest board</a>.</li>
+        <li>Ghanshyam Maharaj: 12 close-up and full darshan photographs of Shri Ghanshyam Maharaj, Rangmahol, collected for this site from the <a href="https://in.pinterest.com/dhruvsoni95/rangmahol-ghanshyam-maharaj/">Rangmahol Ghanshyam Maharaj Pinterest board</a>, plus daily darshan from <a href="https://www.swaminarayan.in/">Shri Swaminarayan Mandir, Kalupur (swaminarayan.in)</a>.</li>
+        <li>Harikrishna Maharaj: 5 darshan photographs of Shri Harikrishna Maharaj, collected for this site, two of them watermarked Shree Swaminarayan Mandir, Vadtal Dham.</li>
         <li>Photographs were used only as drawing reference and are not reproduced here.</li>
         <li>3D viewer: <a href="https://threejs.org/">three.js</a> (MIT licence).</li>
       </ul>
@@ -116,12 +120,7 @@ import {GLTFLoader} from './lib/GLTFLoader.js';
 import {OrbitControls} from './lib/OrbitControls.js';
 const REL='downloads/';
 const SIZES=[['4in','4 inch',101.6],['6in','6 inch',152.4],['9in','9 inch',228.6],['12in','12 inch',304.8],['18in','18 inch',457.2],['24in','24 inch',609.6],['36in','36 inch',914.4],['1m','1 metre',1000]];
-const M={
- gopinathji:{gu:'શ્રી ગોપીનાથજી મહારાજ',en:'Shri Gopinathji Maharaj, Gadhada',sub:'Black stone murti in tribhangi pose playing the murli, with crested mugat, peacock feather, vagha, garland and golden parikar.',
-   w:146.8/78.6,d:146.8/42.5,vol:107.5},
- ghanshyam:{gu:'શ્રી ઘનશ્યામ મહારાજ',en:'Shri Ghanshyam Maharaj, Rangmahol, Kalupur',sub:'Standing murti with the right hand holding a rose and the left raised in blessing, pagh with pankho and tora, white jama with ghero and starburst prabha.',
-   w:143/60,d:143/42.4,vol:104.1}
-};
+const M={"gopinathji": {"gu": "શ્રી ગોપીનાથજી મહારાજ", "en": "Shri Gopinathji Maharaj, Gadhada", "sub": "Black stone murti in tribhangi pose playing the murli, with crested mugat, peacock feather, vagha, garland and golden parikar.", "h": 146.8, "w": 1.8678, "d": 3.4892, "vol": 107.497}, "ghanshyam": {"gu": "શ્રી ઘનશ્યામ મહારાજ", "en": "Shri Ghanshyam Maharaj, Rangmahol, Kalupur", "sub": "The murti as he stands without shringar: shaved head with a small shikha, orange U tilak with chandlo, diamonds on the chin and right cheek, bare chest with mala and janoi, dhoti with gold border, raised index finger and blessing hand, starburst prabha.", "h": 139.15, "w": 2.3191, "d": 3.4783, "vol": 90.924}, "harikrishna": {"gu": "શ્રી હરિકૃષ્ણ મહારાજ", "en": "Shri Harikrishna Maharaj, Vadtal", "sub": "Gold metal murti with shaved head and tall shikha, big painted eyes, thick brows and moustache, white dhoti and khes, garland, mala in the right hand and the left raised in blessing.", "h": 139.15, "w": 2.3191, "d": 3.3715, "vol": 88.111}};
 const $=id=>document.getElementById(id);
 const stage=$('stage');
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
@@ -147,7 +146,7 @@ function show(key){
   $('mname').textContent=m.gu+' · '+m.en;$('msub').textContent=m.sub;
   $('pin').src='img/'+key+'-pin.svg';$('car').src='img/'+key+'-caricature.svg';$('poster').src='img/'+key+'-render.webp';
   $('btns').innerHTML=`<a href="models/${key}.glb" download>Full-colour 3D model (GLB)</a><a href="img/${key}-caricature.svg" download>Caricature (SVG)</a><a href="img/${key}-pin.svg" download>Map pin (SVG)</a>`;
-  $('sizes').innerHTML=SIZES.map(([t,l,h])=>{const s=h/ (key==='gopinathji'?146.8:143);return `<tr><td><b>${l}</b> <span style="color:var(--ink-3)">${h>=1000?'1000':Math.round(h)} mm</span></td><td>${Math.round(h/m.w)} × ${Math.round(h/m.d)} mm</td><td>${(m.vol*s**3).toFixed(m.vol*s**3<100?1:0)} cm³</td><td class="dl"><a href="${REL}${key}-${t}-stl.zip" download>STL</a></td></tr>`}).join('');
+  $('sizes').innerHTML=SIZES.map(([t,l,h])=>{const s=h/m.h;return `<tr><td><b>${l}</b> <span style="color:var(--ink-3)">${h>=1000?'1000':Math.round(h)} mm</span></td><td>${Math.round(h/m.w)} × ${Math.round(h/m.d)} mm</td><td>${(m.vol*s**3).toFixed(m.vol*s**3<100?1:0)} cm³</td><td class="dl"><a href="${REL}${key}-${t}-stl.zip" download>STL</a></td><td class="dl"><a class="step" href="${REL}${key}-${t}-step.zip" download>STEP</a></td></tr>`}).join('');
   if(current) scene.remove(current);
   const go=o=>{current=o;scene.add(o);$('load').style.display='none';$('poster').style.display='none';
     const b=new THREE.Box3().setFromObject(o),c=b.getCenter(new THREE.Vector3());controls.target.copy(c);camera.position.set(c.x,c.y-0.34,c.z+0.03);controls.update();};
