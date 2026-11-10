@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Vedas</title>
+<meta name="description" content="Read and hear all 10,552 Rigveda mantras with English, explore deities, seers, metres and themes, see links between the four Vedas, and what the Vedas share with modern science, each claim marked established or speculative.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&family=Noto+Serif+Devanagari:wght@400;500;600&family=Noto+Serif+Gujarati:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --good:#2f7d32; --bad:#b3261e;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.06);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:12px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+main{padding-block:22px 64px}
+.jay{text-align:center;font-family:var(--f-read);font-weight:600;color:var(--saffron-strong);font-size:clamp(17px,3.4vw,22px);margin:4px 0 18px;letter-spacing:.02em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+/* live panel */
+.live{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);overflow:hidden}
+.pan{padding:20px 22px;background:linear-gradient(160deg,var(--saffron-soft),transparent 70%)}
+.eng{padding:20px 22px;border-left:1px solid var(--line);display:flex;flex-direction:column}
+.vaar{font-family:var(--f-display);color:var(--saffron);font-size:clamp(30px,6vw,44px);line-height:1.1;margin:6px 0 2px}
+.tithi{font-family:var(--f-read);font-size:clamp(22px,4vw,30px);font-weight:600;line-height:1.2}
+.tithi small{font-family:var(--f-ui);font-size:14px;font-weight:500;color:var(--ink-2);display:block;margin-top:2px}
+.samvat{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:14px;color:var(--ink-2)}
+.pill b{color:var(--ink);font-weight:600}
+.clockrow{display:flex;gap:18px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.dial{width:148px;height:148px;flex:none}
+.ghadi .big{font-family:var(--f-read);font-weight:600;font-size:clamp(30px,6vw,40px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.ghadi .lab{font-size:13px;color:var(--ink-2);margin-top:4px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:14px;margin-top:12px}
+.facts dt{color:var(--ink-3)} .facts dd{margin:0;color:var(--ink)}
+.chog{font-weight:600} .chog.g{color:var(--good)} .chog.b{color:var(--bad)}
+.loc{margin-top:12px;font-size:13px;color:var(--ink-3);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lnk{background:none;border:0;padding:0;color:var(--peacock);cursor:pointer;font-size:13px;text-decoration:underline}
+.wd{font-size:15px;color:var(--ink-2);font-weight:500}
+.date{font-family:var(--f-read);font-size:clamp(24px,4.4vw,32px);font-weight:600;line-height:1.15;margin:4px 0 8px}
+.time{font-family:var(--f-read);font-size:clamp(40px,8vw,58px);font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--peacock)}
+.time span{font-size:.45em;color:var(--ink-3);margin-left:6px}
+.tz{font-size:13px;color:var(--ink-3);margin-top:6px}
+.go{margin-top:auto;padding-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
+.btn:hover{background:var(--sunk);text-decoration:none}
+/* today in history */
+.sech{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:38px 0 6px}
+.sech h2{margin:0;font-family:var(--f-read);font-size:clamp(26px,5vw,34px);font-weight:600;line-height:1.15}
+.sech h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.daynav{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.daynav input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--surface);color:var(--ink)}
+.sub{color:var(--ink-2);margin:0 0 16px;max-width:70ch}
+.feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;overflow:hidden;margin-bottom:16px}
+.feature svg{display:block;width:100%;height:auto}
+.feature .txt{padding:18px 20px;align-self:center}
+.feature h3{font-family:var(--f-read);font-size:26px;margin:4px 0 6px;line-height:1.2}
+.feature p{margin:0;color:var(--ink-2)}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.col{padding:16px 18px}
+.col h3{font-family:var(--f-read);font-size:21px;margin:0;line-height:1.2}
+.col h3 small{display:block;font-family:var(--f-ui);font-size:13px;font-weight:500;color:var(--ink-3);margin-top:2px}
+.list{list-style:none;margin:12px 0 0;padding:0}
+.list li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.yr{font-variant-numeric:tabular-nums;line-height:1.2}
+.yr b{display:block;font-size:15px;color:var(--saffron-strong)} .yr span{font-size:12px;color:var(--ink-3)}
+.ev{font-family:var(--f-read);font-size:17px;line-height:1.5}
+.ev .m{display:block;font-family:var(--f-ui);font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.tag{display:inline-block;font-family:var(--f-ui);font-size:11.5px;font-weight:600;border-radius:999px;padding:0 8px;margin-right:6px;vertical-align:2px}
+.tag.life{background:var(--saffron-soft);color:var(--saffron-strong)} .tag.vach{background:var(--peacock-soft);color:var(--peacock)}
+.more{margin-top:8px}
+.empty{color:var(--ink-3);font-size:14px;padding:10px 0}
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
+.pg{padding:14px 16px;color:var(--ink);display:block}
+.pg:hover{text-decoration:none;border-color:var(--saffron)}
+.pg b{display:block;font-family:var(--f-read);font-size:19px} .pg span{font-size:13.5px;color:var(--ink-2)}
+.pg .g{font-family:var(--f-display);color:var(--saffron);font-size:15px}
+.ttl{font-family:var(--f-read);font-size:clamp(28px,5.4vw,40px);font-weight:600;line-height:1.15;margin:6px 0 10px}
+.ttl .gu,.h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.h2{font-family:var(--f-read);font-size:clamp(24px,4.6vw,30px);font-weight:600;line-height:1.15;margin:38px 0 6px}
+.vt{margin-top:16px;overflow:hidden}
+.clkcard{margin-top:16px;padding:20px 18px}
+.rbcard{padding:16px 16px 12px}
+.vh,.vr{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,1fr) minmax(0,1fr)}
+.vh{background:var(--sunk);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.vh div{padding:10px 14px} .vh div:first-child{grid-column:2;color:var(--saffron-strong)} .vh div:last-child{color:var(--peacock)}
+.vr{border-top:1px solid var(--line)} .vr>div{padding:10px 14px}
+.vk{color:var(--ink-2);font-size:14px;font-weight:500}
+.vv{background:color-mix(in srgb,var(--saffron-soft) 45%,transparent);font-family:var(--f-read);font-size:18px;font-weight:600}
+.vs{font-family:var(--f-read);font-size:18px;font-weight:600;color:var(--peacock);font-variant-numeric:tabular-nums}
+.vv small,.vs small{display:block;font-family:var(--f-ui);font-size:12.5px;font-weight:400;color:var(--ink-3);margin-top:2px}
+.vr .big{font-size:22px}
+.tbl{overflow-x:auto} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--ink-3);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:var(--sunk)}
+tbody tr:last-child td{border-bottom:0}
+td .en{display:block;font-size:12.5px;color:var(--ink-3)} td b{font-family:var(--f-read);font-size:16px}
+td.t{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+tr.now td{background:var(--saffron-soft)} tr.now td.t{color:var(--ink);font-weight:600}
+.kind{font-size:12px;font-weight:600;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.kind.fx{background:var(--peacock-soft);color:var(--peacock)} .kind.sn{background:var(--saffron-soft);color:var(--saffron-strong)}
+.sched{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.note{margin-top:28px}
+@media (max-width:640px){.vh{display:none}.vr{grid-template-columns:1fr 1fr}.vk{grid-column:1/-1;padding-bottom:0!important;font-size:13px}.sched{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-3);font-size:13px}
+footer p{margin:0 0 6px;max-width:80ch}
+@media (max-width:760px){.live{grid-template-columns:1fr}.eng{border-left:0;border-top:1px solid var(--line)}.feature,.cols{grid-template-columns:1fr}}
+@media (max-width:420px){.dial{width:120px;height:120px}.pan,.eng{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* panchang page */
+.cite{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;border:1px solid color-mix(in srgb,var(--saffron) 40%,var(--line));background:color-mix(in srgb,var(--saffron-soft) 60%,transparent);color:var(--saffron-strong);border-radius:999px;padding:2px 10px;margin:2px 4px 2px 0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.cite:hover{text-decoration:none;border-color:var(--saffron)}
+.cite.tx{background:var(--peacock-soft);color:var(--peacock);border-color:color-mix(in srgb,var(--peacock) 35%,var(--line))}
+.cites{margin:6px 0 12px}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
+.limb{padding:14px 14px 12px;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden}
+.limb .k{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.limb .g{font-family:var(--f-display);color:var(--saffron);font-size:15px;line-height:1.1}
+.limb .v{font-family:var(--f-read);font-size:21px;font-weight:600;line-height:1.2;margin-top:6px}
+.limb .e{font-size:12.5px;color:var(--ink-2)}
+.limb .f{font-size:12px;color:var(--ink-3);margin-top:auto;padding-top:8px;border-top:1px dashed var(--line)}
+.limb .bar{height:4px;border-radius:2px;background:var(--sunk);margin:8px 0 4px;overflow:hidden}.limb .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--saffron),var(--peacock))}
+.sky{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;overflow:hidden;margin-top:16px}
+.sky .w{padding:14px;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--peacock-soft) 70%,transparent),transparent 70%)}
+.sky svg{width:100%;height:auto;display:block;max-width:520px;margin:0 auto}
+.sky .r{padding:18px 20px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.sky .ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sky input[type=range]{flex:1;min-width:140px;accent-color:var(--saffron)}
+.sky .when{font-family:var(--f-read);font-size:18px;font-weight:600}
+.rd2{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}
+.rd2 dt{color:var(--ink-3)}.rd2 dd{margin:0}.rd2 b{font-family:var(--f-read);font-size:16px}
+.wl .nk{fill:var(--ink-2);font-size:8.6px;font-family:var(--f-ui);text-anchor:middle;dominant-baseline:central}
+.wl .rs{fill:var(--saffron-strong);font-size:10px;font-family:var(--f-ui);text-anchor:middle;dominant-baseline:central;font-weight:600}
+.wl .ln{stroke:var(--line)} .wl .ring{fill:none;stroke:var(--line)}
+.ex{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:14px}
+.exc{padding:18px 20px}
+.exc h3{font-family:var(--f-read);font-size:23px;margin:0 0 2px;line-height:1.2}.exc h3 .gu{font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.8em;margin-right:8px}
+.exc .fx{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:var(--sunk);border-radius:8px;padding:8px 10px;margin:10px 0;overflow-x:auto}
+.exc p{margin:8px 0;color:var(--ink-2)} .exc p b{color:var(--ink)}
+.names{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.names span{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;background:var(--surface)}
+.names span.on{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.names span small{color:var(--ink-3);margin-left:4px}.names span.on small{color:#fff;opacity:.85}
+.wide{grid-column:1/-1}
+.hep{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:18px;align-items:center}
+.hep svg{width:100%;height:auto}
+.hep .pl{fill:var(--ink);font-family:var(--f-ui);font-size:12px;text-anchor:middle;dominant-baseline:central;font-weight:600}
+.stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.st{padding:14px 16px}.st b{display:block;font-family:var(--f-read);font-size:26px;line-height:1.1;color:var(--saffron-strong)}.st span{font-size:13px;color:var(--ink-2)}
+.yrs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.yrs span{font-size:13px;border-radius:999px;padding:2px 10px;background:var(--saffron-soft);color:var(--saffron-strong);font-weight:600}
+.yrs span.past{background:var(--sunk);color:var(--ink-3);font-weight:500}
+.ny{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.ny .card{padding:16px 18px}.ny h3{font-family:var(--f-read);margin:0;font-size:21px}.ny .d{font-family:var(--f-read);font-size:24px;font-weight:600;color:var(--peacock);margin:6px 0 2px}
+td.ok{color:var(--good);font-weight:600;white-space:nowrap}
+.srcs{padding:6px 18px 12px}.srcs h3{font-family:var(--f-read);font-size:19px;margin:14px 0 4px}
+.srcs ol{margin:0;padding-left:20px}.srcs li{margin:6px 0;font-size:14.5px;line-height:1.45}.srcs li small{display:block;color:var(--ink-3);font-size:12.5px}
+.honest{font-size:13px;color:var(--ink-3);margin:8px 0 0}
+@media (max-width:900px){.five{grid-template-columns:repeat(2,minmax(0,1fr))}.five .limb:first-child{grid-column:1/-1}}
+@media (max-width:760px){.sky,.ex,.ny{grid-template-columns:minmax(0,1fr)}.sky .r{border-left:0;border-top:1px solid var(--line)}.hep{grid-template-columns:minmax(0,1fr)}.hep svg{max-width:240px;margin:0 auto}.stat{grid-template-columns:minmax(0,1fr)}}
+/* ---- vedas page ---- */
+.hero{padding:22px 22px 18px;background:linear-gradient(160deg,var(--saffron-soft),transparent 72%);overflow:hidden;position:relative}
+.hero .om{position:absolute!important;right:-10px;top:-30px;font-size:180px;line-height:1;color:var(--saffron);opacity:.08;font-family:"Noto Serif Devanagari",serif;pointer-events:none}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:16px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.tile b{display:block;font-family:var(--f-read);font-size:24px;line-height:1.1;color:var(--saffron-strong);font-variant-numeric:tabular-nums}
+.tile span{font-size:12.5px;color:var(--ink-2)}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+.vd{padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.vd .g{font-family:"Noto Serif Devanagari",var(--f-read);font-size:22px;color:var(--saffron);line-height:1.1}
+.vd h3{margin:0;font-family:var(--f-read);font-size:20px}
+.vd p{margin:4px 0 0;font-size:13.5px;color:var(--ink-2)}
+.vd .have{margin-top:auto;padding-top:8px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--ink-3)}
+.sa{font-family:"Noto Serif Devanagari","Noto Serif Gujarati",var(--f-read);font-size:21px;line-height:1.75;font-weight:500;color:var(--ink)}
+.sa.gj{font-family:"Noto Serif Gujarati","Rasa",serif}
+.ia{font-family:var(--f-read);font-style:italic;color:var(--ink-2);font-size:16px;line-height:1.55}
+.tr{font-family:var(--f-read);font-size:17px;line-height:1.6;color:var(--ink)}
+/* tool bar */
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--sunk);border-radius:var(--r) var(--r) 0 0}
+.bar select,.bar input[type=search],.srch input{font:inherit;font-size:14.5px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--surface);color:var(--ink);max-width:100%}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:5px 11px;font-size:13.5px;cursor:pointer;color:var(--ink-2)}
+.seg button.on{background:var(--ink);color:var(--paper)}
+.sp{flex:1}
+.hh{padding:16px 18px 6px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.hh h3{margin:0;font-family:var(--f-read);font-size:24px;line-height:1.2}
+.hh .m{font-size:13.5px;color:var(--ink-2)}
+.verses{padding:0 18px 12px}
+.vs1{padding:14px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px}
+.vs1:target,.vs1.hl{background:linear-gradient(90deg,var(--saffron-soft),transparent);margin:0 -18px;padding-left:18px;padding-right:18px}
+.vn{font-variant-numeric:tabular-nums;font-size:13px;color:var(--ink-3);line-height:1.3}
+.vn b{display:block;font-family:var(--f-read);font-size:19px;color:var(--saffron-strong)}
+.vn button{margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:1px 9px;background:var(--surface);color:var(--ink-2);cursor:pointer}
+.chip:hover{border-color:var(--saffron);color:var(--ink)}
+.chip.d{background:var(--saffron-soft);color:var(--saffron-strong);border-color:transparent}
+.chip.r{background:var(--peacock-soft);color:var(--peacock);border-color:transparent}
+.chip.x{background:none;border-style:dashed}
+.play{border:1px solid var(--line);background:var(--surface);border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--saffron-strong)}
+.play.on{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+.play:disabled{opacity:.35;cursor:default}
+.pager{display:flex;gap:8px;justify-content:space-between;padding:10px 18px 16px;flex-wrap:wrap}
+.hidden{display:none!important}
+/* explore */
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:14px 0 10px}
+.tabs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:14px;cursor:pointer;color:var(--ink-2)}
+.tabs button.on{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.exg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:start}
+.bars{padding:10px 14px;max-height:560px;overflow:auto}
+.br{display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:8px;align-items:center;padding:5px 6px;border-radius:8px;cursor:pointer;font-size:14px}
+.br:hover,.br.on{background:var(--sunk)}
+.br .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-3);font-size:13px}
+.br .t small{color:var(--ink-3);margin-left:6px;font-family:"Noto Serif Devanagari",serif}
+.br .l{height:5px;border-radius:3px;background:linear-gradient(90deg,var(--saffron),var(--peacock));margin-top:3px}
+.hits{padding:12px 16px;max-height:560px;overflow:auto}
+.hit{padding:10px 0;border-top:1px solid var(--line)}
+.hit:first-child{border-top:0}
+.hit a.ref{font-weight:600;font-size:13px;margin-right:6px}
+.hit .tr{font-size:15.5px}
+.hit .sa{font-size:17px;line-height:1.6}
+.lensf{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.def{font-size:13.5px;color:var(--ink-2);margin:0 0 8px}
+/* connect */
+.mx td.c{text-align:right;font-variant-numeric:tabular-nums}
+.kinds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.kinds .card{padding:12px 14px;font-size:14px}.kinds b{font-family:var(--f-read);font-size:17px}
+/* graph */
+.gwrap{padding:8px;overflow:hidden}
+.gwrap svg{width:100%;height:auto;display:block;touch-action:manipulation}
+.gn text{font-family:var(--f-ui);font-size:10.5px;fill:var(--ink);pointer-events:none}
+.gn circle{cursor:pointer;stroke:var(--surface);stroke-width:1.5}
+.gl{stroke:var(--ink-3);stroke-opacity:.28}
+.gl.on{stroke:var(--saffron);stroke-opacity:.9}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);padding:6px 10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+/* search */
+.srch{display:flex;gap:8px;flex-wrap:wrap;padding:14px;align-items:center}
+.srch input{flex:1;min-width:200px;font-size:16px;padding:9px 14px}
+.res{padding:0 16px 14px}
+mark{background:var(--saffron-soft);color:inherit;border-radius:3px;padding:0 1px}
+/* science */
+.legend3{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.tier{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;letter-spacing:.02em;white-space:nowrap}
+.tier.t1{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.tier.t2{background:var(--peacock-soft);color:var(--peacock)}
+.tier.t3{background:var(--saffron-soft);color:var(--saffron-strong)}
+.tier.t4{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.tier.t5{background:var(--sunk);color:var(--ink-2)}
+.scig{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:12px}
+.sci{padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.sci h4{margin:0;font-family:var(--f-read);font-size:20px;line-height:1.25}
+.sci p{margin:0;font-size:14.5px;color:var(--ink-2)}
+.sci p b{color:var(--ink)}
+.sci .q{font-family:var(--f-read);font-size:15.5px;color:var(--ink);border-left:3px solid var(--saffron);padding:2px 0 2px 10px;margin:2px 0}
+.sci .q a{font-size:12.5px;font-family:var(--f-ui);margin-left:4px}
+.sci .cites{margin:4px 0 0}
+.subh{font-family:var(--f-read);font-size:22px;margin:30px 0 2px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.subh .gu{font-family:var(--f-display);color:var(--saffron);font-size:.8em;font-weight:400}
+.myth{padding:6px 18px 12px}
+.myth li{margin:8px 0;font-size:14.5px}
+.svr .vs1{grid-template-columns:96px minmax(0,1fr)}
+.today{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:16px 18px;align-items:start;margin-top:14px}
+.np{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:30;background:var(--ink);color:var(--paper);border-radius:999px;padding:7px 8px 7px 16px;display:flex;gap:10px;align-items:center;font-size:13.5px;box-shadow:var(--shadow);max-width:calc(100vw - 32px)}
+.np button{border:0;background:var(--paper);color:var(--ink);border-radius:999px;padding:4px 11px;cursor:pointer;font-size:13px}
+.np span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:900px){.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.exg,.scig,.kinds{grid-template-columns:minmax(0,1fr)}.bars,.hits{max-height:420px}}
+@media (max-width:520px){.four{grid-template-columns:minmax(0,1fr)}.vs1,.svr .vs1{grid-template-columns:minmax(0,1fr)}.vn{display:flex;gap:10px;align-items:center}.vn b{display:inline}.vn button{margin:0}.sa{font-size:19px}.hero .om{font-size:120px}}
+h2,.subh,.vs1,section{scroll-margin-top:130px}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Home</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="./">Today</a>
+    <a href="vedic-time.html">Vedic time</a>
+    <a href="panchang.html">Panchang</a>
+    <a class="on" href="vedas.html">Vedas</a>
+    <a href="kaal-patrak/">Kaal Patrak</a>
+    <a href="vicharan/">Vicharan</a>
+    <a href="vachanamrut-concordance/">Vachanamrut</a>
+    <a href="vachanamrut-concordance/library.html">Library</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+
+<main class="wrap">
+  <p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+
+  <section class="card hero">
+    <div class="om" aria-hidden="true">ॐ</div>
+    <div class="eyebrow">વેદ · The Vedas</div>
+    <h1 class="ttl"><span class="gu">વેદ: વાંચો, સાંભળો, સમજો</span>Read, hear and explore the Vedas</h1>
+    <p class="sub">Every one of the 10,552 mantras of the Rigveda in Sanskrit with an English translation, a recitation for most verses, the seer, deity and metre of each, the places a verse reappears in the other Vedas, and the Samaveda in English. Further down: what the Vedas share with modern mathematics, astronomy, physics, medicine and daily life, with each claim marked as <b>established</b>, <b>a fair reading</b>, <b>speculative</b> or <b>not supported</b>.</p>
+    <div class="tiles" id="tiles"></div>
+    <div class="jump">
+      <a class="btn" href="#read">📖 Read</a><a class="btn" href="#explore">🔎 Explore</a><a class="btn" href="#connect">🔗 Connect</a><a class="btn" href="#graph">🕸 Graph</a><a class="btn" href="#ask">❓ Search</a><a class="btn" href="#samaveda">🎵 Samaveda</a><a class="btn" href="#science">🔬 Science and modern life</a><a class="btn" href="#sources">Sources</a>
+    </div>
+  </section>
+
+  <section class="card today" id="todaycard" aria-label="Mantra for today"></section>
+
+  <h2 class="h2" id="four"><span class="gu">ચાર વેદ</span>The four Vedas</h2>
+  <p class="sub">The Vedas are the oldest scriptures of the Hindu tradition. In the Vachanamrut, Shriji Maharaj names the Vedas again and again as the root authority, alongside the Shrimad Bhagavat and the other shastras: the word વેદ appears <a href="vachanamrut-concordance/#w-390">43 times in the Vachanamrut</a>, and શ્રુતિ <a href="vachanamrut-concordance/#w-514">33 times</a>.</p>
+  <div class="four">
+    <div class="card vd"><span class="g">ऋग्वेद</span><h3>Rigveda</h3><p>Hymns of praise in 10 books (mandalas), 1,028 hymns. The oldest of the four.</p><div class="have">Here: all 10,552 verses, Sanskrit + English + recitation.</div></div>
+    <div class="card vd"><span class="g">सामवेद</span><h3>Samaveda</h3><p>Verses set to melody for singing. Almost all of its verses come from the Rigveda.</p><div class="have">Here: Griffith's English, 1,794 verses, and links from each Rigveda verse.</div></div>
+    <div class="card vd"><span class="g">यजुर्वेद</span><h3>Yajurveda</h3><p>Formulas spoken during the yajna. The Shukla (white) Vajasaneyi Samhita has 40 chapters.</p><div class="have">Here: links from Rigveda verses it repeats, to Griffith's English.</div></div>
+    <div class="card vd"><span class="g">अथर्ववेद</span><h3>Atharvaveda</h3><p>Hymns for health, home, protection and the earth, in 20 books. Roots of Ayurveda.</p><div class="have">Here: links from Rigveda verses it repeats, to Griffith's English.</div></div>
+  </div>
+
+  <!-- READ -->
+  <h2 class="h2" id="read"><span class="gu">વાંચો અને સાંભળો</span>Read and hear the Rigveda</h2>
+  <p class="sub">Pick a mandala and hymn. Each verse shows the Sanskrit, the English of H. H. Wilson (from Sayana's commentary), and chips for its seer (ઋષિ), deity (દેવતા) and metre (છંદ). Tap ▶ to hear the verse recited; ▶ Hymn plays the whole hymn. Tap a chip to see every verse with the same seer, deity or metre.</p>
+  <section class="card" id="reader">
+    <div class="bar">
+      <label class="sr" for="selM">Mandala</label><select id="selM" aria-label="Mandala"></select>
+      <select id="selH" aria-label="Hymn"></select>
+      <span class="seg" id="script" role="group" aria-label="Script"><button data-s="dev" class="on">देवनागरी</button><button data-s="guj">ગુજરાતી</button><button data-s="iast">IAST</button></span>
+      <span class="seg" id="showen" role="group" aria-label="English"><button data-e="1" class="on">English</button><button data-e="0">Sanskrit only</button></span>
+      <span class="sp"></span>
+      <button class="btn" id="playHymn">▶ Hymn</button>
+    </div>
+    <div class="hh" id="hymnHead"></div>
+    <div class="verses" id="verses"><p class="empty">Loading…</p></div>
+    <div class="pager"><button class="btn" id="prevH">‹ Previous hymn</button><button class="btn" id="nextH">Next hymn ›</button></div>
+  </section>
+  <p class="honest">Recitations: clips from the Vedavani research corpus, matched to each verse by its Sanskrit text. 10,057 verses have a clip; for about 1,500 of them only part of the verse is recited, marked "part". The translation is a 19th-century scan, so a few words run together.</p>
+
+  <!-- EXPLORE -->
+  <h2 class="h2" id="explore"><span class="gu">શોધો</span>Explore by deity, seer, metre and theme</h2>
+  <p class="sub">The old index of the Rigveda, the <i>Sarvanukramani</i>, names for every hymn the seer who saw it, the deity it is addressed to and its metre. The themes come from the VedAnvaya project, which read each Sanskrit word against a list of 229 things the hymns talk about: fire, rain, cattle, healing, truth and more.</p>
+  <div class="tabs" id="exTabs" role="tablist">
+    <button data-t="deities" class="on">દેવતા · Deities</button><button data-t="seers">ઋષિ · Seers</button><button data-t="metres">છંદ · Metres</button><button data-t="themes">વિષય · Themes</button>
+  </div>
+  <div class="exg">
+    <section class="card bars" id="exList" aria-label="List"></section>
+    <section class="card hits" id="exHits" aria-label="Verses"><p class="empty">Pick one on the left to see its verses.</p></section>
+  </div>
+
+  <!-- CONNECT -->
+  <h2 class="h2" id="connect"><span class="gu">જોડાણ</span>How the four Vedas share verses</h2>
+  <p class="sub">Many Rigveda verses are repeated in the other three Vedas, word for word or with small changes. The Samaveda takes almost all its verses from the Rigveda and sets them to music. VedAnvaya compared every verse with every other verse and recorded each match as one of a few stated kinds. In the reader, a Rigveda verse with a match shows a <span class="chip x">↔</span> chip.</p>
+  <div class="kinds">
+    <div class="card"><b>Same text</b><br>Identical once spelling conventions are set aside.</div>
+    <div class="card"><b>Reuses the text</b><br>The Samaveda verse is taken from this Rigveda verse.</div>
+    <div class="card"><b>Variant</b><br>The same verse with a few words changed.</div>
+    <div class="card"><b>Near parallel</b><br>Most of the wording is shared. Shared vocabulary alone is not counted on this page.</div>
+  </div>
+  <div class="card tbl" style="margin-top:14px"><table class="mx" id="matrix"></table></div>
+  <p class="honest">Counts are VedAnvaya's, for one recension of each Veda: Rigveda Shakala, Samaveda Kauthuma (archika), Yajurveda Vajasaneyi Madhyandina, Atharvaveda Shaunaka.</p>
+
+  <!-- GRAPH -->
+  <h2 class="h2" id="graph"><span class="gu">જાળું</span>Graph: which seers praised which deities</h2>
+  <p class="sub">The 28 deities and 36 seers with the most verses. A line joins a seer to a deity when the seer has at least six verses to that deity; thicker means more. Tap a circle to light up its lines and list its verses.</p>
+  <section class="card gwrap"><div class="legend"><span><i style="background:var(--saffron)"></i>Deity</span><span><i style="background:var(--surface);border:2.5px solid var(--peacock);box-sizing:border-box"></i>Seer</span><span id="gsel"></span></div><svg id="gsvg" viewBox="0 0 900 620" role="img" aria-label="Network of seers and deities"></svg></section>
+
+  <!-- ASK -->
+  <h2 class="h2" id="ask"><span class="gu">પૂછો</span>Search the Rigveda</h2>
+  <p class="sub">Type an English word (rain, horse, truth), a Sanskrit word in Devanagari or Gujarati letters (सत्य, સત્ય), or a romanised word (satya). Every result is a verse you can open and check. If nothing matches, the page says so.</p>
+  <section class="card">
+    <form class="srch" id="srchF"><input type="search" id="q" placeholder="rain · सत्य · સત્ય · satya" aria-label="Search"><button class="btn" type="submit">Search</button><span class="honest" id="qinfo"></span></form>
+    <div class="res" id="res"></div>
+  </section>
+  <p class="honest">VedAnvaya's own "Ask" sends your question to a language model that answers only from retrieved verses. This page has no server, so it does a plain word search in your browser instead.</p>
+
+  <!-- SAMAVEDA -->
+  <h2 class="h2" id="samaveda"><span class="gu">સામવેદ</span>The Samaveda in English</h2>
+  <p class="sub">The Samaveda is the Veda of song. Its verses are mostly Rigveda verses, chanted to fixed melodies (samans); Indian classical music traces its seven notes to this chanting. Below is R. T. H. Griffith's 1895 English translation.</p>
+  <section class="card svr">
+    <div class="bar"><select id="svPart" aria-label="Part"></select><select id="svBook" aria-label="Book"></select><span class="sp"></span><span class="honest" id="svInfo"></span></div>
+    <div class="verses" id="svList"></div>
+  </section>
+
+  <!-- SCIENCE -->
+  <h2 class="h2" id="science"><span class="gu">વેદ અને આધુનિક વિજ્ઞાન</span>The Vedas, modern science and modern life</h2>
+  <p class="sub">People make many claims about the Vedas and science. Some are solid, some are fair readings, and some are not supported by the texts or by evidence. Each card below says which, links the verse so you can read it yourself, and cites its sources.</p>
+  <div class="legend3">
+    <span class="tier t1">✓ Established</span><span class="tier t2">≈ Fair reading</span><span class="tier t3">? Speculative</span><span class="tier t4">✗ Not supported</span><span class="tier t5">♡ Value for life</span>
+  </div>
+  <p class="honest">Established = in the text and agreed by scholars, or measured in published studies. Fair reading = the text supports it but other readings exist. Speculative = an analogy or a modern reading the text does not clearly make. Not supported = checked and found wrong. Value for life = guidance, not a scientific claim.</p>
+
+  <h3 class="subh"><span class="gu">ગણિત</span>Mathematics and computing</h3>
+  <div class="scig">
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>Geometry for building fire altars</h4>
+      <p>The Shulba Sutras, manuals attached to the Yajurveda for laying out altars, state the rule we now call Pythagoras' theorem, list whole-number triangles such as 3-4-5 and 5-12-13, and give √2 as 1 + 1/3 + 1/(3·4) − 1/(3·4·34) = 1.4142156…, correct to five decimals. Baudhayana's sutra is dated about 800–500 BCE.</p>
+      <p><b>Today:</b> the same rule is used by every builder squaring a corner with a 3-4-5 rope.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Shulba_Sutras" target="_blank" rel="noopener">📖 Shulba Sutras</a><a class="cite tx" href="https://mathshistory.st-andrews.ac.uk/HistTopics/Indian_sulbasutras/" target="_blank" rel="noopener">📖 MacTutor: The Indian Sulbasutras</a></div></article>
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>Binary numbers from Vedic metres</h4>
+      <p>Pingala's <i>Chandahshastra</i>, the Vedanga on metre, lists every pattern of short (laghu) and long (guru) syllables. Its method is the binary number system, and its "Meru prastara" is the triangle later called Pascal's. Counting the metres also gives the Fibonacci numbers, worked out by Virahanka and Hemachandra centuries before Fibonacci.</p>
+      <p><b>Today:</b> every computer counts in the same two symbols.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Pingala" target="_blank" rel="noopener">📖 Pingala</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Fibonacci_sequence#History" target="_blank" rel="noopener">📖 Fibonacci sequence: history</a></div></article>
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>Grammar rules like a programming language</h4>
+      <p>Panini's grammar (about 4th century BCE), written to protect the Vedic language, packs Sanskrit into about 4,000 short rules with meta-rules, much like the notation used to define programming languages. In 1967 the computer scientist P. Z. Ingerman proposed calling that notation "Panini–Backus form".</p>
+      <div class="cites"><a class="cite tx" href="https://doi.org/10.1145/363162.363165" target="_blank" rel="noopener">📖 Ingerman 1967, Communications of the ACM</a><a class="cite tx" href="https://en.wikipedia.org/wiki/P%C4%81%E1%B9%87ini" target="_blank" rel="noopener">📖 Panini</a></div></article>
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>Names for very large numbers</h4>
+      <p>The Yajurveda (Vajasaneyi Samhita 17.2) names powers of ten, one after another, up to parardha = 10<sup>12</sup>. Few ancient cultures named numbers that large. The later place-value system with zero grew from this habit of counting in tens.</p>
+      <div class="cites"><a class="cite tx" href="https://sacred-texts.com/hin/wyv/wyvbk17.htm" target="_blank" rel="noopener">📖 White Yajurveda book 17, Griffith</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Indian_numbering_system" target="_blank" rel="noopener">📖 Indian numbering system</a></div></article>
+    <article class="card sci"><span class="tier t4">✗ Not supported</span><h4>"Vedic Mathematics" is in the Vedas</h4>
+      <p>The book <i>Vedic Mathematics</i> (1965) by Bharati Krishna Tirtha teaches useful mental arithmetic tricks, but its 16 sutras are not found in any Veda. The author said he reconstructed them; scholars have found no Vedic source. The tricks work; the label is wrong.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Vedic_Mathematics" target="_blank" rel="noopener">📖 Vedic Mathematics (book)</a></div></article>
+  </div>
+
+  <h3 class="subh"><span class="gu">ખગોળ અને સમય</span>Astronomy and time</h3>
+  <div class="scig">
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>A year of 12 months and 360 days</h4>
+      <p class="q">"The fellies are twelve; the wheel is one … within it are collected 360 spokes." <a href="#rv-1.164.48">RV 1.164.48</a></p>
+      <p class="q">"The twelve-spoked wheel … seven hundred and twenty children in pairs abide in it." <a href="#rv-1.164.11">RV 1.164.11</a></p>
+      <p>The wheel is the year: 12 months of 30 days, and 720 = 360 days + 360 nights. A 360-day ritual year with extra days added to keep up with the sun is the start of the luni-solar calendar still used in every panchang.</p>
+      <div class="cites"><a class="cite" href="panchang.html">Panchang and its science</a><a class="cite" href="vedic-time.html">Vedic time</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Vedanga_Jyotisha" target="_blank" rel="noopener">📖 Vedanga Jyotisha</a></div></article>
+    <article class="card sci"><span class="tier t2">≈ Fair reading</span><h4>The moon shines with the sun's light</h4>
+      <p class="q">"The solar rays found the light of Tvashta concealed in the mansion of the moving moon." <a href="#rv-1.84.15">RV 1.84.15</a></p>
+      <p>Yaska's <i>Nirukta</i> (about 5th century BCE) explains such verses as saying one ray of the sun lights the moon. That matches what we know. The verse itself is poetic, so other readings exist.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Nirukta" target="_blank" rel="noopener">📖 Nirukta</a><a class="cite tx" href="https://science.nasa.gov/moon/moon-phases/" target="_blank" rel="noopener">📖 NASA: Moon phases</a></div></article>
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>Ancient astronomy that still matches measurement</h4>
+      <p>Later Indian astronomy, built on the Vedanga Jyotisha, measured the sidereal year to within minutes and the lunar month to within a second. The <a href="panchang.html#sources">Panchang page</a> sets those numbers against NASA's.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Surya_Siddhanta" target="_blank" rel="noopener">📖 Surya Siddhanta</a><a class="cite tx" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html" target="_blank" rel="noopener">📖 NASA Moon fact sheet</a></div></article>
+    <article class="card sci"><span class="tier t3">? Speculative</span><h4>Dating the Vedas from star positions</h4>
+      <p>B. G. Tilak (<i>The Orion</i>, 1893) argued from references to the spring equinox in Orion that some hymns are over 6,000 years old. The verses can be read other ways, and most scholars date the Rigveda to about 1500–1200 BCE from language and archaeology. The question is open, but the early date is not established.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Rigveda#Dating_and_historical_context" target="_blank" rel="noopener">📖 Rigveda: dating</a><a class="cite tx" href="https://archive.org/search?query=Tilak+Orion+antiquity+Vedas" target="_blank" rel="noopener">📖 Tilak, The Orion (archive.org)</a></div></article>
+  </div>
+
+  <h3 class="subh"><span class="gu">ભૌતિક વિજ્ઞાન અને બ્રહ્માંડ</span>Physics and the universe</h3>
+  <div class="scig">
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>The hymn that asks how the universe began</h4>
+      <p class="q">"The non-existent was not, the existent was not … Who really knows? … whence was this creation?" <a href="#rv-10.129.1">RV 10.129.1</a> · <a href="#rv-10.129.6">10.129.6</a></p>
+      <p>The Nasadiya Sukta asks what came before space and time, and ends by saying even the highest may not know. That is the question cosmologists still ask about the time before the Big Bang. The hymn asks the question; it does not give a physical theory.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Nasadiya_Sukta" target="_blank" rel="noopener">📖 Nasadiya Sukta</a><a class="cite tx" href="https://science.nasa.gov/universe/overview/" target="_blank" rel="noopener">📖 NASA: The Big Bang</a></div></article>
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>Physicists who read the Vedic texts</h4>
+      <p>Erwin Schrödinger, a founder of quantum mechanics, wrote about the Upanishads' idea of one consciousness in <i>What is Life?</i> (1944) and <i>My View of the World</i> (1961). Carl Sagan said in <i>Cosmos</i> (1980) that the Hindu time scales, a day of Brahma of 8.64 billion years, are the only ones of an ancient faith that match modern cosmology. This is history: they were inspired by the ideas, not proving them.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Erwin_Schr%C3%B6dinger" target="_blank" rel="noopener">📖 Erwin Schrödinger</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Cosmos:_A_Personal_Voyage" target="_blank" rel="noopener">📖 Cosmos: A Personal Voyage (episode 10)</a><a class="cite" href="vedic-time.html">Vedic time scales</a></div></article>
+    <article class="card sci"><span class="tier t2">≈ Fair reading</span><h4>Rta: one order behind all nature</h4>
+      <p class="q">"Earth is upheld by truth; heaven is upheld by the sun." <a href="#rv-10.85.1">RV 10.85.1</a></p>
+      <p>Rta (ऋत) is the order that keeps the sun, seasons and rivers on course, and the same word means moral truth. The idea that one lawful order runs through all of nature is the starting belief of physics. It is a parallel in outlook, not a physical law.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/%E1%B9%9Ata" target="_blank" rel="noopener">📖 Rta</a></div></article>
+    <article class="card sci"><span class="tier t3">? Speculative</span><h4>The "golden egg" and the Big Bang</h4>
+      <p class="q">"Hiranyagarbha was present at the beginning …" <a href="#rv-10.121.1">RV 10.121.1</a></p>
+      <p>Some compare the golden embryo from which everything arose to the hot, dense early universe. It is a striking image, but the hymn is about a creator god, and the likeness is a modern analogy, not something the text says.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Hiranyagarbha" target="_blank" rel="noopener">📖 Hiranyagarbha</a></div></article>
+    <article class="card sci"><span class="tier t3">? Speculative</span><h4>The speed of light in a Rigveda commentary</h4>
+      <p class="q">"You, Surya, outstrip all in speed … you are the source of light." <a href="#rv-1.50.4">RV 1.50.4</a></p>
+      <p>Sayana's 14th-century commentary on this verse says the sun travels 2,202 yojanas in half a nimesha. With one choice of units that comes close to the speed of light. But the length of a yojana and of a nimesha varied, the line is in the commentary and not the hymn, and it may describe the sun's motion, so it proves nothing.</p>
+      <div class="cites"><a class="cite tx" href="https://arxiv.org/abs/physics/9804020" target="_blank" rel="noopener">📖 S. Kak, The speed of light and Puranic cosmology (arXiv)</a></div></article>
+    <article class="card sci"><span class="tier t4">✗ Not supported</span><h4>Aeroplanes and nuclear weapons in the Vedas</h4>
+      <p>The <i>Vaimanika Shastra</i>, often cited for Vedic aircraft, was written down in the early 20th century. A 1974 study at the Indian Institute of Science found its designs could not fly. No Veda describes aircraft or atomic weapons.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Vaimanika_Shastra" target="_blank" rel="noopener">📖 Vaimanika Shastra</a></div></article>
+  </div>
+
+  <h3 class="subh"><span class="gu">મન, શ્વાસ અને આરોગ્ય</span>Mind, breath and health</h3>
+  <div class="scig">
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>Chanting slows the breath and calms the heart</h4>
+      <p>A study in the <i>British Medical Journal</i> (2001) found that reciting a yoga mantra, like reciting the rosary, slowed breathing to about six breaths a minute and strengthened healthy heart-rate rhythms. The study was small (23 adults), but the effect was clear.</p>
+      <div class="cites"><a class="cite tx" href="https://doi.org/10.1136/bmj.323.7327.1446" target="_blank" rel="noopener">📖 Bernardi et al. 2001, BMJ</a></div></article>
+    <article class="card sci"><span class="tier t2">≈ Early evidence</span><h4>Om chanting and the brain</h4>
+      <p>A pilot brain scan study (2011, 12 people) saw calmer activity in emotion areas of the brain while chanting "Om", compared with saying "ssss". It is a small first study, not proof.</p>
+      <div class="cites"><a class="cite tx" href="https://doi.org/10.4103/0973-6131.78171" target="_blank" rel="noopener">📖 Kalyani et al. 2011, Int J Yoga</a></div></article>
+    <article class="card sci"><span class="tier t2">≈ Early evidence</span><h4>Memorising the Vedas and memory in the brain</h4>
+      <p>Scans of 21 professional Vedic pandits found more grey matter in memory regions than in matched controls. The study shows a link, not that chanting caused it, and the group was small.</p>
+      <div class="cites"><a class="cite tx" href="https://doi.org/10.1016/j.neuroimage.2015.10.059" target="_blank" rel="noopener">📖 Hartzell et al. 2016, NeuroImage</a><a class="cite tx" href="https://blogs.scientificamerican.com/guest-blog/a-neuroscientist-explores-the-sanskrit-effect/" target="_blank" rel="noopener">📖 Scientific American: the "Sanskrit effect"</a></div></article>
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>The Atharvaveda and the roots of Ayurveda</h4>
+      <p>The Atharvaveda has hymns to healing plants and against fever, cough and skin disease, and Ayurveda counts itself an upaveda of it. Some plants have real medical value; others have not held up. Turmeric's curcumin, for example, has been tested hard and is a poor drug on its own.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Atharvaveda" target="_blank" rel="noopener">📖 Atharvaveda</a><a class="cite tx" href="https://doi.org/10.1021/acs.jmedchem.6b00975" target="_blank" rel="noopener">📖 Nelson et al. 2017, J Med Chem (curcumin)</a></div></article>
+    <article class="card sci"><span class="tier t3">? Speculative</span><h4>Yajna smoke cleans the air</h4>
+      <p>One 2007 study burned a mix of herbs with wood and found fewer airborne bacteria in a closed room for a day. It was one study, not repeated widely, and any smoke also adds fine particles that harm the lungs. Claims that havan or Agnihotra cure pollution are not supported.</p>
+      <div class="cites"><a class="cite tx" href="https://doi.org/10.1016/j.jep.2007.08.038" target="_blank" rel="noopener">📖 Nautiyal et al. 2007, J Ethnopharmacology</a><a class="cite tx" href="https://www.who.int/news-room/fact-sheets/detail/household-air-pollution-and-health" target="_blank" rel="noopener">📖 WHO: smoke and health</a></div></article>
+    <article class="card sci"><span class="tier t3">? Speculative</span><h4>What plant was Soma?</h4>
+      <p>Soma, the pressed drink of over a thousand verses (see the Soma juice theme), has been identified as ephedra, a mushroom, and many other plants. No identification is agreed.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Soma_(drink)" target="_blank" rel="noopener">📖 Soma (drink)</a></div></article>
+  </div>
+
+  <h3 class="subh"><span class="gu">જ્ઞાન-સંરક્ષણ અને સંગીત</span>Information, memory and music</h3>
+  <div class="scig">
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>3,000 years of copying without a printer</h4>
+      <p>The Vedas were passed on by mouth. Students learned each verse in several patterns: word by word (pada), in pairs (krama), and back and forth (jata, ghana). Any slip shows up as a broken pattern, the same idea as a checksum in computing. UNESCO lists Vedic chanting as an intangible heritage of humanity.</p>
+      <div class="cites"><a class="cite tx" href="https://ich.unesco.org/en/RL/tradition-of-vedic-chanting-00062" target="_blank" rel="noopener">📖 UNESCO: Tradition of Vedic chanting</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Vedic_chant" target="_blank" rel="noopener">📖 Vedic chant</a></div></article>
+    <article class="card sci"><span class="tier t1">✓ Established</span><h4>From Samaveda chant to the seven notes</h4>
+      <p>The Samaveda's sung verses use pitch marks, and Indian music theory (the Natya Shastra and later works) traces the seven svaras (sa re ga ma pa dha ni) back to this chanting.</p>
+      <div class="cites"><a class="cite tx" href="https://en.wikipedia.org/wiki/Samaveda" target="_blank" rel="noopener">📖 Samaveda</a><a class="cite tx" href="https://en.wikipedia.org/wiki/Svara" target="_blank" rel="noopener">📖 Svara</a></div></article>
+  </div>
+
+  <h3 class="subh"><span class="gu">આજના જીવનમાં</span>For life today</h3>
+  <div class="scig">
+    <article class="card sci"><span class="tier t5">♡ Value for life</span><h4>Teamwork: meet, speak and think together</h4>
+      <p class="q">"Meet together, talk together, let your minds apprehend alike." <a href="#rv-10.191.2">RV 10.191.2</a> · <a href="#rv-10.191.4">10.191.4</a></p>
+      <p>The last hymn of the Rigveda is about agreement. It is still chanted at the end of meetings and is a good rule for any team, family or mandal.</p></article>
+    <article class="card sci"><span class="tier t5">♡ Value for life</span><h4>An open mind</h4>
+      <p class="q">"May auspicious works come to us from every quarter." <a href="#rv-1.89.1">RV 1.89.1</a></p>
+      <p class="q">"Learned priests call one by many names." <a href="#rv-1.164.46">RV 1.164.46</a></p>
+      <p>Welcoming good ideas from anywhere is also how science grows.</p></article>
+    <article class="card sci"><span class="tier t5">♡ Value for life</span><h4>Gambling and addiction</h4>
+      <p class="q">"Play not with dice; pursue agriculture; delight in wealth so acquired." <a href="#rv-10.34.13">RV 10.34.13</a></p>
+      <p>The Gambler's Hymn (RV 10.34) describes a man who has lost his family and self-respect to dice and cannot stop. It is one of the oldest descriptions of addiction, and its advice is honest work.</p></article>
+    <article class="card sci"><span class="tier t5">♡ Value for life</span><h4>Giving does not make you poorer</h4>
+      <p class="q">"The riches of one who gives do not diminish." <a href="#rv-10.117.1">RV 10.117.1</a></p>
+      <p>Hymn 10.117 praises feeding the hungry. Studies of giving find that spending on others raises happiness.</p>
+      <div class="cites"><a class="cite tx" href="https://doi.org/10.1126/science.1150952" target="_blank" rel="noopener">📖 Dunn et al. 2008, Science</a></div></article>
+    <article class="card sci"><span class="tier t5">♡ Value for life</span><h4>Earth is our mother</h4>
+      <p class="q">"The earth is my mother, I am her son." Atharvaveda 12.1.12</p>
+      <p>The Prithvi Sukta (AV 12.1) asks that what we dig from the earth grow back quickly. It reads like an early call for care of the environment.</p>
+      <div class="cites"><a class="cite tx" href="https://sacred-texts.com/hin/av/av12001.htm" target="_blank" rel="noopener">📖 AV 12.1, Griffith</a></div></article>
+    <article class="card sci"><span class="tier t5">♡ Value for life</span><h4>Prayer for a clear mind</h4>
+      <p class="q">"We meditate on that desirable light of the divine Savita, who influences our pious rites." <a href="#rv-3.62.10">RV 3.62.10</a></p>
+      <p>The Gayatri mantra asks for a bright intellect, not for wealth. Start the day with it, then study.</p></article>
+  </div>
+
+  <h3 class="subh"><span class="gu">ધ્યાન રાખો</span>Claims to be careful with</h3>
+  <section class="card myth"><ul>
+    <li><span class="tier t4">✗</span> "The Vedas contain modern physics equations." No verse states a physical law or an equation. Parallels on this page are in ideas and questions.</li>
+    <li><span class="tier t4">✗</span> "The seven horses of the sun are the seven colours of light." The Rigveda's sun has seven horses, but nothing in the text links them to a spectrum; that link is modern.</li>
+    <li><span class="tier t3">?</span> "Exact dates for Vedic events from astronomy." Possible in principle, but every published date depends on a chosen reading of poetic verses.</li>
+    <li><span class="tier t1">✓</span> What is solid: careful arithmetic and geometry for the altar, a calendar of 12 months and 360 days, a system of oral copying that kept the text intact for 3,000 years, and deep questions about where everything came from.</li>
+  </ul></section>
+
+  <!-- ABOUT -->
+  <h2 class="h2" id="about"><span class="gu">આ પાના વિશે</span>About this page and VedAnvaya</h2>
+  <section class="card srcs">
+    <p>This page recreates, for a site without a server, the main features of <a href="https://github.com/HimanshuMohanty-Git24/VedAnvaya" target="_blank" rel="noopener"><b>VedAnvaya</b></a> (वेदान्वय, "The Vedas, connected") by Himanshu Mohanty: <b>Read</b> (verse with its seer, deity and metre), <b>Hear</b> (a recitation for each verse), <b>Explore</b> (lenses by deity and theme), <b>Connect</b> (typed links between the four Vedas), <b>Visualise</b> (a graph) and <b>Ask</b> (here a word search). It uses VedAnvaya's cross-Veda links, its themes and its source research. It does not have VedAnvaya's full 4-Veda Sanskrit text, its knowledge graph database or its language-model answers; for those, use VedAnvaya itself.</p>
+    <p><b>VedAnvaya licence.</b> PolyForm Noncommercial License 1.0.0. Required Notice: Copyright 2026 Himanshu Mohanty (<a href="https://github.com/HimanshuMohanty-Git24/VedAnvaya" target="_blank" rel="noopener">https://github.com/HimanshuMohanty-Git24/VedAnvaya</a>). This site is noncommercial. Paper: H. Mohanty, <i>VedGraph: Agentic Construction of an Evidence-Typed Knowledge Graph for the Vedic Saṃhitās</i>, Zenodo 2026, <a href="https://doi.org/10.5281/zenodo.22896781" target="_blank" rel="noopener">doi:10.5281/zenodo.22896781</a>.</p>
+  </section>
+
+  <h2 class="h2" id="sources"><span class="gu">સંદર્ભ</span>Sources</h2>
+  <section class="card srcs">
+    <h3>Texts and data on this page</h3>
+    <ol>
+      <li><b>Rigveda Sanskrit, romanisation and English:</b> <a href="https://huggingface.co/datasets/JDhruv14/RigVeda" target="_blank" rel="noopener">JDhruv14/RigVeda dataset</a> (Apache 2.0). English is H. H. Wilson, <i>Rig-Veda Sanhitá</i> (1850–1888), public domain, translated with Sayana's commentary.</li>
+      <li><b>Seer, deity and metre of each verse:</b> V. S. D. S. Mahesh Akavarapu and Arnab Bhattacharya, <a href="https://aclanthology.org/2023.wsc-csdh.6/" target="_blank" rel="noopener">Creation of a Digital Rig Vedic Index (Anukramani)</a>, WSC 2023; data on <a href="https://github.com/mahesh-ak/WSC2023" target="_blank" rel="noopener">GitHub</a> (Apache 2.0).</li>
+      <li><b>Recitations:</b> <a href="https://huggingface.co/datasets/sanganaka/Vedavani-Dataset" target="_blank" rel="noopener">Vedavani dataset</a> (Apache 2.0), from Kumar et al., <a href="https://arxiv.org/abs/2506.00145" target="_blank" rel="noopener">Vedavani: A Benchmark Corpus for ASR on Vedic Sanskrit Poetry</a>, ACL 2025. Played from Hugging Face; clips matched to verses by this site.</li>
+      <li><b>Samaveda English:</b> R. T. H. Griffith, <i>The Hymns of the Samaveda</i> (1895), public domain, via <a href="https://github.com/bhavykhatri/DharmicData" target="_blank" rel="noopener">DharmicData</a> (database under the Open Database License 1.0) and <a href="https://en.wikisource.org/wiki/The_Sama_Veda" target="_blank" rel="noopener">Wikisource</a>.</li>
+      <li><b>Cross-Veda links and themes:</b> <a href="https://github.com/HimanshuMohanty-Git24/VedAnvaya" target="_blank" rel="noopener">VedAnvaya</a> (PolyForm Noncommercial 1.0.0, © 2026 Himanshu Mohanty).</li>
+      <li><b>Atharvaveda and Yajurveda English (linked):</b> R. T. H. Griffith, <a href="https://sacred-texts.com/hin/av/" target="_blank" rel="noopener">The Hymns of the Atharvaveda</a> (1895) and <a href="https://sacred-texts.com/hin/wyv/" target="_blank" rel="noopener">The Texts of the White Yajurveda</a> (1899), Internet Sacred Text Archive.</li>
+      <li><b>Vachanamrut word counts:</b> this site's <a href="vachanamrut-concordance/">Vachanamrut concordance</a>.</li>
+    </ol>
+    <h3>Science and history</h3>
+    <ol>
+      <li>Bernardi L. et al. (2001). Effect of rosary prayer and yoga mantras on autonomic cardiovascular rhythms. <i>BMJ</i> 323:1446. <a href="https://doi.org/10.1136/bmj.323.7327.1446" target="_blank" rel="noopener">doi:10.1136/bmj.323.7327.1446</a></li>
+      <li>Kalyani B. G. et al. (2011). Neurohemodynamic correlates of 'OM' chanting: a pilot fMRI study. <i>Int J Yoga</i> 4(1):3–6. <a href="https://doi.org/10.4103/0973-6131.78171" target="_blank" rel="noopener">doi:10.4103/0973-6131.78171</a></li>
+      <li>Hartzell J. F. et al. (2016). Brains of verbal memory specialists show anatomical differences in language, memory and visual systems. <i>NeuroImage</i> 131:181–192. <a href="https://doi.org/10.1016/j.neuroimage.2015.10.059" target="_blank" rel="noopener">doi:10.1016/j.neuroimage.2015.10.059</a>; and J. Hartzell, <a href="https://blogs.scientificamerican.com/guest-blog/a-neuroscientist-explores-the-sanskrit-effect/" target="_blank" rel="noopener">A neuroscientist explores the "Sanskrit effect"</a>, Scientific American, 2018.</li>
+      <li>Nautiyal C. S. et al. (2007). Medicinal smoke reduces airborne bacteria. <i>J Ethnopharmacology</i> 114(3):446–451. <a href="https://doi.org/10.1016/j.jep.2007.08.038" target="_blank" rel="noopener">doi:10.1016/j.jep.2007.08.038</a></li>
+      <li>Nelson K. M. et al. (2017). The essential medicinal chemistry of curcumin. <i>J Med Chem</i> 60(5):1620–1637. <a href="https://doi.org/10.1021/acs.jmedchem.6b00975" target="_blank" rel="noopener">doi:10.1021/acs.jmedchem.6b00975</a></li>
+      <li>Dunn E. W., Aknin L. B., Norton M. I. (2008). Spending money on others promotes happiness. <i>Science</i> 319:1687–1688. <a href="https://doi.org/10.1126/science.1150952" target="_blank" rel="noopener">doi:10.1126/science.1150952</a></li>
+      <li>Ingerman P. Z. (1967). "Pāṇini-Backus Form" suggested. <i>Communications of the ACM</i> 10(3):137. <a href="https://doi.org/10.1145/363162.363165" target="_blank" rel="noopener">doi:10.1145/363162.363165</a></li>
+      <li>Kak S. (1998). <a href="https://arxiv.org/abs/physics/9804020" target="_blank" rel="noopener">The speed of light and Puranic cosmology</a>. arXiv:physics/9804020.</li>
+      <li>UNESCO, <a href="https://ich.unesco.org/en/RL/tradition-of-vedic-chanting-00062" target="_blank" rel="noopener">Tradition of Vedic chanting</a> (proclaimed 2003, inscribed 2008).</li>
+      <li>MacTutor History of Mathematics, <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Indian_sulbasutras/" target="_blank" rel="noopener">The Indian Sulbasutras</a>.</li>
+      <li>Background articles: <a href="https://en.wikipedia.org/wiki/Rigveda" target="_blank" rel="noopener">Rigveda</a>, <a href="https://en.wikipedia.org/wiki/Shulba_Sutras" target="_blank" rel="noopener">Shulba Sutras</a>, <a href="https://en.wikipedia.org/wiki/Pingala" target="_blank" rel="noopener">Pingala</a>, <a href="https://en.wikipedia.org/wiki/Vedanga_Jyotisha" target="_blank" rel="noopener">Vedanga Jyotisha</a>, <a href="https://en.wikipedia.org/wiki/Nirukta" target="_blank" rel="noopener">Nirukta</a>, <a href="https://en.wikipedia.org/wiki/Nasadiya_Sukta" target="_blank" rel="noopener">Nasadiya Sukta</a>, <a href="https://en.wikipedia.org/wiki/%E1%B9%9Ata" target="_blank" rel="noopener">Rta</a>, <a href="https://en.wikipedia.org/wiki/Erwin_Schr%C3%B6dinger" target="_blank" rel="noopener">Erwin Schrödinger</a>, <a href="https://en.wikipedia.org/wiki/Cosmos:_A_Personal_Voyage" target="_blank" rel="noopener">Cosmos</a>, <a href="https://en.wikipedia.org/wiki/Vaimanika_Shastra" target="_blank" rel="noopener">Vaimanika Shastra</a>, <a href="https://en.wikipedia.org/wiki/Vedic_Mathematics" target="_blank" rel="noopener">Vedic Mathematics</a>, <a href="https://en.wikipedia.org/wiki/Soma_(drink)" target="_blank" rel="noopener">Soma</a>, <a href="https://en.wikipedia.org/wiki/Vedic_chant" target="_blank" rel="noopener">Vedic chant</a>, <a href="https://en.wikipedia.org/wiki/Samaveda" target="_blank" rel="noopener">Samaveda</a>.</li>
+    </ol>
+    <p class="honest">Verse quotations on this page are from Wilson's English as shown in the reader, except the Atharvaveda line (Griffith). Where a claim depends on a reading of a verse, the verse is linked so you can read it in full.</p>
+  </section>
+  <p class="note"><a href="panchang.html">← Panchang</a> · <a href="./">Home</a></p>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Texts.</b> Rigveda text and Wilson's English: JDhruv14/RigVeda (Apache 2.0). Seer, deity, metre: WSC 2023 Anukramani (Apache 2.0). Recitations: Vedavani (Apache 2.0). Cross-Veda links and themes: VedAnvaya, © 2026 Himanshu Mohanty, PolyForm Noncommercial 1.0.0. Samaveda English: Griffith via DharmicData (ODbL 1.0).</p>
+</div></footer>
+<div class="np hidden" id="np" role="status"><span id="npT"></span><button id="npStop">■ Stop</button></div>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const DATA="data/vedas/";
+const AUD="https://huggingface.co/datasets/sanganaka/Vedavani-Dataset/resolve/main/AudioFiles/";
+const fmt=n=>Number(n).toLocaleString("en-IN");
+const GUJ=s=>s.replace(/[ऀ-ॿ]/g,c=>{const o=c.charCodeAt(0);if(c==="ऴ")return"ળ";if(c==="।"||c==="॥")return c;return String.fromCharCode(o+0x180)});
+const DEV=s=>s.replace(/[઀-૿]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x180));
+const fold=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const store={get:(k,d)=>{try{return localStorage.getItem(k)??d}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+let META=null;const RV={};const ST={m:1,h:1,script:store.get("vd-script","dev"),en:store.get("vd-en","1")};
+async function getJSON(u){const r=await fetch(u);if(!r.ok)throw new Error(u+" "+r.status);return r.json()}
+async function mandala(m){if(!RV[m])RV[m]=getJSON(DATA+"rv"+m+".json");return RV[m]}
+const key=r=>r[0]+"."+r[1];
+function sanskrit(r){if(ST.script==="iast")return`<div class="ia" lang="sa-Latn">${esc(r[3])}</div>`;
+  const t=ST.script==="guj"?GUJ(r[2]):r[2];return`<div class="sa sp-lang-keep${ST.script==="guj"?" gj":""}" lang="sa">${esc(t)}</div>`}
+const names=s=>(s||"").split(",").map(x=>x.trim()).filter(Boolean);
+/* ---------- audio ---------- */
+const A={el:new Audio(),q:[],btn:null,label:""};A.el.preload="none";
+function stopAudio(){A.el.pause();A.q=[];if(A.btn)A.btn.classList.remove("on");A.btn=null;$("np").classList.add("hidden")}
+function nextClip(){if(!A.q.length){stopAudio();return}const it=A.q.shift();
+  if(it.btn!==A.btn){if(A.btn)A.btn.classList.remove("on");A.btn=it.btn;if(A.btn)A.btn.classList.add("on");
+    if(it.anchor){const el=document.getElementById(it.anchor);if(el){document.querySelectorAll(".vs1.hl").forEach(x=>x.classList.remove("hl"));el.classList.add("hl")}}}
+  $("npT").textContent="▶ "+it.label;$("np").classList.remove("hidden");
+  A.el.src=AUD+it.f;A.el.play().catch(()=>{$("npT").textContent="Could not play this clip";setTimeout(nextClip,800)})}
+A.el.addEventListener("ended",nextClip);A.el.addEventListener("error",()=>setTimeout(nextClip,300));
+$("npStop").onclick=stopAudio;
+function queueVerse(m,r,btn,anchor){(r[8]||[]).forEach(c=>A.q.push({f:c[0],btn,label:"RV "+m+"."+key(r),anchor}))}
+/* ---------- reader ---------- */
+function verseHTML(m,r,opts={}){const k=m+"."+key(r),x=(META&&META.x[k])||[];
+  const chips=[...names(r[6]).map(d=>`<span class="chip d" data-f="deities" data-v="${esc(d)}">${esc(cap(d))}</span>`),
+    r[5]?`<span class="chip r" data-f="seers" data-v="${esc(r[5])}">ઋષિ ${esc(cap(r[5]))}</span>`:"",
+    r[7]?`<span class="chip" data-f="metres" data-v="${esc(r[7])}">છંદ ${esc(cap(r[7]))}</span>`:"",
+    ...x.map(c=>c[2]?`<a class="chip x" href="${esc(c[2])}" target="_blank" rel="noopener" title="${esc(c[1])}">↔ ${esc(c[0])}</a>`:`<span class="chip x" title="${esc(c[1])}">↔ ${esc(c[0])}</span>`)].join("");
+  const aud=r[8]?`<button class="play" data-k="${k}" aria-label="Play RV ${k}" title="${r[9]?"Recitation":"Recitation (part of the verse)"}">▶</button>${r[9]?"":'<div style="font-size:11px">part</div>'}`:`<button class="play" disabled title="No recitation found">▶</button>`;
+  return`<div class="vs1" id="rv-${k}"><div class="vn"><b>${opts.full?k:r[1]}</b>${opts.full?"":"RV "+k}${aud}</div><div>${sanskrit(r)}${ST.en==="1"||opts.forceEn?`<div class="tr">${esc(r[4])}</div>`:""}<div class="chips">${chips}</div></div></div>`}
+async function showHymn(m,h,focus){ST.m=m;ST.h=h;const rows=(await mandala(m)).filter(r=>r[0]===h);
+  $("selM").value=m;fillHymns();$("selH").value=h;
+  const ds=[...new Set(rows.flatMap(r=>names(r[6])))],ss=[...new Set(rows.map(r=>r[5]).filter(Boolean))],ms=[...new Set(rows.map(r=>r[7]).filter(Boolean))];
+  const na=rows.filter(r=>r[8]).length;
+  $("hymnHead").innerHTML=`<div><div class="eyebrow">Mandala ${m} · Hymn ${h}</div><h3>ઋગ્વેદ ${m}.${h} · Rigveda ${m}.${h}</h3><div class="m">${rows.length} verses · seer ${ss.map(s=>esc(cap(s))).join(", ")} · deity ${ds.map(s=>esc(cap(s))).join(", ")} · metre ${ms.map(s=>esc(cap(s))).join(", ")} · ${na} of ${rows.length} with recitation</div></div>`;
+  $("verses").innerHTML=rows.map(r=>verseHTML(m,r)).join("");
+  if(focus){const el=document.getElementById("rv-"+focus);if(el){el.classList.add("hl");el.scrollIntoView({block:"center"})}}
+}
+function fillHymns(){const n=META.hymns[ST.m];const s=$("selH");if(s.options.length===n&&s.dataset.m==ST.m)return;s.dataset.m=ST.m;
+  s.innerHTML=Array.from({length:n},(_,i)=>`<option value="${i+1}">Hymn ${i+1}</option>`).join("")}
+function step(d){let m=ST.m,h=ST.h+d;if(h<1){m--;if(m<1)m=10;h=META.hymns[m]}else if(h>META.hymns[m]){m++;if(m>10)m=1;h=1}
+  showHymn(m,h);document.getElementById("reader").scrollIntoView({block:"start"})}
+async function playHymn(){stopAudio();const rows=(await mandala(ST.m)).filter(r=>r[0]===ST.h);
+  rows.forEach(r=>{const b=document.querySelector(`.play[data-k="${ST.m}.${key(r)}"]`);queueVerse(ST.m,r,b,"rv-"+ST.m+"."+key(r))});
+  if(!A.q.length){$("npT").textContent="No recitation for this hymn";$("np").classList.remove("hidden");return}nextClip()}
+document.addEventListener("click",async e=>{const p=e.target.closest(".play[data-k]");
+  if(p){if(p.classList.contains("on")){stopAudio();return}stopAudio();const [m,h,v]=p.dataset.k.split(".").map(Number);
+    const r=(await mandala(m)).find(r=>r[0]===h&&r[1]===v);queueVerse(m,r,p,null);nextClip();return}
+  const c=e.target.closest(".chip[data-f]");if(c){e.preventDefault();openExplore(c.dataset.f,c.dataset.v);return}
+  const a=e.target.closest('a[href^="#rv-"]');if(a){e.preventDefault();goVerse(a.getAttribute("href").slice(4),true)}});
+async function goVerse(k,scroll){const [m,h]=k.split(".").map(Number);if(!(m>=1&&m<=10))return;
+  history.replaceState(null,"","#rv-"+k);await showHymn(m,h,k);if(scroll&&!document.getElementById("rv-"+k))document.getElementById("reader").scrollIntoView()}
+/* ---------- explore ---------- */
+const EX={tab:"deities",sel:null,lens:"all"};
+const LENS={all:"બધા · All",nature:"પ્રકૃતિ · Nature",life:"જીવન · Life",living:"વનસ્પતિ-પ્રાણી · Plants & animals",material:"વસ્તુ · Things",ritual:"યજ્ઞ · Ritual",ideas:"વિચાર · Ideas",people:"લોકો · People"};
+function exList(){const L=$("exList");let items;
+  if(EX.tab==="themes"){items=META.themes.filter(t=>EX.lens==="all"||t.lens===EX.lens).map(t=>[t.id,`${cap(t.en)}<small>${esc(t.sa)}</small>`,t.rv.length]);
+    L.innerHTML=`<div class="lensf">${Object.entries(LENS).map(([k,v])=>`<button class="chip${EX.lens===k?" d":""}" data-lens="${k}">${v}</button>`).join("")}</div>`}
+  else{items=META[EX.tab].map(x=>[x[0],`${esc(x[1])}<small>${esc(x[2])}</small>`,x[3]]);L.innerHTML=""}
+  const mx=Math.max(...items.map(i=>i[2]),1);
+  L.innerHTML+=items.map(i=>`<div class="br${EX.sel===i[0]?" on":""}" data-id="${esc(i[0])}" role="button" tabindex="0"><div class="t">${i[1]}<div class="l" style="width:${Math.max(2,i[2]/mx*100).toFixed(1)}%"></div></div><div class="n">${fmt(i[2])}</div></div>`).join("");}
+$("exList").addEventListener("click",e=>{const l=e.target.closest("[data-lens]");if(l){EX.lens=l.dataset.lens;exList();return}
+  const b=e.target.closest(".br");if(b){EX.sel=b.dataset.id;exList();exHits()}});
+$("exList").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.classList.contains("br")){EX.sel=e.target.dataset.id;exList();exHits()}});
+$("exTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;EX.tab=b.dataset.t;EX.sel=null;
+  [...$("exTabs").children].forEach(x=>x.classList.toggle("on",x===b));exList();$("exHits").innerHTML='<p class="empty">Pick one on the left to see its verses.</p>'});
+async function exHits(){const H=$("exHits");H.innerHTML='<p class="empty">Loading verses…</p>';let keys=null,head="",match;
+  if(EX.tab==="themes"){const t=META.themes.find(t=>t.id===EX.sel);keys=t.rv;
+    const n=t.n;head=`<h3 style="font-family:var(--f-read);margin:0 0 4px">${esc(cap(t.en))} <small style="color:var(--ink-3)">${esc(t.sa)}</small></h3><p class="def">${esc(t.def)}</p><p class="def">Rigveda ${fmt(n.RV||0)} · Samaveda ${fmt(n.SV||0)} · Yajurveda ${fmt(n.YV||0)} · Atharvaveda ${fmt(n.AV||0)} mentions (VedAnvaya).</p>`}
+  else{const col={deities:6,seers:5,metres:7}[EX.tab];match=r=>EX.tab==="deities"?names(r[col]).includes(EX.sel):r[col]===EX.sel;
+    const lab={deities:"Deity",seers:"Seer",metres:"Metre"}[EX.tab];head=`<h3 style="font-family:var(--f-read);margin:0 0 6px">${lab}: ${esc(cap(EX.sel))}</h3>`}
+  const ms=keys?[...new Set(keys.map(k=>+k.split(".")[0]))]:[1,2,3,4,5,6,7,8,9,10];
+  const all=await Promise.all(ms.map(mandala));let hits=[];
+  ms.forEach((m,i)=>{const rows=all[i];if(keys){const s=new Set(keys.filter(k=>+k.split(".")[0]===m).map(k=>k.split(".").slice(1).join(".")));rows.forEach(r=>{if(s.has(key(r)))hits.push([m,r])})}else rows.forEach(r=>{if(match(r))hits.push([m,r])})});
+  const shown=hits.slice(0,60);
+  H.innerHTML=head+`<p class="def">${fmt(hits.length)} verses${hits.length>60?", first 60 shown":""}. Tap a reference to open it in the reader.</p>`+
+    shown.map(([m,r])=>`<div class="hit"><a class="ref" href="#rv-${m}.${key(r)}">RV ${m}.${key(r)}</a><div class="tr">${esc(r[4])}</div></div>`).join("")+
+    (hits.length>60?`<button class="btn" id="more">Show ${fmt(Math.min(60,hits.length-60))} more</button>`:"");
+  let shownN=60;const mb=()=>{const b=$("more");if(!b)return;b.onclick=()=>{const add=hits.slice(shownN,shownN+60);shownN+=60;b.insertAdjacentHTML("beforebegin",add.map(([m,r])=>`<div class="hit"><a class="ref" href="#rv-${m}.${key(r)}">RV ${m}.${key(r)}</a><div class="tr">${esc(r[4])}</div></div>`).join(""));if(shownN>=hits.length)b.remove();else b.textContent="Show more"}};mb()}
+function openExplore(tab,v){EX.tab=tab;EX.sel=v;[...$("exTabs").children].forEach(x=>x.classList.toggle("on",x.dataset.t===tab));exList();exHits();
+  document.getElementById("explore").scrollIntoView({behavior:"smooth"})}
+/* ---------- connect ---------- */
+function matrix(){const pairs=["RV-SV","RV-YV","AV-RV","AV-SV","AV-YV","SV-YV"],kinds=[["EXACT_PARALLEL_OF","Same text"],["REUSES_TEXT_FROM","Reuses"],["VARIANT_OF","Variant"],["NEAR_PARALLEL_OF","Near parallel"],["SHARES_ENTITY_VOCABULARY_WITH","Shared vocabulary only"]];
+  const N={RV:"Rigveda",SV:"Samaveda",YV:"Yajurveda",AV:"Atharvaveda"},c={};META.matrix.forEach(([p,d,n])=>c[p+"|"+d]=n);
+  $("matrix").innerHTML=`<thead><tr><th>Between</th>${kinds.map(k=>`<th>${k[1]}</th>`).join("")}</tr></thead><tbody>`+pairs.map(p=>`<tr><td><b>${p.split("-").map(x=>N[x]).join(" ↔ ")}</b></td>${kinds.map(k=>`<td class="c">${c[p+"|"+k[0]]?fmt(c[p+"|"+k[0]]):"–"}</td>`).join("")}</tr>`).join("")+"</tbody>"}
+/* ---------- graph ---------- */
+function graph(){const G=META.graph,W=900,H=620,svg=$("gsvg");const dn=G.d.map((id,i)=>({id,t:"d",i,n:META.deities.find(x=>x[0]===id)[3]})),sn=G.s.map((id,i)=>({id,t:"s",i,n:META.seers.find(x=>x[0]===id)[3]}));
+  const nodes=[...dn,...sn],links=G.e.map(([a,b,c])=>({s:dn[a],t:sn[b],c}));
+  // deterministic start: deities inner ring, seers outer ring
+  dn.forEach((d,i)=>{const a=i/dn.length*2*Math.PI;d.x=W/2+150*Math.cos(a);d.y=H/2+130*Math.sin(a)});
+  sn.forEach((s,i)=>{const a=i/sn.length*2*Math.PI+.1;s.x=W/2+340*Math.cos(a);s.y=H/2+250*Math.sin(a)});
+  nodes.forEach(n=>{n.r=n.t==="d"?6+Math.sqrt(n.n)/4.2:4+Math.sqrt(n.n)/3.2;n.vx=0;n.vy=0});
+  for(let it=0;it<320;it++){const k=1-it/320;
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const a=nodes[i],b=nodes[j];let dx=b.x-a.x,dy=b.y-a.y,d2=dx*dx+dy*dy+.01,d=Math.sqrt(d2);const min=a.r+b.r+26;const f=(d<min?(min-d)*.5:0)+2600/d2;dx/=d;dy/=d;a.vx-=dx*f;a.vy-=dy*f;b.vx+=dx*f;b.vy+=dy*f}
+    links.forEach(l=>{const dx=l.t.x-l.s.x,dy=l.t.y-l.s.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=(d-150)*.012*Math.min(1,l.c/30+.3);l.s.vx+=dx/d*f;l.s.vy+=dy/d*f;l.t.vx-=dx/d*f;l.t.vy-=dy/d*f});
+    nodes.forEach(n=>{n.vx+=(W/2-n.x)*.002;n.vy+=(H/2-n.y)*.003;n.x+=n.vx*k*.6;n.y+=n.vy*k*.6;n.vx*=.5;n.vy*=.5})}
+  {const xs=nodes.map(n=>n.x),ys=nodes.map(n=>n.y),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+   nodes.forEach(n=>{n.x=40+(n.x-x0)/(x1-x0||1)*(W-170);n.y=24+(n.y-y0)/(y1-y0||1)*(H-48)})}
+  const lab=n=>{const x=(n.t==="d"?META.deities:META.seers).find(x=>x[0]===n.id)[1];return n.t==="s"?x.split(/\s+/).pop():x};
+  svg.innerHTML=`<g>${links.map((l,i)=>`<line class="gl" data-a="d${l.s.i}" data-b="s${l.t.i}" x1="${l.s.x.toFixed(1)}" y1="${l.s.y.toFixed(1)}" x2="${l.t.x.toFixed(1)}" y2="${l.t.y.toFixed(1)}" stroke-width="${(.6+Math.sqrt(l.c)/4).toFixed(2)}"/>`).join("")}</g>`+
+    nodes.map(n=>`<g class="gn" data-k="${n.t}${n.i}" tabindex="0" role="button" aria-label="${esc(lab(n))}"><circle cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="${n.r.toFixed(1)}" ${n.t==="d"?'fill="var(--saffron)"':'fill="var(--surface)" stroke="var(--peacock)" stroke-width="2.5" style="stroke:var(--peacock)"'}/><text x="${(n.x+n.r+3).toFixed(1)}" y="${(n.y+3.5).toFixed(1)}">${esc(lab(n))}</text></g>`).join("");
+  const pick=g=>{const k=g.dataset.k;svg.querySelectorAll(".gl").forEach(l=>l.classList.toggle("on",l.dataset.a===k||l.dataset.b===k));
+    const n=nodes.find(n=>n.t+n.i===k);$("gsel").innerHTML=`<b>${esc(lab(n))}</b> · ${fmt(n.n)} verses · <a href="#explore" id="gopen">open verses ↓</a>`;
+    $("gopen").onclick=ev=>{ev.preventDefault();openExplore(n.t==="d"?"deities":"seers",n.id)}};
+  svg.addEventListener("click",e=>{const g=e.target.closest(".gn");if(g)pick(g)});svg.addEventListener("keydown",e=>{if(e.key==="Enter"){const g=e.target.closest(".gn");if(g)pick(g)}})}
+/* ---------- search ---------- */
+$("srchF").addEventListener("submit",async e=>{e.preventDefault();let q=$("q").value.trim();const R=$("res");if(q.length<2){R.innerHTML='<p class="empty">Type at least two letters.</p>';return}
+  R.innerHTML='<p class="empty">Searching all 10 mandalas…</p>';const all=await Promise.all([1,2,3,4,5,6,7,8,9,10].map(mandala));
+  const isG=/[઀-૿]/.test(q);if(isG)q=DEV(q);const isD=/[ऀ-ॿ]/.test(q);const fq=fold(q);
+  const re=new RegExp("("+fq.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","i");let hits=[];
+  all.forEach((rows,i)=>rows.forEach(r=>{if(isD?r[2].includes(q):(fold(r[4]).includes(fq)||fold(r[3]).replace(/[|]/g,"").includes(fq)))hits.push([i+1,r])}));
+  $("qinfo").textContent=hits.length?`${fmt(hits.length)} verses`:"";
+  if(!hits.length){R.innerHTML=`<p class="empty">No verse contains “${esc(q)}”. Try a shorter word or another spelling; Wilson's English uses older words (e.g. "kine" for cows).</p>`;return}
+  const hl=(t,ok)=>ok?esc(t).replace(re,"<mark>$1</mark>"):esc(t);
+  const show=n=>hits.slice(0,n).map(([m,r])=>{const sa=ST.script==="guj"?GUJ(r[2]):r[2];return`<div class="hit"><a class="ref" href="#rv-${m}.${key(r)}">RV ${m}.${key(r)}</a> <span class="chip d">${esc(cap(names(r[6])[0]||""))}</span><div class="sa sp-lang-keep" lang="sa">${isD?esc(sa).split(esc(q)).join("<mark>"+esc(q)+"</mark>"):esc(sa)}</div><div class="tr">${hl(r[4],!isD)}</div></div>`}).join("");
+  R.innerHTML=show(50)+(hits.length>50?`<p class="honest">First 50 of ${fmt(hits.length)} shown. Add a word to narrow it.</p>`:"")});
+/* ---------- Samaveda ---------- */
+let SV=null;async function svInit(){SV=await getJSON(DATA+"sv.json");const parts=[...new Set(SV.map(r=>r[1]))];
+  $("svPart").innerHTML=parts.map(p=>`<option>${esc(p)}</option>`).join("");$("svPart").onchange=()=>{svBooks();svShow()};$("svBook").onchange=svShow;svBooks();svShow()}
+function svBooks(){const p=$("svPart").value;const bs=[...new Set(SV.filter(r=>r[1]===p).map(r=>r[2]))];$("svBook").innerHTML=bs.map(b=>`<option>${esc(b)}</option>`).join("")}
+function svShow(){const p=$("svPart").value,b=$("svBook").value,rows=SV.filter(r=>r[1]===p&&r[2]===b);$("svInfo").textContent=`${rows.length} verses`;
+  let last="";$("svList").innerHTML=rows.map(r=>{const grp=[r[3],r[4]].filter(Boolean).join(" · ");const h=grp!==last?(last=grp,`<div class="eyebrow" style="padding:14px 0 4px">${esc(grp)}</div>`):"";
+    return h+`<div class="vs1"><div class="vn"><b>${esc(r[5])}.${esc(r[7])}</b>${esc(r[0])}</div><div><div class="tr">${esc(r[8])}</div>${r[6]?`<div class="chips"><span class="chip d">${esc(r[6])}</span></div>`:""}</div></div>`}).join("")}
+/* ---------- today ---------- */
+const FEAT=["3.62.10","10.129.1","1.164.46","10.191.2","1.89.1","7.59.12","10.85.1","1.1.1","10.121.1","1.164.48","10.117.1","10.191.4","10.90.1","1.50.4","10.129.6","1.164.39","10.34.13","1.84.15"];
+async function today(){const d=new Date(),n=Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/864e5),k=FEAT[n%FEAT.length],[m,h,v]=k.split(".").map(Number);
+  const r=(await mandala(m)).find(r=>r[0]===h&&r[1]===v);
+  $("todaycard").innerHTML=`<div><div class="eyebrow">આજનો મંત્ર · Mantra for today · <a href="#rv-${k}">RV ${k}</a></div><div class="sa sp-lang-keep" lang="sa" style="margin-top:6px">${esc(ST.script==="guj"?GUJ(r[2]):r[2])}</div><div class="tr">${esc(r[4])}</div><div class="chips">${names(r[6]).map(x=>`<span class="chip d" data-f="deities" data-v="${esc(x)}">${esc(cap(x))}</span>`).join("")}<span class="chip r" data-f="seers" data-v="${esc(r[5])}">ઋષિ ${esc(cap(r[5]))}</span></div></div>${r[8]?`<button class="play" data-k="${k}" aria-label="Play">▶</button>`:""}`}
+/* ---------- init ---------- */
+(async function(){META=await getJSON(DATA+"meta.json");const c=META.counts;
+  $("tiles").innerHTML=[[c.rv,"Rigveda mantras"],[c.hymns,"hymns (suktas)"],[c.audio,"verses with recitation"],[c.deities,"deities named"],[c.seers,"seers (rishis)"],[c.metres,"metres (chhandas)"],[c.xlinks,"links to other Vedas"],[c.sv,"Samaveda verses in English"]]
+    .map(([n,t])=>`<div class="tile"><b>${fmt(n)}</b><span>${t}</span></div>`).join("");
+  $("selM").innerHTML=Array.from({length:10},(_,i)=>`<option value="${i+1}">Mandala ${i+1}</option>`).join("");
+  $("selM").onchange=()=>showHymn(+$("selM").value,1);$("selH").onchange=()=>showHymn(ST.m,+$("selH").value);
+  $("prevH").onclick=()=>step(-1);$("nextH").onclick=()=>step(1);$("playHymn").onclick=playHymn;
+  const seg=(id,attr,stk,prop)=>{const g=$(id);[...g.children].forEach(b=>b.classList.toggle("on",b.dataset[attr]===ST[prop]));
+    g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;ST[prop]=b.dataset[attr];store.set(stk,ST[prop]);[...g.children].forEach(x=>x.classList.toggle("on",x===b));showHymn(ST.m,ST.h);today()})};
+  seg("script","s","vd-script","script");seg("showen","e","vd-en","en");
+  matrix();exList();graph();today();svInit();
+  const h=location.hash.match(/^#rv-(\d+)\.(\d+)\.(\d+)$/);
+  if(h)goVerse(h[1]+"."+h[2]+"."+h[3],true);else showHymn(1,1);
+})().catch(e=>{$("verses").innerHTML=`<p class="empty">Could not load the texts (${esc(e.message)}).</p>`});
+window.addEventListener("hashchange",()=>{const h=location.hash.match(/^#rv-(\d+)\.(\d+)\.(\d+)$/);if(h)goVerse(h[1]+"."+h[2]+"."+h[3],true)});
+</script>
+</body>
+</html>
