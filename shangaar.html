@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shangaar Designer</title>
+<meta name="description" content="Choose a murti, dress Thakorji in your own shangaar with real darshan styles and colours, and let the page find, name and count the shangaar in any darshan photo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<style>
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --good:#2f7d32; --bad:#b3261e; --warn:#a86b00;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.06);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:12px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c; --warn:#f0c060;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c; --warn:#f0c060;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+main{padding-block:22px 64px}
+.jay{text-align:center;font-family:var(--f-read);font-weight:600;color:var(--saffron-strong);font-size:clamp(17px,3.4vw,22px);margin:4px 0 18px;letter-spacing:.02em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.ttl{font-family:var(--f-read);font-size:clamp(28px,5.4vw,40px);font-weight:600;line-height:1.15;margin:6px 0 10px}
+.ttl .gu,.h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.h2{font-family:var(--f-read);font-size:clamp(24px,4.6vw,30px);font-weight:600;line-height:1.15;margin:40px 0 6px;scroll-margin-top:70px}
+.sub{color:var(--ink-2);margin:0 0 16px;max-width:72ch}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
+.btn:hover{background:var(--sunk);text-decoration:none}.btn.pri{background:var(--saffron);border-color:var(--saffron);color:#fff}.btn.pri:hover{background:var(--saffron-strong)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.cites{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px}.cite{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--ink-2);background:var(--surface)}
+.jump{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+/* murti picker */
+.murtis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:8px 0 18px}
+.mcard{border:1.5px solid var(--line);border-radius:var(--r);background:var(--surface);padding:6px 6px 8px;cursor:pointer;text-align:center;transition:transform .15s,border-color .15s}
+.mcard:hover{transform:translateY(-2px)}.mcard[aria-pressed="true"]{border-color:var(--saffron);box-shadow:0 0 0 3px color-mix(in srgb,var(--saffron) 25%,transparent)}
+.mcard svg{width:100%;height:auto;display:block;border-radius:8px}
+.mcard b{display:block;font-size:13.5px;line-height:1.2;margin-top:5px}.mcard small{display:block;font-size:11.5px;color:var(--ink-3);line-height:1.25}
+/* designer */
+.designer{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:18px;align-items:start}
+.stage{position:sticky;top:70px;padding:12px}
+.stage svg{width:100%;height:auto;display:block;border-radius:10px;max-height:72vh}
+.stage .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.presets{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13.5px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:12px}
+.tab{border:0;background:none;padding:8px 12px;font-size:14.5px;font-weight:600;color:var(--ink-2);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--saffron);border-bottom-color:var(--saffron)}
+.panel{padding:16px}
+.grp{margin:0 0 16px}.grp>label,.grp>.lab{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.grp .lab small{font-weight:400;color:var(--ink-3)}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 10px;font-size:13.5px;cursor:pointer;line-height:1.25;text-align:left}
+.opt span{display:block;font-size:11.5px;color:var(--ink-3)}
+.opt[aria-pressed="true"]{border-color:var(--saffron);background:var(--saffron-soft)}
+.colors{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.sw{width:26px;height:26px;border-radius:50%;border:1px solid rgba(0,0,0,.25);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{outline:2.5px solid var(--saffron);outline-offset:2px}
+.colors input[type=color]{width:34px;height:28px;border:1px solid var(--line);border-radius:8px;padding:1px;background:var(--surface);cursor:pointer}
+.crow{display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px;align-items:center;margin-bottom:8px}
+.crow b{font-size:13.5px;font-weight:600}
+.toggles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.tg{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13.5px;cursor:pointer;background:var(--surface)}
+.tg input{accent-color:var(--saffron);width:17px;height:17px}
+.tg small{display:block;color:var(--ink-3);font-size:11.5px}
+.num{display:flex;align-items:center;gap:8px}.num input[type=range]{flex:1;accent-color:var(--saffron)}
+.count{margin-top:12px;padding:12px 14px;background:var(--sunk);border-radius:10px}
+.count h4{margin:0 0 6px;font-size:15px}.count ol{margin:0;padding-left:20px;columns:2;column-gap:18px;font-size:13.5px}
+.count li{break-inside:avoid}.count li small{color:var(--ink-3)}
+/* analyser */
+.an{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:18px;align-items:start}
+.drop{display:block;width:100%;border:2px dashed var(--line);border-radius:var(--r);padding:26px 16px;text-align:center;color:var(--ink-2);background:var(--surface);cursor:pointer}
+.drop.over{border-color:var(--saffron);background:var(--saffron-soft)}
+.modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.mode{border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--surface);cursor:pointer;text-align:left;font-size:13.5px;line-height:1.3}
+.mode b{display:block;font-size:14px}.mode span{color:var(--ink-3);font-size:12px}
+.mode[aria-pressed="true"]{border-color:var(--saffron);background:var(--saffron-soft)}
+.keyrow{display:none;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 10px;font-size:13.5px}
+.keyrow.on{display:flex}.keyrow input[type=password]{flex:1;min-width:200px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--surface)}
+.keyrow select{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:var(--surface)}
+.imgbox{position:relative;display:none;border-radius:var(--r);overflow:hidden;background:#000;user-select:none}
+.imgbox.on{display:block}.imgbox img{display:block;width:100%;height:auto}
+.imgbox svg{position:absolute;inset:0;width:100%;height:100%}
+.imgbox.adding{cursor:crosshair}
+.status{font-size:14px;color:var(--ink-2);margin:10px 0;min-height:22px}
+.bar{height:6px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:4px 0 10px;display:none}.bar.on{display:block}.bar i{display:block;height:100%;width:0;background:var(--saffron);transition:width .3s}
+.res{padding:14px}
+.res h3{margin:0 0 4px;font-size:18px;font-family:var(--f-read)}
+.total{font-size:15px;margin:0 0 10px;color:var(--ink-2)}.total b{font-size:26px;color:var(--saffron);font-family:var(--f-read)}
+.marks{list-style:none;margin:0;padding:0;max-height:430px;overflow:auto}
+.marks li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 4px;border-bottom:1px solid var(--line);font-size:14px}
+.marks li.hl{background:var(--saffron-soft)}
+.pin{width:24px;height:24px;border-radius:50%;background:var(--saffron);color:#fff;display:grid;place-items:center;font-size:12.5px;font-weight:700}
+.marks select{max-width:100%;border:1px solid var(--line);border-radius:8px;padding:3px 6px;background:var(--surface);font-size:13.5px}
+.conf{font-size:11.5px;border-radius:99px;padding:1px 7px;margin-left:4px;white-space:nowrap}
+.conf.h{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}.conf.m{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}.conf.l{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.x{border:0;background:none;color:var(--ink-3);cursor:pointer;font-size:18px;line-height:1;padding:2px 6px}.x:hover{color:var(--bad)}
+.tally{margin:12px 0 0;width:100%;border-collapse:collapse;font-size:13.5px}.tally td{padding:4px 6px;border-bottom:1px solid var(--line)}.tally td:last-child{text-align:right;font-weight:700}
+.racts{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.how{padding:18px 20px}.how h3{margin:14px 0 6px;font-size:17px}.how h3:first-child{margin-top:0}.how p,.how li{color:var(--ink-2);font-size:14.5px;max-width:78ch}
+.acc{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}.acc th,.acc td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}.acc th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.srcs{padding:16px 20px}.srcs h3{font-size:15px;margin:12px 0 6px}.srcs ol{margin:0;padding-left:20px}.srcs li{margin:0 0 8px;font-size:14px}.srcs li small{display:block;color:var(--ink-3)}
+.honest{font-size:13px;color:var(--ink-3);margin:8px 0 0}
+footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-3);font-size:13px}
+footer p{margin:0 0 6px;max-width:80ch}
+.sr{position:absolute;left:-9999px}
+@media (max-width:900px){.designer,.an{grid-template-columns:minmax(0,1fr)}.stage{position:static}.stage svg{max-height:60vh;width:auto;margin:0 auto}.murtis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.modes{grid-template-columns:minmax(0,1fr)}.toggles{grid-template-columns:minmax(0,1fr)}.count ol{columns:1}.crow{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Home</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="./">Today</a>
+    <a href="vedic-time.html">Vedic time</a>
+    <a href="panchang.html">Panchang</a>
+    <a href="kaal-patrak/">Kaal Patrak</a>
+    <a href="vicharan/">Vicharan</a>
+    <a href="murti-3d/">Murti 3D</a>
+    <a class="on" href="shangaar.html">Shangaar</a>
+    <a href="vachanamrut-concordance/">Vachanamrut</a>
+    <a href="vachanamrut-concordance/library.html">Library</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+
+<main class="wrap">
+  <p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+  <div class="eyebrow">શણગાર · Shangaar</div>
+  <h1 class="ttl"><span class="gu">ઠાકોરજીના શણગાર</span>Dress Thakorji in your own shangaar</h1>
+  <p class="sub">Pick a murti, then choose the pagh or mugat, vagha, ornaments and flowers, and the colour of every cloth. The styles come from daily darshan photos of Kalupur, Vadtal, Gadhada and other mandirs. Further down, upload any darshan photo and the page will find, name, count and mark each shangaar item it can see.</p>
+  <div class="cites"><a class="cite" href="#src-1">Kalupur darshan</a><a class="cite" href="#src-2">Ghanshyam Maharaj's daily ritual</a><a class="cite" href="#src-5">Gherdar vagha</a> <a class="cite" href="#sources">All sources ↓</a></div>
+  <div class="jump"><a class="btn" href="#designer">✿ Shangaar designer</a><a class="btn" href="#analyser">⌕ Darshan photo analyser</a><a class="btn" href="#how">How the analyser works</a></div>
+
+  <h2 class="h2" id="designer"><span class="gu">૧. મૂર્તિ પસંદ કરો</span>Choose a murti</h2>
+  <div class="murtis" id="murtis" role="group" aria-label="Murti"></div>
+
+  <div class="designer">
+    <section class="card stage" aria-label="Your shangaar">
+      <div id="stage"></div>
+      <div class="acts">
+        <button class="btn pri" id="dl" type="button">⤓ Save picture</button>
+        <button class="btn" id="share" type="button">🔗 Copy link</button>
+        <button class="btn" id="rand" type="button">✦ Surprise me</button>
+        <button class="btn" id="totest" type="button" title="Send this picture to the analyser below">⌕ Analyse this</button>
+      </div>
+    </section>
+    <section class="card panel" aria-label="Shangaar options">
+      <div class="lab" style="font-weight:600;font-size:14px;margin-bottom:6px">Darshan styles <small style="font-weight:400;color:var(--ink-3)">a full shangaar in one tap; change anything after</small></div>
+      <div class="presets" id="presets"></div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div id="panes"></div>
+      <div class="count" id="count" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <h2 class="h2" id="analyser"><span class="gu">૨. દર્શનનો ફોટો તપાસો</span>Darshan photo analyser</h2>
+  <p class="sub">Upload a darshan photo. The page marks each pagh, mugat, kalgi, tora, kundal, haar, garland, flute and ornament it can find, numbers them on the photo and adds up the total. You can rename, remove or add any mark, so the final count is as exact as you make it. Your photo stays in your browser unless you choose Expert mode.</p>
+  <div class="an">
+    <div>
+      <div class="drop" id="drop" role="button" tabindex="0"><b>Drop a darshan photo here</b>, or tap to choose one<br><small>JPG, PNG or WebP · works best when the murti's face is clear</small></div>
+      <input class="sr" type="file" id="file" accept="image/*">
+      <div class="modes" role="group" aria-label="How to analyse">
+        <button class="mode" type="button" data-m="local" aria-pressed="true"><b>On this device</b><span>Free and private. Downloads a 155 MB detector once.</span></button>
+        <button class="mode" type="button" data-m="claude" aria-pressed="false"><b>Expert (Claude)</b><span>Most accurate. Needs your own Anthropic API key.</span></button>
+        <button class="mode" type="button" data-m="hand" aria-pressed="false"><b>Mark by hand</b><span>No detector; tap each item yourself.</span></button>
+      </div>
+      <div class="keyrow" id="keyrow">
+        <input type="password" id="apikey" placeholder="Anthropic API key (sk-ant-…)" autocomplete="off" aria-label="Anthropic API key">
+        <select id="model" aria-label="Model"><option value="claude-opus-5-5">Claude Opus 5.5 (best)</option><option value="claude-sonnet-5-5">Claude Sonnet 5.5 (cheaper)</option></select>
+        <label><input type="checkbox" id="keep"> keep for this tab</label>
+        <small style="flex-basis:100%;color:var(--ink-3)">The key is sent only to api.anthropic.com from your browser, together with the photo. It is never stored on this site. One photo costs a few US cents on your Anthropic account.</small>
+      </div>
+      <div class="racts" style="margin:0 0 6px"><button class="btn pri" id="run" type="button" disabled>⌕ Find the shangaar</button><button class="btn" id="add" type="button" disabled>＋ Add a mark</button><button class="btn" id="face" type="button" disabled>☺ Show me the face</button></div>
+      <div class="bar" id="bar"><i></i></div>
+      <div class="status" id="status" aria-live="polite">Choose a photo to begin. Or press “Analyse this” above to test it on your own design.</div>
+      <div class="imgbox" id="imgbox"><img id="img" alt="Your darshan photo"><svg id="ov" aria-hidden="true"></svg></div>
+    </div>
+    <section class="card res" aria-label="What was found">
+      <h3>What the page found</h3>
+      <p class="total" id="total">Nothing yet.</p>
+      <ul class="marks" id="marks"></ul>
+      <table class="tally" id="tally"></table>
+      <div class="racts"><button class="btn" id="dlan" type="button" disabled>⤓ Save marked photo</button><button class="btn" id="copy" type="button" disabled>⧉ Copy the list</button><button class="btn" id="clear" type="button" disabled>Clear marks</button></div>
+    </section>
+  </div>
+
+  <h2 class="h2" id="how"><span class="gu">આ કેવી રીતે કામ કરે છે</span>How the analyser works, and how accurate it is</h2>
+  <section class="card how">
+    <h3>Why a website cannot simply “see”</h3>
+    <p>This site is a set of static pages with no server of its own, so the page itself cannot run a big vision model. We give you three ways instead, and we are open about how good each one is.</p>
+    <h3>1. On this device (default)</h3>
+    <ol>
+      <li><b>Find the face.</b> Murtis have large, bright white almond eyes. The page looks for two white shapes of the same size, side by side, each with a dark pupil, and builds the face box from them. If that fails it uses the detector's own face guess, and you can always correct it.</li>
+      <li><b>Look for each item.</b> An open-vocabulary object detector, <a href="#src-7">OWLv2</a> (Google Research), runs inside your browser through <a href="#src-8">Transformers.js</a>. We ask it about 40 plain-English descriptions such as “turban”, “golden crown”, “earring”, “flower garland”, “peacock feather” and “flute”, and it returns boxes with scores.</li>
+      <li><b>Keep only what makes sense.</b> Each item must sit where it belongs on a murti: kundal beside the face at ear height, haar below the chin, kalgi above the forehead, zanzar near the feet. Every murti wears one head-dress, so the page always marks one there and lets the detector vote pagh, mugat or topi. Repeats are merged, and each item has a sensible maximum (two kundal, one bansuri).</li>
+      <li><b>You check it.</b> Every mark has a number on the photo and a line in the list. Rename it, remove it, or tap “Add a mark” to add what was missed. The total updates as you go.</li>
+    </ol>
+    <p><b>How accurate is it?</b> We tested it on 21 darshan photos shared in this project (Kalupur, Vadtal, Gadhada, Bhuj and others) and checked every mark by eye:</p>
+    <table class="acc">
+      <thead><tr><th>What we measured</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Face found automatically</td><td>20 of 21 photos (eyes found in 13, detector guess in 7). Fair-coloured murtis and side views are harder.</td></tr>
+        <tr><td>Head-dress marked</td><td>20 of 21 photos</td></tr>
+        <tr><td>Pagh vs mugat vs topi named correctly</td><td>13 of 20 (65%). Gold zari pagh is often taken for a mugat.</td></tr>
+        <tr><td>Marks that were right (6 photos checked mark by mark)</td><td>About 6 in 10</td></tr>
+        <tr><td>Visible items it missed</td><td>About 1 in 4, most often tilak, kundal and the second tora</td></tr>
+      </tbody>
+    </table>
+    <p>So treat the on-device result as a quick first draft. With a minute of correcting, the count is exact.</p>
+    <h3>2. Expert mode (Claude, your own key)</h3>
+    <p>The photo is sent from your browser straight to Anthropic's Claude vision model with a list of shangaar names in Gujarati and English, and Claude returns each item with a box. This understands context far better (it can tell a zari pagh from a mugat, count separate haar, and name a makar kundal), but its boxes are approximate and it can still miss tiny pieces. We have not measured it on our test photos, so check its marks the same way. It needs an Anthropic API key from <a href="https://console.anthropic.com/" target="_blank" rel="noopener">console.anthropic.com</a>; the site never sees or keeps your key.</p>
+    <h3>3. Mark by hand</h3>
+    <p>Tap the photo where each item is and pick its name. Nothing is downloaded or sent anywhere.</p>
+    <p class="honest">“Exact” counting of every bead or flower is not attempted: a garland counts as one item, a pair of kundal as two. Please share photos where it goes wrong, and we will keep tuning it.</p>
+  </section>
+
+  <h2 class="h2" id="sources"><span class="gu">સંદર્ભ</span>Sources</h2>
+  <section class="card srcs">
+    <h3>Darshan and shangaar</h3>
+    <ol>
+      <li id="src-1"><a href="https://swaminarayan.in/" target="_blank" rel="noopener">Shree Swaminarayan Mandir, Kalupur, Ahmedabad</a> · daily darshan photos of Shri Ghanshyam Maharaj (Rangmahol), Shri NarNarayan Dev and Shri RadhaKrishna Dev, and <a href="https://swaminarayan.in/our-mandir/history" target="_blank" rel="noopener">History of Kalupur Mandir</a><small>Used for: the Rangmahol cross-band pagh, white gherdar vagha, jasmine tora and rose garlands; the pankho pagh; the topi. The darshan photos were shared in our project and are not copied onto this page.</small></li>
+      <li id="src-2"><a href="https://cdn.sksst.org/site/documents/bym/topics%20covered/ghanshyam_maharajs_daily_ritual.pdf" target="_blank" rel="noopener">Ghanshyam Maharaj's Daily Ritual</a> · Shree Kutch Satsang Swaminarayan Temple, London (Bal Yuvak Mandal)<small>Used for: Maharaj has “over 200 vagha's”; he is “dressed with the clothes, jewellery, haar, mugat”; clothes are chosen for the season; tilak-chandlo; the night dress “Saal, Dhoti, Blanket, Topi” (our Night preset); chandan in the abhishek.</small></li>
+      <li id="src-3"><a href="https://en.wikipedia.org/wiki/Swaminarayan_Mandir,_Gadhada" target="_blank" rel="noopener">Swaminarayan Mandir, Gadhada</a> (Shri Gopinathji Maharaj) · <a href="https://en.wikipedia.org/wiki/Swaminarayan_Temple,_Vadtal" target="_blank" rel="noopener">Swaminarayan Temple, Vadtal</a> (Shri Harikrishna Maharaj, Shri LaxmiNarayan Dev) · <a href="https://en.wikipedia.org/wiki/Swaminarayan_Temple,_Ahmedabad" target="_blank" rel="noopener">Swaminarayan Temple, Ahmedabad</a> · <a href="https://en.wikipedia.org/wiki/Swaminarayan_Temple,_Dholera" target="_blank" rel="noopener">Swaminarayan Temple, Dholera</a> (Shri Madan Mohanji)<small>Used for: which murti is in which mandir, for the murti picker.</small></li>
+      <li id="src-4">Darshan photos of Gadhada, Vadtal, Bhuj and other mandirs shared in our project chat (21 photos), studied for pagh shapes, mugat, kalgi, tora, kundal, haar, garlands, bansuri and vagha<small>Used for: the option lists and the analyser test set. Photos are not republished.</small></li>
+      <li id="src-5"><a href="https://pushti-marg.net/shringar.htm" target="_blank" rel="noopener">Shringar vs Shrungar</a> · Bhagwat Shah, pushti-marg.net<small>Used for: the garment names gherdar and chakdar vagha, and the principle that shangaar follows the season and the Lord's comfort (light cloth and chandan in summer, shawls in winter). A Vaishnav source, used only for these general terms.</small></li>
+      <li id="src-6">Murti base art: the layered Gopinathji Maharaj caricature drawn for this site's <a href="vicharan/">Vicharan map</a> set the face, eyes and proportions of the figures here.</li>
+    </ol>
+    <h3>Analyser technology</h3>
+    <ol start="7">
+      <li id="src-7">M. Minderer, A. Gritsenko, N. Houlsby, <a href="https://arxiv.org/abs/2306.09683" target="_blank" rel="noopener">Scaling Open-Vocabulary Object Detection</a> (OWLv2), Google Research, 2023 · model files: <a href="https://huggingface.co/Xenova/owlv2-base-patch16-ensemble" target="_blank" rel="noopener">Xenova/owlv2-base-patch16-ensemble</a></li>
+      <li id="src-8"><a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener">Transformers.js</a> · Hugging Face, runs the detector in your browser</li>
+      <li id="src-9"><a href="https://platform.claude.com/docs/en/build-with-claude/vision" target="_blank" rel="noopener">Claude vision</a> · Anthropic API documentation, for Expert mode</li>
+    </ol>
+  </section>
+  <p class="honest" style="margin-top:14px"><a href="./">← Back to the home page</a></p>
+</main>
+
+<footer><div class="wrap">
+  <p><b>About the pictures.</b> The figures are simple drawings made for this page, not photographs of any murti. Names of shangaar items are given in Gujarati with English beside them; spellings follow common usage at the mandirs.</p>
+</div></footer>
+
+<script src="shangaar/figure.js"></script>
+<script src="shangaar/eyes.js"></script>
+<script src="shangaar/detect-core.js"></script>
+<script src="shangaar/app.js"></script>
+</body>
+</html>
