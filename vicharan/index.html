@@ -256,6 +256,13 @@ details.era-s>summary .es{font-size:12px;color:var(--muted);margin-top:2px}
 details.era-s .eb{padding:0 12px 10px}
 .tops{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 8px}.tops button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:2px 9px;font-size:12px;cursor:pointer}.tops button small{color:var(--muted);margin-left:4px}
 .jr .km{display:block;font-size:10.5px;color:var(--muted);text-align:right}
+.it{display:grid;grid-template-columns:2.2em minmax(0,9.5em) minmax(0,1fr);gap:2px 10px;align-items:start;padding:9px 4px;border:0;border-top:1px solid var(--line);background:none;width:100%;text-align:left;cursor:pointer;color:var(--ink)}
+.it:hover{background:var(--c2)}.it .no{font:600 11px var(--f-body);color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;text-align:center;padding:2px 0;margin-top:2px}
+.it .g{font:600 14.5px var(--f-disp);display:block}.it .e{font-size:11.5px;color:var(--muted);display:block}
+.it .nm{font-weight:700;display:block}.it .nm small{color:var(--muted);font-weight:400;margin-left:6px}
+.it .vb{display:block;font-size:12px;color:var(--muted)}.it .st{display:block;font-size:12.5px;margin-top:2px}.it .st b{color:var(--acc2)}
+.it.born{background:linear-gradient(90deg,var(--accS),transparent);border-radius:10px}
+@media (max-width:560px){.it{grid-template-columns:2.2em minmax(0,1fr)}.it .pl{grid-column:2}}
 .lcats{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 10px}
 .lcat{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:3px 10px;font-size:12.5px;cursor:pointer;color:var(--ink)}
 .lcat small{color:var(--muted);margin-left:4px;font-variant-numeric:tabular-nums}.lcat i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--lc);margin-right:5px}
@@ -687,9 +694,15 @@ function renderJourney(){const ss=staysInRange();const B=$('#pbody');
   const m=$('#jmore');if(m)m.onclick=()=>{jLimit+=300;renderJourney();};}
 // ---------- full life
 const hav=(a,b)=>{const R0=6371,t=Math.PI/180;const dla=(b.la-a.la)*t,dlo=(b.lo-a.lo)*t;const x=Math.sin(dla/2)**2+Math.cos(a.la*t)*Math.cos(b.la*t)*Math.sin(dlo/2)**2;return 2*R0*Math.asin(Math.sqrt(x));};
-const LIFE=(()=>{const all=D.stays.filter(s=>P[s[0]].la!=null);const km=[0];for(let k=1;k<all.length;k++)km.push(hav(P[all[k-1][0]],P[all[k][0]]));
-  const er=[0,1,2,3].map(e=>({e,ix:[],days:0,km:0,pl:new Map()}));all.forEach((s,k)=>{const o=er[eraIx(s[1])];o.ix.push(k);o.days+=s[3];o.km+=km[k];o.pl.set(s[0],(o.pl.get(s[0])||0)+s[3]);});
-  return {all,km,er};})();
+const LIFE=(()=>{const BIRTH=dn(1781,4,2),END=dn(1830,6,1);const raw=D.stays.slice().sort((x,y)=>x[1]-y[1]);const all=[];
+  raw.forEach(s=>{const l=all[all.length-1];if(l&&l[0]===s[0]){l[2]=Math.max(l[2],s[2]);l[3]+=s[3];}else all.push([s[0],s[1],s[2],s[3]]);});
+  if(all.length&&all[0][0]===0)all[0][1]=Math.min(all[0][1],BIRTH);
+  all.forEach((s,k)=>{const nx=k+1<all.length?all[k+1][1]:END+1;s[4]=nx;s[5]=Math.max(1,nx-s[1]);});
+  const km=[0];let lastLoc=P[all[0][0]].la!=null?all[0][0]:null;for(let k=1;k<all.length;k++){const p=P[all[k][0]];if(p.la!=null&&lastLoc!=null){km.push(hav(P[lastLoc],p));}else km.push(0);if(p.la!=null)lastLoc=all[k][0];}
+  const er=[0,1,2,3].map(e=>({e,ix:[],days:0,km:0,pl:new Map()}));all.forEach((s,k)=>{const o=er[eraIx(s[1])];o.ix.push(k);o.days+=s[5];o.km+=km[k];o.pl.set(s[0],(o.pl.get(s[0])||0)+s[5]);});
+  return {all,km,er,BIRTH};})();
+const durTxt=n=>{if(n<60)return '';const y=Math.floor(n/365.25),m=Math.floor((n-y*365.25)/30.44);return ' ('+(y?y+' yr ':'')+(m?m+' mo':'')+')'.replace(' )',')');};
+const durGu=n=>{const y=Math.floor(n/365.25),m=Math.floor((n-y*365.25)/30.44);return n<60?`${gnum(n)} દિવસ`:`${y?gnum(y)+' વર્ષ ':''}${m?gnum(m)+' માસ':''}`.trim();};
 let lifeLim=[150,150,150,150];
 function renderLife(){const B=$('#pbody');const L=LIFE;const tot=L.er.reduce((a,o)=>a+o.days,0);const tkm=L.km.reduce((a,b)=>a+b,0);
   const places=new Set(L.all.map(s=>s[0])).size;const first=L.all[0],last=L.all[L.all.length-1];
@@ -699,16 +712,20 @@ function renderLife(){const B=$('#pbody');const L=LIFE;const tot=L.er.reduce((a,
   h+=`<div class="ebar" role="list">${L.er.map(o=>`<button type="button" role="listitem" data-e="${o.e}" style="--ec:${ECOL[o.e]};flex:${ERAS[o.e+1].b-ERAS[o.e+1].a}" title="${esc(ENAME[o.e])}">${esc(ENAME[o.e].split(' · ')[0])}</button>`).join('')}</div>`;
   h+=L.er.map(o=>{const E=ERAS[o.e+1];const top=[...o.pl.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6);const ix=o.ix.slice(0,lifeLim[o.e]);let lastY=0;
     const list=ix.map(k=>{const s=L.all[k];const p=P[s[0]];const y=yearOf(s[1]);const head=y!==lastY?`<div class="yrhead">${gnum(y)} <small style="font:500 13px var(--f-body);color:var(--muted)">${y}</small></div>`:'';lastY=y;
-      const r0=R.find(r=>r[1]===s[1]&&r[0]===s[0]);const rng=s[2]>s[1]?`${engShort(s[1])} – ${engShort(s[2])}`:engShort(s[1]);
-      return head+`<button class="jr" type="button" data-i="${s[0]}"><span class="dtc"><span class="g">${r0?tithiGu(r0):''}</span><span class="e">${rng}</span></span><span class="pl" lang="gu">${esc(p.gu)}<small>${esc(p.en)}</small></span><span class="n">${s[3]} d${L.km[k]>=1?`<span class="km">+${Math.round(L.km[k])} km</span>`:''}</span></button>`;}).join('');
-    return `<details class="era-s" style="--ec:${ECOL[o.e]}" data-e="${o.e}"${o.e===0?' open':''}><summary><h4 lang="gu">${esc(E.gu)}<small>${esc(E.en)} · ${E.a}–${E.b}</small></h4><div class="es">${o.ix.length.toLocaleString('en-IN')} stops · ${o.pl.size} places · ${o.days.toLocaleString('en-IN')} days recorded · about ${Math.round(o.km).toLocaleString('en-IN')} km</div></summary>
+      const born=k===0&&s[1]===L.BIRTH;const r0=born?null:(R.find(r=>r[1]===s[1]&&r[0]===s[0])||R.find(r=>r[0]===s[0]&&r[1]>=s[1]&&r[1]<=s[2]));
+      const prev=k?P[L.all[k-1][0]]:null;const last=k===L.all.length-1;
+      const verb=born?`<b>જન્મ · Born</b> here`:`Arrives${prev?` from <span lang="gu">${esc(prev.gu)}</span>`:''}${L.km[k]>=1?` · ${Math.round(L.km[k])} km`:''}`;
+      const leave=last?`Antardhan on 1 Jun 1830`:`leaves on ${engShort(s[4])}`;
+      return head+`<button class="it${born?' born':''}" type="button" data-i="${s[0]}"><span class="no">${k+1}</span><span class="dtc"><span class="g">${born?'ચૈત્ર સુદ ૯':r0?tithiGu(r0):''}</span><span class="e">${engDate(s[1])}</span></span>
+        <span class="pl"><span class="nm" lang="gu">${esc(p.gu)}<small>${esc(p.en)}</small></span><span class="vb">${verb}</span><span class="st"><b lang="gu">${durGu(s[5])} રોકાણ</b> · stays ${s[5].toLocaleString('en-IN')} day${s[5]===1?'':'s'}${durTxt(s[5])} · ${leave}</span></span></button>`;}).join('');
+    return `<details class="era-s" style="--ec:${ECOL[o.e]}" data-e="${o.e}"${o.e===0?' open':''}><summary><h4 lang="gu">${esc(E.gu)}<small>${esc(E.en)} · ${E.a}–${E.b}</small></h4><div class="es">${o.ix.length.toLocaleString('en-IN')} stops · ${o.pl.size} places · ${o.days.toLocaleString('en-IN')} days · about ${Math.round(o.km).toLocaleString('en-IN')} km</div></summary>
      <div class="eb"><div class="tops">${top.map(([i,n])=>`<button type="button" data-i="${i}" lang="gu">${esc(P[i].gu)}<small>${n} d</small></button>`).join('')}</div>
      <div class="lbtns" style="margin:0 0 6px"><button class="btn" type="button" data-pe="${o.e}">▶ Play ${esc(E.gu)}</button></div>${list}
      ${o.ix.length>lifeLim[o.e]?`<button class="btn more" type="button" data-more="${o.e}">Show ${Math.min(150,o.ix.length-lifeLim[o.e])} more stops</button>`:''}</div></details>`;}).join('');
-  h+=`<p class="note">Distances are straight lines between one stop and the next, so the real walk was longer. The forest-journey stops that only Bhaktachintamani names are under the Place tab of each place.</p>`;
+  h+=`<p class="note">A stay is counted from the day Shri Hari arrives until the day the book first names his next place, so it includes the days on the road. Distances are straight lines between one stop and the next, so the real walk was longer. The forest-journey stops that only Bhaktachintamani names are under the Place tab of each place.</p>`;
   B.innerHTML=h;
-  B.querySelectorAll('.jr,.tops button').forEach(b=>b.onclick=()=>selectPlace(+b.dataset.i));
-  B.querySelectorAll('.jr').forEach(b=>{const c=()=>pinEls[+b.dataset.i];b.onmouseenter=()=>c()&&c().classList.add('hov');b.onmouseleave=()=>c()&&c().classList.remove('hov');});
+  B.querySelectorAll('.it,.tops button').forEach(b=>b.onclick=()=>selectPlace(+b.dataset.i));
+  B.querySelectorAll('.it').forEach(b=>{const c=()=>pinEls[+b.dataset.i];b.onmouseenter=()=>c()&&c().classList.add('hov');b.onmouseleave=()=>c()&&c().classList.remove('hov');});
   $('#lplay').onclick=()=>{setRange(1781,1830);fit(boxFor(VIEWS.all),true);if(timer)stopPlay();startPlay();};
   $('#lshow').onclick=()=>{setRange(1781,1830);fit(boxFor(VIEWS.all),true);};
   B.querySelectorAll('.ebar button').forEach(b=>b.onclick=()=>{const d=B.querySelector(`details.era-s[data-e="${b.dataset.e}"]`);d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'});const E=ERAS[+b.dataset.e+1];setRange(E.a,E.b);});
