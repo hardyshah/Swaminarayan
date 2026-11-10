@@ -1537,7 +1537,7 @@ document.querySelector('.kc-tools').onclick=e=>{const b=e.target.closest('[data-
   if(k==='all')animateTo(ZMIN,ZMAX,{done:idleSync});else if(k==='life')animateTo(LIFE0-200,LIFE1+200,{done:idleSync});else if(k==='today')animateTo(NOWZ-20,NOWZ+20,{done:idleSync});
   else if(k==='in')animateTo(KC.z0+w*.3,KC.z1-w*.3,{ms:320,done:idleSync});else if(k==='out')animateTo(KC.z0-w*1,KC.z1+w*1,{ms:320,done:idleSync});else if(k==='yatra')yatraStart();};
 /* compact while scrolled down */
-let compactOn=false;addEventListener('scroll',()=>{const c=scrollY>260;if(c!==compactOn){compactOn=c;KCW.classList.toggle('compact',c);draw();}},{passive:true});
+let compactOn=false;addEventListener('scroll',()=>{const y=scrollY,c=compactOn?y>60:y>260;if(c!==compactOn){compactOn=c;KCW.classList.toggle('compact',c);draw();}},{passive:true});
 new ResizeObserver(()=>draw()).observe(cv);
 addEventListener('sp-theme',()=>{for(const k in LCOL)delete LCOL[k];draw();});
 new MutationObserver(()=>{for(const k in LCOL)delete LCOL[k];draw();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme','style','class']});
