@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Solar System Live</title>
+<meta name="description" content="Live 3D solar system with speed and zoom, the rashis and nakshatras behind the planets, the pole star and the Milky Way, a 28-day course on Vedic astronomy and jyotish, and thumb rules to download.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<style>
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --good:#2f7d32; --bad:#b3261e;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.06);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:12px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+main{padding-block:22px 64px}
+.jay{text-align:center;font-family:var(--f-read);font-weight:600;color:var(--saffron-strong);font-size:clamp(17px,3.4vw,22px);margin:4px 0 18px;letter-spacing:.02em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+/* live panel */
+.live{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);overflow:hidden}
+.pan{padding:20px 22px;background:linear-gradient(160deg,var(--saffron-soft),transparent 70%)}
+.eng{padding:20px 22px;border-left:1px solid var(--line);display:flex;flex-direction:column}
+.vaar{font-family:var(--f-display);color:var(--saffron);font-size:clamp(30px,6vw,44px);line-height:1.1;margin:6px 0 2px}
+.tithi{font-family:var(--f-read);font-size:clamp(22px,4vw,30px);font-weight:600;line-height:1.2}
+.tithi small{font-family:var(--f-ui);font-size:14px;font-weight:500;color:var(--ink-2);display:block;margin-top:2px}
+.samvat{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:14px;color:var(--ink-2)}
+.pill b{color:var(--ink);font-weight:600}
+.clockrow{display:flex;gap:18px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.dial{width:148px;height:148px;flex:none}
+.ghadi .big{font-family:var(--f-read);font-weight:600;font-size:clamp(30px,6vw,40px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.ghadi .lab{font-size:13px;color:var(--ink-2);margin-top:4px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:14px;margin-top:12px}
+.facts dt{color:var(--ink-3)} .facts dd{margin:0;color:var(--ink)}
+.chog{font-weight:600} .chog.g{color:var(--good)} .chog.b{color:var(--bad)}
+.loc{margin-top:12px;font-size:13px;color:var(--ink-3);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lnk{background:none;border:0;padding:0;color:var(--peacock);cursor:pointer;font-size:13px;text-decoration:underline}
+.wd{font-size:15px;color:var(--ink-2);font-weight:500}
+.date{font-family:var(--f-read);font-size:clamp(24px,4.4vw,32px);font-weight:600;line-height:1.15;margin:4px 0 8px}
+.time{font-family:var(--f-read);font-size:clamp(40px,8vw,58px);font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--peacock)}
+.time span{font-size:.45em;color:var(--ink-3);margin-left:6px}
+.tz{font-size:13px;color:var(--ink-3);margin-top:6px}
+.go{margin-top:auto;padding-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
+.btn:hover{background:var(--sunk);text-decoration:none}
+/* today in history */
+.sech{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:38px 0 6px}
+.sech h2{margin:0;font-family:var(--f-read);font-size:clamp(26px,5vw,34px);font-weight:600;line-height:1.15}
+.sech h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.daynav{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.daynav input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--surface);color:var(--ink)}
+.sub{color:var(--ink-2);margin:0 0 16px;max-width:70ch}
+.feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;overflow:hidden;margin-bottom:16px}
+.feature svg{display:block;width:100%;height:auto}
+.feature .txt{padding:18px 20px;align-self:center}
+.feature h3{font-family:var(--f-read);font-size:26px;margin:4px 0 6px;line-height:1.2}
+.feature p{margin:0;color:var(--ink-2)}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.col{padding:16px 18px}
+.col h3{font-family:var(--f-read);font-size:21px;margin:0;line-height:1.2}
+.col h3 small{display:block;font-family:var(--f-ui);font-size:13px;font-weight:500;color:var(--ink-3);margin-top:2px}
+.list{list-style:none;margin:12px 0 0;padding:0}
+.list li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.yr{font-variant-numeric:tabular-nums;line-height:1.2}
+.yr b{display:block;font-size:15px;color:var(--saffron-strong)} .yr span{font-size:12px;color:var(--ink-3)}
+.ev{font-family:var(--f-read);font-size:17px;line-height:1.5}
+.ev .m{display:block;font-family:var(--f-ui);font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.tag{display:inline-block;font-family:var(--f-ui);font-size:11.5px;font-weight:600;border-radius:999px;padding:0 8px;margin-right:6px;vertical-align:2px}
+.tag.life{background:var(--saffron-soft);color:var(--saffron-strong)} .tag.vach{background:var(--peacock-soft);color:var(--peacock)}
+.more{margin-top:8px}
+.empty{color:var(--ink-3);font-size:14px;padding:10px 0}
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
+.pg{padding:14px 16px;color:var(--ink);display:block}
+.pg:hover{text-decoration:none;border-color:var(--saffron)}
+.pg b{display:block;font-family:var(--f-read);font-size:19px} .pg span{font-size:13.5px;color:var(--ink-2)}
+.pg .g{font-family:var(--f-display);color:var(--saffron);font-size:15px}
+.ttl{font-family:var(--f-read);font-size:clamp(28px,5.4vw,40px);font-weight:600;line-height:1.15;margin:6px 0 10px}
+.ttl .gu,.h2 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.h2{font-family:var(--f-read);font-size:clamp(24px,4.6vw,30px);font-weight:600;line-height:1.15;margin:38px 0 6px}
+.vt{margin-top:16px;overflow:hidden}
+.clkcard{margin-top:16px;padding:20px 18px}
+.rbcard{padding:16px 16px 12px}
+.vh,.vr{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,1fr) minmax(0,1fr)}
+.vh{background:var(--sunk);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.vh div{padding:10px 14px} .vh div:first-child{grid-column:2;color:var(--saffron-strong)} .vh div:last-child{color:var(--peacock)}
+.vr{border-top:1px solid var(--line)} .vr>div{padding:10px 14px}
+.vk{color:var(--ink-2);font-size:14px;font-weight:500}
+.vv{background:color-mix(in srgb,var(--saffron-soft) 45%,transparent);font-family:var(--f-read);font-size:18px;font-weight:600}
+.vs{font-family:var(--f-read);font-size:18px;font-weight:600;color:var(--peacock);font-variant-numeric:tabular-nums}
+.vv small,.vs small{display:block;font-family:var(--f-ui);font-size:12.5px;font-weight:400;color:var(--ink-3);margin-top:2px}
+.vr .big{font-size:22px}
+.tbl{overflow-x:auto} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--ink-3);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:var(--sunk)}
+tbody tr:last-child td{border-bottom:0}
+td .en{display:block;font-size:12.5px;color:var(--ink-3)} td b{font-family:var(--f-read);font-size:16px}
+td.t{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+tr.now td{background:var(--saffron-soft)} tr.now td.t{color:var(--ink);font-weight:600}
+.kind{font-size:12px;font-weight:600;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.kind.fx{background:var(--peacock-soft);color:var(--peacock)} .kind.sn{background:var(--saffron-soft);color:var(--saffron-strong)}
+.sched{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.note{margin-top:28px}
+@media (max-width:640px){.vh{display:none}.vr{grid-template-columns:1fr 1fr}.vk{grid-column:1/-1;padding-bottom:0!important;font-size:13px}.sched{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-3);font-size:13px}
+footer p{margin:0 0 6px;max-width:80ch}
+@media (max-width:760px){.live{grid-template-columns:1fr}.eng{border-left:0;border-top:1px solid var(--line)}.feature,.cols{grid-template-columns:1fr}}
+@media (max-width:420px){.dial{width:120px;height:120px}.pan,.eng{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* panchang page */
+.cite{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;border:1px solid color-mix(in srgb,var(--saffron) 40%,var(--line));background:color-mix(in srgb,var(--saffron-soft) 60%,transparent);color:var(--saffron-strong);border-radius:999px;padding:2px 10px;margin:2px 4px 2px 0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.cite:hover{text-decoration:none;border-color:var(--saffron)}
+.cite.tx{background:var(--peacock-soft);color:var(--peacock);border-color:color-mix(in srgb,var(--peacock) 35%,var(--line))}
+.cites{margin:6px 0 12px}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
+.limb{padding:14px 14px 12px;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden}
+.limb .k{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.limb .g{font-family:var(--f-display);color:var(--saffron);font-size:15px;line-height:1.1}
+.limb .v{font-family:var(--f-read);font-size:21px;font-weight:600;line-height:1.2;margin-top:6px}
+.limb .e{font-size:12.5px;color:var(--ink-2)}
+.limb .f{font-size:12px;color:var(--ink-3);margin-top:auto;padding-top:8px;border-top:1px dashed var(--line)}
+.limb .bar{height:4px;border-radius:2px;background:var(--sunk);margin:8px 0 4px;overflow:hidden}.limb .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--saffron),var(--peacock))}
+.sky{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;overflow:hidden;margin-top:16px}
+.sky .w{padding:14px;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--peacock-soft) 70%,transparent),transparent 70%)}
+.sky svg{width:100%;height:auto;display:block;max-width:520px;margin:0 auto}
+.sky .r{padding:18px 20px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.sky .ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sky input[type=range]{flex:1;min-width:140px;accent-color:var(--saffron)}
+.sky .when{font-family:var(--f-read);font-size:18px;font-weight:600}
+.rd2{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}
+.rd2 dt{color:var(--ink-3)}.rd2 dd{margin:0}.rd2 b{font-family:var(--f-read);font-size:16px}
+.wl .nk{fill:var(--ink-2);font-size:8.6px;font-family:var(--f-ui);text-anchor:middle;dominant-baseline:central}
+.wl .rs{fill:var(--saffron-strong);font-size:10px;font-family:var(--f-ui);text-anchor:middle;dominant-baseline:central;font-weight:600}
+.wl .ln{stroke:var(--line)} .wl .ring{fill:none;stroke:var(--line)}
+.ex{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:14px}
+.exc{padding:18px 20px}
+.exc h3{font-family:var(--f-read);font-size:23px;margin:0 0 2px;line-height:1.2}.exc h3 .gu{font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.8em;margin-right:8px}
+.exc .fx{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:var(--sunk);border-radius:8px;padding:8px 10px;margin:10px 0;overflow-x:auto}
+.exc p{margin:8px 0;color:var(--ink-2)} .exc p b{color:var(--ink)}
+.names{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.names span{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;background:var(--surface)}
+.names span.on{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.names span small{color:var(--ink-3);margin-left:4px}.names span.on small{color:#fff;opacity:.85}
+.wide{grid-column:1/-1}
+.hep{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:18px;align-items:center}
+.hep svg{width:100%;height:auto}
+.hep .pl{fill:var(--ink);font-family:var(--f-ui);font-size:12px;text-anchor:middle;dominant-baseline:central;font-weight:600}
+.stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.st{padding:14px 16px}.st b{display:block;font-family:var(--f-read);font-size:26px;line-height:1.1;color:var(--saffron-strong)}.st span{font-size:13px;color:var(--ink-2)}
+.yrs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.yrs span{font-size:13px;border-radius:999px;padding:2px 10px;background:var(--saffron-soft);color:var(--saffron-strong);font-weight:600}
+.yrs span.past{background:var(--sunk);color:var(--ink-3);font-weight:500}
+.ny{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.ny .card{padding:16px 18px}.ny h3{font-family:var(--f-read);margin:0;font-size:21px}.ny .d{font-family:var(--f-read);font-size:24px;font-weight:600;color:var(--peacock);margin:6px 0 2px}
+td.ok{color:var(--good);font-weight:600;white-space:nowrap}
+.srcs{padding:6px 18px 12px}.srcs h3{font-family:var(--f-read);font-size:19px;margin:14px 0 4px}
+.srcs ol{margin:0;padding-left:20px}.srcs li{margin:6px 0;font-size:14.5px;line-height:1.45}.srcs li small{display:block;color:var(--ink-3);font-size:12.5px}
+.honest{font-size:13px;color:var(--ink-3);margin:8px 0 0}
+@media (max-width:900px){.five{grid-template-columns:repeat(2,minmax(0,1fr))}.five .limb:first-child{grid-column:1/-1}}
+@media (max-width:760px){.sky,.ex,.ny{grid-template-columns:minmax(0,1fr)}.sky .r{border-left:0;border-top:1px solid var(--line)}.hep{grid-template-columns:minmax(0,1fr)}.hep svg{max-width:240px;margin:0 auto}.stat{grid-template-columns:minmax(0,1fr)}}
+/* ---- solar-system page ---- */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+h2,.subh,section{scroll-margin-top:130px}
+.hero{padding:22px 22px 18px;background:linear-gradient(160deg,var(--saffron-soft),transparent 72%)}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.honest{font-size:13px;color:var(--ink-3);margin:8px 0 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface);flex-wrap:wrap}
+.seg button{border:0;background:none;padding:6px 12px;font-size:13.5px;cursor:pointer;color:var(--ink-2)}
+.seg button.on{background:var(--ink);color:var(--paper)}
+/* model */
+.model{overflow:hidden}
+.stage{position:relative;height:min(68vh,640px);min-height:380px;background:#060a14;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.stage:active{cursor:grabbing}
+.stage canvas{display:block;width:100%;height:100%}
+.lbls{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.lb{position:absolute;left:0;top:0;white-space:nowrap;font-size:11.5px;line-height:1.15;color:#e9edf5;text-shadow:0 0 3px #000,0 0 6px #000;will-change:transform}
+.lb.pl{font-weight:600;font-size:12.5px}
+.lb.pl small{font-weight:400;opacity:.8;margin-left:4px}
+@media (max-width:520px){.lb.pl small{display:none}}
+.lb.rs{color:#ffc58a;font-size:12px;font-weight:600;text-align:center;transform-origin:0 0}
+.lb.nk{color:#9fd7d2;font-size:10px}
+.lb.st{color:#b9c4dc;font-size:10.5px}
+.lb.ar{color:#ffe08a;font-size:11.5px;font-weight:600}
+.hud{position:absolute;left:10px;top:10px;color:#e9edf5;font-size:13px;line-height:1.35;text-shadow:0 0 4px #000;pointer-events:none;max-width:70%}
+.hud b{font-family:var(--f-read);font-size:19px;display:block;font-variant-numeric:tabular-nums}
+.hud .live{display:inline-block;background:#c8321e;color:#fff;border-radius:999px;font-size:11px;font-weight:700;padding:0 8px;margin-right:6px;letter-spacing:.04em}
+.zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.zoom button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(10,16,30,.7);color:#fff;font-size:18px;cursor:pointer}
+.zoom button:hover{background:rgba(40,60,100,.8)}
+.hint{position:absolute;right:10px;bottom:8px;color:#9aa6bf;font-size:11.5px;pointer-events:none;text-shadow:0 0 3px #000}
+.ctl{display:grid;gap:10px;padding:12px 14px;border-top:1px solid var(--line);background:var(--sunk)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row>label:not(.chk),.row .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600;min-width:64px}
+.row input[type=range]{flex:1;min-width:140px;max-width:340px;accent-color:var(--saffron)}
+.row select,.row input[type=datetime-local]{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--surface);color:var(--ink);max-width:100%}
+.row .val{font-family:var(--f-read);font-weight:600;font-size:16px;min-width:110px}
+.chk{display:inline-flex;gap:6px;align-items:center;font-size:13.5px;color:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--surface);cursor:pointer}
+.chk input{accent-color:var(--saffron)}
+.btn.on{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.nowgrid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);gap:14px;margin-top:14px;align-items:start}
+.limbs{padding:14px 16px}
+.limbs dl{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;margin:8px 0 0;font-size:14.5px}
+.limbs dt{color:var(--ink-3)}.limbs dd{margin:0}.limbs dd b{font-family:var(--f-read);font-size:17px}
+.bar2{height:5px;border-radius:3px;background:var(--sunk);overflow:hidden;margin-top:3px;max-width:180px}.bar2 i{display:block;height:100%;background:linear-gradient(90deg,var(--saffron),var(--peacock))}
+.gt td,.gt th{padding:6px 10px;font-size:14px}
+.gt td b{font-family:var(--f-read);font-size:15.5px}
+.vk{font-size:11.5px;font-weight:700;border-radius:999px;padding:0 7px;background:var(--saffron-soft);color:var(--saffron-strong);margin-left:4px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.views{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.views .card{padding:14px 16px;font-size:14.5px;color:var(--ink-2)}
+.views h3{margin:0 0 4px;font-family:var(--f-read);font-size:19px;color:var(--ink)}
+.views .gu{font-family:var(--f-display);color:var(--saffron);font-size:15px;display:block}
+/* dhruva + galaxy */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:12px}
+.pn{padding:16px 18px}
+.pn h3{margin:0 0 4px;font-family:var(--f-read);font-size:21px}
+.pn p{font-size:14.5px;color:var(--ink-2);margin:6px 0}
+.pn svg{display:block;width:100%;height:auto;max-width:440px;margin:6px auto;background:#060a14;border-radius:10px}
+.pn .read{font-family:var(--f-read);font-size:17px;font-weight:600;margin:6px 0}
+.pn input[type=range]{width:100%;accent-color:var(--saffron)}
+.pn ul{margin:6px 0;padding-left:18px;font-size:14.5px;color:var(--ink-2)}
+.pn li{margin:4px 0}
+@keyframes gal{to{transform:rotate(-360deg)}}
+.galsun{animation:gal 46s linear infinite;transform-origin:200px 200px}
+/* classes */
+.today{padding:16px 18px;margin-top:12px;border-left:4px solid var(--saffron)}
+.today h3{margin:2px 0 6px;font-family:var(--f-read);font-size:24px;line-height:1.2}
+.today h3 .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.72em}
+.lesson p{margin:6px 0;font-size:15.5px;color:var(--ink);font-family:var(--f-read);line-height:1.55}
+.tasks{display:grid;gap:8px;margin:10px 0 4px}
+.task{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:start;background:var(--sunk);border-radius:10px;padding:9px 12px;font-size:14.5px}
+.task input{width:19px;height:19px;margin-top:2px;accent-color:var(--saffron)}
+.task.done{opacity:.65}.task.done .q{text-decoration:line-through}
+.task details{margin-top:4px;font-size:13.5px;color:var(--ink-2)}.task summary{cursor:pointer;color:var(--peacock);font-size:13px}
+.task .tg{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--saffron-strong);display:block}
+.prog{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0;font-size:14px;color:var(--ink-2)}
+.prog .bar2{flex:1;max-width:320px;height:8px}
+.weeks{display:grid;gap:10px;margin-top:12px}
+.wk{padding:4px 16px 10px}
+.wk>h3{font-family:var(--f-read);font-size:19px;margin:12px 0 4px}
+.wk details{border-top:1px solid var(--line);padding:8px 0}
+.wk summary{cursor:pointer;display:flex;gap:10px;align-items:baseline;font-size:15px;list-style:none}
+.wk summary::-webkit-details-marker{display:none}
+.wk summary .n{font-variant-numeric:tabular-nums;color:var(--saffron-strong);font-weight:700;min-width:48px;font-size:13px}
+.wk summary .ok{margin-left:auto;font-size:12px;color:var(--good);white-space:nowrap}
+.wk summary small{color:var(--ink-3);margin-left:6px}
+.wk details[open] summary{font-weight:600}
+.tier{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.tier.t1{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.tier.t3{background:var(--saffron-soft);color:var(--saffron-strong)}
+/* rules */
+.rules{padding:6px 18px 14px}
+.rules h3{font-family:var(--f-read);font-size:20px;margin:16px 0 4px;color:var(--saffron-strong)}
+.rules ol{margin:0;padding-left:22px}
+.rules li{margin:5px 0;font-size:15px;line-height:1.5}
+.rules li b{font-family:var(--f-read);font-size:16px}
+.dl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.subh{font-family:var(--f-read);font-size:22px;margin:30px 0 2px}
+@media (max-width:860px){.nowgrid,.two,.views{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:520px){.stage{height:62vh}.row>label:not(.chk),.row .k{min-width:0;width:100%}.hud{font-size:12px}.hud b{font-size:16px}}
+@media print{.top,.sp-lb,.sp-sb,.sp-tb,.sp-aura,footer,.jay,main>*:not(#rulesWrap){display:none!important}body{background:#fff!important}#rulesWrap .dl{display:none}.rules{box-shadow:none;border:0}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Home</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="./">Today</a>
+    <a href="vedic-time.html">Vedic time</a>
+    <a href="panchang.html">Panchang</a>
+    <a class="on" href="solar-system.html">Solar system</a>
+    <a href="vedas.html">Vedas</a>
+    <a href="kaal-patrak/">Kaal Patrak</a>
+    <a href="vicharan/">Vicharan</a>
+    <a href="vachanamrut-concordance/">Vachanamrut</a>
+    <a href="vachanamrut-concordance/library.html">Library</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+
+<main class="wrap">
+  <p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+
+  <section class="card hero">
+    <div class="eyebrow">ખગોળ અને જ્યોતિષ · Astronomy and Jyotish</div>
+    <h1 class="ttl"><span class="gu">સૂર્યમંડળ, જીવંત</span>The solar system, live in 3D</h1>
+    <p class="sub">The sun, moon and planets where they really are right now. Drag to turn, pinch or scroll to zoom, and change the speed of time. Switch to the earth-centred view to see the sky as a panchang sees it, with the 12 rashis and 27 nakshatras behind the planets. Below the model: the pole star and the Milky Way, a 28-day course on Vedic astronomy and jyotish with two tasks every day, and the thumb rules to keep and download.</p>
+    <div class="jump"><a class="btn" href="#model">🪐 3D model</a><a class="btn" href="#dhruva">⭐ Pole star and Milky Way</a><a class="btn" href="#classes">🎓 Classes</a><a class="btn" href="#rulesWrap">📌 Thumb rules</a><a class="btn" href="#sources">Sources</a></div>
+  </section>
+
+  <h2 class="h2" id="model"><span class="gu">જીવંત નમૂનો</span>Live model</h2>
+  <section class="card model">
+    <div class="stage" id="stage">
+      <canvas id="cv" aria-label="3D model of the solar system"></canvas>
+      <div class="lbls" id="lbls"></div>
+      <div class="hud"><span class="live hidden" id="liveB">● LIVE</span><span id="hudMode"></span><b id="hudDate"></b><span id="hudSub"></span></div>
+      <div class="zoom"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button><button id="ztop" aria-label="View from above" title="From above">⤓</button><button id="zside" aria-label="View from the side" title="From the side">⇥</button></div>
+      <div class="hint">drag to turn · scroll or pinch to zoom</div>
+    </div>
+    <div class="ctl">
+      <div class="row"><span class="k">View · દૃશ્ય</span>
+        <span class="seg" id="segView" role="group" aria-label="View"><button data-v="helio" class="on">☀ Sun at centre</button><button data-v="geo">🌍 Earth at centre</button><button data-v="galaxy">🌌 Through the galaxy</button></span>
+      </div>
+      <div class="row"><label for="spd">Speed · ગતિ</label>
+        <button class="btn" id="rev" aria-label="Run backwards" title="Run backwards">⏪</button>
+        <input type="range" id="spd" min="0" max="8" step="1" value="1">
+        <span class="val" id="spdV"></span>
+        <button class="btn" id="btnLive">● Live now</button><button class="btn" data-q="3">1 day/s</button><button class="btn" data-q="5">1 month/s</button><button class="btn" data-q="6">1 year/s</button>
+      </div>
+      <div class="row"><label for="dt">Date · તારીખ</label>
+        <input type="datetime-local" id="dt" min="1600-01-01T00:00" max="2399-12-31T00:00">
+        <label for="foc" style="min-width:0">Centre on</label><select id="foc"></select>
+      </div>
+      <div class="row"><span class="k">Show · બતાવો</span>
+        <label class="chk"><input type="checkbox" id="cTrue"> True distances</label>
+        <label class="chk"><input type="checkbox" id="cNak"> 27 nakshatras</label>
+        <label class="chk"><input type="checkbox" id="cOrb" checked> Orbits and trails</label>
+        <label class="chk" id="cFrameL"><input type="checkbox" id="cFrame"> Hold the Earth–Sun line still</label>
+      </div>
+    </div>
+  </section>
+  <p class="honest">Sizes are enlarged so you can see the planets, and distances are squeezed unless you tick "True distances". Directions are real: planet positions use NASA JPL's orbital elements (good to a fraction of a degree for 1800–2050, rougher outside), and the moon a short formula good to about 0.3°.</p>
+
+  <div class="nowgrid">
+    <section class="card limbs" aria-label="Panchang at this moment">
+      <div class="eyebrow">પંચાંગ · Panchang at the model's moment</div>
+      <dl id="limbs"></dl>
+      <p class="honest">Computed from the model's sun and moon for this instant. A printed panchang gives the tithi at sunrise for a place; for that see the <a href="panchang.html">Panchang page</a>.</p>
+    </section>
+    <section class="card tbl" aria-label="Where each graha is against the stars">
+      <table class="gt"><thead><tr><th>Graha · ગ્રહ</th><th>Rashi · રાશિ</th><th>Nakshatra · charan</th><th>From Earth</th></tr></thead><tbody id="gt"></tbody></table>
+    </section>
+  </div>
+
+  <div class="views">
+    <div class="card"><span class="gu">સૂર્યકેન્દ્રી</span><h3>Sun at centre</h3>How the planets really move: all the same way round, the inner ones faster. The ring outside is the zodiac, fixed to the stars. Tick "Hold the Earth–Sun line still" and the stars drift round once a year instead: that is why different rashis are up at night in different seasons.</div>
+    <div class="card"><span class="gu">ભૂકેન્દ્રી</span><h3>Earth at centre</h3>The sky as we see it, and as jyotish reckons it. The sun goes round the rashis once a year, the moon once in 27.3 days. Each planet draws loops: where a loop turns back, the planet is <b>vakri</b> (retrograde). Run it at 1 month/s and watch Mars.</div>
+    <div class="card"><span class="gu">આકાશગંગામાં</span><h3>Through the galaxy</h3>The sun is not still. It carries the planets round the centre of the Milky Way at about 200 km every second, so each planet's path is a long spring. The arrow shows the way we are going; the earth's axis keeps pointing at Dhruva all the while.</div>
+  </div>
+
+  <h2 class="h2" id="dhruva"><span class="gu">ધ્રુવ અને આકાશગંગા</span>The pole star and the Milky Way</h2>
+  <div class="two">
+    <section class="card pn">
+      <h3>Dhruva and the 25,800-year wobble</h3>
+      <p>The earth spins like a top, and its axis points at one spot in the sky. Today that spot is beside Polaris, our Dhruva tara, so it stays still while every other star circles it each night. But the top wobbles: the axis draws a circle among the stars once in about 25,800 years. Move the slider to see which star was, or will be, the pole star.</p>
+      <svg id="poleSvg" viewBox="0 0 400 400" role="img" aria-label="Path of the north pole among the stars"></svg>
+      <input type="range" id="poleY" min="-12000" max="16000" step="50" value="2026" aria-label="Year">
+      <div class="read" id="poleR"></div>
+      <p class="honest">This same wobble moves the equinox back through the rashis by 1° in about 72 years. That slow slide is the <b>ayanamsha</b>, now about 24°, the gap between the Indian (nirayana) and Western (sayana) zodiacs.</p>
+    </section>
+    <section class="card pn">
+      <h3>Our place in the Milky Way</h3>
+      <svg viewBox="0 0 400 400" role="img" aria-label="The sun's orbit in the Milky Way, seen from above">
+        <defs><radialGradient id="gg"><stop offset="0" stop-color="#ffe9b0"/><stop offset=".12" stop-color="#e9b86a" stop-opacity=".8"/><stop offset=".5" stop-color="#6d7fb8" stop-opacity=".35"/><stop offset="1" stop-color="#3a4a7a" stop-opacity="0"/></radialGradient></defs>
+        <circle cx="200" cy="200" r="185" fill="url(#gg)"/>
+        <g fill="none" stroke="#c9d4f2" stroke-opacity=".5" stroke-width="9" stroke-linecap="round"><path d="M200 200c40-30 100-20 120 40s-20 120-90 130"/><path d="M200 200c-40 30-100 20-120-40s20-120 90-130"/><path d="M200 200c30 40 20 90-30 110s-110-10-125-70" stroke-opacity=".3"/><path d="M200 200c-30-40-20-90 30-110s110 10 125 70" stroke-opacity=".3"/></g>
+        <circle cx="200" cy="200" r="96" fill="none" stroke="#ffc58a" stroke-dasharray="3 5"/>
+        <g class="galsun"><circle cx="200" cy="296" r="5" fill="#ffd34d"/><text x="210" y="300" fill="#fff" font-size="12">Sun · સૂર્ય</text></g>
+        <text x="200" y="196" fill="#1b1206" font-size="11" text-anchor="middle" font-weight="700">centre</text>
+        <text x="12" y="20" fill="#b9c4dc" font-size="11">seen from above · not to scale</text>
+        <text x="12" y="390" fill="#b9c4dc" font-size="11">one lap ≈ 230 million years</text>
+      </svg>
+      <ul>
+        <li>The sun is about <b>26,000 light-years</b> from the centre, which lies in Dhanu (Sagittarius), near Mula nakshatra.</li>
+        <li>It moves at about <b>200 km/s</b> (720,000 km/h) and takes about <b>230 million years</b> for one lap.</li>
+        <li>The planets' plane is tilted about <b>60°</b> to the galaxy's plane, so we travel nearly "pole first", not flat like a plate.</li>
+        <li><b>Polaris is 430 light-years away</b> and goes round the galaxy with us. That is why Dhruva stays in place for thousands of years even at this speed; only the earth's own wobble changes the pole star.</li>
+      </ul>
+      <p class="honest">The Vishnu Purana and the Bhagavat describe the stars turning about Dhruva like oxen about a threshing post. That is a true picture of the nightly sky. The motion round the galaxy was found only in the 20th century and is not in the old texts.</p>
+    </section>
+  </div>
+
+  <h2 class="h2" id="classes"><span class="gu">વર્ગ</span>Classes: Vedic astronomy and jyotish in 28 days</h2>
+  <p class="sub">One short class a day, each with two tasks, plus two fresh sky tasks made from today's real sky. Tick a task when done; your progress is saved on this device. After day 28 the course starts again as revision, and the sky tasks keep changing every day.</p>
+  <p class="sub"><span class="tier t1">✓ Ganita</span> The astronomy in jyotish (tithi, nakshatra, eclipses, planet positions) is measurable and matches modern values. <span class="tier t3">Phalita</span> Reading character or the future from the chart is a matter of tradition and faith; controlled tests have not found it to predict better than chance. The classes teach the first and describe the second.</p>
+  <section class="card today" id="todayCls"></section>
+  <div class="prog"><span id="progT"></span><div class="bar2"><i id="progB" style="width:0"></i></div><button class="lnk" id="restart">Restart the course from today</button></div>
+  <div class="weeks" id="weeks"></div>
+
+  <div id="rulesWrap">
+  <h2 class="h2" id="rules"><span class="gu">અંગૂઠાના નિયમો</span>Thumb rules</h2>
+  <p class="sub">The whole subject in short lines. Keep them handy, or download them.</p>
+  <div class="dl"><a class="btn" href="data/sky/vedic-astronomy-thumb-rules.pdf" download>⬇ Download PDF</a><button class="btn" id="dlTxt">⬇ Download as text</button><button class="btn" id="dlPrint">🖨 Print</button></div>
+  <section class="card rules" id="rulesList"></section>
+  </div>
+
+  <h2 class="h2" id="sources"><span class="gu">સંદર્ભ</span>Sources</h2>
+  <section class="card srcs">
+    <h3>Positions and numbers</h3>
+    <ol>
+      <li>Planet positions: E. M. Standish, <a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html" target="_blank" rel="noopener">Approximate Positions of the Planets</a>, NASA JPL Solar System Dynamics (Keplerian elements, 1800–2050).</li>
+      <li>Moon position: low-precision formulae of <a href="https://aa.usno.navy.mil/publications/asa" target="_blank" rel="noopener">The Astronomical Almanac</a> (US Naval Observatory and HM Nautical Almanac Office). Checked for this page against the <a href="https://rhodesmill.org/pyephem/" target="_blank" rel="noopener">PyEphem</a> library on 400 dates: tithi agreed on 396, nakshatra on all 400.</li>
+      <li>Sun's speed, distance and lap round the galaxy: NASA, <a href="https://science.nasa.gov/solar-system/solar-system-facts/" target="_blank" rel="noopener">Solar System Facts</a>; tilt of the planets' plane to the galaxy: <a href="https://en.wikipedia.org/wiki/Solar_System#Galactic_context" target="_blank" rel="noopener">Solar System: galactic context</a>; direction of travel from the <a href="https://en.wikipedia.org/wiki/Galactic_coordinate_system" target="_blank" rel="noopener">galactic coordinate system</a>.</li>
+      <li>Pole star and precession: <a href="https://en.wikipedia.org/wiki/Axial_precession" target="_blank" rel="noopener">Axial precession</a> and <a href="https://en.wikipedia.org/wiki/Pole_star" target="_blank" rel="noopener">Pole star</a>; star positions (J2000) from the <a href="https://simbad.cds.unistra.fr/simbad/" target="_blank" rel="noopener">SIMBAD</a> database; Polaris distance: <a href="https://en.wikipedia.org/wiki/Polaris" target="_blank" rel="noopener">Polaris</a>.</li>
+      <li>Ayanamsha: Lahiri (Chitrapaksha), adopted by the Calendar Reform Committee, Government of India, 1955: <a href="https://en.wikipedia.org/wiki/Ayanamsa" target="_blank" rel="noopener">Ayanamsa</a>.</li>
+      <li>3D drawing: <a href="https://threejs.org/" target="_blank" rel="noopener">three.js</a> (MIT licence).</li>
+    </ol>
+    <h3>Panchang, Vedic astronomy and jyotish</h3>
+    <ol>
+      <li><a href="https://en.wikipedia.org/wiki/Surya_Siddhanta" target="_blank" rel="noopener">Surya Siddhanta</a>; E. Burgess's 1860 English translation on <a href="https://archive.org/search?query=Surya+Siddhanta+Burgess" target="_blank" rel="noopener">archive.org</a>. <a href="https://en.wikipedia.org/wiki/Aryabhatiya" target="_blank" rel="noopener">Aryabhatiya</a> of Aryabhata (499 CE). <a href="https://en.wikipedia.org/wiki/Vedanga_Jyotisha" target="_blank" rel="noopener">Vedanga Jyotisha</a> of Lagadha.</li>
+      <li>The five limbs: <a href="https://en.wikipedia.org/wiki/Panchangam" target="_blank" rel="noopener">Panchangam</a>, <a href="https://en.wikipedia.org/wiki/Tithi" target="_blank" rel="noopener">Tithi</a>, <a href="https://en.wikipedia.org/wiki/Nakshatra" target="_blank" rel="noopener">Nakshatra</a> (and its padas), <a href="https://en.wikipedia.org/wiki/Nityayoga" target="_blank" rel="noopener">Yoga</a>, <a href="https://en.wikipedia.org/wiki/Karana_(pancanga)" target="_blank" rel="noopener">Karana</a>, <a href="https://en.wikipedia.org/wiki/Hindu_calendar" target="_blank" rel="noopener">Hindu calendar</a> (months, adhik maas), <a href="https://en.wikipedia.org/wiki/Sankranti" target="_blank" rel="noopener">Sankranti</a>.</li>
+      <li>Jyotish: <a href="https://en.wikipedia.org/wiki/Hindu_astrology" target="_blank" rel="noopener">Jyotisha</a>, <a href="https://en.wikipedia.org/wiki/Navagraha" target="_blank" rel="noopener">Navagraha</a>, <a href="https://en.wikipedia.org/wiki/Dasha_(astrology)" target="_blank" rel="noopener">Vimshottari dasha</a>, <a href="https://en.wikipedia.org/wiki/Brihat_Parashara_Hora_Shastra" target="_blank" rel="noopener">Brihat Parashara Hora Shastra</a>, <a href="https://en.wikipedia.org/wiki/Brihat_Samhita" target="_blank" rel="noopener">Brihat Samhita</a> of Varahamihira.</li>
+      <li>Test of astrology: S. Carlson (1985), A double-blind test of astrology, <i>Nature</i> 318:419–425, <a href="https://doi.org/10.1038/318419a0" target="_blank" rel="noopener">doi:10.1038/318419a0</a>.</li>
+      <li>Eclipses and the saros: NASA, <a href="https://eclipse.gsfc.nasa.gov/SEsaros/SEsaros.html" target="_blank" rel="noopener">Eclipses and the Saros</a>. Moon and planet periods: NASA <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noopener">Planetary Fact Sheets</a>.</li>
+      <li>Dhruva: Vishnu Purana 2.9 and 2.12, Shrimad Bhagavat 5.23 (the stars turning about Dhruva).</li>
+      <li>This site: <a href="panchang.html">Panchang and its science</a>, <a href="vedic-time.html">Vedic time</a>, <a href="vedas.html#science">The Vedas and modern science</a>.</li>
+    </ol>
+  </section>
+  <p class="note"><a href="panchang.html">← Panchang</a> · <a href="vedic-time.html">Vedic time</a> · <a href="./">Home</a></p>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Model.</b> Planet positions from NASA JPL's approximate orbital elements; moon from the Astronomical Almanac's short formula; sidereal zodiac by the Lahiri ayanamsha. Sizes and distances are not to scale unless stated.</p>
+</div></footer>
+<script>
+/* Sky maths for solar-system.html: positions of the sun, moon and planets for any date, and the panchang limbs.
+   Planets: JPL "Keplerian elements for approximate positions of the major planets" (E. M. Standish), valid 1800-2050,
+   J2000 ecliptic. Moon: low-precision series of the Astronomical Almanac (about 0.3 deg). Sidereal zero: Lahiri. */
+const SKY=(function(){
+const D2R=Math.PI/180,R2D=180/Math.PI,norm=a=>((a%360)+360)%360;
+//            a(AU)       e          I(deg)      L(deg)        peri(deg)     node(deg)   + rates per Julian century
+const EL={
+ mercury:[0.38709927,0.20563593,7.00497902,252.25032350,77.45779628,48.33076593, 0.00000037,0.00001906,-0.00594749,149472.67411175,0.16047689,-0.12534081],
+ venus:[0.72333566,0.00677672,3.39467605,181.97909950,131.60246718,76.67984255, 0.00000390,-0.00004107,-0.00078890,58517.81538729,0.00268329,-0.27769418],
+ earth:[1.00000261,0.01671123,-0.00001531,100.46457166,102.93768193,0.0, 0.00000562,-0.00004392,-0.01294668,35999.37244981,0.32327364,0.0],
+ mars:[1.52371034,0.09339410,1.84969142,-4.55343205,-23.94362959,49.55953891, 0.00001847,0.00007882,-0.00813131,19140.30268499,0.44441088,-0.29257343],
+ jupiter:[5.20288700,0.04838624,1.30439695,34.39644051,14.72847983,100.47390909, -0.00011607,-0.00013253,-0.00183714,3034.74612775,0.21252668,0.20469106],
+ saturn:[9.53667594,0.05386179,2.48599187,49.95424423,92.59887831,113.66242448, -0.00125060,-0.00050991,0.00193609,1222.49362201,-0.41897216,-0.28867794],
+ uranus:[19.18916464,0.04725744,0.77263783,313.23810451,170.95427630,74.01692503, -0.00196176,-0.00004397,-0.00242939,428.48202785,0.40805281,0.04240589],
+ neptune:[30.06992276,0.00859048,1.77004347,-55.12002969,44.96476227,131.78422574, 0.00026291,0.00005105,0.00035372,218.45945325,-0.32241464,-0.00508664]};
+const jd=ms=>ms/864e5+2440587.5, T=ms=>(jd(ms)-2451545)/36525;
+/* heliocentric position, J2000 ecliptic, AU: [x,y,z] */
+function helio(name,ms){const e=EL[name],t=T(ms),a=e[0]+e[6]*t,ec=e[1]+e[7]*t,I=(e[2]+e[8]*t)*D2R,L=e[3]+e[9]*t,wb=e[4]+e[10]*t,Om=e[5]+e[11]*t;
+  const w=(wb-Om)*D2R,O=Om*D2R;let M=norm(L-wb);if(M>180)M-=360;M*=D2R;let E=M+ec*Math.sin(M);
+  for(let i=0;i<8;i++)E-=(E-ec*Math.sin(E)-M)/(1-ec*Math.cos(E));
+  const xp=a*(Math.cos(E)-ec),yp=a*Math.sqrt(1-ec*ec)*Math.sin(E),cw=Math.cos(w),sw=Math.sin(w),cO=Math.cos(O),sO=Math.sin(O),cI=Math.cos(I),sI=Math.sin(I);
+  return [(cw*cO-sw*sO*cI)*xp+(-sw*cO-cw*sO*cI)*yp,(cw*sO+sw*cO*cI)*xp+(-sw*sO+cw*cO*cI)*yp,sw*sI*xp+cw*sI*yp]}
+/* points along one orbit (for drawing) */
+function orbit(name,ms,n){const e=EL[name],t=T(ms),a=e[0]+e[6]*t,ec=e[1]+e[7]*t,I=(e[2]+e[8]*t)*D2R,wb=e[4]+e[10]*t,Om=e[5]+e[11]*t,w=(wb-Om)*D2R,O=Om*D2R,out=[];
+  const cw=Math.cos(w),sw=Math.sin(w),cO=Math.cos(O),sO=Math.sin(O),cI=Math.cos(I),sI=Math.sin(I);
+  for(let i=0;i<=n;i++){const E=i/n*2*Math.PI,xp=a*(Math.cos(E)-ec),yp=a*Math.sqrt(1-ec*ec)*Math.sin(E);
+    out.push([(cw*cO-sw*sO*cI)*xp+(-sw*cO-cw*sO*cI)*yp,(cw*sO+sw*cO*cI)*xp+(-sw*sO+cw*cO*cI)*yp,sw*sI*xp+cw*sI*yp])}return out}
+const PREC=1.396971; // general precession in longitude, degrees per Julian century
+/* moon: geocentric ecliptic longitude/latitude (J2000 frame, deg) and distance (earth radii) */
+function moon(ms){const t=T(ms),s=x=>Math.sin(x*D2R),c=x=>Math.cos(x*D2R);
+  const lon=218.32+481267.881*t+6.29*s(135.0+477198.87*t)-1.27*s(259.3-413335.36*t)+0.66*s(235.7+890534.22*t)+0.21*s(269.9+954397.74*t)-0.19*s(357.5+35999.05*t)-0.11*s(186.5+966404.03*t);
+  const lat=5.13*s(93.3+483202.02*t)+0.28*s(228.2+960400.89*t)-0.28*s(318.3+6003.15*t)-0.17*s(217.6-407332.21*t);
+  const par=0.9508+0.0518*c(135.0+477198.87*t)+0.0095*c(259.3-413335.36*t)+0.0078*c(235.7+890534.22*t)+0.0028*c(269.9+954397.74*t);
+  return {lon:norm(lon-PREC*t),lat,dist:1/Math.sin(par*D2R)}}
+const lonlat=v=>({lon:norm(Math.atan2(v[1],v[0])*R2D),lat:Math.atan2(v[2],Math.hypot(v[0],v[1]))*R2D,r:Math.hypot(v[0],v[1],v[2])});
+/* geocentric vector of a planet or the sun, AU, J2000 ecliptic */
+function geo(name,ms){const e=helio("earth",ms);if(name==="sun")return [-e[0],-e[1],-e[2]];const p=helio(name,ms);return [p[0]-e[0],p[1]-e[1],p[2]-e[2]]}
+const AYAN0=23.85306; // Lahiri ayanamsa at J2000.0; the J2000 frame is fixed to the stars, so sidereal = J2000 longitude - AYAN0
+const ayanamsa=ms=>AYAN0+PREC*T(ms);
+const rahu=ms=>norm(125.04452-1934.136261*T(ms)-PREC*T(ms)); // mean ascending node of the moon, J2000 frame
+/* sidereal (nirayana) geocentric longitude of a graha, degrees */
+function sid(name,ms){let l;if(name==="moon")l=moon(ms).lon;else if(name==="rahu")l=rahu(ms);else if(name==="ketu")l=rahu(ms)+180;else l=lonlat(geo(name,ms)).lon;return norm(l-AYAN0)}
+const retro=(name,ms)=>{if(name==="sun"||name==="moon")return false;if(name==="rahu"||name==="ketu")return true;let d=sid(name,ms+36e5)-sid(name,ms-36e5);if(d>180)d-=360;if(d<-180)d+=360;return d<0};
+const RASHI=[["મેષ","Mesha","Aries"],["વૃષભ","Vrishabha","Taurus"],["મિથુન","Mithuna","Gemini"],["કર્ક","Karka","Cancer"],["સિંહ","Simha","Leo"],["કન્યા","Kanya","Virgo"],["તુલા","Tula","Libra"],["વૃશ્ચિક","Vrishchika","Scorpio"],["ધન","Dhanu","Sagittarius"],["મકર","Makara","Capricorn"],["કુંભ","Kumbha","Aquarius"],["મીન","Meena","Pisces"]];
+const NAK=[["અશ્વિની","Ashwini"],["ભરણી","Bharani"],["કૃત્તિકા","Krittika"],["રોહિણી","Rohini"],["મૃગશીર્ષ","Mrigashirsha"],["આર્દ્રા","Ardra"],["પુનર્વસુ","Punarvasu"],["પુષ્ય","Pushya"],["આશ્લેષા","Ashlesha"],["મઘા","Magha"],["પૂર્વા ફાલ્ગુની","Purva Phalguni"],["ઉત્તરા ફાલ્ગુની","Uttara Phalguni"],["હસ્ત","Hasta"],["ચિત્રા","Chitra"],["સ્વાતિ","Swati"],["વિશાખા","Vishakha"],["અનુરાધા","Anuradha"],["જ્યેષ્ઠા","Jyeshtha"],["મૂળ","Mula"],["પૂર્વાષાઢા","Purva Ashadha"],["ઉત્તરાષાઢા","Uttara Ashadha"],["શ્રવણ","Shravana"],["ધનિષ્ઠા","Dhanishtha"],["શતભિષા","Shatabhisha"],["પૂર્વા ભાદ્રપદ","Purva Bhadrapada"],["ઉત્તરા ભાદ્રપદ","Uttara Bhadrapada"],["રેવતી","Revati"]];
+const TITHI=[["એકમ","Ekam"],["બીજ","Bij"],["ત્રીજ","Trij"],["ચોથ","Choth"],["પાંચમ","Pancham"],["છઠ","Chhath"],["સાતમ","Satam"],["આઠમ","Atham"],["નોમ","Nom"],["દશમ","Dasham"],["અગિયારસ","Agiyaras"],["બારસ","Baras"],["તેરસ","Teras"],["ચૌદસ","Chaudas"]];
+const YOGA=["Vishkambha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda","Sukarma","Dhriti","Shula","Ganda","Vriddhi","Dhruva","Vyaghata","Harshana","Vajra","Siddhi","Vyatipata","Variyan","Parigha","Shiva","Siddha","Sadhya","Shubha","Shukla","Brahma","Indra","Vaidhriti"];
+const KARANA=["Bava","Balava","Kaulava","Taitila","Gara","Vanija","Vishti (Bhadra)"];
+const MONTH=["ચૈત્ર · Chaitra","વૈશાખ · Vaishakh","જેઠ · Jeth","અષાઢ · Ashadh","શ્રાવણ · Shravan","ભાદરવો · Bhadarvo","આસો · Aso","કારતક · Kartak","માગશર · Magshar","પોષ · Posh","મહા · Maha","ફાગણ · Fagan"];
+/* the five limbs for an instant (not for the sunrise of a place; see panchang.html for that) */
+function panchang(ms){const s=sid("sun",ms),m=sid("moon",ms),el=norm(m-s),ti=Math.floor(el/12),half=Math.floor(el/6),nk=Math.floor(m/(360/27)),ch=Math.floor((m%(360/27))/(360/108))+1,yg=Math.floor(norm(s+m)/(360/27));
+  const paksha=ti<15?"sud":"vad",n=ti%15,tname=n<14?TITHI[n]:(ti===14?["પૂનમ","Punam"]:["અમાસ","Amas"]);
+  const kar=half===0?"Kimstughna":half>=57?["Shakuni","Chatushpada","Naga"][half-57]:KARANA[(half-1)%7];
+  return {sun:s,moon:m,elong:el,tithi:ti+1,tname,paksha,tfrac:(el%12)/12,nak:nk,nakName:NAK[nk],charan:ch,yoga:YOGA[yg],karana:kar,sunRashi:Math.floor(s/30),moonRashi:Math.floor(m/30)}}
+const place=l=>{const r=Math.floor(l/30),n=Math.floor(l/(360/27));return {rashi:r,rashiName:RASHI[r],deg:l%30,nak:n,nakName:NAK[n],charan:Math.floor((l%(360/27))/(360/108))+1}};
+return {EL,helio,orbit,moon,geo,lonlat,sid,retro,rahu,ayanamsa,panchang,place,RASHI,NAK,MONTH,AYAN0,PREC,norm,D2R,R2D,T,jd};
+})();
+window.SKY=SKY;
+</script>
+<script>
+/* Course and thumb rules for solar-system.html. see: preset for the 3D model (view, speed index, date, nak, focus, now). */
+const SKY_DATA={
+weeks:["Week 1 · The sky and its clocks","Week 2 · The panchang and the calendar","Week 3 · Vedic astronomy","Week 4 · Jyotish, and putting it together"],
+lessons:[
+{t:"The sky is a turning sphere",gu:"ખગોળ: ફરતો ગોળો",
+ p:"Stand outside at night and the stars seem fixed to a great sphere, the <b>khagol</b>, that turns from east to west once a day. It is the earth that turns. One point does not move: the pole, marked by <b>Dhruva</b> (Polaris). Everything else circles it. The height of Dhruva above your northern horizon equals your latitude: about 23° in Ahmedabad, 90° at the north pole, 0° at the equator.",
+ see:{view:"helio",speed:1,now:true,focus:"earth"},seeT:"See the earth's axis pointing to Dhruva",
+ tasks:[["Tonight, find the Saptarshi (Big Dipper). Follow its two front stars upward to reach Dhruva.","The line through the two 'pointer' stars, extended about five times their gap, lands on Polaris."],
+  ["How high is Dhruva where you live? Look up your latitude; that is the answer in degrees.","Ahmedabad 23°, Mumbai 19°, Delhi 28.6°, London 51.5°, New Jersey about 40°."]]},
+{t:"The sun's yearly road: 12 rashis",gu:"ક્રાંતિવૃત્ત અને ૧૨ રાશિ",
+ p:"Against the stars the sun moves about <b>1° a day</b> and returns in a year. Its road is the <b>kranti-vritta</b> (ecliptic). Cut it into 12 equal parts of 30° and you have the <b>rashis</b>, Mesha to Meena. The moon and planets keep close to the same road, so the rashis are the address system of the sky.",
+ see:{view:"geo",speed:5,now:true},seeT:"Watch the sun go through the rashis",
+ tasks:[["In the earth-centred view at 1 month/s, how long does the sun take to cross one rashi?","About 30.4 days: 365.25 days ÷ 12."],
+  ["Which rashi is the sun in today? Read it from the table under the model, then say which one comes next.","Order: Mesha, Vrishabha, Mithuna, Karka, Simha, Kanya, Tula, Vrishchika, Dhanu, Makara, Kumbha, Meena."]]},
+{t:"27 nakshatras: the moon's daily halts",gu:"૨૭ નક્ષત્ર",
+ p:"The moon goes round the stars in <b>27.3 days</b>, so the old astronomers cut the same road into <b>27 nakshatras</b> of 13°20′ each: one for each night. The moon moves about 13° a day, so it changes nakshatra roughly once a day. Each nakshatra is named after a star or group near it: Rohini (Aldebaran), Chitra (Spica), Swati (Arcturus).",
+ see:{view:"geo",speed:3,now:true,nak:true},seeT:"Watch the moon cross the nakshatras",
+ tasks:[["360° ÷ 27 = ? Give it in degrees and minutes.","13°20′ (13.333°)."],
+  ["Today's nakshatra is shown under the model. Which nakshatra will the moon be in two days from now? Check with the model at 1 day/s.","Two nakshatras further on in the list, give or take one."]]},
+{t:"Charan: a quarter of a nakshatra",gu:"ચરણ (પાદ)",
+ p:"Each nakshatra is cut into four <b>charan</b> (pada) of 3°20′. That makes 27 × 4 = <b>108 charans</b> round the sky, the reason 108 is so loved a number. Nine charans make one rashi, so the two systems fit exactly: 1 rashi = 2¼ nakshatras. Each charan has a syllable; by custom a child's name starts with the syllable of the moon's charan at birth.",
+ see:{view:"geo",speed:2,now:true,nak:true,focus:"moon"},seeT:"Watch the charan number change",
+ tasks:[["How long does the moon take to cross one charan?","About 6 hours: a nakshatra takes about a day, and a charan is a quarter of it."],
+  ["Mesha rashi holds which nakshatras? (Hint: 9 charans.)","All 4 charans of Ashwini, all 4 of Bharani, and the first charan of Krittika."]]},
+{t:"Tithi: the moon's lead over the sun",gu:"તિથિ",
+ p:"A <b>tithi</b> is not a day. It is the time the moon takes to gain <b>12°</b> on the sun. At amas they are together (0°); each 12° after is one tithi; at 180° it is punam. Thirty tithis make a lunar month of 29.53 days, so a tithi averages 23 h 37 m. Tithis 1–15 are <b>sud</b> (waxing, shukla), 16–30 are <b>vad</b> (waning, krishna).",
+ see:{view:"geo",speed:3,now:true},seeT:"Watch the moon–sun angle grow",
+ tasks:[["The moon is 100° ahead of the sun. Which tithi is it?","100 ÷ 12 = 8.33, so the 9th tithi is running: Sud Nom."],
+  ["The moon is 200° ahead of the sun. Which tithi and paksha?","200 ÷ 12 = 16.67, so the 17th tithi: Vad Bij."]]},
+{t:"Why tithis get skipped or doubled",gu:"ક્ષય અને વૃદ્ધિ તિથિ",
+ p:"The moon's orbit is an oval, so it runs fast when near the earth and slow when far. A tithi can be as short as about 19 hours or as long as 26. The civil day takes the <b>tithi running at sunrise</b>. A short tithi that begins after one sunrise and ends before the next is never 'at sunrise': it is <b>kshaya</b> (skipped). A long one that covers two sunrises is <b>vriddhi</b> (repeated).",
+ see:{view:"geo",speed:2,now:true,focus:"moon"},seeT:"Watch the tithi bar fill at different rates",
+ tasks:[["A tithi starts at 7:10 am and ends at 5:50 am next day. Sunrise is 6:45 am both days. What happens to it?","It is kshaya: it was not running at either sunrise."],
+  ["Open the Panchang page and find the next kshaya or vriddhi tithi this month.","The year ribbon on the home page marks them; most months have one of each."]]},
+{t:"Vaar: seven days from seven grahas",gu:"વાર",
+ p:"Order the seven visible grahas from slowest to fastest: Shani, Guru, Mangal, Surya, Shukra, Budh, Chandra. Give each hour (<b>hora</b>) of the day to one of them in turn. The lord of the first hour names the day. Since 24 = 3 × 7 + 3, the next day starts three steps on: Surya → Chandra → Mangal → Budh → Guru → Shukra → Shani. The Hindu day runs from <b>sunrise to sunrise</b>, not midnight.",
+ see:null,
+ tasks:[["Starting from Guru in the slow-to-fast list, step forward three (wrapping round). Which day follows Guruvar?","Guru → Mangal, Surya, Shukra. Shukravar (Friday)."],
+  ["A baby is born at 3 am on Tuesday by the clock. Which vaar is it by the panchang?","Still Somvar (Monday): the new vaar starts only at sunrise."]]},
+{t:"Karana: half a tithi",gu:"કરણ",
+ p:"A <b>karana</b> is half a tithi: 6° of the moon's lead. There are 60 in a lunar month. Seven 'moving' karanas (Bava, Balava, Kaulava, Taitila, Gara, Vanija, Vishti) repeat eight times; four 'fixed' ones (Shakuni, Chatushpada, Naga, Kimstughna) come once each around amas. <b>Vishti</b>, also called Bhadra, is traditionally avoided for starting good work.",
+ see:{view:"geo",speed:2,now:true},seeT:"See the karana change twice a tithi",
+ tasks:[["The moon leads the sun by 40°. Which half-tithi (1 to 60) is running?","40 ÷ 6 = 6.67, so the 7th karana, the first half of Sud Choth."],
+  ["7 moving karanas × 8 + 4 fixed = ?","60, exactly the number of half-tithis in a month."]]},
+{t:"Yoga: sun and moon added together",gu:"યોગ",
+ p:"For tithi we subtract the sun from the moon. For <b>yoga</b> we add them. Take the sun's and moon's nirayana longitudes, add, and divide by 13°20′. The result, 1 to 27, is the yoga, from Vishkambha to Vaidhriti. A yoga lasts a little under a day. Two of them, <b>Vyatipata</b> and <b>Vaidhriti</b>, are traditionally avoided. With tithi, vaar, nakshatra and karana this completes the <b>five limbs</b>, the panch-ang.",
+ see:{view:"geo",speed:3,now:true},seeT:"See all five limbs under the model",
+ tasks:[["Sun at 200°, moon at 250°. Which yoga number?","450° − 360° = 90°. 90 ÷ 13.333 = 6.75, so the 7th yoga, Sukarma."],
+  ["Name the five limbs of the panchang.","Tithi, vaar, nakshatra, yoga, karana."]]},
+{t:"The lunar month and its name",gu:"ચાંદ્ર માસ",
+ p:"A lunar month runs from one new moon to the next: <b>29.53 days</b>. In Gujarat and the south the month ends at amas (<b>amanta</b>); in the north it ends at punam (<b>purnimanta</b>), so the vad half carries the next month's name there. Each month is named after the nakshatra where the moon is full: Chitra gives Chaitra, Vishakha gives Vaishakh, Krittika gives Kartik, Magha gives Maha.",
+ see:{view:"geo",speed:4,now:true,nak:true},seeT:"Find the nakshatra at the next full moon",
+ tasks:[["Run the model to the next punam (moon 180° from the sun). Which nakshatra is the moon in? Which month does that name?","It should be the nakshatra, or the one beside it, that names the current month."],
+  ["Vad Atham of Shravan in Gujarat (Janmashtami) is called Vad Atham of which month in north India?","Bhadrapad: the purnimanta month is one ahead during the vad half."]]},
+{t:"Sankranti and the solar months",gu:"સંક્રાંતિ",
+ p:"When the sun enters a new rashi it is a <b>sankranti</b>. There are 12 a year, about the 14th to 17th of each English month. <b>Makar Sankranti</b>, the sun entering Makara, falls on 14 January. Solar months tie the calendar to the seasons; lunar months tie it to the moon. The Hindu calendar uses both, which is why it is called luni-solar.",
+ see:{view:"geo",speed:5,date:"2027-01-01T00:00"},seeT:"Watch the sun enter Makara in January",
+ tasks:[["The sun is at Dhanu 20° today. About how many days to Makar Sankranti?","About 10 days: the sun moves roughly 1° a day."],
+  ["Makar Sankranti was on about 13 January in 1900 and is on 14–15 January now. Why does it slide later?","The equinox slips back against the stars by 1° in 72 years (precession), so sidereal dates come about 1 day later every 72 years."]]},
+{t:"Adhik maas: the extra month",gu:"અધિક માસ",
+ p:"Twelve lunar months are 354 days; the sun's year is 365. The moon's year falls <b>11 days short</b>. Left alone, Diwali would wander through all seasons. So about every <b>32½ months</b> an extra month is added: 7 in every 19 years. The rule is simple and astronomical: a lunar month in which the sun does <b>not</b> enter a new rashi (no sankranti) is <b>adhik</b>.",
+ see:{view:"geo",speed:5,now:true},seeT:"Count lunations between sankrantis",
+ tasks:[["11 days short each year. After how many years is the shortfall about one month?","A little under 3 years: 29.5 ÷ 11 = 2.7 years, about 32½ months."],
+  ["19 solar years = 6939.6 days. How many lunar months is that? How many more than 19 × 12?","6939.6 ÷ 29.53 = 235 months. 235 − 228 = 7 adhik months."]]},
+{t:"Ritu and ayana: seasons and the sun's turning",gu:"ઋતુ અને અયન",
+ p:"The year has six <b>ritus</b> of two months each: Vasant, Grishma, Varsha, Sharad, Hemant, Shishir. It also has two <b>ayanas</b>: uttarayan, when the sun moves north, and dakshinayan, when it moves south. The sun truly turns north at the winter solstice, <b>21–22 December</b>. We celebrate Uttarayan at Makar Sankranti, 14 January, because 1,700 years ago the two fell together. The gap of 24 days is the ayanamsha.",
+ see:{view:"helio",speed:5,now:true,focus:"earth"},seeT:"See the tilted axis through the year",
+ tasks:[["In the sun-centred view, on which date does the top of the earth's axis lean most toward the sun?","About 21 June, the summer solstice. It leans most away about 21 December."],
+  ["If the two dates drift apart by 1 day in 72 years, how long ago did the solstice fall on Makar Sankranti?","About 24 × 72 ≈ 1,700 years ago, around 285 CE."]]},
+{t:"Counting the years: Vikram and Shaka",gu:"વિક્રમ અને શક સંવત",
+ p:"<b>Vikram Samvat</b> runs 57 years ahead of the common era; in Gujarat its new year is Kartak sud 1, the day after Diwali. So add 57 after Diwali and 56 from January to Diwali. The <b>Shaka</b> era, used by the national calendar, starts in Chaitra and is 78 years behind (79 before Chaitra). Vachanamrut dates use an Ashadhi year that starts at Ashadh sud 1.",
+ see:null,
+ tasks:[["What is the Vikram Samvat today? And the Shaka year?","Check your answer on the home page of this site."],
+  ["Shriji Maharaj was born on Chaitra sud 9, Samvat 1837. Which CE year?","1837 − 56 = 1781 (April, before Diwali)."]]},
+{t:"Ayanamsha: two zodiacs",gu:"અયનાંશ: સાયન અને નિરયન",
+ p:"The Western zodiac starts at the spring equinox (<b>sayana</b>, 'with ayana'). The Indian zodiac is tied to the stars (<b>nirayana</b>). They agreed around 285 CE. Since then the equinox has slipped back by about <b>24°</b>, at 50″ a year, 1° in 72 years. That gap is the <b>ayanamsha</b>. India's official value is Lahiri's, which puts the star Chitra (Spica) at exactly 180°.",
+ see:{view:"helio",speed:0,now:true,nak:true},seeT:"See today's ayanamsha under the model",
+ tasks:[["A Western chart says the sun is at 10° Taurus. Where is it in the Indian zodiac?","Subtract 24°: 16° Mesha (Aries)."],
+  ["How many years for the equinox to slip through one whole rashi (30°)?","30 × 72 = about 2,150 years."]]},
+{t:"Dhruva, and the pole that wanders",gu:"ધ્રુવ અને અયનચલન",
+ p:"The same slow wobble that makes the ayanamsha also moves the pole. The earth's axis traces a circle 23½° wide among the stars in about <b>25,800 years</b>. Polaris is our Dhruva now and will be closest to the pole around 2100. In 2800 BCE the pole star was Thuban. In about 12,000 years it will be near Abhijit (Vega).",
+ see:null,seeT:"",
+ tasks:[["Use the pole-star slider above. In which year was Thuban nearest the pole? How near?","About 2800 BCE, within about 0.2°."],
+  ["Set the slider to the year 1 CE. Was there a bright star at the pole?","No. The pole lay between Polaris and Kochab, each several degrees away."]]},
+{t:"The nine grahas",gu:"નવગ્રહ",
+ p:"<b>Graha</b> means 'one that seizes', not 'planet'. The nine are the sun, the moon, Mangal, Budh, Guru, Shukra, Shani, and the two shadow points Rahu and Ketu. From fastest to slowest against the stars: Chandra (2¼ days in a rashi), Budh, Shukra and Surya (about a month), Mangal (1½ months), Guru (1 year), Rahu–Ketu (1½ years), Shani (2½ years). Uranus and Neptune cannot be seen by eye and are not in classical jyotish.",
+ see:{view:"geo",speed:6,now:true},seeT:"Watch each graha's pace",
+ tasks:[["Guru takes about 12 years round the zodiac, 1 rashi a year. The Kumbh Mela follows Guru. How often does the full Kumbh return to one place?","Every 12 years."],
+  ["Shani takes 29½ years. How long does it spend crossing three rashis (the 'sade sati')?","About 7½ years."]]},
+{t:"Vakri: when a graha goes backwards",gu:"વક્રી ગ્રહ",
+ p:"No planet ever turns round. But when the faster earth overtakes Mars, Jupiter or Saturn on the inside lane, the planet seems to slide backward against the stars for a while, like a slower train seen from a faster one. That is <b>vakri</b> (retrograde). It happens when the planet is opposite the sun, which is also when it is nearest and brightest. Budh and Shukra go vakri as they pass between us and the sun.",
+ see:{view:"geo",speed:5,date:"2027-01-10T00:00",focus:"auto"},seeT:"Watch Mars loop back in early 2027",
+ tasks:[["In the earth-centred view at 1 month/s, watch Mars. How many months between one loop and the next?","About 26 months (780 days)."],
+  ["Switch to the sun-centred view on a day when Mars is vakri. Where is the earth compared with Mars and the sun?","Between them: sun, earth and Mars are nearly in a line."]]},
+{t:"Rahu, Ketu and eclipses",gu:"રાહુ, કેતુ અને ગ્રહણ",
+ p:"The moon's path is tilted 5° to the sun's. The two crossing points are <b>Rahu</b> (going north) and <b>Ketu</b> (going south). They slide backward round the zodiac in <b>18.6 years</b>. An eclipse needs sun, earth and moon in one line, so it can happen only at amas (solar) or punam (lunar) <b>and</b> only when that amas or punam falls near Rahu or Ketu. The old story of Rahu swallowing the sun is this geometry.",
+ see:{view:"geo",speed:3,date:"2027-07-25T00:00",focus:"earth"},seeT:"Go to the solar eclipse of 2 August 2027",
+ tasks:[["On 2 August 2027 a total solar eclipse crosses Egypt and Arabia. In the model, check: is it amas? Is the sun near Rahu or Ketu?","Yes to both: the moon–sun angle is near 0° and the sun is within a few degrees of a node."],
+  ["Why is there not an eclipse every amas?","Because the moon's path is tilted 5°. At most new moons the moon passes above or below the sun."]]},
+{t:"Two kinds of month, two kinds of day",gu:"નાક્ષત્ર અને સાવન",
+ p:"The moon returns to the same star in <b>27.32 days</b> (sidereal month) but to the same phase in <b>29.53 days</b> (synodic month), because the sun has moved on meanwhile and the moon must catch up. The same holds for the earth: it turns once against the stars in 23 h 56 m, but needs 4 more minutes to face the sun again. So the stars rise <b>4 minutes earlier each day</b>, two hours a month.",
+ see:{view:"helio",speed:4,now:true},seeT:"Tick 'Hold the Earth–Sun line still' and watch the stars drift",
+ tasks:[["Orion rises at 10 pm tonight. When will it rise a month from now?","About 8 pm: 4 minutes × 30 days = 2 hours earlier."],
+  ["In 27.32 days the sun moves about 27°. How long does the moon need to cover that extra 27° at 13° a day?","About 2.2 days, because the sun keeps moving meanwhile. 27.3 + 2.2 = 29.5 days."]]},
+{t:"How the Surya Siddhanta computes",gu:"સૂર્ય સિદ્ધાંત",
+ p:"Indian astronomers did not write an orbit as a period. They wrote how many times a graha goes round in a <b>mahayuga of 43,20,000 years</b>, then divided. That gives the <b>mean</b> position. Then they corrected it twice, with the <b>manda</b> and <b>shighra</b> epicycles, to get the <b>true</b> position: the same job Kepler's ellipse does in the model above. Aryabhata (499 CE) added that the earth spins on its axis.",
+ see:null,
+ tasks:[["The Surya Siddhanta gives 5,77,53,336 moon rounds and 1,57,79,17,828 days in a mahayuga. Divide for the sidereal month.","27.32167 days. The measured value is 27.32166."],
+  ["Open the Panchang page and find how far the Surya Siddhanta's year is from the measured one.","About 3½ minutes a year too long."]]},
+{t:"Jyotish: the eye of the Veda",gu:"જ્યોતિષ: વેદનું નેત્ર",
+ p:"Jyotish is one of the six Vedangas, called the <b>eye of the Veda</b>, because yajnas had to be done at the right time. Its oldest text, the Vedanga Jyotisha of Lagadha, is a calendar manual. Later it grew three branches: <b>Siddhanta</b> or ganita (computing the sky), <b>Samhita</b> (weather, omens, public matters; Varahamihira's Brihat Samhita) and <b>Hora</b> (the individual's chart; the Brihat Parashara Hora Shastra).",
+ see:null,
+ tasks:[["Which branch does a panchang maker use? Which does a kundali reader use?","Siddhanta (ganita) for the panchang; Hora for the kundali."],
+  ["Name the six Vedangas.","Shiksha, Kalpa, Vyakarana, Nirukta, Chhandas, Jyotisha."]]},
+{t:"Lagna: the rashi rising now",gu:"લગ્ન",
+ p:"As the earth turns, the whole zodiac rises in the east and sets in the west once a day. The rashi on the eastern horizon at a given moment is the <b>lagna</b>. It changes about every <b>two hours</b>, so all 12 rise in 24 hours. At sunrise the lagna is the sun's own rashi; at sunset it is the 7th from it. The lagna is why two people born the same day have different charts.",
+ see:{view:"geo",speed:2,now:true},seeT:"Find the sun's rashi: that is the lagna at sunrise",
+ tasks:[["The sun is in Vrishchika. Which lagna rises at sunrise? At sunset? Around midday?","Sunrise: Vrishchika. Sunset: Vrishabha (7th). Midday: roughly Kumbha, three rashis on."],
+  ["Twins are born 10 minutes apart. Can their lagna differ?","Only if a rashi boundary crossed the horizon in those 10 minutes; the lagna moves 1° about every 4 minutes."]]},
+{t:"The kundali is a map of the sky",gu:"કુંડળી",
+ p:"A <b>kundali</b> is a diagram of the sky at one moment: 12 houses (bhava) counted from the lagna, with the nine grahas written in the rashis they occupy. The moon's rashi is the <b>janma rashi</b>; its nakshatra is the <b>janma nakshatra</b>. Everything in it is astronomy and can be checked with the model above. What it <i>means</i> for a life is phalita jyotish, a matter of tradition.",
+ see:{view:"geo",speed:0,date:"1781-04-02T22:10",nak:true},seeT:"See the sky on the night of Chaitra sud 9, Samvat 1837 (2 April 1781)",
+ tasks:[["Set the model to your own birth date and time. Write down the rashi of each of the nine grahas.","This list, with your lagna, is your kundali. Compare it with one made by a jyotishi."],
+  ["Which is your janma nakshatra and charan?","Read the moon's row in the table under the model for your birth moment."]]},
+{t:"Vimshottari dasha: a 120-year clock",gu:"વિંશોત્તરી દશા",
+ p:"Hora jyotish divides a life of 120 years among the nine grahas: Ketu 7, Shukra 20, Surya 6, Chandra 10, Mangal 7, Rahu 18, Guru 16, Shani 19, Budh 17. The 27 nakshatras take these lords in the same order, three times over, starting with Ashwini (Ketu). The moon's nakshatra at birth sets which period you start in, and how far the moon has gone through it sets how much of that period is left. <span class=\"tier t3\">Phalita</span>",
+ see:null,
+ tasks:[["Add the nine periods. What is the total?","7 + 20 + 6 + 10 + 7 + 18 + 16 + 19 + 17 = 120 years."],
+  ["The moon at birth is in Rohini (4th nakshatra). Which graha's dasha runs first?","Count: Ashwini Ketu, Bharani Shukra, Krittika Surya, Rohini Chandra. The Moon's."]]},
+{t:"Muhurta: choosing a time",gu:"મુહૂર્ત અને ચોઘડિયાં",
+ p:"A day of 60 ghadis has 30 <b>muhurtas</b> of 2 ghadis (48 minutes) each. The daytime, sunrise to sunset, is also cut into eight <b>choghadiyas</b>, and so is the night; their order depends on the vaar. The eighth of the day ruled by Rahu is the <b>Rahu kaal</b>. The midday muhurta, <b>Abhijit</b>, is held good for most work. Because sunrise and sunset shift, all of these stretch in summer and shrink in winter.",
+ see:null,
+ tasks:[["Sunrise 6:48, sunset 17:56. How long is one day choghadiya today?","Day = 11 h 08 m = 668 minutes. 668 ÷ 8 = 83½ minutes."],
+  ["Open the Vedic time page and find which choghadiya is running now.","The page shows today's full schedule for Ahmedabad."]]},
+{t:"The largest clocks: yugas and the galaxy",gu:"યુગ અને આકાશગંગા",
+ p:"The Puranas count time on a vast scale: Kali yuga 4,32,000 years; a mahayuga ten times that, in parts of 4:3:2:1; a kalpa, one day of Brahma, 1,000 mahayugas = <b>4.32 billion years</b>. Modern astronomy has its own large clock: the sun circles the Milky Way once in about <b>230 million years</b>, and the earth is 4.54 billion years old. The scales are alike; the Puranic numbers were not measured from the galaxy.",
+ see:{view:"galaxy",speed:6,now:true},seeT:"See the planets spiral through the galaxy",
+ tasks:[["How many laps of the galaxy has the sun made in the earth's 4.54 billion years?","About 20."],
+  ["In the galaxy view tick 'True distances'. Why does the earth's path look almost straight?","The sun moves about 46 AU a year while the earth's circle is only 1 AU wide."]]},
+{t:"Make today's panchang yourself",gu:"આજનું પંચાંગ જાતે બનાવો",
+ p:"You now have everything. From two numbers, the sun's and the moon's nirayana longitudes, you can write the whole panchang: <b>tithi</b> = (moon − sun) ÷ 12; <b>nakshatra</b> = moon ÷ 13°20′; <b>yoga</b> = (sun + moon) ÷ 13°20′; <b>karana</b> = (moon − sun) ÷ 6; and the <b>vaar</b> from the day of the week at sunrise. This is the ganita of jyotish, and it is exact science.",
+ see:{view:"geo",speed:0,now:true,nak:true},seeT:"Pause the model at this moment",
+ tasks:[["Pause the model. Read the sun's and moon's rashi and degrees from the table, turn them into longitudes (rashi number − 1) × 30 + degrees, and compute tithi and nakshatra by hand.","Your answers should match the panchang box beside the table."],
+  ["Explain to someone at home why Diwali comes on a different English date each year.","Diwali is a tithi (Aso vad amas). Lunar months are 29.5 days, so 12 of them fall 11 days short of the year, and an adhik maas pushes it back again."]]}
+],
+rules:[
+["The sky's ruler · આકાશનું માપ",[
+ "<b>360°</b> = 12 rashis × 30° = 27 nakshatras × 13°20′ = 108 charans × 3°20′.",
+ "<b>1 rashi</b> = 2¼ nakshatras = 9 charans.",
+ "The <b>sun</b> moves about 1° a day. The <b>moon</b> moves about 13° a day, so it gains 12° a day on the sun.",
+ "<b>Dhruva's height</b> above the horizon = your latitude.",
+ "Stars rise <b>4 minutes earlier</b> each day, 2 hours a month."]],
+["The five limbs · પંચાંગ",[
+ "<b>Tithi</b> = (Moon − Sun) ÷ 12°, rounded up. 1–15 sud, 16–30 vad. Punam at 180°, amas at 0°.",
+ "The <b>tithi at sunrise</b> is the day's tithi. Not at any sunrise: kshaya. At two sunrises: vriddhi.",
+ "A tithi lasts <b>19 to 26 hours</b>; 23 h 37 m on average.",
+ "<b>Nakshatra</b> = Moon ÷ 13°20′, rounded up. It changes about once a day; a charan about every 6 hours.",
+ "<b>Yoga</b> = (Sun + Moon) ÷ 13°20′. <b>Karana</b> = half a tithi = 6°.",
+ "<b>Vaar</b> runs sunrise to sunrise. Order slow to fast: Shani, Guru, Mangal, Surya, Shukra, Budh, Chandra; step three forward for the next day."]],
+["Months and years · માસ અને વર્ષ",[
+ "A month is named after the <b>nakshatra at its full moon</b>: Chitra → Chaitra, Krittika → Kartik.",
+ "<b>Amanta</b> (Gujarat) ends at amas; <b>purnimanta</b> (north) ends at punam, so its vad half is one month ahead.",
+ "Lunar year 354 days, solar 365: <b>11 days short</b>. Adhik maas about every 32½ months, 7 in 19 years.",
+ "A lunar month with <b>no sankranti</b> is adhik.",
+ "<b>Sankranti</b> falls about the 14th–17th of each English month; Makar Sankranti on 14 January.",
+ "<b>Vikram Samvat</b> = CE + 57 after Diwali (Gujarat), + 56 before. <b>Shaka</b> = CE − 78 after Chaitra, − 79 before.",
+ "True uttarayan is 21–22 December; Makar Sankranti is 24 days later. The gap is the ayanamsha."]],
+["Precession · અયનચલન",[
+ "<b>Ayanamsha</b> is about 24° now and grows 1° in 72 years (50″ a year).",
+ "<b>Nirayana = Sayana − ayanamsha.</b> A Western sun sign is usually one rashi ahead of the Indian one.",
+ "The pole goes round once in about <b>25,800 years</b>: Thuban 2800 BCE, Polaris now, near Vega about 14,000 CE."]],
+["The grahas · ગ્રહ",[
+ "Time in one rashi: Moon 2¼ days; Sun, Budh, Shukra about 1 month; Mangal 1½ months; Guru 1 year; Rahu–Ketu 1½ years; Shani 2½ years.",
+ "One full round: Guru 12 years, Rahu–Ketu 18.6 years, Shani 29½ years.",
+ "Budh is never more than <b>28°</b> from the sun, Shukra never more than <b>47°</b>: look for them only near sunrise or sunset.",
+ "Mangal, Guru and Shani go <b>vakri</b> when opposite the sun, and are brightest then.",
+ "<b>Rahu and Ketu</b> are always 180° apart and move backward."]],
+["Eclipses · ગ્રહણ",[
+ "Solar eclipse only at <b>amas</b>, lunar only at <b>punam</b>, and only when that day falls near Rahu or Ketu.",
+ "Eclipse seasons come about every <b>173 days</b>. The pattern repeats after 18 years 11 days (saros)."]],
+["Time of day · દિવસનો સમય",[
+ "1 day = 60 ghadi. 1 ghadi = 24 minutes. 1 muhurta = 2 ghadi = 48 minutes.",
+ "<b>Lagna</b> changes about every 2 hours. At sunrise it is the sun's rashi; at sunset the 7th from it.",
+ "<b>Choghadiya</b> = daytime ÷ 8 (and night ÷ 8). Rahu kaal is one of the eight day parts."]],
+["Jyotish · જ્યોતિષ",[
+ "Three branches: <b>Siddhanta</b> (computing), <b>Samhita</b> (the world), <b>Hora</b> (the person).",
+ "<b>Janma rashi</b> = the moon's rashi at birth. <b>Janma nakshatra</b> = the moon's nakshatra at birth.",
+ "<b>Vimshottari</b> = 120 years: Ketu 7, Shukra 20, Surya 6, Chandra 10, Mangal 7, Rahu 18, Guru 16, Shani 19, Budh 17. Nakshatras take these lords in order from Ashwini.",
+ "<b>Ganita</b> can be checked against the sky. <b>Phalita</b> (prediction) is tradition; tests have not found it better than chance."]],
+["Big numbers · મોટી સંખ્યાઓ",[
+ "Kali yuga 4,32,000 years. Mahayuga 43,20,000 = 10 × Kali, in parts 4:3:2:1. Kalpa = 1,000 mahayugas = 4.32 billion years.",
+ "The sun moves about <b>200 km/s</b> round the Milky Way, 26,000 light-years from its centre, one lap in about 230 million years."]]
+]};
+window.SKY_DATA=SKY_DATA;
+</script>
+<script>
+/* classes, daily tasks, pole-star panel, thumb rules */
+(function(){
+const $=id=>document.getElementById(id),S=window.SKY,D=window.SKY_DATA;
+const ls={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+const day0=d=>Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5);
+const today=day0(new Date());
+let start=+ls.get("sky-start",0);if(!start){start=today;ls.set("sky-start",start)}
+let done=new Set(JSON.parse(ls.get("sky-done","[]")));
+const save=()=>ls.set("sky-done",JSON.stringify([...done]));
+/* ----- two sky tasks made from today's real sky ----- */
+function skyTasks(){const ms=Date.now(),p=S.panchang(ms),R=S.RASHI,out=[];
+  const pk=p.paksha==="sud"?"Sud":"Vad";
+  const gen=[
+   ()=>[`Right now it is <b>${pk} ${p.tname[1]}</b> (${p.paksha==="sud"?"સુદ":"વદ"} ${p.tname[0]}). So the moon should be between ${(p.tithi-1)*12}° and ${p.tithi*12}° ahead of the sun. Open the earth-centred view and judge the angle between them by eye.`,`The model shows ${p.elong.toFixed(0)}° at this moment. ${p.elong<180?"The moon is waxing: look for it in the evening sky.":"The moon is waning: look for it late at night or before sunrise."}`],
+   ()=>{const left=(1-(p.moon%(360/27))/(360/27))*(360/27)/13.18*24;return[`The moon is in <b>${p.nakName[1]}</b> (${p.nakName[0]}), charan ${p.charan}. About how many hours until it enters the next nakshatra, <b>${S.NAK[(p.nak+1)%27][1]}</b>? Run the model at 1 hour/s to check.`,`About ${left.toFixed(0)} hours, at the moon's average pace of 13.2° a day.`]},
+   ()=>{const left=30-p.sun%30;return[`The sun is at <b>${R[p.sunRashi][1]} ${(p.sun%30).toFixed(0)}°</b>. About how many days until the next sankranti, when it enters <b>${R[(p.sunRashi+1)%12][1]}</b>?`,`About ${Math.round(left/0.9856)} days: ${left.toFixed(0)}° to go at about 1° a day.`]},
+   ()=>{const ks=["mars","jupiter","saturn","venus","mercury"],k=ks[today%5],nm={mars:"Mangal (Mars)",jupiter:"Guru (Jupiter)",saturn:"Shani (Saturn)",venus:"Shukra (Venus)",mercury:"Budh (Mercury)"}[k],l=S.sid(k,ms),pl=S.place(l),rt=S.retro(k,ms);
+     let el=S.norm(l-p.sun);const side=el<180?"east of the sun: an evening object, up after sunset":"west of the sun: a morning object, up before sunrise";
+     return[`Find <b>${nm}</b> in the table: which rashi is it in, and is it vakri today? Then decide: is it in the evening sky or the morning sky?`,`${pl.rashiName[1]} ${pl.deg.toFixed(0)}°, ${rt?"vakri (retrograde)":"moving forward (margi)"}. It is ${(el<180?el:360-el).toFixed(0)}° ${side}.`]},
+   ()=>{const r=S.sid("rahu",ms),d=Math.min(S.norm(p.sun-r),S.norm(r-p.sun),S.norm(p.sun-r-180),S.norm(r+180-p.sun));return[`Rahu is in <b>${R[Math.floor(r/30)][1]}</b> and Ketu opposite it. How many degrees is the sun from the nearer of the two? Could the next amas or punam bring an eclipse?`,`The sun is about ${d.toFixed(0)}° from the nearer node. ${d<18?"That is close: this is an eclipse season.":"That is too far: an eclipse needs the sun within about 18° of a node."}`]},
+   ()=>[`Tonight's yoga is <b>${p.yoga}</b> and the karana is <b>${p.karana}</b>. Work out the karana number yourself: divide the moon's lead over the sun (${p.elong.toFixed(0)}°) by 6 and round up.`,`${Math.floor(p.elong/6)+1} of 60.`]];
+  [today%6,(today+3)%6].forEach((i,n)=>{const g=gen[i]();out.push({id:"sky-"+today+"-"+n,q:g[0],a:g[1],tag:"Today's sky"})});return out}
+const taskHTML=t=>`<label class="task${done.has(t.id)?" done":""}"><input type="checkbox" data-id="${t.id}"${done.has(t.id)?" checked":""}><span><span class="tg">${t.tag}</span><span class="q">${t.q}</span><details onclick="event.stopPropagation()"><summary>Show the answer</summary>${t.a}</details></span></label>`;
+const lessonTasks=i=>D.lessons[i].tasks.map((t,n)=>({id:"L"+i+"-"+n,q:t[0],a:t[1],tag:"Task "+(n+1)}));
+const seeBtn=(l,i)=>l.see?`<button class="btn" data-see="${i}">🪐 ${l.seeT}</button>`:"";
+function render(){const N=D.lessons.length,n=today-start,idx=((n%N)+N)%N,round=Math.floor(n/N),l=D.lessons[idx];
+  $("todayCls").innerHTML=`<div class="eyebrow">આજનો વર્ગ · Today's class · Day ${idx+1} of ${N}${round>0?" · revision round "+round:""}</div>
+   <h3><span class="gu">${l.gu}</span>${l.t}</h3><div class="lesson"><p>${l.p}</p>${seeBtn(l,idx)}</div>
+   <div class="tasks">${lessonTasks(idx).map(taskHTML).join("")}${skyTasks().map(taskHTML).join("")}</div>`;
+  let h="";for(let w=0;w<4;w++){h+=`<section class="card wk"><h3>${D.weeks[w]}</h3>`;
+    for(let i=w*7;i<w*7+7;i++){const L=D.lessons[i],ts=lessonTasks(i),dn=ts.filter(t=>done.has(t.id)).length;
+      h+=`<details${i===idx?' id="cur"':""}><summary><span class="n">Day ${i+1}</span><span>${L.t}<small>${L.gu}</small></span><span class="ok">${dn===2?"✓ done":dn?dn+" of 2":i===idx?"today":""}</span></summary><div class="lesson"><p>${L.p}</p>${seeBtn(L,i)}</div><div class="tasks">${ts.map(taskHTML).join("")}</div></details>`}
+    h+="</section>"}
+  const open=[...document.querySelectorAll("#weeks .wk>details[open]")].map(d=>d.querySelector(".n").textContent);
+  $("weeks").innerHTML=h;document.querySelectorAll("#weeks .wk>details").forEach(d=>{if(open.includes(d.querySelector(".n").textContent))d.open=true});
+  const tot=N*2,dn=[...done].filter(x=>x[0]==="L").length;$("progT").textContent=`${dn} of ${tot} course tasks done`;$("progB").style.width=(dn/tot*100).toFixed(0)+"%"}
+document.addEventListener("change",e=>{const c=e.target.closest(".task input");if(!c)return;c.checked?done.add(c.dataset.id):done.delete(c.dataset.id);
+  [...done].forEach(x=>{if(x.startsWith("sky-")&&+x.split("-")[1]<today-40)done.delete(x)});save();render()});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-see]");if(b&&window.SKYVIEW){window.SKYVIEW.set(D.lessons[+b.dataset.see].see)}});
+$("restart").onclick=()=>{start=today;ls.set("sky-start",start);render()};
+render();
+/* ----- pole star panel ----- */
+const PS=[["Polaris · ધ્રુવ",88.57,66.10],["Thuban",157.46,66.36],["Vega · અભિજિત",285.31,61.73],["Kochab",133.32,72.99],["Deneb",335.33,59.91],["Alderamin",12.78,68.91],["Errai",60.09,64.67]],
+ SAPT=[[135.2,49.68],[139.43,45.13],[150.48,47.14],[151.06,51.66],[158.93,54.32],[165.7,56.38],[176.93,54.39]];
+const K=4.3;
+// ecliptic pole at the centre; longitude 90 (today's pole) drawn at the top
+const pt=(l,b)=>{const r=(90-b)*K,a=(l-90)*Math.PI/180;return [200-r*Math.sin(a),200-r*Math.cos(a)]};
+const sep=(l1,b1,l2,b2)=>{const r=Math.PI/180;return Math.acos(Math.min(1,Math.sin(b1*r)*Math.sin(b2*r)+Math.cos(b1*r)*Math.cos(b2*r)*Math.cos((l1-l2)*r)))/r};
+function pole(){const y=+$("poleY").value,lp=90-0.01396971*(y-2000),[px,py]=pt(lp,66.56);
+  let s=`<circle cx="200" cy="200" r="${(23.44*K).toFixed(1)}" fill="none" stroke="#ffc58a" stroke-dasharray="3 5"/><circle cx="200" cy="200" r="2" fill="#7f8fb8"/><text x="206" y="204" fill="#7f8fb8" font-size="10">pole of the sun's path</text>`;
+  s+=`<polyline points="${[0,1,2,3,0,3,4,5,6].map(i=>pt(SAPT[i][0],SAPT[i][1]).map(v=>v.toFixed(1)).join(",")).join(" ")}" fill="none" stroke="#8794b5"/>`+SAPT.map(p=>{const q=pt(p[0],p[1]);return`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="2" fill="#fff"/>`}).join("");
+  {const q=pt(150,47);s+=`<text x="${q[0].toFixed(0)}" y="${(q[1]+16).toFixed(0)}" fill="#b9c4dc" font-size="10" text-anchor="middle">Saptarshi</text>`}
+  let best=null;PS.forEach(p=>{const q=pt(p[1],p[2]),d=sep(lp,66.56,p[1],p[2]);if(!best||d<best[1])best=[p[0],d];
+    s+=`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="3.2" fill="#ffe08a"/><text x="${(q[0]+6).toFixed(1)}" y="${(q[1]+4).toFixed(1)}" fill="#e9edf5" font-size="11">${p[0]}</text>`});
+  s+=`<g stroke="#ff7a3d" stroke-width="2"><line x1="${px-8}" y1="${py}" x2="${px+8}" y2="${py}"/><line x1="${px}" y1="${py-8}" x2="${px}" y2="${py+8}"/></g><circle cx="${px}" cy="${py}" r="5" fill="none" stroke="#ff7a3d" stroke-width="2"/>`;
+  $("poleSvg").innerHTML=s;
+  const yr=y<=0?`${1-y} BCE`:`${y} CE`;
+  $("poleR").innerHTML=`${yr}: `+(best[1]<3?`the pole star is <b>${best[0]}</b>, ${best[1].toFixed(1)}° from the pole`:`no bright star marks the pole. The nearest is ${best[0]}, ${best[1].toFixed(0)}° away`)}
+$("poleY").oninput=pole;pole();
+/* ----- thumb rules ----- */
+$("rulesList").innerHTML=D.rules.map(g=>`<h3>${g[0]}</h3><ol>${g[1].map(r=>`<li>${r}</li>`).join("")}</ol>`).join("");
+$("dlPrint").onclick=()=>window.print();
+$("dlTxt").onclick=()=>{const strip=s=>s.replace(/<[^>]+>/g,"");let n=0;
+  const txt="THUMB RULES: VEDIC ASTRONOMY AND JYOTISH\nhardyshah.github.io/Swaminarayan/solar-system.html\n\n"+D.rules.map(g=>g[0].toUpperCase()+"\n"+g[1].map(r=>(++n)+". "+strip(r)).join("\n")).join("\n\n")+"\n";
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"text/plain;charset=utf-8"}));a.download="vedic-astronomy-thumb-rules.txt";document.body.appendChild(a);a.click();a.remove()};
+})();
+</script>
+<script type="module">
+import * as THREE from "./murti-3d/lib/three.module.min.js";
+const $=id=>document.getElementById(id),S=window.SKY,D2R=Math.PI/180;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* ---------- state ---------- */
+const SPEEDS=[["Paused",0],["Real time",1/86400],["1 hour / sec",1/24],["1 day / sec",1],["1 week / sec",7],["1 month / sec",30],["1 year / sec",365.25],["5 years / sec",1826],["20 years / sec",7305]];
+const MIN=Date.UTC(1600,0,1),MAX=Date.UTC(2399,11,31);
+const st={ms:Date.now(),sp:1,dir:1,view:"helio",trueD:false,nak:false,orb:true,frame:false,focus:"auto",live:true};
+window.SKYVIEW={set(o){if(o.view)setView(o.view);if(o.date)st.ms=+new Date(o.date);if(o.now)st.ms=Date.now();if(o.speed!=null){st.sp=o.speed;st.dir=1}st.live=!!o.live;if(o.focus)st.focus=o.focus;if(o.nak!=null){st.nak=o.nak;$("cNak").checked=o.nak}syncUI();$("model").scrollIntoView({behavior:"smooth"})},get ms(){return st.ms}};
+/* ---------- bodies ---------- */
+const BODY=[
+ {k:"sun",gu:"સૂર્ય",en:"Sun",c:0xffc83d,r:1.7},{k:"moon",gu:"ચંદ્ર",en:"Moon",c:0xdfe3ea,r:.28},
+ {k:"mercury",gu:"બુધ",en:"Mercury",c:0x9fa3a8,r:.34},{k:"venus",gu:"શુક્ર",en:"Venus",c:0xf1d59a,r:.52},{k:"earth",gu:"પૃથ્વી",en:"Earth",c:0x3d8bff,r:.58},
+ {k:"mars",gu:"મંગળ",en:"Mars",c:0xe0623a,r:.44},{k:"jupiter",gu:"ગુરુ",en:"Jupiter",c:0xd9b48a,r:1.25},{k:"saturn",gu:"શનિ",en:"Saturn",c:0xe3cf9a,r:1.05},
+ {k:"uranus",gu:"યુરેનસ",en:"Uranus",c:0x9fe3e6,r:.8},{k:"neptune",gu:"નેપ્ચ્યુન",en:"Neptune",c:0x5a7dff,r:.78}];
+const PLAN=["mercury","venus","earth","mars","jupiter","saturn","uranus","neptune"];
+const PERIOD={mercury:.241,venus:.615,earth:1,mars:1.881,jupiter:11.86,saturn:29.46,uranus:84.0,neptune:164.8};
+const B={};BODY.forEach(b=>B[b.k]=b);
+/* ecliptic (x to the equinox, z north) -> three (y up) */
+const v3=a=>new THREE.Vector3(a[0],a[2],-a[1]);
+const dirLL=(lon,lat,R=1)=>{const l=lon*D2R,b=lat*D2R;return new THREE.Vector3(R*Math.cos(b)*Math.cos(l),R*Math.sin(b),-R*Math.cos(b)*Math.sin(l))};
+const squeeze=a=>{const r=Math.hypot(a[0],a[1],a[2]);if(!r)return new THREE.Vector3();const k=(st.trueD?10*r:10*Math.sqrt(r))/r;return new THREE.Vector3(a[0]*k,a[2]*k,-a[1]*k)};
+const ringR=()=>st.trueD?345:64;
+/* ---------- scene ---------- */
+const cv=$("cv"),stage=$("stage");
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true});R.setPixelRatio(Math.min(devicePixelRatio||1,2));R.setClearColor(0x060a14);
+const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(42,1,.1,12000);
+const root=new THREE.Group();scene.add(root);
+scene.add(new THREE.AmbientLight(0xffffff,.55));const sunL=new THREE.PointLight(0xffffff,2.6,0,0);root.add(sunL);
+const labels=[];function label(cls,html){const d=document.createElement("div");d.className="lb "+cls;d.innerHTML=html;$("lbls").appendChild(d);const o={el:d,p:new THREE.Vector3(),on:true,dx:8,dy:-6};labels.push(o);return o}
+// stars
+{const n=1700,p=new Float32Array(n*3);let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+ for(let i=0;i<n;i++){const u=rnd()*2-1,t=rnd()*2*Math.PI,q=Math.sqrt(1-u*u);p[i*3]=3000*q*Math.cos(t);p[i*3+1]=3000*u;p[i*3+2]=3000*q*Math.sin(t)}
+ const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.BufferAttribute(p,3));root.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xaab4cc,size:1.6,sizeAttenuation:false})));
+ // Milky Way band: points near the galactic equator (pole at ecliptic lon 180.02, lat 29.81)
+ const m=2600,q2=new Float32Array(m*3),pole=dirLL(180.02,29.81),gc=dirLL(266.84,-5.54),e2=new THREE.Vector3().crossVectors(pole,gc);
+ for(let i=0;i<m;i++){const a=rnd()*2*Math.PI,h=(rnd()+rnd()+rnd()-1.5)*.11*(1+.8*Math.cos(a));const v=gc.clone().multiplyScalar(Math.cos(a)).addScaledVector(e2,Math.sin(a)).addScaledVector(pole,h).normalize().multiplyScalar(2900);q2[i*3]=v.x;q2[i*3+1]=v.y;q2[i*3+2]=v.z}
+ const g2=new THREE.BufferGeometry();g2.setAttribute("position",new THREE.BufferAttribute(q2,3));root.add(new THREE.Points(g2,new THREE.PointsMaterial({color:0x7f8fb8,size:1.2,sizeAttenuation:false,transparent:true,opacity:.6})))}
+// named stars (ecliptic J2000 lon, lat)
+const STARS=[["ધ્રુવ · Polaris",88.57,66.10,1],["Thuban",157.46,66.36],["અભિજિત · Vega",285.31,61.73],["ચિત્રા · Spica",203.84,-2.05],["રોહિણી · Aldebaran",69.79,-5.47],["મઘા · Regulus",149.83,.46],["સ્વાતિ · Arcturus",204.23,30.74],["જ્યેષ્ઠા · Antares",249.76,-4.57],["શ્રવણ · Altair",301.78,29.30],["અગસ્ત્ય · Canopus",104.96,-75.82],["Sirius",104.08,-39.61],["આકાશગંગા કેન્દ્ર · Galactic centre",266.84,-5.54,2]];
+const SAPT=[[135.2,49.68],[139.43,45.13],[150.48,47.14],[151.06,51.66],[158.93,54.32],[165.7,56.38],[176.93,54.39]];
+{const pts=[],big=[];STARS.forEach(s=>{const v=dirLL(s[1],s[2],2800);(s[3]?big:pts).push(v);const l=label(s[3]?"ar":"st",esc(s[0]));l.p.copy(v);l.far=true});
+ SAPT.forEach(s=>pts.push(dirLL(s[0],s[1],2800)));
+ root.add(new THREE.Points(new THREE.BufferGeometry().setFromPoints(pts),new THREE.PointsMaterial({color:0xffffff,size:3.2,sizeAttenuation:false})));
+ root.add(new THREE.Points(new THREE.BufferGeometry().setFromPoints(big),new THREE.PointsMaterial({color:0xffe08a,size:6,sizeAttenuation:false})));
+ root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([0,1,2,3,0,3,4,5,6].map(i=>dirLL(SAPT[i][0],SAPT[i][1],2800))),new THREE.LineBasicMaterial({color:0x8794b5})));
+ const l=label("st","સપ્તર્ષિ · Saptarshi");l.p.copy(dirLL(150,52,2800));l.far=true}
+// bodies
+const lam=c=>new THREE.MeshLambertMaterial({color:c});
+BODY.forEach(b=>{b.m=new THREE.Mesh(new THREE.SphereGeometry(b.r,28,18),b.k==="sun"?new THREE.MeshBasicMaterial({color:b.c}):lam(b.c));root.add(b.m);
+  b.l=label("pl",`${b.gu} <small>${b.en}</small>`);b.l.dy=-18;b.l.pl=true});
+{const g=new THREE.Mesh(new THREE.RingGeometry(1.35,2.2,48),new THREE.MeshBasicMaterial({color:0xcbb98a,side:THREE.DoubleSide,transparent:true,opacity:.7}));g.rotation.x=Math.PI/2-26.7*D2R;B.saturn.m.add(g)}
+{const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:(()=>{const c=document.createElement("canvas");c.width=c.height=128;const x=c.getContext("2d"),g=x.createRadialGradient(64,64,6,64,64,64);g.addColorStop(0,"rgba(255,220,120,.9)");g.addColorStop(.3,"rgba(255,170,60,.35)");g.addColorStop(1,"rgba(255,150,40,0)");x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)})(),depthWrite:false}));glow.scale.set(9,9,1);B.sun.m.add(glow)}
+// earth's axis, pointing at the celestial pole (ecliptic lon 90, lat 66.56): it keeps this direction all year
+const AXIS=dirLL(90,66.56);
+const axis=new THREE.Line(new THREE.BufferGeometry().setFromPoints([AXIS.clone().multiplyScalar(-1.5),AXIS.clone().multiplyScalar(2.6)]),new THREE.LineBasicMaterial({color:0xffe08a}));B.earth.m.add(axis);
+const axL=label("ar","↑ ધ્રુવ તરફ · to Dhruva");
+// lines
+const mkLine=(c,n,op=1)=>{const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.BufferAttribute(new Float32Array(n*3),3));const l=new THREE.Line(g,new THREE.LineBasicMaterial({color:c,transparent:op<1,opacity:op}));l.frustumCulled=false;root.add(l);return l};
+const setPts=(l,arr)=>{const a=l.geometry.attributes.position;for(let i=0;i<arr.length;i++){a.array[i*3]=arr[i].x;a.array[i*3+1]=arr[i].y;a.array[i*3+2]=arr[i].z}l.geometry.setDrawRange(0,arr.length);a.needsUpdate=true};
+const NTR=900;const TR={};PLAN.forEach(k=>TR[k]=mkLine(B[k].c,NTR+1,.75));TR.sun=mkLine(0xffc83d,NTR+1,.8);
+const moonRing=mkLine(0xdfe3ea,65,.5);
+// zodiac ring
+const zod=new THREE.Group();root.add(zod);const rsL=[],nkL=[];
+function buildZod(){while(zod.children.length)zod.remove(zod.children[0]);const R0=ringR(),R1=R0*1.13,seg=[],c=(r,n=180)=>{for(let i=0;i<n;i++){seg.push(dirLL(i*360/n,0,r),dirLL((i+1)*360/n,0,r))}};c(R0);c(R1);
+  for(let i=0;i<12;i++){const l=S.AYAN0+i*30;seg.push(dirLL(l,0,R0),dirLL(l,0,R1))}
+  for(let i=0;i<27;i++){const l=S.AYAN0+i*360/27;seg.push(dirLL(l,0,R0*.965),dirLL(l,0,R0))}
+  zod.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(seg),new THREE.LineBasicMaterial({color:0xb9772f,transparent:true,opacity:.8})));
+  rsL.forEach((l,i)=>l.p.copy(dirLL(S.AYAN0+i*30+15,0,R0*1.065)));nkL.forEach((l,i)=>l.p.copy(dirLL(S.AYAN0+(i+.5)*360/27,0,R0*.93)))}
+S.RASHI.forEach(r=>{const l=label("rs",`${r[0]}<br><span style="font-weight:400;font-size:10px">${r[1]}</span>`);l.dx=-16;l.dy=-10;rsL.push(l)});
+S.NAK.forEach(n=>{const l=label("nk",n[0]);l.dx=-12;l.dy=-5;l.nk=true;nkL.push(l)});
+// galaxy arrows
+const VDIR=dirLL(347.34,59.57),GC=dirLL(266.84,-5.54);
+const arr=new THREE.Group();root.add(arr);
+const aV=new THREE.ArrowHelper(VDIR,new THREE.Vector3(),40,0xffe08a,4,2),aG=new THREE.ArrowHelper(GC,new THREE.Vector3(),34,0x9fd7d2,4,2),aD=new THREE.ArrowHelper(AXIS,new THREE.Vector3(),30,0xffffff,3,1.5);arr.add(aV,aG,aD);
+const lV=label("ar","આપણી દિશા · the way we travel, 200 km/s"),lG=label("ar","to the galactic centre, 26,000 light-years"),lD=label("ar","ધ્રુવ · to Dhruva");
+/* ---------- camera ---------- */
+const C={az:-.6,el:.9,d:120,t:new THREE.Vector3()};
+function fit(){C.d=st.view==="galaxy"?(st.trueD?2400:300):st.trueD?(st.view==="geo"?150:110):(st.view==="geo"?150:140);C.el=st.view==="galaxy"?.35:.9;C.az=-.6}
+const clampD=()=>{C.d=Math.max(2.5,Math.min(2600,C.d))};
+{const P=new Map();let pd=0;
+ stage.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;stage.setPointerCapture(e.pointerId);P.set(e.pointerId,[e.clientX,e.clientY]);if(P.size===2){const a=[...P.values()];pd=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1])}});
+ stage.addEventListener("pointermove",e=>{if(!P.has(e.pointerId))return;const o=P.get(e.pointerId),dx=e.clientX-o[0],dy=e.clientY-o[1];P.set(e.pointerId,[e.clientX,e.clientY]);
+   if(P.size===1){C.az-=dx*.006;C.el=Math.max(-1.5,Math.min(1.5,C.el+dy*.006))}else if(P.size===2){const a=[...P.values()],d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(pd>0){C.d*=pd/d;clampD()}pd=d}});
+ const up=e=>{P.delete(e.pointerId);pd=0};stage.addEventListener("pointerup",up);stage.addEventListener("pointercancel",up);
+ stage.addEventListener("wheel",e=>{e.preventDefault();C.d*=Math.exp(e.deltaY*.0012);clampD()},{passive:false})}
+$("zin").onclick=()=>{C.d*=.7;clampD()};$("zout").onclick=()=>{C.d/=.7;clampD()};$("ztop").onclick=()=>{C.el=1.5};$("zside").onclick=()=>{C.el=.06};
+/* ---------- positions ---------- */
+const pos={};let lastTrail=-1e20;
+function centreKey(){return st.view==="geo"?"earth":"sun"}
+function place(){const ms=st.ms,ck=centreKey(),e=S.helio("earth",ms);
+  const rel=k=>{const h=k==="sun"?[0,0,0]:S.helio(k,ms);return ck==="earth"?[h[0]-e[0],h[1]-e[1],h[2]-e[2]]:h};
+  ["sun",...PLAN].forEach(k=>{pos[k]=squeeze(rel(k));B[k].m.position.copy(pos[k])});
+  const m=S.moon(ms); // true distance 0.00257 AU = 0.0257 units; otherwise pushed out so it can be seen
+  pos.moon=pos.earth.clone().add(dirLL(m.lon,m.lat,st.trueD?.0257:1.7));B.moon.m.position.copy(pos.moon);
+  const sc=st.trueD?.35:1;BODY.forEach(b=>b.m.scale.setScalar(b.k==="moon"&&st.trueD?.02:sc));
+  sunL.position.copy(pos.sun);
+  // moon's orbit ring round the earth, tilted 5.1 deg at the node (Rahu)
+  {const N=S.rahu(ms)*D2R,i=5.145*D2R,rr=st.trueD?.0257:1.7,a=[];for(let j=0;j<=64;j++){const u=j/64*2*Math.PI,x=Math.cos(u),y=Math.sin(u)*Math.cos(i),z=Math.sin(u)*Math.sin(i);a.push(pos.earth.clone().add(v3([rr*(x*Math.cos(N)-y*Math.sin(N)),rr*(x*Math.sin(N)+y*Math.cos(N)),rr*z])))}setPts(moonRing,a)}
+  // orbits and trails
+  if(st.orb&&Math.abs(ms-lastTrail)>(st.view==="helio"?864e5*20:1)){lastTrail=ms;trails()}
+  Object.values(TR).forEach(l=>l.visible=st.orb);TR.sun.visible=st.orb&&st.view!=="helio";moonRing.visible=st.orb;
+  // labels follow
+  BODY.forEach(b=>b.l.p.copy(pos[b.k]));axL.p.copy(pos.earth).addScaledVector(AXIS,2.8*(st.trueD?.35:1));
+  // frame: hold the earth-sun line still
+  root.rotation.y=(st.frame&&st.view==="helio")?-Math.atan2(e[1],e[0]):0;
+  arr.visible=st.view==="galaxy";[lV,lG,lD].forEach(l=>l.on=arr.visible);arr.position.copy(pos.sun);
+  if(arr.visible){const k=st.trueD?8:1;aV.setLength(40*k,4*k,2*k);aG.setLength(34*k,4*k,2*k);aD.setLength(30*k,3*k,1.5*k);lV.p.copy(VDIR).multiplyScalar(42*k);lG.p.copy(GC).multiplyScalar(36*k);lD.p.copy(AXIS).multiplyScalar(32*k)}
+  zod.visible=st.view!=="galaxy";rsL.forEach(l=>l.on=zod.visible);nkL.forEach(l=>l.on=zod.visible&&st.nak);
+  B.uranus.l.on=B.neptune.l.on=true}
+function trails(){const ms=st.ms,Y=365.25*864e5;
+  if(st.view==="helio"){PLAN.forEach(k=>setPts(TR[k],S.orbit(k,ms,NTR).map(squeeze)))}
+  else if(st.view==="geo"){const span={mercury:1,venus:8,mars:4.3,jupiter:12,saturn:29.5,uranus:30,neptune:30,earth:0};
+    PLAN.forEach(k=>{if(k==="earth"||k==="uranus"||k==="neptune"){TR[k].geometry.setDrawRange(0,0);return}const a=[];for(let i=0;i<=NTR;i++){const t=ms-span[k]*Y*(1-i/NTR),e=S.helio("earth",t),h=S.helio(k,t);a.push(squeeze([h[0]-e[0],h[1]-e[1],h[2]-e[2]]))}setPts(TR[k],a)});
+    const a=[];for(let i=0;i<=NTR;i++){const e=S.helio("earth",ms-Y*(1-i/NTR));a.push(squeeze([-e[0],-e[1],-e[2]]))}setPts(TR.sun,a)}
+  else{const kk=st.trueD?464:14; // display units the sun travels per year (true: 220 km/s = 46.4 AU a year)
+    PLAN.forEach(k=>{const span=Math.min(30,Math.max(3,PERIOD[k]*10)),a=[];for(let i=0;i<=NTR;i++){const ty=span*(1-i/NTR);a.push(squeeze(S.helio(k,ms-ty*Y)).addScaledVector(VDIR,-kk*ty))}setPts(TR[k],a)});
+    setPts(TR.sun,[VDIR.clone().multiplyScalar(-kk*30),new THREE.Vector3()])}}
+/* ---------- UI ---------- */
+const fmtDate=ms=>{const d=new Date(ms);return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})+(st.sp<=3?" · "+d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",second:st.sp<=1?"2-digit":undefined}):"")};
+const GRAHA=[["sun","સૂર્ય","Surya · Sun"],["moon","ચંદ્ર","Chandra · Moon"],["mars","મંગળ","Mangal · Mars"],["mercury","બુધ","Budh · Mercury"],["jupiter","ગુરુ","Guru · Jupiter"],["venus","શુક્ર","Shukra · Venus"],["saturn","શનિ","Shani · Saturn"],["rahu","રાહુ","Rahu · north node"],["ketu","કેતુ","Ketu · south node"]];
+function panel(){const ms=st.ms,p=S.panchang(ms);
+  $("hudDate").textContent=fmtDate(ms);$("liveB").classList.toggle("hidden",!st.live);
+  $("hudMode").textContent={helio:"Sun at centre",geo:"Earth at centre · the sky of the panchang",galaxy:"Moving through the Milky Way"}[st.view];
+  $("hudSub").textContent=`${p.paksha==="sud"?"સુદ":"વદ"} ${p.tname[0]} · ${p.nakName[0]} નક્ષત્ર`;
+  $("limbs").innerHTML=`<dt>તિથિ · Tithi</dt><dd><b>${p.paksha==="sud"?"સુદ":"વદ"} ${p.tname[0]}</b> · ${p.paksha==="sud"?"Sud":"Vad"} ${p.tname[1]} (${p.tithi} of 30)<div class="bar2"><i style="width:${(p.tfrac*100).toFixed(0)}%"></i></div></dd>
+   <dt>ચંદ્ર–સૂર્ય · Moon ahead of Sun</dt><dd><b>${p.elong.toFixed(1)}°</b> = ${Math.floor(p.elong/12)} × 12° + ${(p.elong%12).toFixed(1)}°</dd>
+   <dt>નક્ષત્ર · Nakshatra</dt><dd><b>${p.nakName[0]}</b> · ${p.nakName[1]}, charan ${p.charan} of 4</dd>
+   <dt>યોગ · Yoga</dt><dd><b>${p.yoga}</b></dd><dt>કરણ · Karana</dt><dd><b>${p.karana}</b></dd>
+   <dt>સૂર્ય રાશિ · Sun in</dt><dd><b>${S.RASHI[p.sunRashi][0]}</b> · ${S.RASHI[p.sunRashi][1]} ${(p.sun%30).toFixed(1)}°</dd>
+   <dt>અયનાંશ · Ayanamsha</dt><dd>${S.ayanamsa(ms).toFixed(2)}° (Lahiri)</dd>`;
+  $("gt").innerHTML=GRAHA.map(g=>{const l=S.sid(g[0],ms),pl=S.place(l),rt=S.retro(g[0],ms),nodes=g[0]==="rahu"||g[0]==="ketu";
+    const d=g[0]==="moon"?(S.moon(ms).dist*6378/1000).toFixed(0)+" thousand km":nodes?"a point, not a body":S.lonlat(S.geo(g[0],ms)).r.toFixed(2)+" AU";
+    const b=B[g[0]];return`<tr><td><span class="dot" style="background:${b?"#"+b.c.toString(16).padStart(6,"0"):"#888"}"></span><b>${g[1]}</b> <span style="color:var(--ink-3);font-size:12.5px">${g[2]}</span>${rt&&!nodes?'<span class="vk">વક્રી · retrograde</span>':""}</td><td><b>${pl.rashiName[0]}</b> ${pl.rashiName[1]} ${pl.deg.toFixed(1)}°</td><td>${pl.nakName[0]} · ${pl.charan}</td><td>${d}</td></tr>`}).join("")}
+function syncUI(){$("spd").value=st.sp;$("spdV").textContent=(st.dir<0&&st.sp?"− ":"")+SPEEDS[st.sp][0];$("rev").classList.toggle("on",st.dir<0);
+  [...$("segView").children].forEach(b=>b.classList.toggle("on",b.dataset.v===st.view));$("btnLive").classList.toggle("on",st.live);
+  $("cFrameL").style.display=st.view==="helio"?"":"none";$("foc").value=st.focus;lastTrail=-1e20;
+  const d=new Date(st.ms-new Date(st.ms).getTimezoneOffset()*6e4);if(document.activeElement!==$("dt"))$("dt").value=d.toISOString().slice(0,16)}
+function setView(v){st.view=v;st.focus="auto";buildZod();fit();lastTrail=-1e20}
+$("segView").onclick=e=>{const b=e.target.closest("button");if(!b)return;setView(b.dataset.v);if(v_need_speed())st.sp=Math.max(st.sp,5),st.live=false;syncUI()};
+const v_need_speed=()=>st.view!=="helio"&&st.sp<=1;
+$("spd").oninput=e=>{st.sp=+e.target.value;st.live=st.sp===1&&Math.abs(st.ms-Date.now())<5e3;syncUI()};
+$("rev").onclick=()=>{st.dir=-st.dir;st.live=false;if(!st.sp)st.sp=3;syncUI()};
+$("btnLive").onclick=()=>{st.ms=Date.now();st.sp=1;st.dir=1;st.live=true;syncUI()};
+document.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{st.sp=+b.dataset.q;st.live=false;syncUI()});
+$("dt").onchange=e=>{const t=+new Date(e.target.value);if(!isNaN(t)){st.ms=Math.max(MIN,Math.min(MAX,t));st.live=false;if(st.sp===1)st.sp=0;syncUI()}};
+$("foc").innerHTML=`<option value="auto">Centre of the view</option>`+BODY.map(b=>`<option value="${b.k}">${b.en} · ${b.gu}</option>`).join("");
+$("foc").onchange=e=>{st.focus=e.target.value;if(st.focus!=="auto"&&st.focus!=="sun")C.d=Math.min(C.d,st.focus==="moon"||st.focus==="earth"?14:40)};
+$("cTrue").onchange=e=>{st.trueD=e.target.checked;buildZod();fit();lastTrail=-1e20};
+$("cNak").onchange=e=>{st.nak=e.target.checked};$("cOrb").onchange=e=>{st.orb=e.target.checked;lastTrail=-1e20};$("cFrame").onchange=e=>{st.frame=e.target.checked};
+/* ---------- loop ---------- */
+let W=0,H=0;function size(){const w=stage.clientWidth,h=stage.clientHeight;if(w===W&&h===H)return;W=w;H=h;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+const tmp=new THREE.Vector3();let last=performance.now(),pT=0,vis=true;
+new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(stage);
+function frame(now){requestAnimationFrame(frame);const dt=Math.min(.1,(now-last)/1000);last=now;
+  if(st.live)st.ms=Date.now();else if(st.sp){st.ms+=st.dir*SPEEDS[st.sp][1]*864e5*dt;if(st.ms<MIN||st.ms>MAX){st.ms=Math.max(MIN,Math.min(MAX,st.ms));st.sp=0;syncUI()}}
+  if(now-pT>250){pT=now;panel();if(st.sp>1&&document.activeElement!==$("dt")){const d=new Date(st.ms-new Date(st.ms).getTimezoneOffset()*6e4);$("dt").value=d.toISOString().slice(0,16)}}
+  if(!vis)return;size();place();
+  const tg=st.focus==="auto"?(st.view==="galaxy"?VDIR.clone().multiplyScalar(st.trueD?-900:-70):new THREE.Vector3()):pos[st.focus].clone().applyAxisAngle(new THREE.Vector3(0,1,0),root.rotation.y);C.t.lerp(tg,.2);
+  cam.position.set(C.t.x+C.d*Math.cos(C.el)*Math.sin(C.az),C.t.y+C.d*Math.sin(C.el),C.t.z+C.d*Math.cos(C.el)*Math.cos(C.az));cam.lookAt(C.t);
+  root.updateMatrixWorld();R.render(scene,cam);
+  axL.on=st.view!=="galaxy"&&(C.d<45||st.focus==="earth");const used=[];
+  for(const l of labels){if(!l.on){l.el.style.display="none";continue}tmp.copy(l.p).applyMatrix4(root.matrixWorld).project(cam);
+    if(tmp.z>1||tmp.x<-1.05||tmp.x>1.05||tmp.y<-1.05||tmp.y>1.05){l.el.style.display="none";continue}
+    let x=(tmp.x+1)/2*W+l.dx,y=(1-tmp.y)/2*H+l.dy;
+    if(l.pl){const w=l.w||(l.w=l.el.offsetWidth||90),hit=(yy)=>used.some(u=>x<u[0]+u[2]&&x+w>u[0]&&yy<u[1]+15&&yy+15>u[1]);
+      let ok=false;for(const o of [0,16,-16,32]){if(!hit(y+o)){y+=o;ok=true;break}}if(!ok){l.el.style.display="none";continue}used.push([x,y,w])}
+    l.el.style.display="";l.el.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`}}
+buildZod();fit();syncUI();panel();requestAnimationFrame(frame);
+</script>
+</body>
+</html>
