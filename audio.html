@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bhajan and Kirtan</title>
+<meta name="description" content="Listen to bhajans, kirtans, dhun and katha from BhaktiSound, the audio library of Shree Swaminarayan Mandir Bhuj (Nar Narayan Dev Gadi). Search by title or album and play straight through.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&family=Noto+Serif+Devanagari:wght@400;500;600&family=Noto+Serif+Gujarati:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --good:#2f7d32; --bad:#b3261e;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.06);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:12px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+main{padding-block:22px 64px}
+.jay{text-align:center;font-family:var(--f-read);font-weight:600;color:var(--saffron-strong);font-size:clamp(17px,3.4vw,22px);margin:4px 0 18px;letter-spacing:.02em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.hero{padding:22px 22px 18px;background:linear-gradient(160deg,var(--saffron-soft),transparent 72%);overflow:hidden;position:relative}
+.hero .om{position:absolute;right:-6px;top:-34px;font-size:170px;line-height:1;color:var(--saffron);opacity:.08;font-family:"Noto Serif Devanagari",serif;pointer-events:none}
+.ttl{font-family:var(--f-read);font-size:clamp(28px,5.4vw,40px);font-weight:600;line-height:1.15;margin:6px 0 10px}
+.ttl .gu{display:block;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:.78em}
+.sub{color:var(--ink-2);margin:0 0 14px;max-width:70ch}
+.stats{display:flex;flex-wrap:wrap;gap:6px}
+.pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:14px;color:var(--ink-2)}.pill b{color:var(--ink);font-weight:600}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 12px;align-items:center}
+.tools input,.tools select{font:inherit;font-size:15px;border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--surface);color:var(--ink);min-width:0}
+.tools input{flex:1 1 260px}.tools select{flex:0 1 220px}
+.count{font-size:13px;color:var(--ink-3);margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px}
+.alb{display:flex;flex-direction:column;text-align:left;padding:0;overflow:hidden;cursor:pointer;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);color:var(--ink)}
+.alb:hover{border-color:var(--saffron)}
+.alb .cv{aspect-ratio:1;background:var(--sunk) center/cover no-repeat;display:grid;place-items:center;font-family:var(--f-display);color:var(--saffron);font-size:34px}
+.alb .tx{padding:9px 11px 11px}.alb b{display:block;font-weight:600;font-size:14.5px;line-height:1.3}
+.alb small{display:block;color:var(--ink-3);font-size:12.5px;margin-top:3px}
+.more{display:block;margin:16px auto 0}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
+.btn:hover{background:var(--sunk)}.btn.pri{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.view{padding:18px;margin-top:14px;scroll-margin-top:130px}
+.vh{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.vh .cv{width:132px;aspect-ratio:1;border-radius:10px;background:var(--sunk) center/cover no-repeat;flex:none}
+.vh h2{font-family:var(--f-read);font-size:clamp(22px,4vw,28px);margin:2px 0 4px;line-height:1.2}
+.vh p{margin:0 0 10px;color:var(--ink-2);font-size:14px}
+.tr{list-style:none;margin:14px 0 0;padding:0;border-top:1px solid var(--line)}
+.tr li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.tr li:hover{background:var(--sunk)}.tr li.on{background:var(--saffron-soft)}
+.tr .n{color:var(--ink-3);font-variant-numeric:tabular-nums;text-align:right;font-size:13px}
+.tr .d{color:var(--ink-3);font-size:13px;font-variant-numeric:tabular-nums}
+.tr li.on .n{color:var(--saffron-strong);font-weight:700}
+.empty{padding:22px;text-align:center;color:var(--ink-2)}
+.player{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--surface) 95%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-left,0px)) calc(8px + env(safe-area-inset-bottom,0px))}
+.player .in{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center}
+.player .now{min-width:0}.player .now b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14.5px}
+.player .now small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-3);font-size:12.5px}
+.player .ctl{display:flex;gap:6px}.player .ctl button{width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:15px}
+.player .ctl #pp{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.player .bar{grid-column:1/-1;display:flex;gap:8px;align-items:center;font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.player input[type=range]{flex:1;accent-color:var(--saffron)}
+body.playing main{padding-bottom:140px}
+.hidden{display:none!important}
+footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-3);font-size:13px}footer p{margin:0 0 6px;max-width:80ch}
+body.playing footer{padding-bottom:130px}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.vh .cv{width:96px}.hero .om{font-size:120px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Home</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="./">Today</a>
+    <a href="vedas.html">Vedas</a>
+    <a href="kaal-patrak/">Kaal Patrak</a>
+    <a href="vicharan/">Vicharan</a>
+    <a class="on" href="audio.html">Audio</a>
+    <a href="vachanamrut-concordance/">Vachanamrut</a>
+    <a href="vachanamrut-concordance/library.html">Library</a>
+    <a href="vachanamrut-concordance/live.html">Live</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+
+<main class="wrap">
+  <p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+
+  <section class="card hero">
+    <div class="om" aria-hidden="true">ॐ</div>
+    <div class="eyebrow">ભજન · કીર્તન · ધૂન</div>
+    <h1 class="ttl"><span class="gu">ભજન અને કીર્તન</span>Bhajan and Kirtan</h1>
+    <p class="sub">Bhajans, kirtans, dhun and katha from <a href="https://www.swaminarayan.faith/bhaktisound/" target="_blank" rel="noopener">BhaktiSound</a>, the audio library of Shree Swaminarayan Mandir Bhuj (Nar Narayan Dev Gadi). Pick an album and it plays straight through. The recordings stay on the mandir's server; this page only lists and plays them.</p>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <div class="tools" id="tools">
+    <input id="q" type="search" placeholder="Search albums and tracks (Gujarati or English)" aria-label="Search">
+    <select id="ar" aria-label="Artist"><option value="">All artists</option></select>
+  </div>
+  <section class="card view hidden" id="view" aria-live="polite"></section>
+  <p class="count" id="count"></p>
+  <div class="grid" id="grid"></div>
+  <button class="btn more hidden" id="more">Show more albums</button>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Source.</b> All recordings, album names and covers: <a href="https://www.swaminarayan.faith/bhaktisound/" target="_blank" rel="noopener">BhaktiSound</a>, Shree Swaminarayan Mandir Bhuj. The list is refreshed every week.</p>
+  <p id="built"></p>
+</div></footer>
+
+<div class="player hidden" id="player" role="region" aria-label="Player">
+  <div class="in">
+    <div class="now"><b id="pT"></b><small id="pA"></small></div>
+    <div class="ctl"><button id="prev" aria-label="Previous">⏮</button><button id="pp" aria-label="Play or pause">▶</button><button id="next" aria-label="Next">⏭</button></div>
+    <div class="bar"><span id="cur">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek"><span id="dur">0:00</span></div>
+  </div>
+  <audio id="au" preload="none"></audio>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mmss=s=>{s=Math.max(0,Math.round(s||0));const h=Math.floor(s/3600),m=Math.floor(s/60)%60,x=String(s%60).padStart(2,"0");return h?`${h}:${String(m).padStart(2,"0")}:${x}`:`${m}:${x}`};
+const fold=s=>String(s||"").toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g,"");
+let D=null,LIST=[],SHOWN=60,CUR=null; // CUR={a,i}
+const au=$("au");
+function artistNames(a){return a.ar.map(id=>D.artists[id]).filter(Boolean).join(", ")}
+function cover(a,cls){return `<div class="${cls}" ${a.img?`style="background-image:url('${esc(a.img)}')"`:""}>${a.img?"":"ॐ"}</div>`}
+function filter(){
+  const q=fold($("q").value.trim()),ar=$("ar").value;
+  LIST=D.albums.filter(a=>(!ar||a.ar.includes(+ar)||a.ar.includes(ar))&&(!q||fold(a.n).includes(q)||fold(artistNames(a)).includes(q)||a.t.some(t=>fold(t[0]).includes(q))));
+  SHOWN=60;draw();
+}
+function draw(){
+  $("count").textContent=`${LIST.length.toLocaleString("en-IN")} album${LIST.length===1?"":"s"}`;
+  $("grid").innerHTML=LIST.slice(0,SHOWN).map(a=>`<button class="alb" data-id="${a.id}">${cover(a,"cv")}<span class="tx"><b>${esc(a.n)}</b><small>${a.t.length} tracks${a.y?" · "+esc(a.y):""}${a.ar.length?" · "+esc(artistNames(a)):""}</small></span></button>`).join("")||`<div class="empty">No album matches that search.</div>`;
+  $("more").classList.toggle("hidden",LIST.length<=SHOWN);
+}
+function open(id,scroll){
+  const a=D.albums.find(x=>String(x.id)===String(id));if(!a)return;
+  const tot=a.t.reduce((s,t)=>s+(t[1]||0),0);
+  $("view").innerHTML=`<div class="vh">${cover(a,"cv")}<div><div class="eyebrow">Album</div><h2>${esc(a.n)}</h2><p>${a.t.length} tracks${tot?" · "+mmss(tot):""}${a.y?" · "+esc(a.y):""}${a.ar.length?" · "+esc(artistNames(a)):""}</p><button class="btn pri" id="playall">▶ Play album</button> <button class="btn" id="close">Close</button></div></div><ol class="tr" id="tr">${a.t.map((t,i)=>`<li data-i="${i}"><span class="n">${i+1}</span><span>${esc(t[0])}</span><span class="d">${t[1]?mmss(t[1]):""}</span></li>`).join("")}</ol>`;
+  $("view").classList.remove("hidden");$("view").dataset.id=a.id;
+  $("playall").onclick=()=>play(a,0);$("close").onclick=()=>{$("view").classList.add("hidden");history.replaceState(null,"",location.pathname)};
+  $("tr").onclick=e=>{const li=e.target.closest("li");if(li)play(a,+li.dataset.i)};
+  mark();history.replaceState(null,"","#a"+a.id);
+  if(scroll)$("view").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function mark(){const tr=$("tr");if(!tr)return;tr.querySelectorAll("li").forEach(li=>li.classList.toggle("on",!!CUR&&String(CUR.a.id)===$("view").dataset.id&&+li.dataset.i===CUR.i))}
+function play(a,i){
+  if(i<0||i>=a.t.length)return;
+  CUR={a,i};const t=a.t[i];
+  au.src=D.base+t[2];au.play().catch(()=>{});
+  $("pT").textContent=t[0];$("pA").textContent=`${a.n} · ${i+1} of ${a.t.length}`;
+  $("player").classList.remove("hidden");document.body.classList.add("playing");
+  if("mediaSession" in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:t[0],artist:artistNames(a)||"BhaktiSound",album:a.n,artwork:a.img?[{src:a.img}]:[]});
+    navigator.mediaSession.setActionHandler("previoustrack",()=>play(a,i-1));navigator.mediaSession.setActionHandler("nexttrack",()=>play(a,i+1));}
+  mark();
+}
+$("pp").onclick=()=>au.paused?au.play():au.pause();
+$("prev").onclick=()=>CUR&&(au.currentTime>5?au.currentTime=0:play(CUR.a,CUR.i-1));
+$("next").onclick=()=>CUR&&play(CUR.a,CUR.i+1);
+au.onplay=()=>$("pp").textContent="⏸";au.onpause=()=>$("pp").textContent="▶";
+au.onended=()=>CUR&&play(CUR.a,CUR.i+1);
+au.ontimeupdate=()=>{$("cur").textContent=mmss(au.currentTime);if(au.duration){$("dur").textContent=mmss(au.duration);$("seek").value=au.currentTime/au.duration*1000}};
+au.onerror=()=>{if(CUR){$("pA").textContent="This track could not be loaded from BhaktiSound. Skipping…";setTimeout(()=>play(CUR.a,CUR.i+1),1500)}};
+$("seek").oninput=e=>{if(au.duration)au.currentTime=e.target.value/1000*au.duration};
+$("q").oninput=filter;$("ar").onchange=filter;
+$("more").onclick=()=>{SHOWN+=60;draw()};
+$("grid").onclick=e=>{const b=e.target.closest(".alb");if(b)open(b.dataset.id,true)};
+fetch("data/audio/bhaktisound.json").then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{
+  D=d;const n=d.albums.reduce((s,a)=>s+a.t.length,0),secs=d.albums.reduce((s,a)=>s+a.t.reduce((x,t)=>x+(t[1]||0),0),0);
+  $("stats").innerHTML=`<span class="pill"><b>${d.albums.length.toLocaleString("en-IN")}</b> albums</span><span class="pill"><b>${n.toLocaleString("en-IN")}</b> tracks</span><span class="pill"><b>${Math.round(secs/3600).toLocaleString("en-IN")}</b> hours</span><span class="pill"><b>${Object.keys(d.artists).length}</b> artists</span>`;
+  $("ar").innerHTML+=Object.entries(d.artists).sort((x,y)=>x[1].localeCompare(y[1])).map(([id,nm])=>`<option value="${esc(id)}">${esc(nm)}</option>`).join("");
+  $("built").textContent=d.built?`List last refreshed ${d.built}.`:"";
+  filter();
+  const m=location.hash.match(/^#a(.+)$/);if(m)open(decodeURIComponent(m[1]),true);
+}).catch(()=>{
+  $("tools").classList.add("hidden");
+  $("grid").innerHTML=`<div class="card empty" style="grid-column:1/-1">The audio list is being built and will appear here shortly. Meanwhile you can listen on <a href="https://www.swaminarayan.faith/bhaktisound/" target="_blank" rel="noopener">BhaktiSound</a>.</div>`;
+});
+</script>
+</body>
+</html>
