@@ -66,3 +66,33 @@ body{position:relative;isolation:isolate}
 @media (max-width:760px){.sp-orbit{display:none}}
 @media (prefers-reduced-motion:reduce){.sp-aura,.sp-mandala *,.sp-orbit .ring,.sp-orbit a span,.top::after,.hero2 h1,.vaar,.brand .gu{animation:none!important}.sp-rv{opacity:1;transform:none}.sp-spark{display:none}}
 @media print{.sp-aura,.sp-mandala,.sp-orbit,.sp-sb,.sp-spark{display:none}}
+/* ---------- background choices (theme menu → Background) ---------- */
+.sp-bgm{display:none;position:fixed;z-index:-1;pointer-events:none;width:min(120vmin,1100px);height:min(120vmin,1100px);left:50%;top:50%;transform:translate(-50%,-50%);color:var(--saffron);opacity:.13}
+.sp-bgm svg{width:100%;height:100%}
+.sp-bgm .r1{animation:spRot 160s linear infinite}.sp-bgm .r2{animation:spRot 120s linear infinite reverse}.sp-bgm .r3{animation:spRot 90s linear infinite}.sp-bgm .r4{animation:spRot 240s linear infinite reverse}
+.sp-bgm .r1,.sp-bgm .r2,.sp-bgm .r3,.sp-bgm .r4{transform-origin:300px 300px}
+html[data-sp-bg="mandala"] .sp-bgm{display:block}
+html[data-sp-bg="mandala"] .sp-aura{opacity:.55}
+html[data-sp-bg="lotus"] .sp-aura{animation:none;opacity:.7}
+html[data-sp-bg="lotus"] .sp-aura::after{opacity:.16;background-size:120px 120px}
+html[data-sp-bg="stars"] .sp-aura{background:
+   radial-gradient(1.4px 1.4px at 20px 30px,var(--saffron),transparent 2px) 0 0/140px 120px,
+   radial-gradient(1.2px 1.2px at 90px 70px,var(--peacock),transparent 2px) 0 0/170px 150px,
+   radial-gradient(1px 1px at 50px 110px,var(--ink-2),transparent 2px) 0 0/110px 130px,
+   radial-gradient(60vmax 40vmax at 50% 0%,color-mix(in srgb,var(--peacock-soft) 90%,transparent),transparent 70%);
+  animation:spTwinkle 6s ease-in-out infinite alternate}
+html[data-sp-bg="stars"] .sp-aura::after{display:none}
+@keyframes spTwinkle{from{opacity:.55}to{opacity:1}}
+html[data-sp-bg="silk"] .sp-aura{background:conic-gradient(from 20deg at 30% 40%,var(--saffron-soft),var(--peacock-soft),color-mix(in srgb,var(--saffron-soft) 60%,var(--peacock-soft)),var(--saffron-soft));filter:blur(40px);opacity:.75;animation:spSilk 60s linear infinite}
+html[data-sp-bg="silk"] .sp-aura::after{display:none}
+@keyframes spSilk{to{transform:rotate(360deg) scale(1.2)}}
+html[data-sp-bg="plain"] .sp-aura{display:none}
+/* ---------- animation level (theme menu → Animation) ---------- */
+html[data-sp-anim="calm"] .sp-aura,html[data-sp-anim="calm"] .top::after,html[data-sp-anim="calm"] .hero2 h1,html[data-sp-anim="calm"] .vaar,html[data-sp-anim="calm"] .brand .gu,html[data-sp-anim="calm"] .sech h2 .gu,html[data-sp-anim="calm"] h1 .gu{animation:none!important}
+html[data-sp-anim="calm"] .sp-mandala *,html[data-sp-anim="calm"] .sp-bgm *{animation-duration:600s!important}
+html[data-sp-anim="calm"] .card:hover,html[data-sp-anim="calm"] .dc:hover,html[data-sp-anim="calm"] .pg:hover{transform:none}
+/* ---------- floating choices (theme menu → Floating) ---------- */
+.sp-spark.sp-f-petals{border-radius:80% 0 80% 0;background:linear-gradient(135deg,color-mix(in srgb,var(--saffron) 70%,#ffd0dc),color-mix(in srgb,var(--saffron) 40%,#ff9fbf));opacity:.8;top:-20px;bottom:auto;animation-name:spFall}
+@keyframes spFall{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:.85}100%{transform:translate(var(--dx),105vh) rotate(var(--rot));opacity:0}}
+.sp-spark.sp-f-stars{bottom:auto;background:radial-gradient(circle,#fff 0,color-mix(in srgb,var(--peacock) 60%,#fff) 40%,transparent 70%);animation-name:spStar}
+@keyframes spStar{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.2)}}
