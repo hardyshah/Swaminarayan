@@ -1,0 +1,1037 @@
+{
+ "meta": {
+  "made": "2026-11-26",
+  "method": "The library PDFs were converted from their legacy Gujarati fonts to Unicode. Every passage with a Vikram Samvat date between V.S. 1837 and 1887 (274 passages) was read; 53 dated events were turned into days with the Shri Swaminarayanam tithi table (Ashadhi year, as the books state) and compared with Shri Swaminarayanam and Kaal Patrak. A change was made only where no source disagrees.",
+  "books": [
+   "satsang-prabha-1",
+   "satsang-prabha-2",
+   "satsang-prabha-3",
+   "satsang-prabha-4",
+   "nimit-matra-3",
+   "nimit-matra-4",
+   "amrutvarsha-1",
+   "ashtako-ane-kirtano"
+  ]
+ },
+ "items": [
+  {
+   "id": "successor",
+   "status": "corrected",
+   "date": "1801-11-17",
+   "vs": "Kartik sud 11, V.S. 1858",
+   "en": "Ramanand Swami hands the dharma-dhura to Sahajanand Swami at Jetpur",
+   "gu": "જેતપુરમાં રામાનંદ સ્વામીએ ધર્મધુરા સોંપી",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 177,
+     "url": "books/nimit-matra-3.pdf#page=177"
+    },
+    {
+     "book": "satsang-prabha-3",
+     "label": "Satsang Prabha 3",
+     "page": 385,
+     "url": "books/satsang-prabha-3.pdf#page=385"
+    }
+   ],
+   "note": "Kaal Patrak had 16 Nov 1801. Shri Swaminarayanam and both books give Kartik sud 11 = 17 Nov 1801.",
+   "kaal": "../kaal-patrak/#d1801-11-17"
+  },
+  {
+   "id": "acharyas",
+   "status": "corrected",
+   "date": "1825-11-20",
+   "vs": "Kartik sud 11, V.S. 1882",
+   "en": "Two Acharyas appointed at Vadtal (Ayodhyaprasadji and Raghuvirji)",
+   "gu": "વડતાલમાં બે આચાર્યોની સ્થાપના",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 3,
+     "url": "books/nimit-matra-3.pdf#page=3"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 72,
+     "url": "books/nimit-matra-3.pdf#page=72"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 181,
+     "url": "books/nimit-matra-3.pdf#page=181"
+    }
+   ],
+   "note": "Kaal Patrak had 10 Nov 1826 (V.S. 1883). Nimit Matra 3 gives Kartik sud 11, V.S. 1882 three times, and Shri Swaminarayanam puts it on 20 Nov 1825, beside Vachanamrut Vartal-1.",
+   "kaal": "../kaal-patrak/#d1825-11-20"
+  },
+  {
+   "id": "gopinathji",
+   "status": "corrected",
+   "date": "1828-10-20",
+   "vs": "Aso sud 12, V.S. 1885",
+   "en": "Installs Shri Gopinathji at Gadhada",
+   "gu": "ગઢડામાં શ્રી ગોપીનાથજીની પ્રતિષ્ઠા",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 73,
+     "url": "books/nimit-matra-3.pdf#page=73"
+    },
+    {
+     "book": "nimit-matra-4",
+     "label": "Nimit Matra 4",
+     "page": 194,
+     "url": "books/nimit-matra-4.pdf#page=194"
+    }
+   ],
+   "note": "Kaal Patrak had 9 Oct 1828, which is Aso sud 1. Aso sud 12 is 20 Oct 1828, the day Shri Swaminarayanam gives.",
+   "kaal": "../kaal-patrak/#d1828-10-20"
+  },
+  {
+   "id": "malcolm",
+   "status": "corrected",
+   "date": "1830-02-26",
+   "vs": "Fagan sud 3, V.S. 1886",
+   "en": "Meets Governor Sir John Malcolm at Rajkot and gives him a copy of the Shikshapatri",
+   "gu": "રાજકોટમાં ગવર્નર સર જોન માલ્કમ સાથે મુલાકાત",
+   "refs": [
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 409,
+     "url": "books/satsang-prabha-2.pdf#page=409"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 250,
+     "url": "books/satsang-prabha-4.pdf#page=250"
+    }
+   ],
+   "note": "Date kept (26 Feb 1830, as in Shri Swaminarayanam and Satsang Prabha 2 p. 409). Only the tithi label was wrong: it read \"Falgun sud 1\". Satsang Prabha 4 gives Fagan sud 4–5 and Satsang Prabha 2 p. 428 gives 28 Feb, so those are listed under differences.",
+   "kaal": "../kaal-patrak/#d1830-2-26"
+  },
+  {
+   "id": "dharmadev",
+   "status": "added",
+   "date": "1792-06-08",
+   "vs": "Jeth vad 4, V.S. 1848",
+   "en": "Dharmadev passes away",
+   "gu": "ધર્મદેવનો દેહત્યાગ",
+   "refs": [
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 71,
+     "url": "books/satsang-prabha-2.pdf#page=71"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 413,
+     "url": "books/satsang-prabha-4.pdf#page=413"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day: the Bhagwat katha ends and Dharmadev leaves his body on the bank of the Saryu.",
+   "kaal": "../kaal-patrak/#d1792-6-8"
+  },
+  {
+   "id": "nilkanth-vadodara",
+   "status": "added",
+   "date": "1799-03-14",
+   "vs": "Fagan sud 8, V.S. 1855",
+   "en": "Nilkanth Varni visits Vadodara",
+   "gu": "નીલકંઠ વર્ણી વડોદરામાં",
+   "refs": [
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 342,
+     "url": "books/satsang-prabha-4.pdf#page=342"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day (stays at Mandvi).",
+   "kaal": "../kaal-patrak/#d1799-3-14"
+  },
+  {
+   "id": "narayangita",
+   "status": "added",
+   "date": "1802-08-22",
+   "vs": "Shravan vad 9, V.S. 1859",
+   "en": "Narayan Gita: discourse under a banyan tree outside Mangrol, the day after Janmashtami",
+   "gu": "માંગરોળમાં વડ નીચે નારાયણગીતા",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 147,
+     "url": "books/nimit-matra-3.pdf#page=147"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 212,
+     "url": "books/nimit-matra-3.pdf#page=212"
+    }
+   ],
+   "note": "Shri Swaminarayanam has Shriji in Mangrol for Janmashtami the day before.",
+   "kaal": "../kaal-patrak/#d1802-8-22"
+  },
+  {
+   "id": "harijayanti",
+   "status": "added",
+   "date": "1804-04-18",
+   "vs": "Chaitra sud 9, V.S. 1860",
+   "en": "First Hari Jayanti: the Bhuj devotees celebrate Shriji's birthday for the first time",
+   "gu": "ભુજના હરિભક્તોએ પહેલી હરિજયંતી ઊજવી",
+   "refs": [
+    {
+     "book": "satsang-prabha-1",
+     "label": "Satsang Prabha 1",
+     "page": 447,
+     "url": "books/satsang-prabha-1.pdf#page=447"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 177,
+     "url": "books/nimit-matra-3.pdf#page=177"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day: Hari Jayanti and Ram Navami at Bhuj.",
+   "kaal": "../kaal-patrak/#d1804-4-18"
+  },
+  {
+   "id": "sardhar",
+   "status": "added",
+   "date": "1804-08-28",
+   "vs": "Shravan vad 8, V.S. 1861",
+   "en": "Janmashtami at Sardhar",
+   "gu": "સરધારમાં જન્માષ્ટમી",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 192,
+     "url": "books/nimit-matra-3.pdf#page=192"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day.",
+   "kaal": "../kaal-patrak/#d1804-8-28"
+  },
+  {
+   "id": "gadhada-first",
+   "status": "added",
+   "date": "1805-02-10",
+   "vs": "Maha sud 11, V.S. 1861",
+   "en": "First visit to Gadhada, at Ebhal Khachar's invitation",
+   "gu": "ગઢડામાં પહેલી વાર પધાર્યા",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 113,
+     "url": "books/nimit-matra-3.pdf#page=113"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day.",
+   "kaal": "../kaal-patrak/#d1805-2-10"
+  },
+  {
+   "id": "vasudev",
+   "status": "added",
+   "date": "1806-03-07",
+   "vs": "Fagan vad 3, V.S. 1862",
+   "en": "Installs Shri Vasudev Narayan in the Gadhada darbar",
+   "gu": "ગઢડા દરબારમાં શ્રીવાસુદેવનારાયણની પ્રતિષ્ઠા",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 114,
+     "url": "books/nimit-matra-3.pdf#page=114"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day.",
+   "kaal": "../kaal-patrak/#d1806-3-7"
+  },
+  {
+   "id": "sparsh",
+   "status": "added",
+   "date": "1806-11-14",
+   "vs": "Kartik sud 4, V.S. 1863",
+   "en": "Teaches the rules of touch and purity (sparshasparsh-vivek) in Dada Khachar's darbar",
+   "gu": "ગઢડામાં સ્પર્શાસ્પર્શ વિવેકનો ઉપદેશ",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 141,
+     "url": "books/nimit-matra-3.pdf#page=141"
+    }
+   ],
+   "note": "Shri Swaminarayanam has Shriji in Ebhal Khachar's darbar, Gadhada, that day.",
+   "kaal": "../kaal-patrak/#d1806-11-14"
+  },
+  {
+   "id": "siddhpur",
+   "status": "added",
+   "date": "1809-03-31",
+   "vs": "Chaitra sud 15, V.S. 1865",
+   "en": "Comes to Siddhpur from Machhiyav on Chaitri Punam and keeps the tirth rites",
+   "gu": "ચૈત્રી પૂનમે મછિયાવથી સિદ્ધપુર",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 101,
+     "url": "books/nimit-matra-3.pdf#page=101"
+    }
+   ],
+   "note": "Shri Swaminarayanam has Shriji at Siddhpur on these days.",
+   "kaal": "../kaal-patrak/#d1809-3-31"
+  },
+  {
+   "id": "ebhal",
+   "status": "added",
+   "date": "1813-10-29",
+   "vs": "Kartik sud 5, V.S. 1870",
+   "en": "Ebhal Khachar passes away",
+   "gu": "એભલ ખાચર અક્ષરવાસી થયા",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 114,
+     "url": "books/nimit-matra-3.pdf#page=114"
+    }
+   ],
+   "note": "Only Nimit Matra 3 gives the day. Shri Swaminarayanam has Shriji at Gadhada, in the Akshar Ordi, these days and does not contradict it.",
+   "kaal": "../kaal-patrak/#d1813-10-29"
+  },
+  {
+   "id": "annakut1872",
+   "status": "added",
+   "date": "1815-11-02",
+   "vs": "Kartik sud 1, V.S. 1872",
+   "en": "Annakut in the Vasudev Narayan mandir, Gadhada",
+   "gu": "ગઢડામાં અન્નકૂટ",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 113,
+     "url": "books/nimit-matra-3.pdf#page=113"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 177,
+     "url": "books/nimit-matra-3.pdf#page=177"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day.",
+   "kaal": "../kaal-patrak/#d1815-11-2"
+  },
+  {
+   "id": "vadodara",
+   "status": "added",
+   "date": "1825-11-15",
+   "vs": "Kartik sud 5, V.S. 1882",
+   "en": "Visits Vadodara for three days at the request of Maharaja Sayajirao Gaekwad II",
+   "gu": "સયાજીરાવ ગાયકવાડના આગ્રહથી ત્રણ દિવસ વડોદરા",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 184,
+     "url": "books/nimit-matra-3.pdf#page=184"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 342,
+     "url": "books/satsang-prabha-4.pdf#page=342"
+    }
+   ],
+   "note": "Both books agree. Shri Swaminarayanam has no entry for these days.",
+   "kaal": "../kaal-patrak/#d1825-11-15"
+  },
+  {
+   "id": "deshvibhag",
+   "status": "added",
+   "date": "1826-12-14",
+   "vs": "Magshar sud 15, V.S. 1883",
+   "en": "Dictates the Desh Vibhag no Lekh to Shuk Muni at Gadhada",
+   "gu": "ગઢડામાં દેશવિભાગનો લેખ",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 26,
+     "url": "books/nimit-matra-3.pdf#page=26"
+    },
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 246,
+     "url": "books/satsang-prabha-2.pdf#page=246"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 208,
+     "url": "books/satsang-prabha-4.pdf#page=208"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day.",
+   "kaal": "../kaal-patrak/#d1826-12-14"
+  },
+  {
+   "id": "junagadh",
+   "status": "added",
+   "date": "1828-05-01",
+   "vs": "Vaishakh vad 2, V.S. 1884",
+   "en": "Installs Ranchhodrai, Trikamji, Radharaman Dev and Siddheshwar Mahadev at Junagadh",
+   "gu": "જૂનાગઢમાં શ્રીરાધારમણદેવની પ્રતિષ્ઠા",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 73,
+     "url": "books/nimit-matra-3.pdf#page=73"
+    },
+    {
+     "book": "nimit-matra-4",
+     "label": "Nimit Matra 4",
+     "page": 194,
+     "url": "books/nimit-matra-4.pdf#page=194"
+    }
+   ],
+   "note": "Shri Swaminarayanam gives the same day.",
+   "kaal": "../kaal-patrak/#d1828-5-1"
+  },
+  {
+   "id": "arthdipika",
+   "status": "added",
+   "date": "1828-12-12",
+   "vs": "Magshar sud 5, V.S. 1885",
+   "en": "Shatanand Muni finishes the Arth-Dipika commentary on the Shikshapatri (begun Kartik sud 3)",
+   "gu": "શતાનંદ મુનિએ શિક્ષાપત્રી અર્થદીપિકા પૂરી કરી",
+   "refs": [
+    {
+     "book": "satsang-prabha-3",
+     "label": "Satsang Prabha 3",
+     "page": 17,
+     "url": "books/satsang-prabha-3.pdf#page=17"
+    }
+   ],
+   "note": "Shri Swaminarayanam has Shriji arriving at Gadhada the day before.",
+   "kaal": "../kaal-patrak/#d1828-12-12"
+  },
+  {
+   "id": "vaishnavvallabha",
+   "status": "added",
+   "date": "1829-12-02",
+   "vs": "Magshar sud 6, V.S. 1886",
+   "en": "Dinanath Bhatt completes the Vaishnav-Vallabha commentary on the Vasudev Mahatmya",
+   "gu": "દીનાનાથ ભટ્ટની વાસુદેવ માહાત્મ્ય ઉપર વૈષ્ણવવલ્લભા ટીકા",
+   "refs": [
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 415,
+     "url": "books/satsang-prabha-2.pdf#page=415"
+    },
+    {
+     "book": "ashtako-ane-kirtano",
+     "label": "Ashtako ane Kirtano",
+     "page": 35,
+     "url": "books/ashtako-ane-kirtano.pdf#page=35"
+    }
+   ],
+   "note": "Both books agree. Shri Swaminarayanam has Shriji at Gadhada (Champa Chhath).",
+   "kaal": "../kaal-patrak/#d1829-12-2"
+  },
+  {
+   "id": "kashi",
+   "status": "conflict",
+   "date": "1790-10-18",
+   "vs": "Aso sud 10, V.S. 1847",
+   "en": "Ghanshyam wins over the pandits' sabha at Kashi on Vijaya Dashami",
+   "refs": [
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 497,
+     "url": "books/satsang-prabha-4.pdf#page=497"
+    }
+   ],
+   "note": "Shri Swaminarayanam has him returning to Chhapaiya after his brother's army won, on that day. Not added.",
+   "kaal": "../kaal-patrak/#d1790-10-18"
+  },
+  {
+   "id": "surya",
+   "status": "conflict",
+   "date": "1792-10-26",
+   "vs": "Kartik sud 11, V.S. 1849",
+   "en": "Surya Narayan gives darshan at Pulhashram",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 177,
+     "url": "books/nimit-matra-3.pdf#page=177"
+    },
+    {
+     "book": "nimit-matra-4",
+     "label": "Nimit Matra 4",
+     "page": 193,
+     "url": "books/nimit-matra-4.pdf#page=193"
+    },
+    {
+     "book": "satsang-prabha-1",
+     "label": "Satsang Prabha 1",
+     "page": 559,
+     "url": "books/satsang-prabha-1.pdf#page=559"
+    }
+   ],
+   "note": "Three books give Kartik sud 11, V.S. 1849, and Nimit Matra 4 p. 9 says his tapas was complete on Kartik sud 1. Shri Swaminarayanam has him at Badrinath for Annakut on Kartik sud 1 and at Joshimath after it, far from Pulhashram. Not added.",
+   "kaal": "../kaal-patrak/#d1792-10-26"
+  },
+  {
+   "id": "vadtal-nilkanth",
+   "status": "conflict",
+   "date": "1800-03-08",
+   "vs": "Fagan sud 12, V.S. 1856",
+   "en": "Nilkanth Varni first enters Vadtal",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 167,
+     "url": "books/nimit-matra-3.pdf#page=167"
+    }
+   ],
+   "note": "Shri Swaminarayanam has him serving in the Loj ashram (as Saryudas) through Fagan V.S. 1856. Not added.",
+   "kaal": "../kaal-patrak/#d1800-3-8"
+  },
+  {
+   "id": "faneni",
+   "status": "conflict",
+   "date": "1802-01-01",
+   "vs": "Magshar vad 11–14, V.S. 1858",
+   "en": "First dharma sabha at Faneni and the Swaminarayan mantra",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 13,
+     "url": "books/nimit-matra-3.pdf#page=13"
+    },
+    {
+     "book": "satsang-prabha-3",
+     "label": "Satsang Prabha 3",
+     "page": 415,
+     "url": "books/satsang-prabha-3.pdf#page=415"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 207,
+     "url": "books/satsang-prabha-4.pdf#page=207"
+    }
+   ],
+   "note": "Three readings: Nimit Matra 3 says Magshar vad 14, Sunday 3 Jan 1802; Satsang Prabha 3 says vad 12–13; Satsang Prabha 4 counts his rule from vad 11. Kaal Patrak keeps 1 Jan 1802 (vad 11).",
+   "kaal": "../kaal-patrak/#d1802-1-1"
+  },
+  {
+   "id": "mangrol2",
+   "status": "conflict",
+   "date": "1803-01-07",
+   "vs": "Posh sud 15, V.S. 1859",
+   "en": "Second visit to Mangrol on Poshi Punam",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 148,
+     "url": "books/nimit-matra-3.pdf#page=148"
+    }
+   ],
+   "note": "Shri Swaminarayanam has him at Muli on that day. Not added.",
+   "kaal": "../kaal-patrak/#d1803-1-7"
+  },
+  {
+   "id": "bhugol-year",
+   "status": "conflict",
+   "date": "1806-11-21",
+   "vs": "V.S. 1863 or 1876",
+   "en": "Year of the Bhugol-Khagol letter",
+   "refs": [
+    {
+     "book": "satsang-prabha-1",
+     "label": "Satsang Prabha 1",
+     "page": 355,
+     "url": "books/satsang-prabha-1.pdf#page=355"
+    }
+   ],
+   "note": "Satsang Prabha 1 notes that older printings date the letter Bhadarva sud 11, V.S. 1876, and newer ones Kartik sud 1–11, V.S. 1863. The site uses V.S. 1863.",
+   "kaal": "../kaal-patrak/#d1806-11-21"
+  },
+  {
+   "id": "shatanand-year",
+   "status": "conflict",
+   "date": "1810-01-20",
+   "vs": "Posh, V.S. 1865 or 1866",
+   "en": "When Shatanand Muni came into the sampradaya",
+   "refs": [
+    {
+     "book": "ashtako-ane-kirtano",
+     "label": "Ashtako ane Kirtano",
+     "page": 25,
+     "url": "books/ashtako-ane-kirtano.pdf#page=25"
+    },
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 416,
+     "url": "books/satsang-prabha-2.pdf#page=416"
+    }
+   ],
+   "note": "Ashtako ane Kirtano says the Dabhan yagna of Posh V.S. 1865; Satsang Prabha 2 and Shri Swaminarayanam say Poshi Punam V.S. 1866 (20 Jan 1810). V.S. 1865 Posh was the Jetalpur yagna. Kaal Patrak keeps 1810.",
+   "kaal": "../kaal-patrak/#d1810-1-20"
+  },
+  {
+   "id": "vidurniti",
+   "status": "conflict",
+   "date": "1820-08-13",
+   "vs": "Shravan sud 5–15, V.S. 1877",
+   "en": "Purani Pragji Dave reads the Vidurniti katha at Gadhpur",
+   "refs": [
+    {
+     "book": "satsang-prabha-1",
+     "label": "Satsang Prabha 1",
+     "page": 316,
+     "url": "books/satsang-prabha-1.pdf#page=316"
+    }
+   ],
+   "note": "Shri Swaminarayanam has him travelling to Sarangpur on Shravan sud 12–15. Not added.",
+   "kaal": "../kaal-patrak/#d1820-8-13"
+  },
+  {
+   "id": "malcolm-day",
+   "status": "conflict",
+   "date": "1830-02-26",
+   "vs": "Fagan sud 3–5, V.S. 1886",
+   "en": "Exact day of the Malcolm meeting",
+   "refs": [
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 409,
+     "url": "books/satsang-prabha-2.pdf#page=409"
+    },
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 428,
+     "url": "books/satsang-prabha-2.pdf#page=428"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 250,
+     "url": "books/satsang-prabha-4.pdf#page=250"
+    }
+   ],
+   "note": "Satsang Prabha 2 gives 26 Feb 1830 on p. 409 and 28 Feb on p. 428; Satsang Prabha 4 says Fagan sud 4–5 (27–28 Feb). Shri Swaminarayanam gives 26 Feb, which the site keeps.",
+   "kaal": "../kaal-patrak/#d1830-2-26"
+  },
+  {
+   "id": "misprints",
+   "status": "conflict",
+   "en": "Misprints inside the books (site follows the majority reading)",
+   "refs": [
+    {
+     "book": "satsang-prabha-1",
+     "label": "Satsang Prabha 1",
+     "page": 315,
+     "url": "books/satsang-prabha-1.pdf#page=315"
+    },
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 68,
+     "url": "books/satsang-prabha-2.pdf#page=68"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 544,
+     "url": "books/satsang-prabha-4.pdf#page=544"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 149,
+     "url": "books/nimit-matra-3.pdf#page=149"
+    }
+   ],
+   "note": "Satsang Prabha 1 p. 315 prints \"Ashadh vad 10\" for leaving home (all others: sud 10). Satsang Prabha 2 p. 68 and 4 p. 544 print \"Shravan sud 6\" for Loj (others: vad 6). Nimit Matra 3 p. 149 dates the Hari Gita to V.S. 1849, but it was the day before Bhaktimata's death, Kartik sud 9, V.S. 1848."
+  },
+  {
+   "id": "birth",
+   "status": "confirmed",
+   "date": "1781-04-02",
+   "vs": "Chaitra sud 9, V.S. 1837",
+   "en": "Birth at Chhapaiya; Nimit Matra 3 adds Monday, 10:10 at night",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 175,
+     "url": "books/nimit-matra-3.pdf#page=175"
+    },
+    {
+     "book": "amrutvarsha-1",
+     "label": "Amrutvarsha 1",
+     "page": 29,
+     "url": "books/amrutvarsha-1.pdf#page=29"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 277,
+     "url": "books/satsang-prabha-4.pdf#page=277"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1781-4-2"
+  },
+  {
+   "id": "bhaktimata",
+   "status": "confirmed",
+   "date": "1791-11-05",
+   "vs": "Kartik sud 10, V.S. 1848",
+   "en": "Bhaktimata passes away",
+   "refs": [
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 71,
+     "url": "books/satsang-prabha-2.pdf#page=71"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 413,
+     "url": "books/satsang-prabha-4.pdf#page=413"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1791-11-5"
+  },
+  {
+   "id": "grihatyag",
+   "status": "confirmed",
+   "date": "1792-06-29",
+   "vs": "Ashadh sud 10, V.S. 1849",
+   "en": "Leaves home at dawn on a Friday, aged 11 years 3 months 1 day",
+   "refs": [
+    {
+     "book": "nimit-matra-4",
+     "label": "Nimit Matra 4",
+     "page": 9,
+     "url": "books/nimit-matra-4.pdf#page=9"
+    },
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 71,
+     "url": "books/satsang-prabha-2.pdf#page=71"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 496,
+     "url": "books/satsang-prabha-4.pdf#page=496"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1792-6-29"
+  },
+  {
+   "id": "loj",
+   "status": "confirmed",
+   "date": "1799-08-21",
+   "vs": "Shravan vad 6, V.S. 1856",
+   "en": "Reaches Loj after 7 years 1 month 11 days of van-vicharan",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 176,
+     "url": "books/nimit-matra-3.pdf#page=176"
+    },
+    {
+     "book": "nimit-matra-4",
+     "label": "Nimit Matra 4",
+     "page": 8,
+     "url": "books/nimit-matra-4.pdf#page=8"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 407,
+     "url": "books/satsang-prabha-4.pdf#page=407"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1799-8-21"
+  },
+  {
+   "id": "diksha",
+   "status": "confirmed",
+   "date": "1800-10-28",
+   "vs": "Kartik sud 11, V.S. 1857",
+   "en": "Diksha at Piplana: named Sahajanand Swami and Narayan Muni",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 177,
+     "url": "books/nimit-matra-3.pdf#page=177"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1800-10-28"
+  },
+  {
+   "id": "bhugol",
+   "status": "confirmed",
+   "date": "1806-11-21",
+   "vs": "Kartik sud 11, V.S. 1863",
+   "en": "The Bhugol-Khagol letter (Vachanamrut Bhugol-Khagol)",
+   "refs": [
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 161,
+     "url": "books/satsang-prabha-2.pdf#page=161"
+    },
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 291,
+     "url": "books/satsang-prabha-2.pdf#page=291"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 44,
+     "url": "books/nimit-matra-3.pdf#page=44"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1806-11-21"
+  },
+  {
+   "id": "dabhan",
+   "status": "confirmed",
+   "date": "1810-01-20",
+   "vs": "Posh sud 15, V.S. 1866",
+   "en": "Maha Vishnu Yag at Dabhan; Shatanand Muni joins",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 169,
+     "url": "books/nimit-matra-3.pdf#page=169"
+    },
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 416,
+     "url": "books/satsang-prabha-2.pdf#page=416"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1810-1-20"
+  },
+  {
+   "id": "gp1",
+   "status": "confirmed",
+   "date": "1819-11-21",
+   "vs": "Magshar sud 4, V.S. 1876",
+   "en": "First Vachanamrut (Gadhada I-1); the Vachanamruts run to Ashadh vad 10, V.S. 1886",
+   "refs": [
+    {
+     "book": "satsang-prabha-1",
+     "label": "Satsang Prabha 1",
+     "page": 469,
+     "url": "books/satsang-prabha-1.pdf#page=469"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 601,
+     "url": "books/satsang-prabha-4.pdf#page=601"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1819-11-21"
+  },
+  {
+   "id": "ahmedabad",
+   "status": "confirmed",
+   "date": "1822-02-24",
+   "vs": "Fagan sud 3, V.S. 1878",
+   "en": "Installs Shri NarNarayan Dev at Ahmedabad",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 43,
+     "url": "books/nimit-matra-3.pdf#page=43"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 73,
+     "url": "books/nimit-matra-3.pdf#page=73"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1822-2-24"
+  },
+  {
+   "id": "bhuj",
+   "status": "confirmed",
+   "date": "1823-05-15",
+   "vs": "Vaishakh sud 5, V.S. 1879",
+   "en": "Installs Shri NarNarayan Dev at Bhuj",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 73,
+     "url": "books/nimit-matra-3.pdf#page=73"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1823-5-15"
+  },
+  {
+   "id": "vadtal",
+   "status": "confirmed",
+   "date": "1824-11-03",
+   "vs": "Kartik sud 12, V.S. 1881",
+   "en": "Installs Shri Lakshminarayan Dev and Harikrishna Maharaj at Vadtal",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 25,
+     "url": "books/nimit-matra-3.pdf#page=25"
+    },
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 73,
+     "url": "books/nimit-matra-3.pdf#page=73"
+    },
+    {
+     "book": "satsang-prabha-3",
+     "label": "Satsang Prabha 3",
+     "page": 502,
+     "url": "books/satsang-prabha-3.pdf#page=502"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1824-11-3"
+  },
+  {
+   "id": "shikshapatri",
+   "status": "confirmed",
+   "date": "1826-02-12",
+   "vs": "Maha sud 5, V.S. 1882",
+   "en": "Writes the Shikshapatri at Vadtal on Vasant Panchami",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 211,
+     "url": "books/nimit-matra-3.pdf#page=211"
+    },
+    {
+     "book": "satsang-prabha-3",
+     "label": "Satsang Prabha 3",
+     "page": 13,
+     "url": "books/satsang-prabha-3.pdf#page=13"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 412,
+     "url": "books/satsang-prabha-4.pdf#page=412"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1826-2-12"
+  },
+  {
+   "id": "dholera",
+   "status": "confirmed",
+   "date": "1826-05-20",
+   "vs": "Vaishakh sud 13, V.S. 1882",
+   "en": "Installs Madan Mohan Dev at Dholera",
+   "refs": [
+    {
+     "book": "nimit-matra-3",
+     "label": "Nimit Matra 3",
+     "page": 73,
+     "url": "books/nimit-matra-3.pdf#page=73"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1826-5-20"
+  },
+  {
+   "id": "lastvach",
+   "status": "confirmed",
+   "date": "1829-07-25",
+   "vs": "Ashadh vad 10, V.S. 1886",
+   "en": "Last Vachanamrut (Gadhada III-39)",
+   "refs": [
+    {
+     "book": "satsang-prabha-3",
+     "label": "Satsang Prabha 3",
+     "page": 183,
+     "url": "books/satsang-prabha-3.pdf#page=183"
+    },
+    {
+     "book": "satsang-prabha-4",
+     "label": "Satsang Prabha 4",
+     "page": 601,
+     "url": "books/satsang-prabha-4.pdf#page=601"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1829-7-25"
+  },
+  {
+   "id": "antardhan",
+   "status": "confirmed",
+   "date": "1830-06-01",
+   "vs": "Jeth sud 10, V.S. 1886",
+   "en": "Antardhan at Gadhada",
+   "refs": [
+    {
+     "book": "satsang-prabha-1",
+     "label": "Satsang Prabha 1",
+     "page": 407,
+     "url": "books/satsang-prabha-1.pdf#page=407"
+    },
+    {
+     "book": "satsang-prabha-2",
+     "label": "Satsang Prabha 2",
+     "page": 438,
+     "url": "books/satsang-prabha-2.pdf#page=438"
+    }
+   ],
+   "kaal": "../kaal-patrak/#d1830-6-1"
+  }
+ ]
+}
