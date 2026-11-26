@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Members sign in</title>
+<meta name="description" content="Sign in or join with your invite to comment, suggest edits, upload and track your satsang.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<link rel="stylesheet" href="site/collab/ui.css?v=1">
+<style>
+.shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:calc(100vh - 120px);overflow:hidden;margin-top:8px}
+.art{position:relative;padding:36px 32px;background:radial-gradient(120% 90% at 20% 10%,var(--saffron-soft),transparent 60%),radial-gradient(90% 80% at 90% 100%,var(--peacock-soft),transparent 60%),var(--sunk);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.art svg{position:absolute;right:-90px;top:-90px;width:420px;height:420px;opacity:.55;animation:spin 120s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.art h1{font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:clamp(30px,5vw,46px);line-height:1.1;margin:0 0 10px;position:relative}
+.art p{position:relative;color:var(--ink-2);margin:0 0 8px;max-width:34ch}
+.art ul{position:relative;margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px;font-size:15px}
+.art li{display:flex;gap:10px;align-items:center}.art li span{width:30px;height:30px;border-radius:50%;background:var(--surface);display:grid;place-items:center;box-shadow:var(--shadow)}
+.pane{padding:36px 32px;display:flex;flex-direction:column;justify-content:center}
+.pane form{display:grid;gap:12px;max-width:380px;width:100%}
+.seg{display:flex;background:var(--sunk);border-radius:12px;padding:4px;gap:4px;max-width:380px;margin-bottom:18px}
+.seg button{flex:1;border:0;background:none;border-radius:9px;padding:9px 6px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink-2)}
+.seg button[aria-selected=true]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.pw{position:relative}.pw button{position:absolute;right:6px;bottom:6px;border:0;background:none;color:var(--ink-3);font-size:13px;cursor:pointer;padding:4px 6px}
+.meter{height:5px;border-radius:3px;background:var(--sunk);overflow:hidden}.meter i{display:block;height:100%;width:0;background:var(--bad);transition:width .2s,background .2s}
+.lnk{background:none;border:0;padding:0;color:var(--peacock);cursor:pointer;font:inherit;font-size:14px;text-decoration:underline;justify-self:start}
+@media (max-width:760px){.shell{grid-template-columns:1fr}.art{padding:24px 20px;min-height:220px}.art ul{display:none}.pane{padding:24px 20px}}
+</style>
+</head>
+<body>
+<script>window.SPC_PAGE="login"</script>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Members</span></a>
+  <nav class="nav" aria-label="Pages"><a href="./">Today</a><a href="vachanamrut-concordance/">Vachanamrut</a><a href="kaal-patrak/">Kaal Patrak</a><a class="on" href="login.html">Sign in</a></nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+<main class="wrap">
+  <div class="card shell">
+    <section class="art" aria-hidden="false">
+      <svg viewBox="-100 -100 200 200" aria-hidden="true"><g fill="none" stroke="var(--saffron)" stroke-width=".8">
+        <circle r="96"/><circle r="70"/><circle r="44"/><circle r="18"/>
+        <g id="pet"><path d="M0-96C14-80 14-56 0-44C-14-56-14-80 0-96Z"/><path d="M0-70C9-60 9-48 0-40C-9-48-9-60 0-70Z"/></g>
+        <use href="#pet" transform="rotate(30)"/><use href="#pet" transform="rotate(60)"/><use href="#pet" transform="rotate(90)"/><use href="#pet" transform="rotate(120)"/><use href="#pet" transform="rotate(150)"/>
+        <use href="#pet" transform="rotate(180)"/><use href="#pet" transform="rotate(210)"/><use href="#pet" transform="rotate(240)"/><use href="#pet" transform="rotate(270)"/><use href="#pet" transform="rotate(300)"/><use href="#pet" transform="rotate(330)"/></g></svg>
+      <p class="eyebrow">આમંત્રિત સભ્યો · Invited members</p>
+      <h1>સત્સંગ સભા</h1>
+      <p>A shared place to add to the site together, and to keep track of your own daily satsang.</p>
+      <ul>
+        <li><span>💬</span>Comment, suggest corrections, upload pictures and recordings</li>
+        <li><span>📈</span>Your satsang score and progress chart</li>
+        <li><span>📿</span>Daily tracker for puja, mala, reading and seva</li>
+        <li><span>🎨</span>Arrange your own page the way you like</li>
+      </ul>
+    </section>
+    <section class="pane">
+      <div id="demo"></div>
+      <div id="signed" hidden></div>
+      <div id="forms">
+        <div class="seg" role="tablist">
+          <button role="tab" data-v="in" aria-selected="true">Sign in · પ્રવેશ</button>
+          <button role="tab" data-v="join" aria-selected="false">Join with invite</button>
+        </div>
+        <form id="f-in" autocomplete="on">
+          <label class="field">Email<input name="email" type="email" autocomplete="username" required></label>
+          <label class="field pw">Password<input name="password" type="password" autocomplete="current-password" required><button type="button" data-eye>Show</button></label>
+          <button class="btn" type="submit">Sign in</button>
+          <button class="lnk" type="button" data-v="forgot">Forgot password?</button>
+          <div class="out"></div>
+        </form>
+        <form id="f-join" hidden autocomplete="on">
+          <label class="field">Invite code · આમંત્રણ કોડ<input name="code" required placeholder="ABCDE-12345" style="text-transform:uppercase;letter-spacing:.08em"></label>
+          <label class="field">Your name<input name="name" autocomplete="name" required maxlength="80"></label>
+          <label class="field">Email<input name="email" type="email" autocomplete="email" required></label>
+          <label class="field pw">Choose a password (8+ characters)<input name="password" type="password" autocomplete="new-password" minlength="8" required><button type="button" data-eye>Show</button></label>
+          <div class="meter" aria-hidden="true"><i></i></div>
+          <button class="btn" type="submit">Create my account</button>
+          <div class="out"></div>
+        </form>
+        <form id="f-forgot" hidden>
+          <p class="sub" style="margin:0">Enter your email and we will send a link to set a new password.</p>
+          <label class="field">Email<input name="email" type="email" required></label>
+          <button class="btn" type="submit">Send reset link</button>
+          <button class="lnk" type="button" data-v="in">Back to sign in</button>
+          <div class="out"></div>
+        </form>
+        <form id="f-reset" hidden>
+          <p class="sub" style="margin:0">Choose a new password.</p>
+          <label class="field pw">New password<input name="password" type="password" autocomplete="new-password" minlength="8" required><button type="button" data-eye>Show</button></label>
+          <button class="btn" type="submit">Save new password</button>
+          <div class="out"></div>
+        </form>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="site/collab/config.js?v=1"></script>
+<script src="site/collab/store.js?v=1"></script>
+<script>
+(async function(){
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const S=await SPC.whenReady();
+const qs=new URLSearchParams(location.search);
+const next=(()=>{const n=qs.get("next");if(!n)return null;try{const u=new URL(n,location.href);return u.origin===location.origin?u.href:null}catch(e){return null}})();
+if(S.mode==="demo")$("#demo").innerHTML=`<div class="demo"><b>Demo mode.</b> Nothing is shared yet; accounts and items stay in this browser. Try <b>admin@demo.local</b> or <b>member@demo.local</b>, password <b>jayswaminarayan</b>, or join with invite code <b>DEMO1-JAYSW</b>.</div>`;
+function view(v){["in","join","forgot","reset"].forEach(k=>$("#f-"+k).hidden=k!==v);document.querySelectorAll(".seg [data-v]").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));$(".seg").hidden=v==="reset"||v==="forgot"}
+document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>view(b.dataset.v));
+document.querySelectorAll("[data-eye]").forEach(b=>b.onclick=()=>{const i=b.previousElementSibling;i.type=i.type==="password"?"text":"password";b.textContent=i.type==="password"?"Show":"Hide"});
+const pj=$("#f-join [name=password]");pj.oninput=()=>{const v=pj.value;let s=0;if(v.length>=8)s++;if(v.length>=12)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/\d/.test(v))s++;if(/[^\w]/.test(v))s++;
+  const m=$(".meter i");m.style.width=(s*20)+"%";m.style.background=s<2?"var(--bad)":s<4?"var(--saffron)":"var(--good)"};
+if(qs.get("invite")){view("join");$("#f-join [name=code]").value=qs.get("invite")}
+if(location.hash==="#reset")view("reset");
+S.on("recovery",()=>view("reset"));
+
+async function showSigned(){const s=await S.session();if(!s){$("#signed").hidden=true;$("#forms").hidden=false;return}
+  $("#forms").hidden=location.hash==="#reset"?false:true;if(location.hash==="#reset")return;
+  const p=s.profile||{};$("#signed").hidden=false;$("#signed").innerHTML=`<p class="eyebrow">Signed in</p><h2 style="margin:0 0 6px;font-family:var(--f-read)">જય સ્વામિનારાયણ, ${esc(p.name||s.user.email)}</h2>
+  <p class="sub">${esc(s.user.email)} · ${esc(p.role||"member")}</p><div class="row" style="margin-top:16px"><a class="btn" href="me.html">My Satsang</a>${SPC.isAdmin(p)?'<a class="btn blue" href="admin.html">Admin</a>':""}${next?`<a class="btn ghost" href="${esc(next)}">Back to the page</a>`:""}<button class="btn ghost" id="out">Sign out</button></div>`;
+  $("#out").onclick=async()=>{await S.signOut();showSigned()}}
+
+function wire(id,fn){const f=$(id);f.onsubmit=async e=>{e.preventDefault();const o=f.querySelector(".out"),b=f.querySelector("[type=submit]");o.innerHTML="";b.disabled=true;
+  try{await fn(Object.fromEntries(new FormData(f)),o)}catch(err){o.innerHTML=`<div class="msg bad">${esc(err.message)}</div>`}b.disabled=false}}
+wire("#f-in",async d=>{const s=await S.signIn(d.email,d.password);if(next)location.href=next;else location.href=SPC.isAdmin(s.profile)?"admin.html":"me.html"});
+wire("#f-join",async(d,o)=>{const r=await S.signUp(d.email,d.password,d.name,d.code);if(r.needsConfirm){o.innerHTML='<div class="msg ok">Almost done. Please open the confirmation email we just sent, then come back and sign in.</div>';return}location.href="me.html"});
+wire("#f-forgot",async(d,o)=>{const r=await S.resetPassword(d.email);o.innerHTML=`<div class="msg ok">${r.demo?"In demo mode no email is sent. Ask the admin, or reset the demo from the admin page.":"If that email belongs to a member, a reset link is on its way."}</div>`});
+wire("#f-reset",async(d,o)=>{await S.updatePassword(d.password);o.innerHTML='<div class="msg ok">Password saved. Taking you to your page…</div>';history.replaceState(null,"",location.pathname);setTimeout(()=>location.href="me.html",900)});
+showSigned();
+})();
+</script>
+</body>
+</html>

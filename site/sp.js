@@ -2,6 +2,7 @@
    animated mandala with orbiting words, diya sparks. Choices saved per viewer (sp-snd-drone, sp-snd-bell, sp-snd-vol). */
 (function(){
 "use strict";
+const SP_SRC=(document.currentScript&&document.currentScript.src)||"";
 const RM=matchMedia("(prefers-reduced-motion: reduce)");
 const get=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}};
 const put=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
@@ -179,7 +180,8 @@ function sparks(){if(RM.matches)return;if(!document.getElementById("hero2")&&!do
   const s=document.createElement("i");s.className="sp-spark";const sz=3+Math.random()*5;
   s.style.cssText=`left:${Math.random()*100}vw;width:${sz}px;height:${sz}px;--dx:${(Math.random()*16-8).toFixed(1)}vw;animation-duration:${14+Math.random()*12}s`;
   document.body.appendChild(s);s.addEventListener("animationend",()=>s.remove())}
-function start(){ctrlCss();document.body.appendChild(SB);document.body.appendChild(LB);paintSnd();paintLang();
+function collab(){if(window.__spcWidget||!SP_SRC)return;const c=document.createElement("script");c.src=SP_SRC.replace(/sp\.js(\?.*)?$/,"collab/collab.js?v=1");c.defer=true;document.head.appendChild(c)}
+function start(){ctrlCss();collab();document.body.appendChild(SB);document.body.appendChild(LB);paintSnd();paintLang();
   if(L.mode!=="both")applyLang(document.body);langObserve();
   if(window.SP_LITE)return; // Kaal Patrak and Vicharan keep their own look: sound, language and theme only
   const a=document.createElement("div");a.className="sp-aura";a.setAttribute("aria-hidden","true");document.body.prepend(a);
