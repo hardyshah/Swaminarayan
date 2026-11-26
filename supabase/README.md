@@ -77,12 +77,21 @@ The anon key is meant to be public. The row-level security rules in `schema.sql`
 | Per-member hourly limit on new items (Admin → Site controls) | `guard_contribution` |
 | Files go only into the member's own folder; others can open them only after approval | storage policies |
 | Tracker entries are private to the member; staff can read them for the leaderboard | `a_own`, `a_staff` |
+| At most 20 unresolved comments per member; comments are acknowledged before they can be resolved (deleted); overdue comments first | `guard_contribution`, `guard_comment_delete`, `overdue_guard` |
 | Paused members cannot sign in, send items or log activity | `is_active()` in policies |
 | Every sign-up, invite, review, role change and setting change is logged | `audit` table |
+
+## Comments and the 24-hour rule
+
+- Every event or data row on a page gets a **🔗 Source** chip (when the item links to its source) and a **💬** pin. Members can also pick any spot on a page. Many comments can sit on the same spot.
+- Each member can have at most **20 unresolved comments** at a time.
+- The **resolver** (comment / feedback resolution manager) works the queue in **Admin → Comment resolution**: *Acknowledge*, take the action, then *Resolve and delete*. The note of what was done is kept in the activity log.
+- A comment older than **24 hours** flashes on the dashboard, in the queue and on the resolver's Contribute button on every page. While any comment is overdue, newer comments are locked. The database enforces this (`overdue_guard`), so it cannot be bypassed.
 
 ## Roles
 
 - **member**: comment, suggest edits, upload, use the tracker.
+- **resolver**: works only the comment queue (acknowledge and resolve comments).
 - **moderator**: also reviews the queue and sees the dashboard.
 - **admin**: also manages members, invites, site controls, score rules and backups.
 

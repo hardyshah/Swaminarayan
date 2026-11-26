@@ -119,7 +119,7 @@ const qs=new URLSearchParams(location.search);
 const next=(()=>{const n=qs.get("next");if(!n)return null;try{const u=new URL(n,location.href);return u.origin===location.origin?u.href:null}catch(e){return null}})();
 if(S.mode==="demo")$("#demo").innerHTML=`<div class="demo"><b>Demo mode.</b> Nothing is shared yet; accounts and items stay in this browser. Try <b>admin@demo.local</b> or <b>member@demo.local</b>, password <b>jayswaminarayan</b>, or join with invite code <b>DEMO1-JAYSW</b>.</div>`;
 function view(v){["in","join","forgot","reset","verify"].forEach(k=>$("#f-"+k).hidden=k!==v);document.querySelectorAll(".seg [data-v]").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));$(".seg").hidden=v==="reset"||v==="forgot"||v==="verify"}
-const goOn=s=>{location.href=next||(SPC.isAdmin(s&&s.profile)?"admin.html":"me.html")};
+const goOn=s=>{const p=s&&s.profile;location.href=next||(SPC.isAdmin(p)?"admin.html":SPC.isResolver(p)?"admin.html#comments":"me.html")};
 function demoLink(r,o){if(r&&r.demoToken)o.insertAdjacentHTML("beforeend",`<div class="demo" style="margin-top:8px">Demo mode: no real email is sent. <button class="lnk" type="button" data-tk="${r.demoToken}">Open the confirmation link</button></div>`);
   const b=o.querySelector("[data-tk]");if(b)b.onclick=async()=>{await S.confirmEmail(b.dataset.tk);showSigned()}}
 document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>view(b.dataset.v));
@@ -134,7 +134,7 @@ async function showSigned(){const s=await S.session();if(!s){$("#signed").hidden
   if(!SPC.verified(s)&&location.hash!=="#reset"){$("#signed").hidden=true;$("#forms").hidden=false;view("verify");const ph=$("#f-verify [name=phone]");if(!ph.value)ph.value=s.user.phone||"+91 ";return}
   $("#forms").hidden=location.hash==="#reset"?false:true;if(location.hash==="#reset")return;
   const p=s.profile||{};$("#signed").hidden=false;$("#signed").innerHTML=`<p class="eyebrow">Signed in</p><h2 style="margin:0 0 6px;font-family:var(--f-read)">જય સ્વામિનારાયણ, ${esc(p.name||s.user.email)}</h2>
-  <p class="sub">${esc(s.user.email)} · ${esc(p.role||"member")}</p><div class="row" style="margin-top:16px"><a class="btn" href="me.html">My Satsang</a>${SPC.isAdmin(p)?'<a class="btn blue" href="admin.html">Admin</a>':""}${next?`<a class="btn ghost" href="${esc(next)}">Back to the page</a>`:""}<button class="btn ghost" id="out">Sign out</button></div>`;
+  <p class="sub">${esc(s.user.email)} · ${esc(p.role||"member")}</p><div class="row" style="margin-top:16px"><a class="btn" href="me.html">My Satsang</a>${SPC.isAdmin(p)?'<a class="btn blue" href="admin.html">Admin</a>':SPC.isResolver(p)?'<a class="btn blue" href="admin.html#comments">Comment queue</a>':""}${next?`<a class="btn ghost" href="${esc(next)}">Back to the page</a>`:""}<button class="btn ghost" id="out">Sign out</button></div>`;
   $("#out").onclick=async()=>{await S.signOut();showSigned()}}
 
 function wire(id,fn){const f=$(id);f.onsubmit=async e=>{e.preventDefault();const o=f.querySelector(".out"),b=f.querySelector("[type=submit]");o.innerHTML="";b.disabled=true;

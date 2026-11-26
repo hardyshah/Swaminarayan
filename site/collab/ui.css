@@ -1,4 +1,7 @@
 [hidden]{display:none!important}
+.box.spc-od,.card.spc-od{visibility:visible!important;animation:spcBoxPulse 1.4s ease-in-out infinite!important;background:var(--bad)!important;color:#fff!important;border-color:transparent!important}
+@keyframes spcBoxPulse{50%{background:color-mix(in srgb,var(--bad) 55%,var(--surface))}}
+@media (prefers-reduced-motion:reduce){.box.spc-od,.card.spc-od{animation:none!important}}
 :root{
   --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
   --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;

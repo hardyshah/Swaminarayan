@@ -135,7 +135,7 @@ const S=await SPC.whenReady();
 const K=SPC.KINDS,KM=Object.fromEntries(K.map(k=>[k.k,k]));
 const fmt=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 const addDays=(ds,n)=>{const d=new Date(ds+"T12:00:00");d.setDate(d.getDate()+n);return fmt(d)};
-const STATUS={pending:"Waiting for review",approved:"Approved",rejected:"Not accepted",changes:"Changes asked"};
+const STATUS={open:"Open · team answers within 24 h",acknowledged:"Seen · action in progress",pending:"Waiting for review",approved:"Approved",rejected:"Not accepted",changes:"Changes asked"};
 const KIND={comment:"Comment",edit:"Edit suggestion",upload:"Upload",event:"Event"};
 const PAGES=[["./","🕉️","Today"],["vachanamrut-concordance/","📖","Vachanamrut"],["kaal-patrak/","🗓️","Kaal Patrak"],["vicharan/","🗺️","Vicharan"],["panchang.html","🌗","Panchang"],["vedic-time.html","⏳","Vedic time"],["solar-system.html","🪐","Solar system"],["vedas.html","📜","Vedas"],["murti-3d/","🛕","Murti 3D"],["shangaar.html","🌺","Shangaar"],["vachanamrut-concordance/library.html","📚","Library"],["vachanamrut-concordance/timeline.html","🧭","Logbook"]];
 
@@ -240,7 +240,7 @@ progress(b){const n=+L.range||30,days=[];for(let i=n-1;i>=0;i--)days.push(addDay
 
 breakdown(b){const e=Object.entries(SC.byKind).sort((a,b)=>b[1]-a[1]);if(!e.length){b.innerHTML='<div class="empty">Log something in the tracker to see this fill up.</div>';return}const m=e[0][1];
   b.innerHTML=`<div class="brk">${e.map(([k,v])=>{const meta=KM[k];return`<div class="r"><span>${meta?meta.icon+" "+meta.en:"✍️ Contributions"}</span><div class="b" style="width:${v/m*100}%;${k==="contrib"?"background:var(--peacock)":""}"></div><span class="v">${Math.round(v)}</span></div>`}).join("")}</div>
-  <p class="small muted" style="margin:12px 0 0">Points per unit are set by the admin. Approved uploads and edits count ${SET.points.upload}, comments ${SET.points.comment}.</p>`},
+  <p class="small muted" style="margin:12px 0 0">Points per unit are set by the admin. Approved uploads and edits count ${SET.points.upload}.</p>`},
 
 heatmap(b){const end=new Date(SPC.today()+"T12:00"),start=new Date(end);start.setDate(start.getDate()-364-start.getDay());const cs=12,gp=3,cells=[];let d=new Date(start),col=0,months="";let lastM=-1;
   const vals=Object.values(SC.byDay),mx=Math.max(1,...vals);
@@ -264,12 +264,13 @@ badges(b){const tot=k=>ACTS.filter(a=>a.kind===k).reduce((s,a)=>s+(+a.qty||0),0)
 goals(b){b.innerHTML=`<div class="goals">${K.filter(k=>!k.auto).map(k=>`<label>${k.icon} ${k.en}<input type="number" min="0" step="${k.step}" value="${goal(k.k)}" data-k="${k.k}" aria-label="Daily goal for ${k.en} in ${k.unit}"></label>`).join("")}</div><p class="small muted" style="margin:10px 0 0">0 means no daily goal. Goals fill the bars in the tracker.</p>`;
   b.querySelectorAll("input").forEach(i=>i.onchange=()=>{L.goals[i.dataset.k]=Math.max(0,+i.value||0);save();refresh("tracker")})},
 
-contribs(b){const f=cFilter,rows=MINE.filter(c=>f==="all"||c.status===f||c.kind===f);const n=s=>MINE.filter(c=>c.status===s).length;
-  b.innerHTML=`<div class="filters">${[["all","All "+MINE.length],["pending","Waiting "+n("pending")],["changes","Changes asked "+n("changes")],["approved","Approved "+n("approved")],["rejected","Not accepted "+n("rejected")],["upload","Uploads"],["edit","Edits"],["comment","Comments"]].map(([k,l])=>`<button data-f="${k}" aria-pressed="${f===k}">${l}</button>`).join("")}</div>
+contribs(b){const f=cFilter,rows=MINE.filter(c=>f==="all"||c.status===f||c.kind===f||(f==="open"&&SPC.isOpenComment(c)));const n=s=>MINE.filter(c=>c.status===s).length;
+  b.innerHTML=`<div class="filters">${[["all","All "+MINE.length],["open","Open comments "+MINE.filter(SPC.isOpenComment).length],["pending","Waiting "+n("pending")],["changes","Changes asked "+n("changes")],["approved","Approved "+n("approved")],["rejected","Not accepted "+n("rejected")],["upload","Uploads"],["edit","Edits"],["comment","Comments"]].map(([k,l])=>`<button data-f="${k}" aria-pressed="${f===k}">${l}</button>`).join("")}</div>
   ${rows.length?rows.map(c=>`<div class="citem" data-id="${c.id}"><div class="meta"><span class="chip ${c.status}">${STATUS[c.status]}</span><b>${KIND[c.kind]||c.kind}</b><span>on <a href="${esc(SPC.BASE+(c.page==="/"?"":c.page.replace(/^\//,"")))}">${esc(c.page)}</a></span><span>· ${new Date(c.created_at).toLocaleString()}</span></div>
     ${c.target?`<div class="q">${esc(c.target)}</div>`:""}${c.title&&c.kind!=="comment"?`<b>${esc(c.title)}</b>`:""}${c.body?`<p>${esc(c.body)}</p>`:""}<div class="prev fv"></div>
     ${c.admin_note?`<div class="note"><b>Admin note:</b> ${esc(c.admin_note)}</div>`:""}
-    ${c.status!=="approved"?`<div class="row" style="margin-top:8px"><button class="btn ghost sm" data-ed>Edit</button><button class="btn ghost sm" data-del>Delete</button></div>`:""}</div>`).join(""):'<div class="empty">Nothing here yet. Use the <b>Contribute</b> button at the bottom-left of any page to comment, suggest an edit or upload.</div>'}`;
+    ${c.kind==="comment"&&window.SPCDue&&SPC.isOpenComment(c)?`<div style="margin-top:6px">${SPCDue(c)} ${c.anchor_label?`<a class="small" href="${esc(SPC.BASE+(c.page==="/"?"":c.page.replace(/^\//,"")))}#spc=${c.id}">📍 ${esc(c.anchor_label.slice(0,70))}</a>`:""}</div>`:""}
+    ${c.status!=="approved"?`<div class="row" style="margin-top:8px"><button class="btn ghost sm" data-ed>Edit</button><button class="btn ghost sm" data-del>${c.kind==="comment"?"Withdraw":"Delete"}</button></div>`:""}</div>`).join(""):'<div class="empty">Nothing here yet. Use the <b>Contribute</b> button at the bottom-left of any page to comment, suggest an edit or upload.</div>'}`;
   b.querySelectorAll("[data-f]").forEach(x=>x.onclick=()=>{cFilter=x.dataset.f;BODY.contribs(b)});
   rows.filter(c=>c.file_path).forEach(async c=>{const box=b.querySelector(`[data-id="${c.id}"] .fv`);try{const u=await S.fileUrl(c.file_path);if(u)box.innerHTML=window.SPCPreview?SPCPreview(u,c.file_type,c.file_name):`<a href="${u}" target="_blank" rel="noopener">Open file</a>`}catch(e){box.innerHTML='<span class="small muted">File not available</span>'}});
   b.querySelectorAll("[data-del]").forEach(x=>x.onclick=async()=>{const id=x.closest("[data-id]").dataset.id;if(!await confirmDlg("Delete this item?","It will be removed for good."))return;await S.deleteMine(id)});

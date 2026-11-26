@@ -21,6 +21,10 @@ alter table public.profiles add column if not exists phone text;
 alter table public.profiles add column if not exists email_verified boolean not null default false;
 alter table public.profiles add column if not exists phone_verified boolean not null default false;
 
+-- the comment/feedback resolution manager role
+alter table public.profiles drop constraint if exists profiles_role_check;
+alter table public.profiles add constraint profiles_role_check check (role in ('member','resolver','moderator','admin'));
+
 create table if not exists public.invites (
   code        text primary key,
   email       text,
@@ -54,6 +58,16 @@ create table if not exists public.contributions (
   updated_at  timestamptz not null default now(),
   constraint body_len check (char_length(body) <= 20000 and char_length(title) <= 200 and char_length(target) <= 300)
 );
+-- comments: open -> acknowledged -> resolved (deleted); anchored to a spot on the page
+alter table public.contributions add column if not exists anchor text default '';
+alter table public.contributions add column if not exists anchor_label text default '';
+alter table public.contributions add column if not exists source_url text default '';
+alter table public.contributions add column if not exists acknowledged_by uuid references public.profiles(id) on delete set null;
+alter table public.contributions add column if not exists acknowledged_at timestamptz;
+alter table public.contributions drop constraint if exists contributions_status_check;
+alter table public.contributions add constraint contributions_status_check check (status in ('pending','approved','rejected','changes','open','acknowledged'));
+alter table public.invites drop constraint if exists invites_role_check;
+alter table public.invites add constraint invites_role_check check (role in ('member','resolver','moderator','admin'));
 create index if not exists contributions_page on public.contributions(page);
 create index if not exists contributions_user on public.contributions(user_id);
 create index if not exists contributions_status on public.contributions(status);
@@ -90,6 +104,17 @@ $$;
 create or replace function public.is_admin() returns boolean language sql stable security definer set search_path = public as $$
   select exists (select 1 from profiles where id = auth.uid() and role = 'admin' and status = 'active' and email_verified and phone_verified);
 $$;
+create or replace function public.is_resolver() returns boolean language sql stable security definer set search_path = public as $$
+  select exists (select 1 from profiles where id = auth.uid() and role in ('admin','moderator','resolver') and status = 'active' and email_verified and phone_verified);
+$$;
+-- 24-hour rule: while any comment is overdue, only overdue comments can be actioned
+create or replace function public.overdue_guard(cid uuid, created timestamptz) returns void language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  if created < now() - interval '24 hours' then return; end if;
+  select count(*) into n from contributions where kind = 'comment' and status in ('open','acknowledged') and id <> cid and created_at < now() - interval '24 hours';
+  if n > 0 then raise exception 'resolve the % overdue comment(s) older than 24 hours first', n; end if;
+end $$;
 create or replace function public.is_active() returns boolean language sql stable security definer set search_path = public as $$
   select exists (select 1 from profiles where id = auth.uid() and status = 'active' and email_verified and phone_verified);
 $$;
@@ -179,7 +204,12 @@ create or replace function public.guard_contribution() returns trigger language 
 declare n int; lim int;
 begin
   if tg_op = 'INSERT' then
-    new.user_id := auth.uid(); new.status := 'pending'; new.admin_note := ''; new.reviewed_by := null; new.reviewed_at := null;
+    new.user_id := auth.uid(); new.status := case when new.kind = 'comment' then 'open' else 'pending' end;
+    new.admin_note := ''; new.reviewed_by := null; new.reviewed_at := null; new.acknowledged_by := null; new.acknowledged_at := null;
+    if new.kind = 'comment' then
+      select count(*) into n from contributions where user_id = auth.uid() and kind = 'comment' and status in ('open','acknowledged');
+      if n >= 20 then raise exception 'comment limit: you already have 20 unresolved comments'; end if;
+    end if;
     new.created_at := now(); new.updated_at := now();
     select coalesce((value->>'perHour')::int, 20) into lim from settings where key = 'rate';
     select count(*) into n from contributions where user_id = auth.uid() and created_at > now() - interval '1 hour';
@@ -191,7 +221,21 @@ begin
   -- UPDATE
   new.user_id := old.user_id; new.created_at := old.created_at; new.kind := old.kind; new.page := old.page;
   new.file_path := old.file_path; new.file_name := old.file_name; new.file_type := old.file_type; new.file_size := old.file_size;
-  new.updated_at := now();
+  new.updated_at := now(); new.anchor := old.anchor; new.anchor_label := old.anchor_label;
+  if old.kind = 'comment' then
+    if is_resolver() and old.user_id <> auth.uid() then
+      if new.status not in ('open','acknowledged') then raise exception 'comments are acknowledged, then resolved by deleting them'; end if;
+      perform overdue_guard(old.id, old.created_at);
+      if new.status = 'acknowledged' and old.status = 'open' then
+        new.acknowledged_by := auth.uid(); new.acknowledged_at := now();
+        perform log('ack-comment', old.page, left(old.body, 120));
+      end if;
+    else
+      -- the author may edit the text of their own comment; status stays as it is
+      new.status := old.status; new.admin_note := old.admin_note; new.acknowledged_by := old.acknowledged_by; new.acknowledged_at := old.acknowledged_at;
+    end if;
+    return new;
+  end if;
   if is_staff() and (new.status is distinct from old.status or new.admin_note is distinct from old.admin_note) then
     new.reviewed_by := auth.uid(); new.reviewed_at := now();
     perform log('review-' || new.status, old.page, old.title || coalesce(' · ' || nullif(new.admin_note,''), ''));
@@ -202,6 +246,24 @@ begin
   end if;
   return new;
 end $$;
+create or replace function public.guard_comment_delete() returns trigger language plpgsql security definer set search_path = public as $$
+declare who text;
+begin
+  if old.kind <> 'comment' then
+    perform log('delete', old.page, old.title); return old;
+  end if;
+  select name into who from profiles where id = old.user_id;
+  if old.user_id = auth.uid() and not is_resolver() then
+    perform log('withdraw-comment', old.page, left(old.body, 160)); return old;
+  end if;
+  if old.status = 'open' then raise exception 'acknowledge the comment first, then resolve it'; end if;
+  perform overdue_guard(old.id, old.created_at);
+  perform log('resolve-comment', old.page, '"' || left(old.body, 160) || '" by ' || coalesce(who, '?') || coalesce(' · action: ' || nullif(old.admin_note, ''), ''));
+  return old;
+end $$;
+drop trigger if exists contributions_delete_guard on public.contributions;
+create trigger contributions_delete_guard before delete on public.contributions for each row execute function public.guard_comment_delete();
+
 drop trigger if exists contributions_guard on public.contributions;
 create trigger contributions_guard before insert or update on public.contributions for each row execute function public.guard_contribution();
 
@@ -250,10 +312,10 @@ drop policy if exists c_insert on public.contributions;
 drop policy if exists c_update on public.contributions;
 drop policy if exists c_delete on public.contributions;
 -- you see your own items in any status, approved items from everyone, and staff see everything
-create policy c_read   on public.contributions for select to authenticated using (user_id = auth.uid() or (status = 'approved' and is_active()) or is_staff());
+create policy c_read   on public.contributions for select to authenticated using (user_id = auth.uid() or (kind <> 'comment' and status = 'approved' and is_active()) or (kind = 'comment' and is_resolver()) or is_staff());
 create policy c_insert on public.contributions for insert to authenticated with check (user_id = auth.uid() and is_active());
-create policy c_update on public.contributions for update to authenticated using ((user_id = auth.uid() and status <> 'approved') or is_staff()) with check (true);
-create policy c_delete on public.contributions for delete to authenticated using (user_id = auth.uid() or is_staff());
+create policy c_update on public.contributions for update to authenticated using ((user_id = auth.uid() and status <> 'approved') or (kind = 'comment' and is_resolver()) or is_staff()) with check (true);
+create policy c_delete on public.contributions for delete to authenticated using (user_id = auth.uid() or (kind = 'comment' and is_resolver()) or is_staff());
 
 drop policy if exists a_own   on public.activities;
 drop policy if exists a_staff on public.activities;

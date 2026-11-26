@@ -32,6 +32,9 @@ const DEFAULT_SETTINGS={
   points:{puja:5,mala:1,vachanamrut:5,shikshapatri:0.5,darshan:5,sabha:5,seva:4,dhyaan:0.2,kirtan:2,ekadashi:10,quiz:1,upload:10,edit:10,comment:2,event:10},
   rate:{perHour:20}
 };
+const COMMENT_LIMIT=20,DUE_MS=864e5;
+const isOpenComment=c=>c.kind==="comment"&&(c.status==="open"||c.status==="acknowledged");
+const isOverdue=c=>isOpenComment(c)&&Date.now()-Date.parse(c.created_at)>DUE_MS;
 const LEVELS=[[0,"બીજ","Seed"],[100,"અંકુર","Sprout"],[400,"છોડ","Sapling"],[1200,"વૃક્ષ","Tree"],[3000,"વટવૃક્ષ","Banyan"],[7000,"કલ્પવૃક્ષ","Kalpavruksh"]];
 
 /* ---------- small utilities ---------- */
@@ -86,9 +89,9 @@ function stripExif(file){return new Promise((res,rej)=>{const img=new Image(),u=
    DEMO backend: this browser only
    ===================================================================== */
 function Demo(){
-  const KEY="spc-demo-v1";
+  const KEY="spc-demo-v2";
   let db=load();
-  function load(){try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.v===1)return j}catch(e){}return null}
+  function load(){try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.v===2)return j}catch(e){}return null}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){console.warn("demo store full",e)}}
   // files live in IndexedDB so photos and audio can be tried
   let idb=null;function store(){if(idb)return idb;idb=new Promise((res,rej)=>{const r=indexedDB.open("spc-demo-files",1);r.onupgradeneeded=()=>r.result.createObjectStore("f");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});return idb}
@@ -101,16 +104,18 @@ function Demo(){
     const V={email_ok:true,phone_ok:true};
     const A=Object.assign({id:uid(),email:"admin@demo.local",phone:"+919000000001",name:"Demo Admin",role:"admin",status:"active",pw,created_at:"2026-09-01T09:00:00Z",layout:null},V);
     const M=Object.assign({id:uid(),email:"member@demo.local",phone:"+919000000002",name:"Demo Member",role:"member",status:"active",pw,created_at:"2026-10-02T09:00:00Z",layout:null},V);
+    const Rz=Object.assign({id:uid(),email:"resolver@demo.local",phone:"+919000000004",name:"Demo Resolver",role:"resolver",status:"active",pw,created_at:"2026-09-05T09:00:00Z",layout:null},V);
     const K=Object.assign({id:uid(),email:"kishore@demo.local",phone:"+919000000003",name:"Demo Kishore",role:"member",status:"active",pw,created_at:"2026-10-20T09:00:00Z",layout:null},V);
-    db={v:1,users:[A,M,K],invites:[{code:"DEMO1-JAYSW",email:"",role:"member",note:"Demo invite",created_by:A.id,created_at:now(),expires_at:null,used_by:null,used_at:null,revoked:false}],
+    db={v:2,users:[A,M,K,Rz],invites:[{code:"DEMO1-JAYSW",email:"",role:"member",note:"Demo invite",created_by:A.id,created_at:now(),expires_at:null,used_by:null,used_at:null,revoked:false}],
       contributions:[],activities:[],tokens:{},otp:null,settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)),audit:[],session:null};
     const C=(u,kind,page,title,body,status,daysAgo,extra)=>{const t=new Date(Date.now()-daysAgo*864e5).toISOString();
       db.contributions.push(Object.assign({id:uid(),user_id:u.id,kind,page,target:"",title,body,status,admin_note:"",file_path:null,file_name:null,file_type:null,file_size:null,created_at:t,updated_at:t,reviewed_at:status==="pending"?null:t,reviewed_by:status==="pending"?null:A.id},extra||{}))};
-    C(M,"comment","vachanamrut-concordance/","Gadhada Pratham 1","A cross-reference to Shikshapatri shlok 116 would help here.","pending",0.2);
+    C(M,"comment","vachanamrut-concordance/","Gadhada Pratham 1","A cross-reference to Shikshapatri shlok 116 would help here.","open",0.2,{anchor:"",anchor_label:"Vachanamrut concordance"});
+    C(K,"comment","index.html","Today in history","Which book gives this date? Please add the page number.","open",1.3,{anchor:"",anchor_label:"Today in history"});
+    C(M,"comment","kaal-patrak/","Kaal Patrak","The picture for this day looks different from the description.","acknowledged",0.6,{anchor:"",anchor_label:"Kaal Patrak",acknowledged_at:new Date(Date.now()-3e6).toISOString()});
     C(M,"edit","kaal-patrak/","Date of Loj arrival","Shravan vad 6, V.S. 1856 (sample suggestion for the demo)","pending",1,{target:"Loj arrival",body:"Please check the date shown for this event against the book.\n\nSuggested: sample text only."});
     C(K,"upload","vicharan/","Photo of a village mandir (demo)","Demo upload without a file.","pending",0.5);
-    C(K,"comment","index.html","Today page","The ghadi clock is lovely. Could it also show sunset?","approved",6);
-    C(M,"comment","vedas.html","Rigveda reader","A bookmark button would be useful.","rejected",9,{admin_note:"Already planned, thanks."});
+    C(M,"edit","vedas.html","Rigveda reader","Please add a bookmark button.","rejected",9,{admin_note:"Already planned, thanks."});
     C(M,"upload","bhajan","Dhun recording (demo)","Demo upload without a file.","approved",14);
     const kinds=["puja","mala","vachanamrut","darshan","dhyaan","kirtan","seva"];
     for(const u of [A,M,K])for(let d=70;d>=0;d--){if(Math.random()<(u===M?.25:.45))continue;const day=new Date(Date.now()-d*864e5);const ds=day.toISOString().slice(0,10);
@@ -120,6 +125,8 @@ function Demo(){
   function log(actor,action,target,detail){db.audit.unshift({id:uid(),actor,action,target,detail:detail||"",at:now()});if(db.audit.length>800)db.audit.length=800}
   const me=()=>db&&db.session?db.users.find(u=>u.id===db.session):null;
   const isAdmin=()=>{const u=me();return!!u&&(u.role==="admin"||u.role==="moderator")};
+  const isResolver=()=>{const u=me();return!!u&&(u.role==="admin"||u.role==="moderator"||u.role==="resolver")};
+  function overdueGuard(c){if(isOverdue(c))return;const od=db.contributions.filter(x=>x.id!==c.id&&isOverdue(x));if(od.length)throw new Error(`Please resolve the ${od.length} overdue comment${od.length>1?"s":""} (older than 24 hours) first.`)}
   function needIn(){const u=me();if(!u)throw new Error("Please sign in first.");if(u.status!=="active")throw new Error("Your account is paused. Please contact the admin.");return u}
   function need(){const u=needIn();if(!u.email_ok||!u.phone_ok)throw new Error("Please verify your email and mobile number first.");return u}
   function needAdmin(){const u=need();if(!isAdmin())throw new Error("Admins only.");return u}
@@ -159,17 +166,19 @@ function Demo(){
 
     async createContribution(c){const u=need();rate(u);const s=await this.getSettings();
       if(c.kind==="comment"&&!s.features.comments||c.kind==="upload"&&!s.features.uploads||c.kind==="edit"&&!s.features.edits)throw new Error("This is switched off by the admin for now.");
+      if(c.kind==="comment"){const n=db.contributions.filter(x=>x.user_id===u.id&&isOpenComment(x)).length;if(n>=COMMENT_LIMIT)throw new Error(`You already have ${COMMENT_LIMIT} unresolved comments. Please wait until some are resolved before adding more.`)}
       const row={id:uid(),user_id:u.id,kind:c.kind,page:c.page||pageKey(),target:(c.target||"").slice(0,300),title:(c.title||"").slice(0,200),body:(c.body||"").slice(0,20000),
-        status:isAdmin()&&c.autoApprove?"approved":"pending",admin_note:"",file_path:null,file_name:null,file_type:null,file_size:null,created_at:now(),updated_at:now(),reviewed_at:null,reviewed_by:null};
+        anchor:(c.anchor||"").slice(0,400),anchor_label:(c.anchor_label||"").slice(0,200),source_url:(c.source_url||"").slice(0,500),acknowledged_at:null,acknowledged_by:null,
+        status:c.kind==="comment"?"open":"pending",admin_note:"",file_path:null,file_name:null,file_type:null,file_size:null,created_at:now(),updated_at:now(),reviewed_at:null,reviewed_by:null};
       if(c.file){row.file_path=u.id+"/"+Date.now()+"-"+c.file.name.replace(/[^\w.\-]+/g,"_");row.file_name=c.file.name;row.file_type=c.file.type;row.file_size=c.file.size;await putFile(row.file_path,c.file)}
       db.contributions.unshift(row);log(u.id,"create-"+row.kind,row.page,row.title);save();emit("contrib",row);return row},
     async updateMine(id,patch){const u=need();const r=db.contributions.find(c=>c.id===id&&c.user_id===u.id);if(!r)throw new Error("Not found.");
       if(r.status==="approved")throw new Error("Approved items can no longer be edited. Send a new suggestion instead.");
-      ["title","body","target"].forEach(k=>{if(patch[k]!=null)r[k]=String(patch[k])});r.status="pending";r.updated_at=now();log(u.id,"edit-own",r.page,r.title);save();emit("contrib",r);return r},
+      ["title","body","target"].forEach(k=>{if(patch[k]!=null)r[k]=String(patch[k])});if(r.kind!=="comment")r.status="pending";r.updated_at=now();log(u.id,"edit-own",r.page,r.title);save();emit("contrib",r);return r},
     async deleteMine(id){const u=need();const i=db.contributions.findIndex(c=>c.id===id&&(c.user_id===u.id||isAdmin()));if(i<0)throw new Error("Not found.");const r=db.contributions[i];
       if(r.file_path)delFile(r.file_path);db.contributions.splice(i,1);log(u.id,"delete",r.page,r.title);save();emit("contrib",null)},
     async listMine(){const u=need();return db.contributions.filter(c=>c.user_id===u.id)},
-    async listForPage(page){const u=me();return db.contributions.filter(c=>c.page===page&&(c.status==="approved"||(u&&c.user_id===u.id))).map(c=>Object.assign({author:(db.users.find(x=>x.id===c.user_id)||{}).name||"Member"},c))},
+    async listForPage(page){const u=me();return db.contributions.filter(c=>c.page===page&&((c.kind!=="comment"&&c.status==="approved")||(u&&c.user_id===u.id)||(c.kind==="comment"&&isResolver()))).map(c=>Object.assign({author:(db.users.find(x=>x.id===c.user_id)||{}).name||"Member"},c))},
     async fileUrl(path){const b=await getFile(path);return b?URL.createObjectURL(b):null},
 
     async listActivities(from,to,userId){const u=need();const id=userId&&isAdmin()?userId:u.id;return db.activities.filter(a=>a.user_id===id&&(!from||a.day>=from)&&(!to||a.day<=to))},
@@ -177,12 +186,20 @@ function Demo(){
     async setDayQty(day,kind,qty){const u=need();db.activities=db.activities.filter(a=>!(a.user_id===u.id&&a.day===day&&a.kind===kind));if(qty>0)db.activities.push({id:uid(),user_id:u.id,day,kind,qty:+qty,note:"",created_at:now()});save();emit("activity",null)},
     async deleteActivity(id){const u=need();db.activities=db.activities.filter(a=>!(a.id===id&&a.user_id===u.id));save();emit("activity",null)},
 
+    /* comment resolution */
+    async adminComments(){const u=need();if(!isResolver())throw new Error("Comment resolvers only.");return db.contributions.filter(isOpenComment).sort((a,b)=>a.created_at<b.created_at?-1:1).map(c=>Object.assign({author:(db.users.find(x=>x.id===c.user_id)||{}).name||"?"},c))},
+    async ackComment(id,note){const a=need();if(!isResolver())throw new Error("Comment resolvers only.");const c=db.contributions.find(x=>x.id===id&&x.kind==="comment");if(!c)throw new Error("Not found.");
+      overdueGuard(c);c.status="acknowledged";c.acknowledged_at=now();c.acknowledged_by=a.id;if(note!=null)c.admin_note=note;log(a.id,"ack-comment",c.page,c.body.slice(0,120));save();emit("contrib",c);return c},
+    async resolveComment(id,note){const a=need();if(!isResolver())throw new Error("Comment resolvers only.");const i=db.contributions.findIndex(x=>x.id===id&&x.kind==="comment");if(i<0)throw new Error("Not found.");const c=db.contributions[i];
+      if(c.status!=="acknowledged")throw new Error("Acknowledge the comment first, then resolve it.");overdueGuard(c);db.contributions.splice(i,1);
+      log(a.id,"resolve-comment",c.page,`"${c.body.slice(0,160)}" by ${(db.users.find(x=>x.id===c.user_id)||{}).name||"?"}${note?" · action: "+note:""}`);save();emit("contrib",null)},
+
     /* admin */
-    async adminContributions(f){needAdmin();f=f||{};return db.contributions.filter(c=>(!f.status||c.status===f.status)&&(!f.kind||c.kind===f.kind)&&(!f.user||c.user_id===f.user)).map(c=>Object.assign({author:(db.users.find(x=>x.id===c.user_id)||{}).name||"?",email:(db.users.find(x=>x.id===c.user_id)||{}).email||""},c))},
+    async adminContributions(f){needAdmin();f=f||{};return db.contributions.filter(c=>c.kind!=="comment"&&(!f.status||c.status===f.status)&&(!f.kind||c.kind===f.kind)&&(!f.user||c.user_id===f.user)).map(c=>Object.assign({author:(db.users.find(x=>x.id===c.user_id)||{}).name||"?",email:(db.users.find(x=>x.id===c.user_id)||{}).email||""},c))},
     async review(id,status,note){const a=needAdmin();const r=db.contributions.find(c=>c.id===id);if(!r)throw new Error("Not found.");r.status=status;r.admin_note=note||"";r.reviewed_by=a.id;r.reviewed_at=now();log(a.id,"review-"+status,r.page,r.title+(note?" · "+note:""));save();emit("contrib",r);return r},
     async adminUsers(){needAdmin();return db.users.map(pub)},
     async adminSetUser(id,patch){const a=needAdmin();const u=db.users.find(x=>x.id===id);if(!u)throw new Error("Not found.");
-      if(patch.role&&a.role!=="admin")throw new Error("Only an admin can change roles.");if(id===a.id&&(patch.role&&patch.role!=="admin"||patch.status==="suspended"))throw new Error("You cannot remove your own admin access.");
+      if(patch.role&&a.role!=="admin")throw new Error("Only an admin can change roles.");if(patch.role&&["member","resolver","moderator","admin"].indexOf(patch.role)<0)throw new Error("Unknown role.");if(id===a.id&&(patch.role&&patch.role!=="admin"||patch.status==="suspended"))throw new Error("You cannot remove your own admin access.");
       ["role","status","name"].forEach(k=>{if(patch[k]!=null)u[k]=patch[k]});log(a.id,"user",u.email,JSON.stringify(patch));save();return pub(u)},
     async adminActivities(from){needAdmin();return db.activities.filter(a=>!from||a.day>=from)},
     async adminInvites(){needAdmin();return db.invites.slice().reverse()},
@@ -233,6 +250,7 @@ function Live(){
     async setSetting(key,val){ok(await sb.from("settings").upsert({key,value:val}));settingsCache=null;emit("settings",await this.getSettings())},
 
     async createContribution(c){const u=await need();const row={user_id:u.id,kind:c.kind,page:c.page||pageKey(),target:(c.target||"").slice(0,300),title:(c.title||"").slice(0,200),body:(c.body||"").slice(0,20000)};
+      if(c.kind==="comment")Object.assign(row,{anchor:(c.anchor||"").slice(0,400),anchor_label:(c.anchor_label||"").slice(0,200),source_url:(c.source_url||"").slice(0,500)});
       if(c.file){const path=u.id+"/"+Date.now()+"-"+c.file.name.replace(/[^\w.\-]+/g,"_");ok(await sb.storage.from(BUCKET).upload(path,c.file,{contentType:c.file.type,upsert:false}));
         Object.assign(row,{file_path:path,file_name:c.file.name,file_type:c.file.type,file_size:c.file.size})}
       const r=ok(await sb.from("contributions").insert(row).select().single());emit("contrib",r);return r},
@@ -249,7 +267,11 @@ function Live(){
     async setDayQty(day,kind,qty){const u=await need();ok(await sb.from("activities").delete().eq("user_id",u.id).eq("day",day).eq("kind",kind));if(qty>0)ok(await sb.from("activities").insert({user_id:u.id,day,kind,qty:+qty}));emit("activity",null)},
     async deleteActivity(id){ok(await sb.from("activities").delete().eq("id",id));emit("activity",null)},
 
-    async adminContributions(f){f=f||{};let q=sb.from("contributions").select("*,profiles(name,email)").order("created_at",{ascending:false}).limit(1000);
+    async adminComments(){const rows=ok(await sb.from("contributions").select("*").eq("kind","comment").in("status",["open","acknowledged"]).order("created_at",{ascending:true}).limit(2000));
+      const ids=[...new Set(rows.map(r=>r.user_id))],names={};if(ids.length)ok(await sb.from("member_names").select("id,name").in("id",ids)).forEach(n=>names[n.id]=n.name);return rows.map(c=>Object.assign({author:names[c.user_id]||"Member"},c))},
+    async ackComment(id,note){const p={status:"acknowledged"};if(note!=null)p.admin_note=note;const r=ok(await sb.from("contributions").update(p).eq("id",id).select().single());emit("contrib",r);return r},
+    async resolveComment(id,note){if(note)ok(await sb.from("contributions").update({admin_note:note}).eq("id",id));ok(await sb.from("contributions").delete().eq("id",id));emit("contrib",null)},
+    async adminContributions(f){f=f||{};let q=sb.from("contributions").select("*,profiles(name,email)").neq("kind","comment").order("created_at",{ascending:false}).limit(1000);
       if(f.status)q=q.eq("status",f.status);if(f.kind)q=q.eq("kind",f.kind);if(f.user)q=q.eq("user_id",f.user);
       return ok(await q).map(c=>Object.assign({author:c.profiles&&c.profiles.name||"?",email:c.profiles&&c.profiles.email||""},c))},
     async review(id,status,note){const r=ok(await sb.from("contributions").update({status,admin_note:note||""}).eq("id",id).select().single());emit("contrib",r);return r},
@@ -266,7 +288,7 @@ function Live(){
 
 const impl=LIVE?Live():Demo();
 const api=Object.assign(impl,{KINDS,LEVELS,DEFAULT_SETTINGS,BASE,on,emit,score,streak,checkFile,scanText,pageKey,today,
-  normPhone,verified:verifiedOf,isAdmin:p=>!!p&&(p.role==="admin"||p.role==="moderator")});
+  normPhone,verified:verifiedOf,COMMENT_LIMIT,DUE_MS,isOpenComment,isOverdue,isAdmin:p=>!!p&&(p.role==="admin"||p.role==="moderator"),isResolver:p=>!!p&&(p.role==="admin"||p.role==="moderator"||p.role==="resolver")});
 let readyP=null;api.whenReady=()=>readyP||(readyP=impl.ready());
 window.SPC=api;
 })();

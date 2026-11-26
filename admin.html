@@ -86,26 +86,28 @@ const pageUrl=p=>SPC.BASE+(p==="/"?"":String(p).replace(/^\//,""));
 
 if(S.mode==="demo")$("#demo").innerHTML='<div class="demo"><b>Demo mode.</b> This back office is working on sample data kept in this browser. Once the site is connected to Supabase, the same screens manage the real members and items.</div>';
 const SES=await S.session();
-if(!SES||!SPC.isAdmin(SES.profile)){$("#gate").innerHTML=`<div class="card" style="max-width:520px;margin:40px auto;padding:30px;text-align:center"><p class="eyebrow">Admins only</p><h2 style="font-family:var(--f-read);margin:0 0 8px">${SES?"Your account is not an admin":"Please sign in"}</h2><p class="sub">${SES?"Ask the site owner to give you the admin or moderator role.":"Use an admin account to open the back office."}</p><p style="margin-top:16px"><a class="btn" href="login.html?next=${encodeURIComponent(location.href)}">${SES?"Switch account":"Sign in"}</a></p></div>`;return}
+if(!SES||!SPC.isResolver(SES.profile)){$("#gate").innerHTML=`<div class="card" style="max-width:520px;margin:40px auto;padding:30px;text-align:center"><p class="eyebrow">Admins only</p><h2 style="font-family:var(--f-read);margin:0 0 8px">${SES?"Your account is not an admin":"Please sign in"}</h2><p class="sub">${SES?"Ask the site owner to give you the admin or moderator role.":"Use an admin account to open the back office."}</p><p style="margin-top:16px"><a class="btn" href="login.html?next=${encodeURIComponent(location.href)}">${SES?"Switch account":"Sign in"}</a></p></div>`;return}
 if(!SPC.verified(SES)){location.replace("login.html?next="+encodeURIComponent(location.href));return}
-const ADMIN=SES.profile.role==="admin";
+const ADMIN=SES.profile.role==="admin",STAFF=SPC.isAdmin(SES.profile);
 $("#app").hidden=false;$("#who").innerHTML=`${esc(SES.profile.name||SES.user.email)} · <span class="chip ${SES.profile.role}">${SES.profile.role}</span>`;
 
 /* ---------- data ---------- */
 let D={};
 async function loadAll(){const from=addDays(SPC.today(),-370);
-  const [c,u,a,set,inv,aud]=await Promise.all([S.adminContributions({}),S.adminUsers(),S.adminActivities(from),S.getSettings(),ADMIN?S.adminInvites():Promise.resolve([]),S.adminAudit().catch(()=>[])]);
+  if(!STAFF){D={c:[],u:[],a:[],set:await S.getSettings(),inv:[],aud:[],users:{},cm:await S.adminComments()};return}
+  const [c,u,a,set,inv,aud,cm]=await Promise.all([S.adminContributions({}),S.adminUsers(),S.adminActivities(from),S.getSettings(),ADMIN?S.adminInvites():Promise.resolve([]),S.adminAudit().catch(()=>[]),S.adminComments()]);
   const users=Object.fromEntries(u.map(x=>[x.id,x]));
   u.forEach(x=>{x.score=SPC.score(a.filter(y=>y.user_id===x.id),c.filter(y=>y.user_id===x.id),set.points);x.nItems=c.filter(y=>y.user_id===x.id).length;x.lastAct=a.filter(y=>y.user_id===x.id).reduce((m,y)=>y.day>m?y.day:m,"")});
-  D={c,u,a,set,inv,aud,users};}
+  D={c,u,a,set,inv,aud,users,cm};}
 await loadAll();
 S.on("contrib",()=>{});
 
 /* ---------- navigation ---------- */
-const SECTIONS=[["dash","📊","Dashboard"],["queue","📥","Review queue"],["all","🗂️","All changes"],["users","👥","Members"],["invites","✉️","Invites",true],["site","⚙️","Site controls",true],["points","🏅","Satsang score rules",true],["audit","📜","Activity log"],["data","💾","Data and backup"]];
-let cur=(location.hash||"#dash").slice(1);if(!SECTIONS.some(s=>s[0]===cur))cur="dash";
-function nav(){const pend=D.c.filter(x=>x.status==="pending").length;const vis=SECTIONS.filter(s=>!s[3]||ADMIN);
-  $("#side").innerHTML=vis.map(([k,i,l])=>`<button data-s="${k}" ${k===cur?'aria-current="page"':""}><span aria-hidden="true">${i}</span>${l}${k==="queue"&&pend?`<span class="n">${pend}</span>`:""}</button>`).join("")+`<hr><button onclick="location.href='me.html'"><span aria-hidden="true">🙏</span>My Satsang</button>`;
+const SECTIONS=[["dash","📊","Dashboard"],["comments","💬","Comment resolution"],["queue","📥","Review queue"],["all","🗂️","All changes"],["users","👥","Members"],["invites","✉️","Invites",true],["site","⚙️","Site controls",true],["points","🏅","Satsang score rules",true],["audit","📜","Activity log"],["data","💾","Data and backup"]];
+let cur=(location.hash||(STAFF?"#dash":"#comments")).slice(1);if(!SECTIONS.some(s=>s[0]===cur)||(!STAFF&&cur!=="comments"))cur=STAFF?"dash":"comments";
+const cmBadge=()=>{const od=D.cm.filter(SPC.isOverdue).length;return od?`<span class="n spc-od" title="Older than 24 hours">⚠ ${od}</span>`:D.cm.length?`<span class="n" style="background:var(--peacock)">${D.cm.length}</span>`:""};
+function nav(){const pend=D.c.filter(x=>x.status==="pending").length;const vis=SECTIONS.filter(s=>(!s[3]||ADMIN)&&(STAFF||s[0]==="comments"));
+  $("#side").innerHTML=vis.map(([k,i,l])=>`<button data-s="${k}" ${k===cur?'aria-current="page"':""}><span aria-hidden="true">${i}</span>${l}${k==="queue"&&pend?`<span class="n">${pend}</span>`:""}${k==="comments"?cmBadge():""}</button>`).join("")+`<hr><button onclick="location.href='me.html'"><span aria-hidden="true">🙏</span>My Satsang</button>`;
   $("#side").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>go(b.dataset.s));
   $("#mobnav").innerHTML=vis.map(([k,i,l])=>`<option value="${k}" ${k===cur?"selected":""}>${i} ${l}${k==="queue"&&pend?` (${pend})`:""}</option>`).join("");$("#mobnav").onchange=e=>go(e.target.value)}
 function go(k){cur=k;history.replaceState(null,"","#"+k);nav();R[k]($("#panel"));scrollTo({top:0,behavior:"smooth"})}
@@ -134,17 +136,38 @@ function download(name,text,type){const a=document.createElement("a");a.href=URL
 function toast(t){let el=$("#toast");if(!el){el=document.createElement("div");el.id="toast";el.setAttribute("role","status");el.style.cssText="position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:10px;z-index:60;font-size:14px;box-shadow:var(--shadow)";document.body.appendChild(el)}el.textContent=t;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(()=>el.hidden=true,1800)}
 
 /* ---------- sections ---------- */
+let cmTimer=null;
 const R={
+comments(P){clearInterval(cmTimer);const draw=()=>{const rows=D.cm.slice().sort((a,b)=>a.created_at<b.created_at?-1:1),od=rows.filter(SPC.isOverdue),ack=rows.filter(r=>r.status==="acknowledged").length;
+    const ages=rows.map(r=>Date.now()-Date.parse(r.created_at)),avg=ages.length?ages.reduce((a,b)=>a+b,0)/ages.length/36e5:0;
+    P.innerHTML=`<section class="card box"><h2><span class="grow">Comment / feedback resolution · પ્રતિભાવ નિકાલ</span></h2>
+      <p class="sub" style="margin:0 0 12px">Every comment is answered within 24 hours. Step 1: <b>Acknowledge</b> (the member sees it is being handled). Step 2: take the action, then <b>Resolve and delete</b>. A short note of what was done is kept in the activity log. While any comment is older than 24 hours, newer ones are locked until the overdue ones are cleared, oldest first.</p>
+      <div class="kpis"><div class="card kpi"><div class="v">${rows.length}</div><div class="l">Open comments</div></div><div class="card kpi ${od.length?"hot":""}"><div class="v">${od.length}</div><div class="l">Overdue (over 24 h)</div></div><div class="card kpi"><div class="v">${ack}</div><div class="l">Acknowledged, action in progress</div></div><div class="card kpi"><div class="v">${avg.toFixed(1)} h</div><div class="l">Average age</div></div></div></section>
+      ${od.length?`<div class="card box spc-od"><b>⚠ ${od.length} overdue comment${od.length>1?"s":""}. Resolve ${od.length>1?"these":"this"} first; newer comments are locked.</b></div>`:""}
+      <section class="card box">${rows.length?rows.map(r=>{const late=SPC.isOverdue(r),locked=od.length&&!late;
+        return`<div class="qrow" data-id="${r.id}" style="${late?"background:color-mix(in srgb,var(--bad) 7%,transparent);border-radius:10px;padding-inline:8px":""}"><span class="kico" aria-hidden="true">💬</span>
+        <div><div class="meta"><b>${esc(r.author)}</b><span>on <a href="${esc(pageUrl(r.page))}#spc=${r.id}" target="_blank" rel="noopener">${esc(r.page)}${r.anchor_label?" · 📍 "+esc(r.anchor_label.slice(0,70)):""}</a></span><span>· ${when(r.created_at)}</span><span class="chip ${r.status==="open"?"pending":"changes"}">${r.status==="open"?"Open":"Acknowledged"}</span>${window.SPCDue?SPCDue(r):""}</div>
+          <div class="txt" style="-webkit-line-clamp:6">${esc(r.body)}</div>${r.source_url?`<div class="small">Source on the page: <a href="${esc(r.source_url)}" target="_blank" rel="noopener">${esc(r.source_url.slice(0,80))}</a></div>`:r.anchor?'<div class="small muted">No source link beside this item on the page.</div>':""}
+          <input class="in" data-note placeholder="What was done (kept in the log)" value="${esc(r.admin_note||"")}" style="margin-top:8px;font-size:14px" ${locked?"disabled":""}></div>
+        <div class="row" style="justify-content:flex-end;flex-direction:column;align-items:stretch">${locked?'<span class="small muted" style="max-width:140px">Locked until overdue comments are resolved</span>':
+          r.status==="open"?`<button class="btn blue sm" data-ack>Acknowledge</button>`:`<button class="btn good sm" data-res>Resolve and delete</button>`}</div></div>`}).join(""):'<div class="empty">No open comments. 🙏</div>'}</section>`;
+    P.querySelectorAll(".qrow").forEach(row=>{const r=D.cm.find(x=>x.id===row.dataset.id),note=()=>row.querySelector("[data-note]").value.trim();
+      const a=row.querySelector("[data-ack]");if(a)a.onclick=async()=>{try{await S.ackComment(r.id,note());r.status="acknowledged";r.admin_note=note();toast("Acknowledged");draw();nav()}catch(e){toast(e.message)}};
+      const z=row.querySelector("[data-res]");if(z)z.onclick=async()=>{if(!note()){toast("Write what was done first");row.querySelector("[data-note]").focus();return}if(!confirm("Resolve and delete this comment? The note is kept in the activity log."))return;
+        try{await S.resolveComment(r.id,note());D.cm=D.cm.filter(x=>x.id!==r.id);toast("Resolved");draw();nav()}catch(e){toast(e.message)}}})};
+  draw();cmTimer=setInterval(()=>{if(cur==="comments"&&!P.querySelector("[data-note]:focus"))draw()},30000)},
+
 dash(P){const c=D.c,pend=c.filter(x=>x.status==="pending"),t=SPC.today(),wk=addDays(t,-7);
   const act7=new Set(D.a.filter(x=>x.day>wk).map(x=>x.user_id));D.u.forEach(u=>{if(u.last_seen&&u.last_seen.slice(0,10)>wk)act7.add(u.id)});
   const k=(n,l,hot)=>`<div class="card kpi ${hot&&n?"hot":""}"><div class="v">${n}</div><div class="l">${l}</div></div>`;
-  P.innerHTML=`<div class="kpis">${k(pend.length,"Waiting for review",1)}${k(pend.filter(x=>x.kind==="upload").length,"Uploads waiting",1)}${k(pend.filter(x=>x.kind==="edit").length,"Edit suggestions waiting",1)}${k(pend.filter(x=>x.kind==="comment").length,"Comments waiting",1)}
+  const odc=D.cm.filter(SPC.isOverdue).length;
+  P.innerHTML=`${odc?`<div class="card box spc-od" style="cursor:pointer" id="odb"><b>⚠ ${odc} comment${odc>1?"s are":" is"} older than 24 hours.</b> These must be resolved before any newer comment. Open the comment queue →</div>`:""}<div class="kpis">${k(D.cm.length,"Open comments",1)}${k(odc,"Comments overdue (24 h)",1)}${k(pend.length,"Waiting for review",1)}${k(pend.filter(x=>x.kind==="upload").length,"Uploads waiting",1)}${k(pend.filter(x=>x.kind==="edit").length,"Edit suggestions waiting",1)}
     ${k(D.u.filter(u=>u.status==="active").length,"Active members")}${k(act7.size,"Members active this week")}${k(D.u.filter(u=>!u.email_verified||!u.phone_verified).length,"Not yet verified",1)}${k(c.filter(x=>x.created_at.slice(0,10)>addDays(t,-30)).length,"Items sent in 30 days")}${k(ADMIN?D.inv.filter(i=>!i.used_by&&!i.revoked&&!(i.expires_at&&Date.parse(i.expires_at)<Date.now())).length:"—","Open invites")}</div>
   <div class="two"><section class="card box"><h2><span class="grow">Needs your attention · બાકી કામ</span><button class="btn ghost sm" id="toq">Open queue</button></h2><div id="att">${pend.length?pend.slice(0,6).map(x=>qrow(x)).join(""):'<div class="empty">All caught up. 🙏</div>'}</div></section>
   <section class="card box"><h2>Latest activity</h2><div class="tw"><table class="t"><tbody>${D.aud.slice(0,9).map(a=>`<tr><td class="small muted" style="white-space:nowrap">${when(a.at)}</td><td class="small"><b>${esc((D.users[a.actor]||{}).name||"System")}</b> ${esc(a.action)} <span class="muted">${esc(a.target||"")}</span></td></tr>`).join("")||'<tr><td class="empty">No activity yet</td></tr>'}</tbody></table></div></section></div>
   <section class="card box"><h2>Items sent per day, last 30 days</h2><div class="chart" id="cch"></div></section>
   <div class="two"><section class="card box"><h2>Satsang score leaders</h2><div class="lead" id="lead"></div></section><section class="card box"><h2>Top contributors</h2><div class="lead" id="topc"></div></section></div>`;
-  $("#toq").onclick=()=>go("queue");wireRows($("#att"),()=>{R.dash(P);nav()});
+  $("#toq").onclick=()=>go("queue");const ob=$("#odb");if(ob)ob.onclick=()=>go("comments");wireRows($("#att"),()=>{R.dash(P);nav()});
   // stacked bars by kind
   const days=[];for(let i=29;i>=0;i--)days.push(addDays(t,-i));const kinds=["comment","edit","upload"],col={comment:"var(--peacock)",edit:"var(--saffron)",upload:"var(--good)"};
   const cnt=days.map(d=>kinds.map(kk=>c.filter(x=>x.kind===kk&&x.created_at.slice(0,10)===d).length));const mx=Math.max(3,...cnt.map(a=>a.reduce((s,v)=>s+v,0)));
@@ -178,7 +201,7 @@ all(P){let st="",kind="",user="",q="";const draw=()=>{const rows=D.c.filter(x=>(
 
 users(P){let q="";const draw=()=>{const rows=D.u.filter(u=>!q||(u.name+u.email).toLowerCase().includes(q));
     P.querySelector("#ub").innerHTML=rows.map(u=>`<tr data-id="${u.id}"><td><b>${esc(u.name||"—")}</b><div class="small muted">${esc(u.email)} ${u.email_verified?'<span title="Email verified" style="color:var(--good)">✓</span>':'<span class="chip pending">email not verified</span>'}</div><div class="small muted">${esc(u.phone||"no mobile yet")} ${u.phone_verified?'<span title="Mobile verified" style="color:var(--good)">✓</span>':'<span class="chip pending">mobile not verified</span>'}</div></td>
-      <td>${ADMIN&&u.id!==SES.user.id?`<select class="in" data-role style="padding:4px 6px;font-size:13px;width:auto">${["member","moderator","admin"].map(r=>`<option ${u.role===r?"selected":""}>${r}</option>`).join("")}</select>`:`<span class="chip ${u.role}">${u.role}</span>`}</td>
+      <td>${ADMIN&&u.id!==SES.user.id?`<select class="in" data-role style="padding:4px 6px;font-size:13px;width:auto">${["member","resolver","moderator","admin"].map(r=>`<option ${u.role===r?"selected":""}>${r}</option>`).join("")}</select>`:`<span class="chip ${u.role}">${u.role}</span>`}</td>
       <td><span class="chip ${u.status==="active"?"approved":"suspended"}">${u.status}</span></td><td class="small">${new Date(u.created_at).toLocaleDateString()}</td><td class="small muted">${when(u.last_seen||(u.lastAct?u.lastAct+"T12:00:00":null))}</td>
       <td><b>${Math.round(u.score.total)}</b> <span class="small muted">${u.score.levelEn}</span></td><td>${u.nItems}</td>
       <td><div class="row" style="flex-wrap:nowrap"><button class="btn ghost sm" data-v>View</button>${u.id!==SES.user.id?`<button class="btn ghost sm" data-s>${u.status==="active"?"Pause":"Restore"}</button>`:""}</div></td></tr>`).join("");
@@ -188,7 +211,7 @@ users(P){let q="";const draw=()=>{const rows=D.u.filter(u=>!q||(u.name+u.email).
       tr.querySelector("[data-v]").onclick=()=>viewUser(u)})};
   P.innerHTML=`<section class="card box"><h2><span class="grow">Members · સભ્યો</span>${ADMIN?'<button class="btn sm" id="inv">✉️ Invite someone</button>':""}</h2><div class="tools"><input type="search" placeholder="Search name or email" id="uq"><button class="btn ghost sm" id="ux">⬇ CSV</button></div>
     <div class="tw"><table class="t"><thead><tr><th>Member</th><th>Role</th><th>Status</th><th>Joined</th><th>Last seen</th><th>Satsang score</th><th>Items</th><th></th></tr></thead><tbody id="ub"></tbody></table></div>
-    <p class="small muted" style="margin:12px 0 0"><b>member</b> can comment, suggest and upload · <b>moderator</b> can also review items · <b>admin</b> can also manage members, invites and site controls.</p></section>`;
+    <p class="small muted" style="margin:12px 0 0"><b>member</b> can comment, suggest and upload · <b>resolver</b> (comment / feedback resolution manager) works only the comment queue · <b>moderator</b> can also review items · <b>admin</b> can also manage members, invites and site controls.</p></section>`;
   P.querySelector("#uq").oninput=e=>{q=e.target.value.toLowerCase();draw()};const iv=P.querySelector("#inv");if(iv)iv.onclick=()=>go("invites");
   P.querySelector("#ux").onclick=()=>download("members-"+SPC.today()+".csv",csv(D.u.map(u=>Object.assign({},u,{score:Math.round(u.score.total),level:u.score.levelEn})),["name","email","email_verified","phone","phone_verified","role","status","created_at","last_seen","score","level","nItems"]),"text/csv");draw()},
 
@@ -201,7 +224,7 @@ invites(P){const draw=()=>{P.querySelector("#ib").innerHTML=D.inv.map(i=>{const 
   const copy=t=>{navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>toast("Link copied"),()=>prompt("Copy this link",t))};
   P.innerHTML=`<section class="card box"><h2>Invite a new member · આમંત્રણ</h2><form id="if" class="row" style="align-items:flex-end">
     <label class="field grow" style="min-width:200px">Email (optional, locks the invite to this email)<input name="email" type="email" placeholder="name@example.com"></label>
-    <label class="field">Role<select name="role"><option>member</option><option>moderator</option><option>admin</option></select></label>
+    <label class="field">Role<select name="role"><option>member</option><option value="resolver">resolver (comment manager)</option><option>moderator</option><option>admin</option></select></label>
     <label class="field">Expires in<select name="days"><option value="7">7 days</option><option value="30" selected>30 days</option><option value="90">90 days</option><option value="0">Never</option></select></label>
     <label class="field grow" style="min-width:160px">Note (who is it for)<input name="note" maxlength="120"></label><button class="btn">Create invite</button></form><div id="iout" style="margin-top:12px"></div></section>
   <section class="card box"><h2>All invites</h2><div class="tw"><table class="t"><thead><tr><th>Code</th><th>For</th><th>Role</th><th>Status</th><th>Expires</th><th>Note</th><th></th></tr></thead><tbody id="ib"></tbody></table></div>
@@ -225,7 +248,7 @@ site(P){const s=JSON.parse(JSON.stringify(D.set));const F=s.features;
 
 points(P){const p=Object.assign({},D.set.points);
   P.innerHTML=`<section class="card box"><h2>Points for each activity</h2><form id="pf"><div class="pts">${SPC.KINDS.map(k=>`<label>${k.icon} ${k.en} <span class="small muted">/ ${k.unit.replace(/s$/,"")}</span><input type="number" step="0.1" min="0" name="${k.k}" value="${p[k.k]}"></label>`).join("")}</div>
-    <h2 style="margin-top:18px">Points for approved contributions</h2><div class="pts">${[["upload","Upload"],["edit","Edit suggestion"],["comment","Comment"],["event","Event record"]].map(([k,l])=>`<label>${l}<input type="number" step="1" min="0" name="${k}" value="${p[k]||0}"></label>`).join("")}</div>
+    <h2 style="margin-top:18px">Points for approved contributions</h2><div class="pts">${[["upload","Upload"],["edit","Edit suggestion"],["event","Event record"]].map(([k,l])=>`<label>${l}<input type="number" step="1" min="0" name="${k}" value="${p[k]||0}"></label>`).join("")}</div>
     <div class="row" style="margin-top:14px"><button class="btn">Save score rules</button><button class="btn ghost" type="button" id="pd">Back to defaults</button></div></form></section>
   <section class="card box"><h2>Levels</h2><div class="tw"><table class="t"><thead><tr><th>Level</th><th>Gujarati</th><th>From points</th><th>Members now</th></tr></thead><tbody>${SPC.LEVELS.map((l,i)=>`<tr><td>${l[2]}</td><td>${l[1]}</td><td>${l[0]}</td><td>${D.u.filter(u=>u.score.level===i).length}</td></tr>`).join("")}</tbody></table></div>
     <p class="small muted" style="margin:12px 0 0">Score = each tracker entry × its points, plus approved contributions. Quiz and game points arrive from the games pages as "Quiz or game" entries.</p></section>`;
