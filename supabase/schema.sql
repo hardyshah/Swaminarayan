@@ -16,6 +16,11 @@ create table if not exists public.profiles (
   created_at  timestamptz not null default now()
 );
 
+-- email and mobile verification, copied from auth.users by sync_verification() below
+alter table public.profiles add column if not exists phone text;
+alter table public.profiles add column if not exists email_verified boolean not null default false;
+alter table public.profiles add column if not exists phone_verified boolean not null default false;
+
 create table if not exists public.invites (
   code        text primary key,
   email       text,
@@ -80,13 +85,13 @@ create table if not exists public.audit (
 
 -- ---------------------------------------------------------------- helpers
 create or replace function public.is_staff() returns boolean language sql stable security definer set search_path = public as $$
-  select exists (select 1 from profiles where id = auth.uid() and role in ('admin','moderator') and status = 'active');
+  select exists (select 1 from profiles where id = auth.uid() and role in ('admin','moderator') and status = 'active' and email_verified and phone_verified);
 $$;
 create or replace function public.is_admin() returns boolean language sql stable security definer set search_path = public as $$
-  select exists (select 1 from profiles where id = auth.uid() and role = 'admin' and status = 'active');
+  select exists (select 1 from profiles where id = auth.uid() and role = 'admin' and status = 'active' and email_verified and phone_verified);
 $$;
 create or replace function public.is_active() returns boolean language sql stable security definer set search_path = public as $$
-  select exists (select 1 from profiles where id = auth.uid() and status = 'active');
+  select exists (select 1 from profiles where id = auth.uid() and status = 'active' and email_verified and phone_verified);
 $$;
 create or replace function public.log(a text, t text, d text) returns void language sql security definer set search_path = public as $$
   insert into audit(actor, action, target, detail) values (auth.uid(), a, t, d);
@@ -114,15 +119,41 @@ declare c text; r text;
 begin
   c := upper(coalesce(new.raw_user_meta_data->>'invite', ''));
   select role into r from invites where code = c;
-  insert into profiles(id, email, name, role)
-    values (new.id, new.email, coalesce(nullif(new.raw_user_meta_data->>'name',''), split_part(new.email,'@',1)), coalesce(r,'member'))
+  perform set_config('spc.sync', '1', true);
+  insert into profiles(id, email, name, role, phone, email_verified, phone_verified)
+    values (new.id, new.email, coalesce(nullif(new.raw_user_meta_data->>'name',''), split_part(new.email,'@',1)), coalesce(r,'member'),
+            nullif(new.phone,''), new.email_confirmed_at is not null, new.phone_confirmed_at is not null)
     on conflict (id) do nothing;
+  perform set_config('spc.sync', '', true);
   update invites set used_by = new.id, used_at = now() where code = c;
   insert into audit(actor, action, target, detail) values (new.id, 'sign-up', new.email, 'invite ' || c);
   return new;
 end $$;
 drop trigger if exists auth_new_user on auth.users;
 create trigger auth_new_user after insert on auth.users for each row execute function public.handle_new_user();
+
+-- Keeps profiles.email_verified / phone_verified / phone in step with Supabase Auth
+-- (email confirmed by link, mobile confirmed by SMS code).
+create or replace function public.sync_verification() returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  perform set_config('spc.sync', '1', true);
+  update profiles set
+    email_verified = new.email_confirmed_at is not null,
+    phone_verified = new.phone_confirmed_at is not null,
+    phone = case when coalesce(new.phone,'') = '' then phone else '+' || ltrim(new.phone, '+') end
+  where id = new.id;
+  if (old.phone_confirmed_at is null and new.phone_confirmed_at is not null) then
+    insert into audit(actor, action, target, detail) values (new.id, 'phone-verified', new.email, null);
+  end if;
+  if (old.email_confirmed_at is null and new.email_confirmed_at is not null) then
+    insert into audit(actor, action, target, detail) values (new.id, 'email-verified', new.email, null);
+  end if;
+  perform set_config('spc.sync', '', true);
+  return new;
+end $$;
+drop trigger if exists auth_sync_verification on auth.users;
+create trigger auth_sync_verification after update of email_confirmed_at, phone_confirmed_at, phone on auth.users
+  for each row execute function public.sync_verification();
 
 -- ---------------------------------------------------------------- guard rails
 -- Members cannot change their own role or status; only admins can.
@@ -134,6 +165,10 @@ begin
     perform log('user', old.email, 'role ' || old.role || '→' || new.role || ', status ' || old.status || '→' || new.status);
   end if;
   new.email := old.email; new.id := old.id; new.created_at := old.created_at;
+  -- verification flags and the mobile number only change through Supabase Auth (sync_verification)
+  if coalesce(current_setting('spc.sync', true), '') <> '1' then
+    new.phone := old.phone; new.email_verified := old.email_verified; new.phone_verified := old.phone_verified;
+  end if;
   return new;
 end $$;
 drop trigger if exists profiles_guard on public.profiles;

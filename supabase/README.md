@@ -24,6 +24,23 @@ In **Authentication → URL Configuration**:
 - **Site URL**: `https://hardyshah.github.io/Swaminarayan/`
 - **Redirect URLs**: add `https://hardyshah.github.io/Swaminarayan/login.html`
 
+### Mobile number verification (required for every member)
+
+Every member must confirm **both** their email (link) and their mobile number (6-digit SMS code) before they can
+comment, upload, use the tracker or open the admin pages. The database enforces this, not just the screens.
+
+In **Authentication → Sign In / Providers → Phone**:
+
+- Turn **Phone** on and choose an SMS provider. Supabase supports Twilio, Twilio Verify, MessageBird, Vonage and Textlocal.
+- For Indian numbers, SMS must follow TRAI's DLT rules (registered sender ID and message template).
+  **Twilio Verify** is usually the easiest because Twilio sends the OTP on its own registered templates;
+  with plain Twilio, Textlocal or another Indian gateway you register your sender ID and template on a DLT portal first.
+  Please check the provider's current India page before choosing, as the rules change.
+- Each SMS costs money (roughly ₹0.5–₹5 depending on provider and country); the provider bills you directly.
+- Keep **Enable phone confirmations** on. OTP expiry of 600 seconds (10 minutes) matches the sign-in page.
+
+The first admin (you) also verifies a mobile number, so set up the SMS provider before step 4.
+
 The free plan sends only a few emails per hour from Supabase's own address. For more, add your own SMTP
 (for example a Gmail app password or Resend) under **Authentication → Emails → SMTP settings**.
 
@@ -44,14 +61,15 @@ The anon key is meant to be public. The row-level security rules in `schema.sql`
 
 ## 4. Become admin and invite people
 
-1. Open `login.html` → **Join with invite**, enter the admin invite code from step 1, your name, email and a password.
-2. Confirm your email, sign in, and open **Admin → Invites** to create a code for each person.
+1. Open `login.html` → **Join with invite**, enter the admin invite code from step 1, your name, email, mobile number and a password.
+2. Confirm your email, sign in, enter the SMS code sent to your mobile, and open **Admin → Invites** to create a code for each person.
    Copy the invite link and send it yourself (WhatsApp, email). Each code works once and can be locked to one email.
 
 ## What the database enforces
 
 | Rule | Where |
 | --- | --- |
+| Nothing works until both email and mobile number are verified (copied from Supabase Auth; members cannot set it themselves) | `sync_verification`, `is_active()` |
 | No account without a valid, unused, unexpired invite code (and the right email if the invite names one) | `check_invite` trigger on `auth.users` |
 | Role comes from the invite; members cannot change their own role or status | `handle_new_user`, `guard_profile` |
 | Members see their own items in any status and other members' items only once approved | `c_read` policy |

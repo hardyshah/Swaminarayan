@@ -44,6 +44,8 @@ const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth
 function merge(a,b){const o=JSON.parse(JSON.stringify(a));for(const k in b||{}){o[k]=(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])&&o[k]&&typeof o[k]==="object")?merge(o[k],b[k]):b[k]}return o}
 function pageKey(href){const u=new URL(href||location.href);let p=u.pathname.replace(/\/index\.html$/,"/");const i=p.toLowerCase().indexOf("/swaminarayan/");if(i>=0)p=p.slice(i+13);return p||"/"}
 function inviteCode(){const a="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";const r=crypto.getRandomValues(new Uint8Array(10));for(const x of r)s+=a[x%a.length];return s.slice(0,5)+"-"+s.slice(5)}
+function normPhone(p){p=String(p||"").replace(/[\s\-().]/g,"");if(/^0\d{10}$/.test(p))p="+91"+p.slice(1);if(/^\d{10}$/.test(p))p="+91"+p;if(!/^\+[1-9]\d{7,14}$/.test(p))throw new Error("Please enter a full mobile number with country code, for example +91 98765 43210.");return p}
+const verifiedOf=s=>!!(s&&s.verified&&s.verified.email&&s.verified.phone);
 async function sha(s){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
 
 /* score: activity quantity × points, plus approved contributions */
@@ -96,11 +98,12 @@ function Demo(){
 
   async function seed(){
     const pw=await sha("jayswaminarayan");
-    const A={id:uid(),email:"admin@demo.local",name:"Demo Admin",role:"admin",status:"active",pw,created_at:"2026-09-01T09:00:00Z",layout:null};
-    const M={id:uid(),email:"member@demo.local",name:"Demo Member",role:"member",status:"active",pw,created_at:"2026-10-02T09:00:00Z",layout:null};
-    const K={id:uid(),email:"kishore@demo.local",name:"Demo Kishore",role:"member",status:"active",pw,created_at:"2026-10-20T09:00:00Z",layout:null};
+    const V={email_ok:true,phone_ok:true};
+    const A=Object.assign({id:uid(),email:"admin@demo.local",phone:"+919000000001",name:"Demo Admin",role:"admin",status:"active",pw,created_at:"2026-09-01T09:00:00Z",layout:null},V);
+    const M=Object.assign({id:uid(),email:"member@demo.local",phone:"+919000000002",name:"Demo Member",role:"member",status:"active",pw,created_at:"2026-10-02T09:00:00Z",layout:null},V);
+    const K=Object.assign({id:uid(),email:"kishore@demo.local",phone:"+919000000003",name:"Demo Kishore",role:"member",status:"active",pw,created_at:"2026-10-20T09:00:00Z",layout:null},V);
     db={v:1,users:[A,M,K],invites:[{code:"DEMO1-JAYSW",email:"",role:"member",note:"Demo invite",created_by:A.id,created_at:now(),expires_at:null,used_by:null,used_at:null,revoked:false}],
-      contributions:[],activities:[],settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)),audit:[],session:null};
+      contributions:[],activities:[],tokens:{},otp:null,settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)),audit:[],session:null};
     const C=(u,kind,page,title,body,status,daysAgo,extra)=>{const t=new Date(Date.now()-daysAgo*864e5).toISOString();
       db.contributions.push(Object.assign({id:uid(),user_id:u.id,kind,page,target:"",title,body,status,admin_note:"",file_path:null,file_name:null,file_type:null,file_size:null,created_at:t,updated_at:t,reviewed_at:status==="pending"?null:t,reviewed_by:status==="pending"?null:A.id},extra||{}))};
     C(M,"comment","vachanamrut-concordance/","Gadhada Pratham 1","A cross-reference to Shikshapatri shlok 116 would help here.","pending",0.2);
@@ -117,29 +120,39 @@ function Demo(){
   function log(actor,action,target,detail){db.audit.unshift({id:uid(),actor,action,target,detail:detail||"",at:now()});if(db.audit.length>800)db.audit.length=800}
   const me=()=>db&&db.session?db.users.find(u=>u.id===db.session):null;
   const isAdmin=()=>{const u=me();return!!u&&(u.role==="admin"||u.role==="moderator")};
-  function need(){const u=me();if(!u)throw new Error("Please sign in first.");if(u.status!=="active")throw new Error("Your account is paused. Please contact the admin.");return u}
+  function needIn(){const u=me();if(!u)throw new Error("Please sign in first.");if(u.status!=="active")throw new Error("Your account is paused. Please contact the admin.");return u}
+  function need(){const u=needIn();if(!u.email_ok||!u.phone_ok)throw new Error("Please verify your email and mobile number first.");return u}
   function needAdmin(){const u=need();if(!isAdmin())throw new Error("Admins only.");return u}
-  const pub=u=>u&&({id:u.id,email:u.email,name:u.name,role:u.role,status:u.status,created_at:u.created_at,layout:u.layout,last_seen:u.last_seen||null});
+  const pub=u=>u&&({id:u.id,email:u.email,phone:u.phone||null,email_verified:!!u.email_ok,phone_verified:!!u.phone_ok,name:u.name,role:u.role,status:u.status,created_at:u.created_at,layout:u.layout,last_seen:u.last_seen||null});
   function rate(u){const hr=Date.now()-36e5;const n=db.contributions.filter(c=>c.user_id===u.id&&Date.parse(c.created_at)>hr).length;if(n>=(db.settings.rate.perHour||20)&&!isAdmin())throw new Error("You have sent many items in the last hour. Please try again later.")}
 
   return{
     mode:"demo",
     async ready(){if(!db)await seed();return this},
-    async session(){const u=me();return u?{user:{id:u.id,email:u.email},profile:pub(u)}:null},
+    async session(){const u=me();return u?{user:{id:u.id,email:u.email,phone:u.phone||u.phone_pending||""},profile:pub(u),verified:{email:!!u.email_ok,phone:!!u.phone_ok}}:null},
     async signIn(email,password){email=(email||"").trim().toLowerCase();const u=db.users.find(x=>x.email===email);
-      if(!u||u.pw!==await sha(password))throw new Error("Email or password is not right.");if(u.status!=="active")throw new Error("This account is paused. Please contact the admin.");
+      if(!u||u.pw!==await sha(password))throw new Error("Email or password is not right.");if(!u.email_ok){const e=new Error("Please open the confirmation email we sent, then sign in.");e.code="email_unconfirmed";throw e}if(u.status!=="active")throw new Error("This account is paused. Please contact the admin.");
       db.session=u.id;u.last_seen=now();log(u.id,"sign-in",u.email);save();emit("auth",await this.session());return this.session()},
-    async signUp(email,password,name,code){email=(email||"").trim().toLowerCase();code=(code||"").trim().toUpperCase();
+    async signUp(email,password,name,code,phone){email=(email||"").trim().toLowerCase();code=(code||"").trim().toUpperCase();phone=normPhone(phone);
       const inv=db.invites.find(i=>i.code===code);
       if(!inv||inv.used_by||inv.revoked||(inv.expires_at&&Date.parse(inv.expires_at)<Date.now()))throw new Error("This invite code is not valid or has already been used.");
       if(inv.email&&inv.email.toLowerCase()!==email)throw new Error("This invite is for a different email address.");
       if(db.users.some(u=>u.email===email))throw new Error("An account with this email already exists. Please sign in.");
       if((password||"").length<8)throw new Error("Please use at least 8 characters for the password.");
-      const u={id:uid(),email,name:(name||"").trim()||email.split("@")[0],role:inv.role||"member",status:"active",pw:await sha(password),created_at:now(),layout:null};
-      db.users.push(u);inv.used_by=u.id;inv.used_at=now();db.session=u.id;log(u.id,"sign-up",email,"invite "+code);save();emit("auth",await this.session());return{needsConfirm:false}},
+      if(db.users.some(u=>u.phone===phone))throw new Error("This mobile number is already used by another member.");
+      const u={id:uid(),email,phone_pending:phone,email_ok:false,phone_ok:false,name:(name||"").trim()||email.split("@")[0],role:inv.role||"member",status:"active",pw:await sha(password),created_at:now(),layout:null};
+      db.users.push(u);inv.used_by=u.id;inv.used_at=now();const tk=uid();db.tokens=db.tokens||{};db.tokens[tk]=u.id;log(u.id,"sign-up",email,"invite "+code);save();return{needsConfirm:true,demoToken:tk}},
+    async resendConfirmation(email){const u=db.users.find(x=>x.email===(email||"").trim().toLowerCase());if(!u||u.email_ok)return{sent:true};const tk=uid();db.tokens[tk]=u.id;save();return{sent:true,demoToken:tk}},
+    async confirmEmail(tk){const id=db.tokens&&db.tokens[tk];const u=id&&db.users.find(x=>x.id===id);if(!u)throw new Error("This confirmation link is not valid.");u.email_ok=true;delete db.tokens[tk];db.session=u.id;log(u.id,"email-verified",u.email);save();emit("auth",await this.session());return true},
+    async sendPhoneCode(phone){const u=needIn();phone=normPhone(phone);if(db.users.some(x=>x.id!==u.id&&x.phone===phone))throw new Error("This mobile number is already used by another member.");
+      if(db.otp&&db.otp.user===u.id&&Date.now()-db.otp.at<30000)throw new Error("Please wait 30 seconds before asking for another code.");
+      const code=String(crypto.getRandomValues(new Uint32Array(1))[0]%1000000).padStart(6,"0");db.otp={user:u.id,phone,code,at:Date.now(),tries:0};save();return{sent:true,demoCode:code}},
+    async verifyPhoneCode(phone,code){const u=needIn();phone=normPhone(phone);const o=db.otp;if(!o||o.user!==u.id||o.phone!==phone||Date.now()-o.at>600000)throw new Error("The code has expired. Please ask for a new one.");
+      if(++o.tries>5){db.otp=null;save();throw new Error("Too many wrong tries. Please ask for a new code.")}
+      if(String(code).trim()!==o.code){save();throw new Error("That code is not right.")}u.phone=phone;u.phone_ok=true;delete u.phone_pending;db.otp=null;log(u.id,"phone-verified",phone.slice(0,-4).replace(/\d/g,"•")+phone.slice(-4));save();emit("auth",await this.session());return true},
     async signOut(){const u=me();db.session=null;if(u)log(u.id,"sign-out",u.email);save();emit("auth",null)},
     async resetPassword(email){return{sent:true,demo:true}},
-    async updatePassword(pw){const u=need();if((pw||"").length<8)throw new Error("Please use at least 8 characters.");u.pw=await sha(pw);log(u.id,"password",u.email);save();return true},
+    async updatePassword(pw){const u=needIn();if((pw||"").length<8)throw new Error("Please use at least 8 characters.");u.pw=await sha(pw);log(u.id,"password",u.email);save();return true},
     async saveProfile(p){const u=need();if(p.name!=null)u.name=String(p.name).slice(0,80);if(p.layout!==undefined)u.layout=p.layout;save();emit("profile",pub(u));return pub(u)},
     async getSettings(){return merge(DEFAULT_SETTINGS,db?db.settings:{})},
     async setSetting(key,val){const u=needAdmin();db.settings[key]=val;log(u.id,"settings",key,JSON.stringify(val).slice(0,200));save();emit("settings",await this.getSettings())},
@@ -202,11 +215,15 @@ function Live(){
     async ready(){await loadLib();if(!sb){sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
       sb.auth.onAuthStateChange(async(ev,s)=>{cachedProfile=null;if(ev==="PASSWORD_RECOVERY")emit("recovery",true);emit("auth",s?await this.session():null)})}return this},
     client(){return sb},
-    async session(){const u=await user();if(!u)return null;const p=await profile();return{user:{id:u.id,email:u.email},profile:p}},
-    async signIn(email,password){ok(await sb.auth.signInWithPassword({email:email.trim(),password}));const s=await this.session();
+    async session(){const u=await user();if(!u)return null;const p=await profile();
+      return{user:{id:u.id,email:u.email,phone:u.phone?"+"+String(u.phone).replace(/^\+/,""):(u.user_metadata&&u.user_metadata.phone)||""},profile:p,verified:{email:!!u.email_confirmed_at,phone:!!u.phone_confirmed_at}}},
+    async signIn(email,password){const r=await sb.auth.signInWithPassword({email:email.trim(),password});if(r.error&&/Email not confirmed/i.test(r.error.message)){const e=new Error(nice(r.error.message));e.code="email_unconfirmed";throw e}ok(r);const s=await this.session();
       if(s&&s.profile&&s.profile.status!=="active"){await sb.auth.signOut();throw new Error("This account is paused. Please contact the admin.")}
       sb.from("profiles").update({last_seen:now()}).eq("id",s.user.id).then(()=>{});return s},
-    async signUp(email,password,name,code){const d=ok(await sb.auth.signUp({email:email.trim(),password,options:{data:{name:(name||"").trim(),invite:(code||"").trim().toUpperCase()},emailRedirectTo:redirect()}}));return{needsConfirm:!d.session}},
+    async signUp(email,password,name,code,phone){phone=normPhone(phone);const d=ok(await sb.auth.signUp({email:email.trim(),password,options:{data:{name:(name||"").trim(),invite:(code||"").trim().toUpperCase(),phone},emailRedirectTo:redirect()}}));return{needsConfirm:!d.session}},
+    async resendConfirmation(email){ok(await sb.auth.resend({type:"signup",email:email.trim(),options:{emailRedirectTo:redirect()}}));return{sent:true}},
+    async sendPhoneCode(phone){await need();phone=normPhone(phone);ok(await sb.auth.updateUser({phone}));return{sent:true}},
+    async verifyPhoneCode(phone,code){phone=normPhone(phone);ok(await sb.auth.verifyOtp({phone,token:String(code).trim(),type:"phone_change"}));await sb.auth.refreshSession();cachedProfile=null;emit("auth",await this.session());return true},
     async signOut(){await sb.auth.signOut();cachedProfile=null},
     async resetPassword(email){ok(await sb.auth.resetPasswordForEmail(email.trim(),{redirectTo:redirect()+"#reset"}));return{sent:true}},
     async updatePassword(pw){ok(await sb.auth.updateUser({password:pw}));return true},
@@ -249,7 +266,7 @@ function Live(){
 
 const impl=LIVE?Live():Demo();
 const api=Object.assign(impl,{KINDS,LEVELS,DEFAULT_SETTINGS,BASE,on,emit,score,streak,checkFile,scanText,pageKey,today,
-  isAdmin:p=>!!p&&(p.role==="admin"||p.role==="moderator")});
+  normPhone,verified:verifiedOf,isAdmin:p=>!!p&&(p.role==="admin"||p.role==="moderator")});
 let readyP=null;api.whenReady=()=>readyP||(readyP=impl.ready());
 window.SPC=api;
 })();

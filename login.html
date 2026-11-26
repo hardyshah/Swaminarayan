@@ -73,10 +73,23 @@
         <form id="f-join" hidden autocomplete="on">
           <label class="field">Invite code · આમંત્રણ કોડ<input name="code" required placeholder="ABCDE-12345" style="text-transform:uppercase;letter-spacing:.08em"></label>
           <label class="field">Your name<input name="name" autocomplete="name" required maxlength="80"></label>
-          <label class="field">Email<input name="email" type="email" autocomplete="email" required></label>
+          <label class="field">Email (we will send a confirmation link)<input name="email" type="email" autocomplete="email" required></label>
+          <label class="field">Mobile number with country code (we will send a code by SMS)<input name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+91 98765 43210" value="+91 "></label>
           <label class="field pw">Choose a password (8+ characters)<input name="password" type="password" autocomplete="new-password" minlength="8" required><button type="button" data-eye>Show</button></label>
           <div class="meter" aria-hidden="true"><i></i></div>
           <button class="btn" type="submit">Create my account</button>
+          <div class="out"></div>
+        </form>
+        <form id="f-verify" hidden>
+          <p class="eyebrow" style="margin:0">Step 2 of 2 · મોબાઇલ ચકાસણી</p>
+          <h2 style="margin:0;font-family:var(--f-read)">Verify your mobile number</h2>
+          <p class="sub" style="margin:0">Every member confirms both their email and their mobile number before using the site. We send a 6-digit code by SMS.</p>
+          <ol class="steps small" style="margin:0;padding-left:18px;color:var(--ink-2)"><li>Email confirmed <span style="color:var(--good)">✓</span></li><li>Mobile number: <b>waiting</b></li></ol>
+          <label class="field">Mobile number<input name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+91 98765 43210"></label>
+          <button class="btn ghost" type="button" id="sendc">Send code</button>
+          <label class="field" id="codeRow" hidden>6-digit code<input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="\d{6}" placeholder="••••••" style="letter-spacing:.4em;font-size:22px;text-align:center"></label>
+          <button class="btn" type="submit" id="verb" hidden>Verify and continue</button>
+          <button class="lnk" type="button" id="vout">Sign out</button>
           <div class="out"></div>
         </form>
         <form id="f-forgot" hidden>
@@ -105,7 +118,10 @@ const S=await SPC.whenReady();
 const qs=new URLSearchParams(location.search);
 const next=(()=>{const n=qs.get("next");if(!n)return null;try{const u=new URL(n,location.href);return u.origin===location.origin?u.href:null}catch(e){return null}})();
 if(S.mode==="demo")$("#demo").innerHTML=`<div class="demo"><b>Demo mode.</b> Nothing is shared yet; accounts and items stay in this browser. Try <b>admin@demo.local</b> or <b>member@demo.local</b>, password <b>jayswaminarayan</b>, or join with invite code <b>DEMO1-JAYSW</b>.</div>`;
-function view(v){["in","join","forgot","reset"].forEach(k=>$("#f-"+k).hidden=k!==v);document.querySelectorAll(".seg [data-v]").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));$(".seg").hidden=v==="reset"||v==="forgot"}
+function view(v){["in","join","forgot","reset","verify"].forEach(k=>$("#f-"+k).hidden=k!==v);document.querySelectorAll(".seg [data-v]").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));$(".seg").hidden=v==="reset"||v==="forgot"||v==="verify"}
+const goOn=s=>{location.href=next||(SPC.isAdmin(s&&s.profile)?"admin.html":"me.html")};
+function demoLink(r,o){if(r&&r.demoToken)o.insertAdjacentHTML("beforeend",`<div class="demo" style="margin-top:8px">Demo mode: no real email is sent. <button class="lnk" type="button" data-tk="${r.demoToken}">Open the confirmation link</button></div>`);
+  const b=o.querySelector("[data-tk]");if(b)b.onclick=async()=>{await S.confirmEmail(b.dataset.tk);showSigned()}}
 document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>view(b.dataset.v));
 document.querySelectorAll("[data-eye]").forEach(b=>b.onclick=()=>{const i=b.previousElementSibling;i.type=i.type==="password"?"text":"password";b.textContent=i.type==="password"?"Show":"Hide"});
 const pj=$("#f-join [name=password]");pj.oninput=()=>{const v=pj.value;let s=0;if(v.length>=8)s++;if(v.length>=12)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/\d/.test(v))s++;if(/[^\w]/.test(v))s++;
@@ -114,7 +130,8 @@ if(qs.get("invite")){view("join");$("#f-join [name=code]").value=qs.get("invite"
 if(location.hash==="#reset")view("reset");
 S.on("recovery",()=>view("reset"));
 
-async function showSigned(){const s=await S.session();if(!s){$("#signed").hidden=true;$("#forms").hidden=false;return}
+async function showSigned(){const s=await S.session();if(!s){$("#signed").hidden=true;$("#forms").hidden=false;if(!$("#f-verify").hidden)view("in");return}
+  if(!SPC.verified(s)&&location.hash!=="#reset"){$("#signed").hidden=true;$("#forms").hidden=false;view("verify");const ph=$("#f-verify [name=phone]");if(!ph.value)ph.value=s.user.phone||"+91 ";return}
   $("#forms").hidden=location.hash==="#reset"?false:true;if(location.hash==="#reset")return;
   const p=s.profile||{};$("#signed").hidden=false;$("#signed").innerHTML=`<p class="eyebrow">Signed in</p><h2 style="margin:0 0 6px;font-family:var(--f-read)">જય સ્વામિનારાયણ, ${esc(p.name||s.user.email)}</h2>
   <p class="sub">${esc(s.user.email)} · ${esc(p.role||"member")}</p><div class="row" style="margin-top:16px"><a class="btn" href="me.html">My Satsang</a>${SPC.isAdmin(p)?'<a class="btn blue" href="admin.html">Admin</a>':""}${next?`<a class="btn ghost" href="${esc(next)}">Back to the page</a>`:""}<button class="btn ghost" id="out">Sign out</button></div>`;
@@ -122,8 +139,17 @@ async function showSigned(){const s=await S.session();if(!s){$("#signed").hidden
 
 function wire(id,fn){const f=$(id);f.onsubmit=async e=>{e.preventDefault();const o=f.querySelector(".out"),b=f.querySelector("[type=submit]");o.innerHTML="";b.disabled=true;
   try{await fn(Object.fromEntries(new FormData(f)),o)}catch(err){o.innerHTML=`<div class="msg bad">${esc(err.message)}</div>`}b.disabled=false}}
-wire("#f-in",async d=>{const s=await S.signIn(d.email,d.password);if(next)location.href=next;else location.href=SPC.isAdmin(s.profile)?"admin.html":"me.html"});
-wire("#f-join",async(d,o)=>{const r=await S.signUp(d.email,d.password,d.name,d.code);if(r.needsConfirm){o.innerHTML='<div class="msg ok">Almost done. Please open the confirmation email we just sent, then come back and sign in.</div>';return}location.href="me.html"});
+wire("#f-in",async(d,o)=>{try{const s=await S.signIn(d.email,d.password);if(!SPC.verified(s))return showSigned();goOn(s)}
+  catch(err){if(err.code!=="email_unconfirmed")throw err;o.innerHTML=`<div class="msg bad">${esc(err.message)}</div><p class="small" style="margin:6px 0 0"><button class="lnk" type="button" id="rs">Send the confirmation email again</button></p>`;
+    $("#rs").onclick=async()=>{const r=await S.resendConfirmation(d.email);o.insertAdjacentHTML("beforeend",'<div class="msg ok" style="margin-top:6px">Sent. Please check your inbox and spam folder.</div>');demoLink(r,o)}}});
+wire("#f-join",async(d,o)=>{const r=await S.signUp(d.email,d.password,d.name,d.code,d.phone);if(r.needsConfirm){o.innerHTML='<div class="msg ok"><b>Step 1 of 2:</b> please open the confirmation email we just sent to '+esc(d.email)+'. After that, sign in and confirm your mobile number with the SMS code.</div>';demoLink(r,o);return}showSigned()});
+let cool=null;$("#sendc").onclick=async()=>{const f=$("#f-verify"),o=f.querySelector(".out"),b=$("#sendc");o.innerHTML="";b.disabled=true;
+  try{const r=await S.sendPhoneCode(f.phone.value);$("#codeRow").hidden=false;$("#verb").hidden=false;f.code.focus();
+    o.innerHTML=`<div class="msg ok">Code sent to ${esc(SPC.normPhone(f.phone.value))}. It is valid for 10 minutes.</div>${r.demoCode?`<div class="demo" style="margin-top:8px">Demo mode: no SMS is sent. Your code is <b>${r.demoCode}</b>.</div>`:""}`;
+    let t=30;clearInterval(cool);b.textContent="Send again in 30s";cool=setInterval(()=>{t--;if(t<=0){clearInterval(cool);b.disabled=false;b.textContent="Send code again"}else b.textContent="Send again in "+t+"s"},1000)}
+  catch(err){o.innerHTML=`<div class="msg bad">${esc(err.message)}</div>`;b.disabled=false}};
+wire("#f-verify",async(d,o)=>{await S.verifyPhoneCode(d.phone,d.code);o.innerHTML='<div class="msg ok">Mobile number verified. Welcome!</div>';const s=await S.session();setTimeout(()=>goOn(s),700)});
+$("#vout").onclick=async()=>{await S.signOut();view("in");showSigned()};
 wire("#f-forgot",async(d,o)=>{const r=await S.resetPassword(d.email);o.innerHTML=`<div class="msg ok">${r.demo?"In demo mode no email is sent. Ask the admin, or reset the demo from the admin page.":"If that email belongs to a member, a reset link is on its way."}</div>`});
 wire("#f-reset",async(d,o)=>{await S.updatePassword(d.password);o.innerHTML='<div class="msg ok">Password saved. Taking you to your page…</div>';history.replaceState(null,"",location.pathname);setTimeout(()=>location.href="me.html",900)});
 showSigned();

@@ -142,6 +142,7 @@ const PAGES=[["./","🕉️","Today"],["vachanamrut-concordance/","📖","Vachan
 if(S.mode==="demo")$("#demo").innerHTML='<div class="demo"><b>Demo mode.</b> Your entries stay in this browser until the site is connected to its database.</div>';
 let SES=await S.session();
 if(!SES){$("#main").insertAdjacentHTML("beforeend",`<div class="card gate"><p class="eyebrow">Members only</p><h2 style="font-family:var(--f-read);margin:0 0 8px">Please sign in</h2><p class="sub">This page shows your own satsang score, tracker and contributions.</p><p style="margin-top:16px"><a class="btn" href="login.html?next=${encodeURIComponent(location.href)}">Sign in · પ્રવેશ</a></p></div>`);return}
+if(!SPC.verified(SES)){location.replace("login.html?next="+encodeURIComponent(location.href));return}
 if(SPC.isAdmin(SES.profile))$("#nav-admin").hidden=false;
 $("#app").hidden=false;
 

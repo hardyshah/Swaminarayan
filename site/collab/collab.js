@@ -63,7 +63,7 @@ async function boot(){
   const page=window.SPC_PAGE||"";
   // members-only gate (soft: hides pages from visitors who are not signed in) and maintenance mode
   if(page!=="login"){
-    if(SETTINGS.features.gate&&!SESSION){location.replace(BASE+"login.html?next="+encodeURIComponent(location.href));return}
+    if(SETTINGS.features.gate&&!S.verified(SESSION)){location.replace(BASE+"login.html?next="+encodeURIComponent(location.href));return}
     if(SETTINGS.features.maintenance&&!(SESSION&&S.isAdmin(SESSION.profile))){const w=document.createElement("div");w.className="spc-wall";w.innerHTML=`<div><h1>થોડી વારમાં પાછા આવીએ છીએ</h1><p>The site is being updated and will be back soon. Jay Swaminarayan.</p><p><a href="${BASE}login.html">Admin sign in</a></p></div>`;document.body.appendChild(w);return}
   }
   banner();
@@ -82,7 +82,7 @@ function banner(){const old=document.querySelector(".spc-ban");if(old)old.remove
 let fabEl=null,sheet=null,veil=null,tab="comment";
 function fab(){fabEl=document.createElement("button");fabEl.type="button";fabEl.className="spc-fab";fabEl.setAttribute("aria-haspopup","dialog");fabEl.onclick=open;document.body.appendChild(fabEl);paintFab()}
 async function paintFab(){if(!fabEl)return;const p=SESSION&&SESSION.profile;let badge="";
-  if(p){try{const mine=await S.listMine();const n=mine.filter(c=>c.status==="changes").length;if(n)badge=`<span class="bd" title="Items that need your attention">${n}</span>`}catch(e){}}
+  if(p&&S.verified(SESSION)){try{const mine=await S.listMine();const n=mine.filter(c=>c.status==="changes").length;if(n)badge=`<span class="bd" title="Items that need your attention">${n}</span>`}catch(e){}}
   fabEl.innerHTML=`<span class="av" aria-hidden="true">${p?esc((p.name||p.email||"?").trim()[0].toUpperCase()):"✎"}</span><span>યોગદાન · Contribute</span>${badge}`;
   fabEl.setAttribute("aria-label",p?`Contribute, signed in as ${p.name||p.email}`:"Contribute (sign in needed)")}
 
@@ -96,6 +96,7 @@ function build(){veil=document.createElement("div");veil.className="spc-veil";ve
 
 function render(){const b=sheet.querySelector(".spc-body"),p=SESSION&&SESSION.profile;
   const demo=S.mode==="demo"?`<div class="spc-demo">Demo mode: everything stays in this browser until the site is connected to its database.</div>`:"";
+  if(p&&!S.verified(SESSION)){b.innerHTML=demo+`<p>Please finish verifying your email and mobile number to comment, suggest edits or upload.</p><p><a class="spc-btn" style="display:inline-block;text-decoration:none" href="${BASE}login.html?next=${encodeURIComponent(location.href)}">Verify now</a></p><div class="spc-h3">On this page</div><div id="spc-list"></div>`;renderList();return}
   if(!p){b.innerHTML=demo+`<p>Comments, edit suggestions and uploads are open to invited members only.</p><p>આમંત્રિત સભ્યો જ યોગદાન આપી શકે છે.</p>
     <p><a class="spc-btn" style="display:inline-block;text-decoration:none" href="${BASE}login.html?next=${encodeURIComponent(location.href)}">Sign in · પ્રવેશ</a></p><div class="spc-h3">On this page</div><div id="spc-list"></div>`;renderList();return}
   const F=SETTINGS.features;
