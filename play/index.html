@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="../vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Satsang Play</title>
+<meta name="description" content="Fun Swaminarayan quizzes for kids and games for teens and adults: picture quiz, memory match, who am I, timeline, Vachanamrut detective and word puzzle. Every answer links to its source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<style>
+:root{
+  --paper:#f6f1e7; --surface:#ffffff; --sunk:#efe7d8; --ink:#231a12; --ink-2:#5e5246; --ink-3:#8d8073; --line:#e3d8c6;
+  --saffron:#c2410c; --saffron-strong:#9a3412; --saffron-soft:#fde4cf; --peacock:#0e5a61; --peacock-soft:#d6ecea;
+  --good:#15803d; --good-soft:#dcfce7; --bad:#b91c1c; --bad-soft:#fee2e2; --gold:#d97706;
+  --shadow:0 1px 2px rgba(40,25,10,.06),0 10px 28px rgba(40,25,10,.08);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:16px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#14110e; --surface:#1d1915; --sunk:#26201a; --ink:#f1ebe2; --ink-2:#c3b7a8; --ink-3:#8f8476; --line:#3a3128;
+  --saffron:#fb923c; --saffron-strong:#fdba74; --saffron-soft:#3b2414; --peacock:#5eead4; --peacock-soft:#123a3a;
+  --good:#4ade80; --good-soft:#14301e; --bad:#f87171; --bad-soft:#3a1717; --gold:#fbbf24;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#14110e; --surface:#1d1915; --sunk:#26201a; --ink:#f1ebe2; --ink-2:#c3b7a8; --ink-3:#8f8476; --line:#3a3128;
+  --saffron:#fb923c; --saffron-strong:#fdba74; --saffron-soft:#3b2414; --peacock:#5eead4; --peacock-soft:#123a3a;
+  --good:#4ade80; --good-soft:#14301e; --bad:#f87171; --bad-soft:#3a1717; --gold:#fbbf24;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.3); color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+main{padding-block:18px 110px}
+.jay{text-align:center;font-family:var(--f-read);font-weight:600;color:var(--saffron-strong);font-size:clamp(17px,3.4vw,22px);margin:4px 0 14px}
+small.e{display:block;font-size:.8em;color:var(--ink-2);font-weight:500;line-height:1.3}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-radius:24px;padding:28px 24px 24px;color:#fff;background:
+  radial-gradient(120% 90% at 85% 10%,rgba(255,214,140,.55),transparent 55%),
+  radial-gradient(90% 80% at 0% 100%,rgba(14,90,97,.85),transparent 60%),
+  linear-gradient(135deg,#7c2d12,#c2410c 50%,#d97706);box-shadow:var(--shadow)}
+.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(34px,7vw,56px);line-height:1.05;margin:0;text-shadow:0 2px 0 rgba(0,0,0,.15)}
+.hero h1 small{display:block;font-family:var(--f-ui);font-size:clamp(15px,2.6vw,19px);font-weight:600;letter-spacing:.02em;opacity:.95;margin-top:6px;text-shadow:none}
+.hero p{max-width:560px;margin:10px 0 0;font-size:15.5px;opacity:.95}
+.hero .floaty{position:absolute;font-size:34px;opacity:.9;animation:float 6s ease-in-out infinite;pointer-events:none}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stat{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);border-radius:14px;padding:8px 14px;min-width:100px}
+.stat b{display:block;font-size:24px;line-height:1.1}.stat span{font-size:12.5px;opacity:.92}
+/* game cards */
+.sec{margin:30px 0 12px;display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+.sec h2{margin:0;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:clamp(24px,4.6vw,32px);line-height:1.1}
+.sec h2 small{display:block;font-family:var(--f-ui);color:var(--ink-2);font-size:14px;font-weight:600;letter-spacing:.04em}
+.sec p{margin:0;color:var(--ink-2);font-size:14.5px;flex:1;min-width:200px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.gc{position:relative;display:flex;flex-direction:column;gap:6px;text-align:left;border:0;border-radius:20px;padding:18px 18px 16px;cursor:pointer;color:#fff;min-height:178px;overflow:hidden;
+  box-shadow:var(--shadow);transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+.gc:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 18px 40px rgba(40,25,10,.22)}
+.gc:active{transform:scale(.98)}
+.gc .ic{font-size:42px;line-height:1;filter:drop-shadow(0 4px 6px rgba(0,0,0,.2))}
+.gc b{font-size:19px;line-height:1.2}.gc b small{display:block;font-size:13px;font-weight:600;opacity:.88}
+.gc span.d{font-size:13.5px;opacity:.93;line-height:1.35}
+.gc small.e,.hero small.e,.stat small.e{color:inherit;opacity:.88}
+.gc .best{position:absolute;right:12px;top:12px;font-size:13px;background:rgba(0,0,0,.18);border-radius:999px;padding:3px 9px;letter-spacing:1px}
+.gc::after{content:"";position:absolute;right:-40px;bottom:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.14)}
+.g1{background:linear-gradient(140deg,#f97316,#db2777)}.g2{background:linear-gradient(140deg,#8b5cf6,#ec4899)}.g3{background:linear-gradient(140deg,#06b6d4,#3b82f6)}
+.g4{background:linear-gradient(140deg,#c2410c,#9a3412)}.g5{background:linear-gradient(140deg,#0f766e,#0e5a61)}.g6{background:linear-gradient(140deg,#4f46e5,#312e81)}
+.g7{background:linear-gradient(140deg,#b45309,#78350f)}.g8{background:linear-gradient(140deg,#65a30d,#3f6212)}.g9{background:linear-gradient(140deg,#be123c,#881337)}
+.note{margin-top:28px;padding:16px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);color:var(--ink-2);font-size:14.5px}
+.note h3{margin:0 0 6px;color:var(--ink);font-size:16px}
+.srcs{margin-top:18px;font-size:13.5px;color:var(--ink-2)}.srcs h3{color:var(--ink);font-size:16px;margin:0 0 6px}.srcs ul{margin:0;padding-left:18px}.srcs li{margin:3px 0}
+
+/* game shell */
+.gs{max-width:760px;margin:0 auto}
+.gbar{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.back{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;cursor:pointer;font-weight:600;font-size:14px}
+.gbar h1{flex:1;margin:0;font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:clamp(22px,4.5vw,30px);line-height:1.1}
+.gbar h1 small{display:block;font-family:var(--f-ui);font-size:13px;color:var(--ink-2);font-weight:600}
+.score{font-weight:700;font-size:15px;background:var(--saffron-soft);color:var(--saffron-strong);border-radius:999px;padding:6px 12px;white-space:nowrap}
+.prog{height:10px;border-radius:999px;background:var(--sunk);overflow:hidden;margin-bottom:16px}
+.prog i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#f59e0b,#c2410c);transition:width .4s cubic-bezier(.2,.8,.2,1)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:22px 20px}
+.qhead{display:flex;gap:14px;align-items:flex-start}
+.qem{flex:none;width:72px;height:72px;border-radius:20px;display:grid;place-items:center;font-size:40px;background:linear-gradient(140deg,var(--saffron-soft),var(--peacock-soft))}
+.qtx{flex:1;min-width:0}
+.qtx h2{margin:0;font-family:var(--f-read);font-size:clamp(21px,4vw,27px);line-height:1.25;font-weight:600}
+.qtx h2 small{display:block;font-family:var(--f-ui);font-size:15px;color:var(--ink-2);font-weight:500;margin-top:4px}
+.say{border:1px solid var(--line);background:none;border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--ink-2);margin-top:8px}
+.pic{border-radius:16px;overflow:hidden;background:var(--sunk);margin:0 0 14px;aspect-ratio:16/10}
+.pic img{display:block;width:100%;height:100%;object-fit:contain}
+.opts{display:grid;gap:10px;margin-top:18px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:13px 14px;cursor:pointer;font-size:17px;font-weight:600;
+  transition:transform .15s,border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--saffron);transform:translateX(3px)}
+.opt .k{flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--sunk);font-size:14px;font-weight:700;color:var(--ink-2)}
+.opt small{display:block;font-size:13.5px;color:var(--ink-2);font-weight:500}
+.opt.ok{border-color:var(--good);background:var(--good-soft)}.opt.ok .k{background:var(--good);color:#fff}
+.opt.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .4s}.opt.no .k{background:var(--bad);color:#fff}
+.opt:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.kid .opts{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.kid .opt{flex-direction:column;justify-content:center;text-align:center;min-height:96px;font-size:20px;border-width:3px;border-radius:22px}
+.kid .opt:nth-child(1){background:#fff7ed;border-color:#fdba74}.kid .opt:nth-child(2){background:#f0fdf4;border-color:#86efac}.kid .opt:nth-child(3){background:#eff6ff;border-color:#93c5fd}.kid .opt:nth-child(4){background:#fdf4ff;border-color:#f0abfc}
+:root[data-theme="dark"] .kid .opt,.dark-kid .kid .opt{background:var(--surface)!important}
+.kid .opt .k{display:none}
+.kid .opt.ok{background:var(--good-soft)!important;border-color:var(--good)!important}.kid .opt.no{background:var(--bad-soft)!important;border-color:var(--bad)!important}
+.why{margin-top:16px;padding:12px 14px;border-radius:14px;font-size:15px;animation:pop .35s cubic-bezier(.2,.8,.2,1)}
+.why.ok{background:var(--good-soft)}.why.no{background:var(--bad-soft)}
+.why b{display:block;font-size:17px;margin-bottom:2px}
+.why .src{display:block;font-size:12.5px;color:var(--ink-2);margin-top:6px}
+@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+.next{display:flex;justify-content:flex-end;margin-top:14px}
+.btn{border:0;border-radius:14px;padding:12px 22px;font-weight:700;font-size:16px;cursor:pointer;background:var(--saffron);color:#fff;box-shadow:0 6px 16px color-mix(in srgb,var(--saffron) 35%,transparent)}
+.btn.alt{background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn:active{transform:scale(.97)}
+.timer{height:6px;border-radius:999px;background:var(--sunk);overflow:hidden;margin-top:14px}.timer i{display:block;height:100%;background:var(--peacock);transition:width 1s linear}
+.timer.low i{background:var(--bad)}
+.lvls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:8px}
+.lvl{border:2px solid var(--line);background:var(--surface);border-radius:18px;padding:16px;text-align:left;cursor:pointer}
+.lvl:hover{border-color:var(--saffron)}.lvl b{display:block;font-size:18px}.lvl span{color:var(--ink-2);font-size:14px}
+.lvl .ic{font-size:30px}
+/* result */
+.res{text-align:center;padding:30px 20px}
+.res .big{font-family:var(--f-display);font-size:clamp(30px,7vw,46px);color:var(--saffron);line-height:1.1;margin:6px 0}
+.res .stars{font-size:54px;letter-spacing:6px;margin:8px 0}
+.res .stars span{display:inline-block;opacity:.18;transform:scale(.6);transition:all .5s cubic-bezier(.2,1.6,.4,1)}
+.res .stars span.on{opacity:1;transform:scale(1)}
+.res p{color:var(--ink-2);margin:6px 0}
+.res .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.review{margin-top:20px;text-align:left}.review h3{font-size:16px;margin:0 0 6px}
+.review li{margin:6px 0;font-size:14px}.review li a{font-size:12.5px}
+/* memory */
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:520px){.mem{grid-template-columns:repeat(3,1fr)}}
+.mc{position:relative;aspect-ratio:3/4;border:0;background:none;padding:0;cursor:pointer;perspective:800px}
+.mc .in{position:absolute;inset:0;transition:transform .5s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.mc.up .in,.mc.done .in{transform:rotateY(180deg)}
+.mc .f,.mc .b{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;display:grid;place-items:center;padding:6px;text-align:center}
+.mc .f{background:linear-gradient(140deg,#c2410c,#7c2d12);color:#fde68a;font-size:30px;box-shadow:var(--shadow)}
+.mc .f::before{content:"";position:absolute;inset:6px;border:2px dashed rgba(253,230,138,.5);border-radius:10px}
+.mc .b{transform:rotateY(180deg);background:var(--surface);border:2px solid var(--line);font-weight:700;font-size:clamp(12.5px,2.6vw,16px);line-height:1.2}
+.mc .b small{display:block;font-weight:500;font-size:.82em;color:var(--ink-2)}
+.mc.done .b{border-color:var(--good);background:var(--good-soft)}
+.mc.t1 .b{border-top:6px solid var(--saffron)}.mc.t2 .b{border-top:6px solid var(--peacock)}
+/* timeline */
+.tl{display:grid;gap:10px;margin-top:14px}
+.ev{display:flex;align-items:center;gap:12px;border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:10px 12px;cursor:pointer;text-align:left;width:100%}
+.ev .n{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--sunk);font-weight:800;color:var(--ink-3)}
+.ev.pick .n{background:var(--saffron);color:#fff}.ev.pick{border-color:var(--saffron)}
+.ev.ok{border-color:var(--good);background:var(--good-soft)}.ev.no{border-color:var(--bad);background:var(--bad-soft)}
+.ev img{width:64px;height:44px;object-fit:cover;border-radius:8px;flex:none;background:var(--sunk)}
+.ev .y{margin-left:auto;font-weight:800;color:var(--good)}
+/* who am i */
+.clues{display:grid;gap:8px;margin:14px 0}
+.clue{padding:10px 14px;border-radius:14px;background:var(--sunk);font-size:16px;animation:pop .35s}
+.clue b{color:var(--saffron)}
+.morebtn{border:2px dashed var(--line);background:none;border-radius:14px;padding:10px;cursor:pointer;color:var(--ink-2);font-weight:600}
+/* word */
+.word{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:18px 0 8px}
+.word span{width:clamp(28px,7vw,40px);height:clamp(38px,9vw,50px);border-bottom:4px solid var(--saffron);display:grid;place-items:center;font-size:clamp(20px,5vw,28px);font-weight:800}
+.word span.show{animation:pop .3s}
+.lamps{text-align:center;font-size:24px;letter-spacing:4px;margin:4px 0}
+.lamps .off{filter:grayscale(1);opacity:.3}
+.keys{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-top:12px}
+@media (max-width:420px){.keys{grid-template-columns:repeat(7,1fr)}}
+.keys button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 0;font-weight:700;cursor:pointer;font-size:16px}
+.keys button.y{background:var(--good-soft);border-color:var(--good)}.keys button.x{opacity:.3}
+.hint{text-align:center;color:var(--ink-2);font-size:15px}
+canvas.conf{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:90}
+@media (max-width:640px){.hero{padding:22px 18px 18px;border-radius:20px}.card{padding:18px 14px}.qem{width:56px;height:56px;font-size:30px;border-radius:16px}.gc{min-height:150px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Home</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="../">Today</a>
+    <a class="on" href="./">Play</a>
+    <a href="../news.html">News</a>
+    <a href="../kaal-patrak/">Kaal Patrak</a>
+    <a href="../vicharan/">Vicharan</a>
+    <a href="../vachanamrut-concordance/">Vachanamrut</a>
+    <a href="../vachanamrut-concordance/live.html">Live</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+<main class="wrap sp-lang-keep" id="app" aria-live="polite"></main>
+<script src="../site/scores.js"></script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),app=$("#app");
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+const getL=()=>{try{return localStorage.getItem("sp-lang")||"both"}catch(e){return "both"}};
+const lang=()=>(window.SP_LANG&&SP_LANG.get())||document.documentElement.getAttribute("data-sp-lang")||getL();
+// T: show Gujarati, English or both, as the site language switch says
+function T(en,gu,inline){en=en==null?"":en;gu=gu==null?"":gu;const m=lang();if(!gu||gu===en)return esc(en);if(!en)return esc(gu);
+  if(m==="gu")return esc(gu);if(m==="en")return esc(en);return inline?`${esc(gu)} · ${esc(en)}`:`${esc(gu)}<small class="e">${esc(en)}</small>`}
+const P=p=>T(p[0],p[1]);
+const R=u=>/^https?:/.test(u)?u:"../"+u;
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const GUD=n=>String(n).replace(/\d/g,d=>"૦૧૨૩૪૫૬૭૮૯"[d]);
+const N=n=>lang()==="en"?String(n):lang()==="gu"?GUD(n):String(n);
+const bell=s=>{try{window.SP_SOUND&&SP_SOUND.bell(s)}catch(e){}};
+function speak(txt){try{const u=new SpeechSynthesisUtterance(txt);const vs=speechSynthesis.getVoices();const g=vs.find(v=>/^gu/i.test(v.lang));
+  if(lang()!=="en"&&g){u.voice=g;u.lang=g.lang}else u.lang="en-IN";u.rate=.92;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+const srcLink=s=>s?`<a href="${esc(R(s[1]))}" target="_blank" rel="noopener">${esc(s[0])}</a>`:"";
+
+/* confetti */
+function confetti(n){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;const c=document.createElement("canvas");c.className="conf";document.body.appendChild(c);
+  const x=c.getContext("2d"),W=c.width=innerWidth*devicePixelRatio,H=c.height=innerHeight*devicePixelRatio,cols=["#f97316","#facc15","#22c55e","#06b6d4","#ec4899","#8b5cf6","#c2410c"];
+  const ps=Array.from({length:n||140},()=>({x:W/2+(Math.random()-.5)*W*.3,y:H*.35,vx:(Math.random()-.5)*18*devicePixelRatio,vy:(-Math.random()*16-6)*devicePixelRatio,s:(Math.random()*8+5)*devicePixelRatio,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[Math.floor(Math.random()*cols.length)],f:Math.random()<.3}));
+  let t=0;(function f(){x.clearRect(0,0,W,H);ps.forEach(p=>{p.vy+=.45*devicePixelRatio;p.x+=p.vx;p.y+=p.vy;p.vx*=.99;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;
+    if(p.f){x.font=`${p.s*2}px serif`;x.fillText("🌸",0,0)}else x.fillRect(-p.s/2,-p.s/3,p.s,p.s*.66);x.restore()});if(++t<170)requestAnimationFrame(f);else c.remove()})()}
+
+let B=null;const state={view:"home"};
+const GAMES=[
+ {id:"kids-quiz",grp:"kid",cls:"g1",ic:"🧒",t:["Bal Quiz","બાળ ક્વિઝ"],d:["Easy questions with big buttons, pictures and read aloud. 8 questions.","મોટાં બટન, ચિત્રો અને વાંચી સંભળાવે તેવા સરળ પ્રશ્નો. ૮ પ્રશ્ન."]},
+ {id:"pictures",grp:"kid",cls:"g2",ic:"🖼️",t:["Picture Quiz","ચિત્ર ઓળખો"],d:["Look at the picture from Shri Hari's life. What is happening?","શ્રીહરિના જીવનનું ચિત્ર જુઓ. શું થઈ રહ્યું છે?"]},
+ {id:"memory-kid",grp:"kid",cls:"g3",ic:"🛕",t:["Murti Match","મૂર્તિ મેળવો"],d:["Flip the cards and match each murti with its mandir.","પત્તાં ઉલટાવી દરેક મૂર્તિને તેના મંદિર સાથે મેળવો."]},
+ {id:"satsang-quiz",grp:"big",cls:"g4",ic:"🏆",t:["Satsang Quiz","સત્સંગ ક્વિઝ"],d:["10 timed questions. Quick answers and streaks score more.","સમયવાળા ૧૦ પ્રશ્ન. ઝડપી જવાબ અને સળંગ સાચા જવાબે વધુ ગુણ."]},
+ {id:"who",grp:"big",cls:"g5",ic:"🕵️",t:["Who am I?","હું કોણ?"],d:["Clues appear one by one. Guess the saint with fewer clues for more points.","એક પછી એક સંકેત. ઓછા સંકેતે સંત ઓળખો તો વધુ ગુણ."]},
+ {id:"timeline",grp:"big",cls:"g6",ic:"⏳",t:["Timeline","સમયરેખા"],d:["Tap the events of Shri Hari's life in the order they happened.","શ્રીહરિના જીવનના પ્રસંગો જે ક્રમે બન્યા તે ક્રમે દબાવો."]},
+ {id:"words",grp:"big",cls:"g7",ic:"🪔",t:["Shabd","શબ્દ શોધ"],d:["Guess the place, saint or granth letter by letter before the diyas go out.","દીવા ઓલવાય તે પહેલાં અક્ષરે અક્ષરે સ્થળ, સંત કે ગ્રંથ શોધો."]},
+ {id:"memory-big",grp:"big",cls:"g8",ic:"🧠",t:["Memory Pairs","જોડી મેળવો"],d:["Match saints with their villages, or granths with their authors.","સંતોને તેમનાં ગામ સાથે, કે ગ્રંથોને રચયિતા સાથે મેળવો."]},
+ {id:"vach",grp:"big",cls:"g9",ic:"📖",t:["Vachanamrut Detective","વચનામૃત શોધ"],d:["Read the subject. Which Vachanamrut is it? For adults.","વિષય વાંચો. કયું વચનામૃત? મોટેરાં માટે."]},
+];
+const G=id=>GAMES.find(g=>g.id===id);
+function starsFor(id){const b=window.SPScores?SPScores.best(id):0;return b>=.9?"⭐⭐⭐":b>=.6?"⭐⭐":b>0?"⭐":""}
+
+function home(){state.view="home";const S=window.SPScores;
+  const card=g=>`<button class="gc ${g.cls}" data-go="${g.id}"><span class="ic" aria-hidden="true">${g.ic}</span><b>${P(g.t)}</b><span class="d">${T(g.d[0],g.d[1])}</span>${starsFor(g.id)?`<span class="best" aria-label="best">${starsFor(g.id)}</span>`:""}</button>`;
+  app.innerHTML=`<p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+  <section class="hero"><span class="floaty" style="right:7%;top:16%">🪔</span><span class="floaty" style="right:22%;bottom:12%;animation-delay:-2s">🌸</span><span class="floaty" style="right:4%;bottom:30%;animation-delay:-4s;font-size:26px">🦚</span>
+    <h1>${lang()==="en"?"Satsang Play":"સત્સંગ રમત"}<small>${T("Quizzes for kids · games for teens and adults","બાળકો માટે ક્વિઝ · યુવાનો અને મોટેરાં માટે રમતો",true)}</small></h1>
+    <p>${T("Learn the life of Shri Hari, the saints, the mandirs and the Vachanamrut by playing. Every answer shows where it comes from.","રમતાં રમતાં શ્રીહરિનું જીવન, સંતો, મંદિરો અને વચનામૃત શીખો. દરેક જવાબ સાથે તેનો સ્રોત.")}</p>
+    <div class="stats"><div class="stat"><b>${N(S?S.stars():0)} ⭐</b><span>${T("stars earned","મેળવેલા તારા",true)}</span></div>
+      <div class="stat"><b>${N(S?S.streak():0)} 🔥</b><span>${T("day streak","સળંગ દિવસ",true)}</span></div>
+      <div class="stat"><b>${N(S?S.all().length:0)}</b><span>${T("games played","રમેલી રમતો",true)}</span></div></div></section>
+  <div class="sec"><h2>${T("For kids","બાળ સભા")}</h2><p>${T("Big buttons, pictures and a voice that reads the question.","મોટાં બટન, ચિત્રો અને પ્રશ્ન વાંચી સંભળાવતો અવાજ.")}</p></div>
+  <div class="grid">${GAMES.filter(g=>g.grp==="kid").map(card).join("")}</div>
+  <div class="sec"><h2>${T("For teens and adults","યુવાનો અને મોટેરાં")}</h2><p>${T("Timers, streaks and harder questions from the granths.","સમય, સળંગ ગુણ અને ગ્રંથોમાંથી અઘરા પ્રશ્નો.")}</p></div>
+  <div class="grid">${GAMES.filter(g=>g.grp==="big").map(card).join("")}</div>
+  <div class="note"><h3>${T("Your scores","તમારા ગુણ")}</h3>${T("Scores are saved in this browser only. When member logins arrive, they will move into your satsang score.","ગુણ ફક્ત આ બ્રાઉઝરમાં સચવાય છે. સભ્ય લૉગિન આવશે ત્યારે તે તમારા સત્સંગ સ્કોરમાં જશે.")}</div>
+  <div class="srcs"><h3>${T("Sources","સ્રોત")}</h3><ul>
+    <li><a href="https://www.swaminarayan.faith/our-faith/about-swaminarayan-bhagwan/his-life" target="_blank" rel="noopener">Shree Swaminarayan Mandir Bhuj · His life</a> and <a href="https://www.swaminarayan.faith/our-faith/about-swaminarayan-bhagwan/6-primary-temples" target="_blank" rel="noopener">6 primary temples</a></li>
+    <li><a href="https://www.swaminarayan.faith/articles/nand-santos/" target="_blank" rel="noopener">Shree Swaminarayan Mandir Bhuj · Nand Santos</a></li>
+    <li><a href="https://www.swaminarayan.info/library/festivals" target="_blank" rel="noopener">Shree Swaminarayan Mandir Kalupur · Festivals</a>, <a href="https://www.swaminarayan.info/library/ekadashi" target="_blank" rel="noopener">Ekadashi</a></li>
+    <li>${T("Shri Swaminarayanam, ed. Shastri Swami Nirgundasji, Shri Sahajanand Gurukul Asarva (2015), through","શ્રી સ્વામિનારાયણમ્, સં. શાસ્ત્રી સ્વામી નિર્ગુણદાસજી, શ્રી સહજાનંદ ગુરુકુળ અસારવા (૨૦૧૫), જુઓ",true)} <a href="../kaal-patrak/">Kaal Patrak</a></li>
+    <li>${T("The Vachanamrut, through","વચનામૃત, જુઓ",true)} <a href="../vachanamrut-concordance/">${T("the Vachanamrut reader on this site","આ સાઇટનું વચનામૃત",true)}</a></li>
+    <li>${T("Pictures: the scenes drawn for this site","ચિત્રો: આ સાઇટ માટે દોરેલાં દૃશ્યો",true)} (<a href="../kaal-patrak/">Kaal Patrak</a>)</li></ul></div>`;
+}
+
+/* ---------- shared game shell ---------- */
+let G0=null; // current game {id, title, level, score, max, i, n, review:[], timer}
+function shell(inner){const g=G(G0.id);return `<div class="gs ${G0.kid?"kid":""}"><div class="gbar"><button class="back" data-home>← ${T("Games","રમતો",true)}</button>
+  <h1>${P(g.t)}${G0.levelName?`<small>${G0.levelName}</small>`:""}</h1><span class="score">${N(G0.score)} ${T("pts","ગુણ",true)}</span></div>
+  <div class="prog"><i style="width:${Math.round(100*G0.i/G0.n)}%"></i></div>${inner}</div>`}
+function finish(extra){stopTimer();const g=G(G0.id),ratio=G0.max?G0.score/G0.max:0,st=ratio>=.9?3:ratio>=.6?2:G0.score>0?1:0;
+  if(window.SPScores)SPScores.add({game:G0.id,title:g.t[0],level:G0.level||g.grp,score:G0.score,max:G0.max,stars:st});
+  const msg=st===3?["Wonderful! Shri Hari is pleased.","અદ્ભુત! શ્રીહરિ રાજી થયા."]:st===2?["Very good!","ખૂબ સરસ!"]:st===1?["Good try! Play again to learn more.","સારો પ્રયત્ન! ફરી રમો, વધુ શીખો."]:["Keep going, every game teaches something.","રમતા રહો, દરેક રમત કંઈક શીખવે છે."];
+  app.innerHTML=`<div class="gs"><div class="card res"><div aria-hidden="true" style="font-size:46px">${st===3?"🏆":st===2?"🎉":"🌼"}</div>
+   <div class="big">${N(G0.score)} / ${N(G0.max)}</div><div class="stars" aria-label="${st} stars">${[0,1,2].map(i=>`<span>⭐</span>`).join("")}</div>
+   <p style="font-size:18px;color:var(--ink);font-weight:600">${T(msg[0],msg[1])}</p>${extra||""}
+   <div class="acts"><button class="btn" data-go="${G0.id}">${T("Play again","ફરી રમો",true)}</button><button class="btn alt" data-home>${T("All games","બધી રમતો",true)}</button></div>
+   ${G0.review.length?`<div class="review"><h3>${T("Learn more","વધુ જાણો")}</h3><ul>${G0.review.map(r=>`<li>${r}</li>`).join("")}</ul></div>`:""}</div></div>`;
+  const sp=app.querySelectorAll(".stars span");sp.forEach((s,i)=>{if(i<st)setTimeout(()=>{s.classList.add("on");bell(true)},350+i*380)});
+  if(st>=2)setTimeout(()=>confetti(st===3?180:90),300);scrollTo({top:0,behavior:"smooth"})}
+let TM=null;function stopTimer(){if(TM){clearInterval(TM);TM=null}}
+
+/* ---------- multiple-choice engine (Bal quiz, Picture quiz, Satsang quiz, Vachanamrut detective) ---------- */
+function mcStart(id,qs,opt){G0=Object.assign({id,score:0,max:0,i:0,n:qs.length,qs,review:[],streak:0},opt||{});mcShow()}
+function mcShow(){const q=G0.qs[G0.i];if(!q)return finish();
+  q._o=q._o||shuf(q.o.map((o,i)=>({o,ok:i===0})));const keys="ABCD";
+  const said=(lang()==="en"?q.q[0]:q.q[1]||q.q[0])+". "+q._o.map(x=>lang()==="en"?x.o[0]:x.o[1]||x.o[0]).join(", ");
+  app.innerHTML=shell(`<div class="card">${q.img?`<div class="pic"><img src="${esc(R(q.img))}" alt="${esc(lang()==="en"?"A scene from Shri Hari's life":"શ્રીહરિના જીવનનું દૃશ્ય")}"></div>`:""}
+    <div class="qhead">${q.i&&!q.img?`<div class="qem" aria-hidden="true">${q.i}</div>`:""}<div class="qtx"><div style="font-size:13px;color:var(--ink-3);font-weight:600">${T("Question","પ્રશ્ન",true)} ${N(G0.i+1)} / ${N(G0.n)}</div>
+    <h2>${q.qraw?q.qraw:P(q.q)}</h2>${G0.kid?`<button class="say" data-say="${esc(said)}">🔊 ${T("Read aloud","વાંચી સંભળાવો",true)}</button>`:""}</div></div>
+    <div class="opts">${q._o.map((x,i)=>`<button class="opt" data-i="${i}"><span class="k">${keys[i]}</span><span>${P(x.o)}</span></button>`).join("")}</div>
+    ${G0.timed?`<div class="timer"><i style="width:100%"></i></div>`:""}<div id="fb"></div></div>`);
+  if(G0.timed){let t=G0.timed;const bar=app.querySelector(".timer i"),box=app.querySelector(".timer");q._t0=Date.now();stopTimer();
+    TM=setInterval(()=>{t--;bar.style.width=Math.max(0,100*t/G0.timed)+"%";box.classList.toggle("low",t<=5);if(t<=0){stopTimer();mcAnswer(-1)}},1000)}
+  if(G0.kid&&G0.autoSay&&G0.i===0){}
+}
+function mcAnswer(i){const q=G0.qs[G0.i];if(q._done)return;q._done=true;stopTimer();
+  const btns=[...app.querySelectorAll(".opt")],right=q._o.findIndex(x=>x.ok),ok=i===right;
+  btns.forEach((b,j)=>{b.disabled=true;if(j===right)b.classList.add("ok");if(j===i&&!ok)b.classList.add("no")});
+  let pts=G0.timed?10:1,got=0;
+  if(ok){if(G0.timed){const left=Math.max(0,G0.timed-(Date.now()-q._t0)/1000);got=10+Math.round(left/2);G0.streak++;if(G0.streak>=3)got+=5}else got=1;bell(G0.kid)}
+  else G0.streak=0;
+  G0.max+=G0.timed?20:pts;G0.score+=got;
+  const fb=app.querySelector("#fb"),sc=app.querySelector(".score");sc.innerHTML=`${N(G0.score)} ${T("pts","ગુણ",true)}`;
+  const head=ok?(G0.timed?T(`Right! +${got}`+(G0.streak>=3?" 🔥 streak":""),`સાચું! +${GUD(got)}`+(G0.streak>=3?" 🔥":""),true):T("Right!","સાચું!",true)+" 🎉"):i<0?T("Time is up","સમય પૂરો",true)+" ⏰":T("Not quite","ખોટું",true);
+  fb.innerHTML=`<div class="why ${ok?"ok":"no"}"><b>${head}</b>${q.w?P(q.w):""}${q.s?`<span class="src">${T("Source","સ્રોત",true)}: ${srcLink(q.s)}</span>`:""}</div>
+    <div class="next"><button class="btn" data-next>${G0.i+1<G0.n?T("Next","આગળ",true)+" →":T("See result","પરિણામ જુઓ",true)}</button></div>`;
+  if(!ok||G0.kid)G0.review.push(`${q.qraw?q.qraw:P(q.q)} <b>${P(q._o[right].o)}</b>${q.s?` · ${srcLink(q.s)}`:""}`);
+  if(G0.kid&&ok&&Math.random()<.5)confetti(40);
+  const nb=fb.querySelector("[data-next]");nb&&nb.focus({preventScroll:true});fb.scrollIntoView({behavior:"smooth",block:"nearest"})}
+
+function pick(arr,n){return shuf(arr).slice(0,n)}
+function sceneQ(sc,n){return pick(sc,n).map(s=>{const wrong=pick(sc.filter(x=>x.d!==s.d&&x.en!==s.en),3);
+  return {q:["What is happening in this picture?","આ ચિત્રમાં શું થઈ રહ્યું છે?"],i:"🖼️",img:s.img,o:[[s.en,s.gu],...wrong.map(w=>[w.en,w.gu])],
+    w:[`${s.en}, ${s.d.slice(0,4)}.`,`${s.gu}, ${GUD(s.d.slice(0,4))}.`],s:["Kaal Patrak · "+s.d,s.k]}})}
+function kidsQuiz(){const kq=pick(B.q.filter(q=>q.l==="kid"),6),pq=sceneQ(B.scenes,2).map(q=>(q.o=q.o.slice(0,3),q));
+  mcStart("kids-quiz",shuf(kq.concat(pq)).map(q=>Object.assign({},q,{o:q.o.slice(0,3)})),{kid:true,level:"kid"})}
+function pictures(){mcStart("pictures",sceneQ(B.scenes,6).map(q=>(q.o=q.o.slice(0,3),q)),{kid:true,level:"kid"})}
+function satsangQuiz(level){
+  if(!level){G0={id:"satsang-quiz",score:0,max:0,i:0,n:1,review:[]};
+    app.innerHTML=shell(`<div class="card"><h2 style="margin:0 0 4px;font-family:var(--f-read)">${T("Choose your level","તમારું સ્તર પસંદ કરો")}</h2>
+     <div class="lvls"><button class="lvl" data-lvl="teen"><span class="ic">🌱</span><b>${T("Yuvak · Teen","યુવક")}</b><span>${T("Life of Shri Hari, saints, mandirs. 25 seconds each.","શ્રીહરિનું જીવન, સંતો, મંદિરો. દરેક માટે ૨૫ સેકન્ડ.")}</span></button>
+     <button class="lvl" data-lvl="adult"><span class="ic">🌳</span><b>${T("Vadil · Adult","વડીલ")}</b><span>${T("Tithis, samvat years, granths and Vachanamrut. 20 seconds each.","તિથિ, સંવત, ગ્રંથો અને વચનામૃત. દરેક માટે ૨૦ સેકન્ડ.")}</span></button></div></div>`);return}
+  const pool=level==="teen"?B.q.filter(q=>q.l==="teen").concat(pick(B.q.filter(q=>q.l==="kid"),4)):B.q.filter(q=>q.l==="adult").concat(pick(B.q.filter(q=>q.l==="teen"),6));
+  mcStart("satsang-quiz",pick(pool,10).map(q=>Object.assign({},q)),{timed:level==="teen"?25:20,level,levelName:level==="teen"?T("Yuvak · Teen","યુવક",true):T("Vadil · Adult","વડીલ",true)})}
+function vach(){const V=B.vach.filter(v=>v.topic);const qs=pick(V,8).map(v=>{const same=V.filter(x=>x.sec===v.sec&&x.id!==v.id),wr=pick(same.length>=3?same:V.filter(x=>x.id!==v.id),3);
+    const nm=x=>[`${B.sec[x.sec][0]} ${x.n}`,`${B.sec[x.sec][1]} ${GUD(x.n)}`];
+    return {qraw:`<span style="font-size:13px;color:var(--ink-3);display:block">${T("Which Vachanamrut speaks of…","કયું વચનામૃત આ વિષે છે…",true)}</span>“${esc(v.topic)}”`,q:["Which Vachanamrut?","કયું વચનામૃત?"],i:"📖",
+      o:[nm(v),...wr.map(nm)],w:[`${nm(v)[0]}: ${v.t}${v.date?` (${v.date})`:""}`,`${nm(v)[1]}: ${v.t}`],s:["Vachanamrut "+v.id+" · read it",`vachanamrut-concordance/#v-${v.id}`]}});
+  mcStart("vach",qs,{timed:30,level:"adult"})}
+
+/* ---------- memory ---------- */
+function memory(id,set){const kid=id==="memory-kid";
+  if(!kid&&!set){G0={id,score:0,max:0,i:0,n:1,review:[]};
+    app.innerHTML=shell(`<div class="card"><h2 style="margin:0 0 4px;font-family:var(--f-read)">${T("Choose a set","એક સેટ પસંદ કરો")}</h2><div class="lvls">
+      <button class="lvl" data-set="teen"><span class="ic">🏡</span><b>${T("Saints and their villages","સંતો અને તેમનાં ગામ")}</b><span>${T("Where was each saint born?","દરેક સંતનો જન્મ ક્યાં?")}</span></button>
+      <button class="lvl" data-set="adult"><span class="ic">📚</span><b>${T("Granths and their authors","ગ્રંથો અને રચયિતા")}</b><span>${T("Who wrote what?","કોણે શું રચ્યું?")}</span></button></div></div>`);return}
+  const pairs=pick(B.pairs[kid?"kid":set],kid?6:8);const cards=shuf(pairs.flatMap((p,i)=>[{p:i,s:p[0],t:1},{p:i,s:p[1],t:2}]));
+  G0={id,score:0,max:100,i:0,n:pairs.length,review:[],level:kid?"kid":set,moves:0,found:0,kid};
+  const draw=()=>{app.innerHTML=shell(`<div class="card"><p style="margin:0 0 12px;color:var(--ink-2)">${T("Flip two cards. Find the pairs that belong together.","બે પત્તાં ઉલટાવો. સાથે જતી જોડી શોધો.")} <b>${T("Moves","ચાલ",true)}: <span id="mv">${N(G0.moves)}</span></b></p>
+    <div class="mem">${cards.map((c,i)=>`<button class="mc t${c.t}" data-c="${i}" aria-label="card"><span class="in"><span class="f">ॐ</span><span class="b">${P(c.s)}</span></span></button>`).join("")}</div></div>`)};
+  draw();let open=[],lock=false;
+  app.onclick2=e=>{const b=e.target.closest(".mc");if(!b||lock||b.classList.contains("up")||b.classList.contains("done"))return;b.classList.add("up");open.push(b);
+    if(open.length===2){G0.moves++;$("#mv").textContent=N(G0.moves);const [a,c]=open.map(x=>cards[+x.dataset.c]);lock=true;
+      if(a.p===c.p&&a.t!==c.t){setTimeout(()=>{open.forEach(x=>{x.classList.remove("up");x.classList.add("done")});open=[];lock=false;G0.found++;G0.i=G0.found;bell(true);
+          app.querySelector(".prog i").style.width=Math.round(100*G0.found/G0.n)+"%";
+          if(G0.found===G0.n){G0.score=Math.max(10,Math.min(100,Math.round(100-(G0.moves-G0.n)*(kid?5:4))));G0.review=pairs.map(p=>`${P(p[0])} ↔ <b>${P(p[1])}</b>`);setTimeout(()=>finish(`<p>${T(`${G0.moves} moves`,`${GUD(G0.moves)} ચાલ`,true)}</p>`),600)}},420)}
+      else setTimeout(()=>{open.forEach(x=>x.classList.remove("up"));open=[];lock=false},950)}}}
+
+/* ---------- who am i ---------- */
+function who(){const rounds=pick(B.who,5);G0={id:"who",score:0,max:rounds.length*4,i:0,n:rounds.length,review:[],level:"teen",rounds};whoShow()}
+function whoShow(){const r=G0.rounds[G0.i];if(!r)return finish();r._k=r._k||1;r._o=r._o||shuf([r,...pick(B.who.filter(x=>x!==r),3)]);
+  const cl=lang()==="en"?r.c[0]:r.c[1],ce=r.c[0];
+  app.innerHTML=shell(`<div class="card"><div class="qhead"><div class="qem" aria-hidden="true">🕵️</div><div class="qtx"><div style="font-size:13px;color:var(--ink-3);font-weight:600">${T("Saint","સંત",true)} ${N(G0.i+1)} / ${N(G0.n)} · ${T(`${5-r._k} points if you guess now`,`હવે ઓળખો તો ${GUD(5-r._k)} ગુણ`,true)}</div><h2>${T("Who am I?","હું કોણ?")}</h2></div></div>
+    <div class="clues">${cl.slice(0,r._k).map((c,i)=>`<div class="clue"><b>${N(i+1)}.</b> ${esc(c)}${lang()==="both"?`<small class="e">${esc(ce[i])}</small>`:""}</div>`).join("")}</div>
+    ${r._k<4&&!r._done?`<button class="morebtn" data-more>+ ${T("Show another clue","બીજો સંકેત બતાવો",true)}</button>`:""}
+    <div class="opts">${r._o.map((x,i)=>`<button class="opt" data-w="${i}"><span class="k">${"ABCD"[i]}</span><span>${P(x.a)}</span></button>`).join("")}</div><div id="fb"></div></div>`)}
+function whoAnswer(i){const r=G0.rounds[G0.i];if(r._done)return;r._done=true;const right=r._o.indexOf(r),ok=i===right;
+  app.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j===right)b.classList.add("ok");if(j===i&&!ok)b.classList.add("no")});const m=app.querySelector("[data-more]");m&&m.remove();
+  const got=ok?5-r._k:0;G0.score+=got;if(ok)bell();app.querySelector(".score").innerHTML=`${N(G0.score)} ${T("pts","ગુણ",true)}`;
+  G0.review.push(`<b>${P(r.a)}</b> · ${srcLink(r.s)}`);
+  app.querySelector("#fb").innerHTML=`<div class="why ${ok?"ok":"no"}"><b>${ok?T(`Right! +${got}`,`સાચું! +${GUD(got)}`,true):T("It was","જવાબ",true)+": "+P(r.a)}</b><span class="src">${T("Read the life of this saint","આ સંતનું જીવન વાંચો",true)}: ${srcLink(r.s)}</span></div>
+    <div class="next"><button class="btn" data-nextw>${G0.i+1<G0.n?T("Next","આગળ",true)+" →":T("See result","પરિણામ જુઓ",true)}</button></div>`}
+
+/* ---------- timeline ---------- */
+function timeline(){const rounds=[];for(let k=0;k<5;k++){let s;let tries=0;do{s=pick(B.timeline,4);tries++}while(new Set(s.map(x=>x.y)).size<4&&tries<50);rounds.push(s)}
+  G0={id:"timeline",score:0,max:rounds.length*4,i:0,n:rounds.length,review:[],level:"teen",rounds};tlShow()}
+function tlShow(){const r=G0.rounds[G0.i];if(!r)return finish();r._order=r._order||[];r._sh=r._sh||shuf(r);
+  const done=r._order.length===4,sorted=r.slice().sort((a,b)=>a.y-b.y||(a.d||"").localeCompare(b.d||""));
+  app.innerHTML=shell(`<div class="card"><div class="qhead"><div class="qem" aria-hidden="true">⏳</div><div class="qtx"><div style="font-size:13px;color:var(--ink-3);font-weight:600">${T("Round","રાઉન્ડ",true)} ${N(G0.i+1)} / ${N(G0.n)}</div><h2>${T("Tap from the earliest to the latest","સૌથી પહેલાંથી છેલ્લે સુધી દબાવો")}</h2></div></div>
+   <div class="tl">${r._sh.map((e,i)=>{const pos=r._order.indexOf(i);let cls=pos>=0?"pick":"";if(done)cls=sorted[pos]===e?"ok":"no";
+     return `<button class="ev ${cls}" data-ev="${i}" ${done?"disabled":""}><span class="n">${pos>=0?N(pos+1):"?"}</span>${e.d?`<img src="../img/scenes/${e.d}.svg" alt="">`:""}<span>${P([e.en,e.gu])}</span>${done?`<span class="y">${N(e.y)}</span>`:""}</button>`}).join("")}</div>
+   ${r._order.length&&!done?`<div class="next"><button class="btn alt" data-undo>↺ ${T("Undo","પાછું",true)}</button></div>`:""}<div id="fb"></div></div>`);
+  if(done){const got=r._order.filter((ix,pos)=>sorted[pos]===r._sh[ix]).length;if(!r._scored){r._scored=1;G0.score+=got;if(got===4){bell();confetti(60)}
+      G0.review.push(sorted.map(e=>`${N(e.y)} ${P([e.en,e.gu])}`).join(" → "))}
+    app.querySelector(".score").innerHTML=`${N(G0.score)} ${T("pts","ગુણ",true)}`;
+    app.querySelector("#fb").innerHTML=`<div class="why ${got===4?"ok":"no"}"><b>${got===4?T("Perfect order!","બરાબર ક્રમ!",true)+" 🎉":T(`${got} of 4 in the right place`,`૪માંથી ${GUD(got)} સાચા સ્થાને`,true)}</b><span class="src">${T("Dates from Shri Swaminarayanam (Kaal Patrak) and the Bhuj mandir","તારીખો: શ્રી સ્વામિનારાયણમ્ (કાળ પત્રક) અને ભુજ મંદિર",true)} · <a href="../kaal-patrak/">Kaal Patrak</a></span></div>
+     <div class="next"><button class="btn" data-nextt>${G0.i+1<G0.n?T("Next","આગળ",true)+" →":T("See result","પરિણામ જુઓ",true)}</button></div>`}}
+
+/* ---------- word puzzle ---------- */
+function words(){const ws=pick(B.words,5);G0={id:"words",score:0,max:ws.length*6,i:0,n:ws.length,review:[],level:"teen",ws};wShow()}
+function wShow(){const w=G0.ws[G0.i];if(!w)return finish();w._g=w._g||new Set();w._miss=w._miss||0;
+  const solved=[...w.w].every(c=>w._g.has(c)),lost=w._miss>=6,letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  app.innerHTML=shell(`<div class="card"><div class="hint">💡 ${P(w.h)}</div>
+   <div class="word" aria-label="word">${[...w.w].map(c=>`<span class="${w._g.has(c)||lost?"show":""}">${w._g.has(c)||lost?c:""}</span>`).join("")}</div>
+   <div class="lamps" aria-label="${6-w._miss} diyas left">${[0,1,2,3,4,5].map(i=>`<span class="${i<6-w._miss?"":"off"}">🪔</span>`).join("")}</div>
+   ${solved||lost?"":`<div class="keys">${[...letters].map(c=>`<button data-l="${c}" class="${w._g.has(c)?(w.w.includes(c)?"y":"x"):""}" ${w._g.has(c)?"disabled":""}>${c}</button>`).join("")}</div>`}<div id="fb"></div></div>`);
+  if(solved||lost){if(!w._sc){w._sc=1;const got=solved?6-w._miss:0;G0.score+=got;if(solved){bell();confetti(50)}G0.review.push(`<b>${w.w}</b>: ${P(w.h)} · ${srcLink(w.s)}`)}
+    app.querySelector(".score").innerHTML=`${N(G0.score)} ${T("pts","ગુણ",true)}`;
+    app.querySelector("#fb").innerHTML=`<div class="why ${solved?"ok":"no"}"><b>${solved?T("You found it!","મળી ગયું!",true)+" 🎉":T("The word was","શબ્દ હતો",true)+" "+w.w}</b><span class="src">${T("Source","સ્રોત",true)}: ${srcLink(w.s)}</span></div>
+     <div class="next"><button class="btn" data-nextwd>${G0.i+1<G0.n?T("Next","આગળ",true)+" →":T("See result","પરિણામ જુઓ",true)}</button></div>`}}
+function wGuess(c){const w=G0.ws[G0.i];if(!w||w._g.has(c)||w._sc)return;w._g.add(c);if(!w.w.includes(c))w._miss++;else bell(true);wShow()}
+document.addEventListener("keydown",e=>{if(G0&&G0.id==="words"&&state.view==="words"&&/^[a-z]$/i.test(e.key)&&!e.ctrlKey&&!e.metaKey)wGuess(e.key.toUpperCase())});
+
+/* ---------- routing ---------- */
+const START={"kids-quiz":kidsQuiz,pictures,"memory-kid":()=>memory("memory-kid"),"satsang-quiz":()=>satsangQuiz(),who,timeline,words,"memory-big":()=>memory("memory-big"),vach};
+function go(id){stopTimer();app.onclick2=null;if(!id||!START[id]){home();return}state.view=id;if(!B){app.innerHTML=`<p style="text-align:center;padding:40px">…</p>`;return}START[id]();scrollTo({top:0})}
+function route(){const h=location.hash.slice(1);go(h)}
+app.addEventListener("click",e=>{const t=e.target;
+  if(app.onclick2&&t.closest(".mc")){app.onclick2(e);return}
+  const g=t.closest("[data-go]");if(g){if(location.hash==="#"+g.dataset.go)route();else location.hash=g.dataset.go;return}
+  if(t.closest("[data-home]")){location.hash="";return}
+  const o=t.closest(".opt[data-i]");if(o){mcAnswer(+o.dataset.i);return}
+  if(t.closest("[data-next]")){G0.i++;mcShow();scrollTo({top:0,behavior:"smooth"});return}
+  const sy=t.closest("[data-say]");if(sy){speak(sy.dataset.say);return}
+  const lv=t.closest("[data-lvl]");if(lv){satsangQuiz(lv.dataset.lvl);return}
+  const ms=t.closest("[data-set]");if(ms){memory("memory-big",ms.dataset.set);return}
+  if(t.closest("[data-more]")){G0.rounds[G0.i]._k++;whoShow();return}
+  const w=t.closest(".opt[data-w]");if(w){whoAnswer(+w.dataset.w);return}
+  if(t.closest("[data-nextw]")){G0.i++;whoShow();scrollTo({top:0,behavior:"smooth"});return}
+  const ev=t.closest("[data-ev]");if(ev){const r=G0.rounds[G0.i],ix=+ev.dataset.ev;if(!r._order.includes(ix)){r._order.push(ix);tlShow()}return}
+  if(t.closest("[data-undo]")){G0.rounds[G0.i]._order.pop();tlShow();return}
+  if(t.closest("[data-nextt]")){G0.i++;tlShow();scrollTo({top:0,behavior:"smooth"});return}
+  const l=t.closest("[data-l]");if(l){wGuess(l.dataset.l);return}
+  if(t.closest("[data-nextwd]")){G0.i++;wShow();scrollTo({top:0,behavior:"smooth"});return}
+});
+addEventListener("hashchange",route);
+// re-draw in the new language when the site language switch changes
+new MutationObserver(()=>{if(state.view==="home")home();else if(G0){const v=state.view;
+  if(["kids-quiz","pictures","satsang-quiz","vach"].includes(v)&&G0.qs&&G0.qs[G0.i]&&!G0.qs[G0.i]._done)mcShow();
+  else if(v==="who"&&G0.rounds&&G0.rounds[G0.i])whoShow();else if(v==="timeline"&&G0.rounds)tlShow();else if(v==="words"&&G0.ws)wShow()}}).observe(document.documentElement,{attributes:true,attributeFilter:["data-sp-lang"]});
+home();
+fetch("../data/play/bank.json").then(r=>r.json()).then(d=>{B=d;route()}).catch(()=>{app.insertAdjacentHTML("afterbegin",`<p class="note">${T("The games could not load. Please refresh.","રમતો લોડ ન થઈ. ફરી ખોલો.")}</p>`)});
+})();
+</script>
+</body>
+</html>
