@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <script src="theme.js"></script>
+<link rel="stylesheet" href="reader-plus.css">
 <title>Vachanamrut Concordance</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -326,6 +327,7 @@ footer{border-top:1px solid var(--line);padding-block:20px 40px;color:var(--ink-
       <div class="sugg" id="sugg" role="listbox" hidden></div>
     </div>
     <nav class="nav" id="nav">
+      <a href="#read" data-v="read" title="Read the Vachanamrut, from where you left off">Read</a>
       <a href="#index" data-v="index">Index</a>
       <a href="#contents" data-v="contents">Contents</a>
       <a href="#glossary" data-v="glossary">Glossary</a>
@@ -340,11 +342,12 @@ footer{border-top:1px solid var(--line);padding-block:20px 40px;color:var(--ink-
   </div>
 </header>
 <main class="wrap" id="main"><div class="loading">Loading the Vachanamrut…</div></main>
-<footer class="wrap">Text decoded from the Gujarati Vachanamrut PDF (Shree Swaminarayan Mandir, Bhuj edition, 704 pages). Page numbers are PDF pages. Sanskrit passages are OCR text. Common function words are not indexed; use full-text search for them. The Vachanamrut Nondh section reproduces the reference index compiled by Ashwin Babubhai Shah, with special guidance / inspiration from Nathji Mandal and (Bhaiji Dada and Dadaji).</footer>
+<footer class="wrap">Text decoded from the Gujarati Vachanamrut PDF (Shree Swaminarayan Mandir, Bhuj edition, 704 pages). Page numbers are PDF pages. Sanskrit passages are OCR text. Common function words are not indexed; use full-text search for them. The Vachanamrut Nondh section reproduces the reference index compiled by Ashwin Babubhai Shah, with special guidance / inspiration from Nathji Mandal and (Bhaiji Dada and Dadaji). Readings linked from YouTube: <a href="https://www.youtube.com/playlist?list=PL0UDhcbp2yeFTV1TlFL-8175qxNjTCHGe" target="_blank" rel="noopener">Shree Swaminarayan Gurukul Rajkot</a> and <a href="https://www.youtube.com/playlist?list=PLvP9u6s1SggBnUk5J_qc-DAIBSoC3mnUX" target="_blank" rel="noopener">Pu. Gyanjivandasji Swami, Kundaldham</a>; see <a href="#sources">Sources</a>.</footer>
 <div class="tip" id="tip" hidden></div>
 <div id="prog" aria-hidden="true"></div>
 <button id="totop" aria-label="Back to top" hidden>↑</button>
 
+<script src="reader-plus.js"></script>
 <script>
 "use strict";
 const $=s=>document.querySelector(s);
@@ -403,12 +406,14 @@ async function load(){
   const D=window.VC_DATA;
   const [t,ix,gl,bib,nd]=D?[D.text,D.index,D.glossary,D.biblio,D.nondh]:await Promise.all(["text","index","glossary","biblio","nondh"].map(n=>fetch(`data/${n}.json`).then(r=>{if(!r.ok)throw new Error(n);return r.json()})));
   T=t;IX=ix;GL=gl;BIB=bib;ND=nd;
+  if(window.RP)await RP.loadVideos();
   ND.byV={};ND.tkeys=[];ND.bykey=new Map();
   ND.topics.forEach((g,i)=>{g.i=i;ND.tkeys.push(new Set((g.t.match(/[\u0A81-\u0AE3]+/g)||[]).map(nkey)));if(!ND.bykey.has(g.k))ND.bykey.set(g.k,i);
     g.r.forEach(r=>{(ND.byV[r]||(ND.byV[r]=[])).push(i)})});
   ND.parByV={};ND.parables.forEach((p,i)=>{if(p[0])(ND.parByV[p[0]]||(ND.parByV[p[0]]=[])).push(i)});
   SECLIST=T.sections; SECLIST.forEach((s,i)=>{SEC[s.k]={...s,i,vs:[],wc:0}});
   T.v.forEach((v,i)=>{v.i=i;v.wc=T.wc[i];VBYID[v.id]=v;SEC[v.sec].vs.push(i);SEC[v.sec].wc+=v.wc});
+  SECLIST=SECLIST.map(s=>SEC[s.k]);
   IX.forEach((e,i)=>{e.i=i;e._fk=new Set(e.f.map(nkey));for(const f of e._fk) if(!FORM2L.has(f)) FORM2L.set(f,i)});
   GL.forEach(g=>g.lemmas.forEach(l=>{(IX[l]._gl||(IX[l]._gl=[])).push(g)}));
 }
@@ -422,6 +427,8 @@ function route(){
   const h=decodeURIComponent(location.hash.slice(1))||"home";
   document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",h.startsWith(a.dataset.v)));
   $("#sugg").hidden=true;
+  if(window.RP)RP.onLeave(h);
+  if(h==="read"&&window.RP){RP.resume();return}
   let m;
   if((m=h.match(/^w-(\d+)$/))&&IX[+m[1]]) viewWord(+m[1]);
   else if((m=h.match(/^v-(.+)$/))&&VBYID[m[1]]) viewReader(m[1]);
@@ -525,6 +532,7 @@ function viewHome(){
   drawVod(pool[dayNo%pool.length],"Vachanamrut of the day",pool);
   drawWod(dayNo%GL.length,"Term of the day");
   countUp();homeLive();
+  if(window.RP)RP.onHome();
 }
 function excerpt(t,n){t=clean(t);return t.length<=n?t:t.slice(0,t.lastIndexOf(" ",n))+" …"}
 function drawVod(i,label,pool){
@@ -707,6 +715,7 @@ function viewReader(id){
     if(tg){const el=$("#cur");if(el)requestAnimationFrame(()=>el.scrollIntoView({block:"center"}))}
   }
   if(state.hl&&state.hl.para!=null){const el=document.querySelector(`#rtext p[data-pi="${state.hl.para}"]`);if(el){el.classList.add("flashp");requestAnimationFrame(()=>el.scrollIntoView({block:"center"}))}state.hl.para=null}
+  if(window.RP)RP.onReader(v);
   if(state.hl)state.hl.target=null;
 }
 /* ---- contents ---- */
@@ -718,6 +727,7 @@ function viewContents(){
    <div class="toc">${s.vs.map(i=>{const v=T.v[i];return `<a class="tocrow" href="#v-${v.id}"><b>${esc(vlabel(v))}</b><span class="t">${esc(v.title)}</span><span class="p">p. ${v.p0}</span></a>`}).join("")}</div></section>`).join("")}`;
   document.querySelectorAll("[data-jump]").forEach(a=>a.onclick=e=>{e.preventDefault();document.getElementById("sec-"+a.dataset.jump).scrollIntoView({behavior:"smooth"})});
   document.querySelectorAll(".tocrow").forEach(a=>a.addEventListener("click",()=>state.hl=null));
+  if(window.RP)RP.onContents();
 }
 /* ---- A–Z index ---- */
 const LETTERS="અ આ ઇ ઉ ઋ એ ઐ ઓ ઔ ક ખ ગ ઘ ચ છ જ ઝ ટ ઠ ડ ઢ ણ ત થ દ ધ ન પ ફ બ ભ મ ય ર લ વ શ ષ સ હ ળ".split(" ");
@@ -785,7 +795,8 @@ function viewSources(){
   ${BIB.map((b,k)=>`<details class="src" data-k="${k}"><summary><h3><span class="gu">${esc(b.gu)}</span>${esc(b.en)}</h3><span class="cnt">${b.count} mentions · ${b.vachanamruts} Vachanamruts</span><p>${esc(b.description)}</p></summary><div class="body"></div></details>`).join("")}
   <section class="block"><header><h2>Works cited in the Vachanamrut Nondh</h2>${CREDIT}</header>
   <p class="note">Besides the Vachanamrut itself, the Nondh draws on these sampradaya and scriptural works. Counts are Nondh topics that cite each one.</p>
-  ${ND.works.map((w,k)=>`<details class="src"><summary><h3><span class="gu">${esc(w.gu)}</span>${esc(w.en)}</h3><span class="cnt">${w.topics.length} topics</span></summary><div class="toc">${w.topics.map(topicRow).join("")}</div></details>`).join("")}</section>`;
+  ${ND.works.map((w,k)=>`<details class="src"><summary><h3><span class="gu">${esc(w.gu)}</span>${esc(w.en)}</h3><span class="cnt">${w.topics.length} topics</span></summary><div class="toc">${w.topics.map(topicRow).join("")}</div></details>`).join("")}</section>
+  ${window.RP?RP.sourcesHTML():""}`;
   document.querySelectorAll("details.src").forEach(d=>d.addEventListener("toggle",()=>{
     if(!d.open||d.dataset.done)return;d.dataset.done=1;const b=BIB[+d.dataset.k];
     d.querySelector(".body").innerHTML=b.key==="sanskrit"?

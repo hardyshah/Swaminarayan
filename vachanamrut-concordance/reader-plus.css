@@ -1,0 +1,44 @@
+/* Reader additions: remembered reading place, read-aloud player, matched YouTube readings. Uses the page's colour tokens. */
+.rp-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.rp-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font:500 14px var(--f-ui);cursor:pointer;line-height:1.2}
+.rp-btn:hover{border-color:var(--saffron);text-decoration:none}
+.rp-btn.on{background:var(--saffron-soft);border-color:var(--saffron);color:var(--saffron-strong)}
+.rp-btn.primary{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.rp-btn.primary:hover{background:var(--saffron-strong)}
+.rp-btn svg{flex:none}
+.rp-btn small{color:inherit;opacity:.75;font-size:12px}
+.rp-novideo{font-size:13px;color:var(--ink-3)}
+.rp-video{display:grid;gap:8px;margin-top:8px}
+.rp-video .frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000;box-shadow:var(--shadow)}
+.rp-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.rp-video .cap{font-size:13px;color:var(--ink-2);line-height:1.45}
+.rp-resume{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px;color:var(--ink-2);background:var(--peacock-soft);border-radius:10px;padding:8px 12px;margin:0 0 16px}
+.rp-resume button{border:0;background:none;color:var(--peacock);font:600 14px var(--f-ui);cursor:pointer;padding:0;text-decoration:underline}
+.text p.rp-speak{background:var(--saffron-soft);border-radius:6px;box-shadow:0 0 0 6px var(--saffron-soft)}
+/* home card */
+.rp-cont{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--saffron);border-radius:14px;padding:14px 18px;margin:0 0 22px;box-shadow:var(--shadow)}
+.rp-cont .eyebrow{grid-column:1/-1}
+.rp-cont h2{font-family:var(--f-read);font-weight:600;font-size:22px;line-height:1.25;margin:0}
+.rp-cont .meta{font-size:13px;color:var(--ink-2)}
+.rp-cont .bar{grid-column:1/-1;height:4px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.rp-cont .bar i{display:block;height:100%;background:var(--saffron)}
+.rp-cont .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:600px){.rp-cont{grid-template-columns:minmax(0,1fr)}.rp-cont .acts{justify-content:flex-start}}
+/* contents progress */
+.tocrow.rp-has{background-image:linear-gradient(var(--saffron),var(--saffron));background-repeat:no-repeat;background-position:0 100%;background-size:calc(var(--rp,0) * 100%) 2px}
+.tocrow .rp-done{color:var(--peacock);font-weight:700;margin-left:4px}
+/* player */
+.rp-player{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));z-index:95;width:min(760px,calc(100vw - 24px));background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.18);padding:10px 12px;display:grid;gap:8px;font:14px var(--f-ui);color:var(--ink)}
+.rp-player .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rp-player .ctl{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:inline-grid;place-items:center;cursor:pointer;flex:none}
+.rp-player .ctl.play{background:var(--saffron);border-color:var(--saffron);color:#fff;width:46px;height:46px}
+.rp-player .now{flex:1 1 160px;min-width:0;font-size:13px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rp-player .now b{color:var(--ink)}
+.rp-player select{flex:1 1 220px;min-width:0;max-width:100%;font:14px var(--f-ui);padding:7px 8px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.rp-player label{display:inline-flex;gap:6px;align-items:center;color:var(--ink-2);white-space:nowrap}
+.rp-player input[type=range]{width:110px;accent-color:var(--saffron)}
+.rp-player details{font-size:12px;color:var(--ink-3);line-height:1.4}
+.rp-player summary{cursor:pointer;color:var(--ink-2)}
+.rp-player .x{margin-left:auto}
+body.rp-playing{padding-bottom:180px}
+@media (max-width:700px){.rp-player{left:10px;right:66px;width:auto;transform:none;padding:8px 10px;gap:6px}.rp-player input[type=range]{width:80px}.rp-player .now{flex-basis:100%;order:-1}.rp-player .ctl{width:36px;height:36px}.rp-player .ctl.play{width:42px;height:42px}}
