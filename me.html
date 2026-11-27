@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My Satsang</title>
+<meta name="description" content="Your satsang score, progress chart, daily tracker and everything you have added to the site.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<link rel="stylesheet" href="site/collab/ui.css?v=1">
+<style>
+.head{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px}
+.head .grow{min-width:240px}
+.grid{display:grid;grid-template-columns:repeat(var(--cols,2),minmax(0,1fr));gap:var(--gap,16px)}
+.w{padding:var(--pad,18px 20px);position:relative;min-width:0}
+.w.full{grid-column:1/-1}
+.w h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 12px;font-weight:700;display:flex;gap:8px;align-items:center}
+.w h2 .gu{letter-spacing:0;text-transform:none;font-size:14px;color:var(--ink-2);font-weight:600}
+body.flat .w{box-shadow:none}body.outline .w{box-shadow:none;background:transparent;border-width:1.5px}
+body.glass .w{background:color-mix(in srgb,var(--surface) 72%,transparent);backdrop-filter:blur(10px)}
+body.compact{--pad:12px 14px;--gap:10px}body.compact .w h2{margin-bottom:8px}
+body.fs-l{font-size:18px}body.fs-s{font-size:14.5px}
+/* edit mode */
+.editbar{display:none;position:absolute;top:8px;right:8px;gap:4px;z-index:2}
+body.editing .editbar{display:flex}body.editing .w h2{padding-right:136px}
+body.editing .w{outline:2px dashed color-mix(in srgb,var(--saffron) 55%,transparent);outline-offset:3px;cursor:grab}
+body.editing .w.drag{opacity:.45}body.editing .w.over{outline-color:var(--peacock);outline-style:solid}
+.eb{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);width:30px;height:30px;border-radius:8px;cursor:pointer;display:grid;place-items:center;font-size:14px;padding:0}
+.eb:hover{color:var(--ink);background:var(--sunk)}
+.custom{display:none;margin-bottom:16px;padding:16px 18px}
+body.editing .custom{display:block}
+.custom .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.seg{display:flex;background:var(--sunk);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:none;border-radius:8px;padding:6px 4px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink-2)}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.hidden-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+/* hero */
+.hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center}.hero-w{background:linear-gradient(140deg,var(--saffron-soft),transparent 55%),var(--surface)}
+.ring{width:150px;height:150px}
+.ring .lv{font-family:var(--f-display);fill:var(--saffron);font-size:17px}
+.ring .sc{font-family:var(--f-read);font-weight:600;fill:var(--ink);font-size:30px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.stat b{display:block;font-family:var(--f-read);font-size:26px;line-height:1.05}.stat span{font-size:12.5px;color:var(--ink-2)}
+.hello{font-family:var(--f-read);font-size:clamp(22px,4vw,30px);font-weight:600;line-height:1.2;margin:0}
+/* tracker */
+.trk-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.trk-top input[type=date]{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;background:var(--surface);color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tile{border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:grid;gap:6px;background:var(--surface);transition:border-color .2s,background .2s}
+.tile.done{border-color:var(--good);background:color-mix(in srgb,var(--good) 8%,var(--surface))}
+.tile .nm{display:flex;gap:8px;align-items:center;font-weight:600;font-size:14.5px}.tile .nm small{display:block;font-weight:500;font-size:12px;color:var(--ink-3)}
+.tile .ic{font-size:22px}
+.tile .ctl{display:flex;align-items:center;gap:6px}
+.tile .ctl button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--sunk);font-size:18px;cursor:pointer;color:var(--ink);display:grid;place-items:center;padding:0}
+.tile .ctl button:active{transform:scale(.94)}
+.tile .ctl input{width:56px;text-align:center;font:inherit;font-weight:600;font-size:17px;border:0;background:none;color:var(--ink);font-variant-numeric:tabular-nums}
+.tile .bar{height:5px;border-radius:3px;background:var(--sunk);overflow:hidden}.tile .bar i{display:block;height:100%;background:var(--good);border-radius:3px;transition:width .3s}
+.tile .u{font-size:12px;color:var(--ink-3)}
+/* charts */
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart .ax{font-size:11px;fill:var(--ink-3)}
+.chart .gl{stroke:var(--line);stroke-width:1}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--paper);font-size:12.5px;padding:5px 9px;border-radius:8px;z-index:50;white-space:nowrap;transform:translate(-50%,-120%);display:none}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);margin-top:8px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.hm{overflow-x:auto}.hm svg{min-width:640px}
+.brk{display:grid;gap:8px}.brk .r{display:grid;grid-template-columns:140px minmax(0,1fr) 56px;gap:10px;align-items:center;font-size:14px}
+.brk .r .b{height:12px;border-radius:6px;background:var(--saffron);min-width:2px}.brk .r .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+/* badges */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.bdg{text-align:center;padding:10px 6px;border-radius:14px;border:1px solid var(--line);font-size:12.5px;line-height:1.3}
+.bdg .e{font-size:28px;display:block;margin-bottom:4px;filter:grayscale(1);opacity:.4}.bdg.got{background:var(--saffron-soft);border-color:transparent}.bdg.got .e{filter:none;opacity:1}
+.bdg small{display:block;color:var(--ink-3);margin-top:2px}
+/* contributions */
+.citem{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.citem .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-2);margin-bottom:6px}
+.citem p{margin:6px 0 0;white-space:pre-wrap;font-size:14.5px}
+.note{font-size:13px;margin-top:8px;padding:7px 10px;border-radius:8px;background:var(--sunk)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filters button{border:1px solid var(--line);background:none;border-radius:999px;padding:4px 11px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink-2)}
+.filters button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.short{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.short a{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--sunk);color:var(--ink);font-weight:500;font-size:14px}.short a:hover{text-decoration:none;background:var(--saffron-soft)}
+.goals{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.goals label{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:var(--sunk);font-size:14px}
+.goals input{width:70px;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:8px;padding:4px 6px;background:var(--surface);color:var(--ink);text-align:right}
+.gate{max-width:520px;margin:40px auto;text-align:center;padding:30px}
+@media (max-width:760px){.grid{grid-template-columns:1fr!important}.hero{grid-template-columns:1fr;justify-items:center;text-align:center}.brk .r{grid-template-columns:100px minmax(0,1fr) 48px}}
+</style>
+</head>
+<body>
+<script>window.SPC_PAGE="me"</script>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">My Satsang</span></a>
+  <nav class="nav" aria-label="Pages"><a href="./">Today</a><a href="vachanamrut-concordance/">Vachanamrut</a><a href="kaal-patrak/">Kaal Patrak</a><a class="on" href="me.html">My Satsang</a><a href="admin.html" id="nav-admin" hidden>Admin</a></nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+<main class="wrap" id="main">
+  <p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+  <div id="demo"></div>
+  <div id="app" hidden>
+    <div class="head">
+      <div class="grow"><p class="eyebrow">મારો સત્સંગ · My Satsang</p><h1 class="title">મારું પાનું</h1></div>
+      <button class="btn ghost" id="edit" aria-pressed="false">🎨 Customise layout</button>
+    </div>
+    <section class="card custom" aria-label="Customise">
+      <div class="row" style="margin-bottom:12px"><b class="grow">Arrange your page</b><span class="small muted">Drag cards, or use ↑ ↓. ⇔ makes a card wide or narrow. 👁 hides it.</span></div>
+      <div class="opts">
+        <div class="field">Columns<div class="seg" data-p="cols"><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button></div></div>
+        <div class="field">Spacing<div class="seg" data-p="density"><button data-v="compact">Compact</button><button data-v="comfy">Comfortable</button></div></div>
+        <div class="field">Card style<div class="seg" data-p="style"><button data-v="soft">Soft</button><button data-v="flat">Flat</button><button data-v="outline">Outline</button><button data-v="glass">Glass</button></div></div>
+        <div class="field">Text size<div class="seg" data-p="fs"><button data-v="s">A−</button><button data-v="m">A</button><button data-v="l">A+</button></div></div>
+        <label class="field">Greeting<select class="in" data-p="greet"><option value="jsn">જય સ્વામિનારાયણ</option><option value="jay">Jay Swaminarayan</option><option value="none">No greeting</option></select></label>
+        <label class="field">Chart range<select class="in" data-p="range"><option value="30">30 days</option><option value="90">90 days</option><option value="365">1 year</option></select></label>
+      </div>
+      <div class="hidden-list" id="hiddenList"></div>
+      <div class="row" style="margin-top:14px"><button class="btn sm" id="done">Done</button><button class="btn ghost sm" id="reset">Reset to default</button><span class="small muted" id="saved"></span></div>
+    </section>
+    <div class="grid" id="grid"></div>
+  </div>
+</main>
+<div class="tip" id="tip"></div>
+
+<dialog id="dlg"><div class="dh"><h3 id="dlgT"></h3><button class="x" data-close aria-label="Close">×</button></div><div class="db" id="dlgB"></div><div class="df" id="dlgF"></div></dialog>
+
+<script src="site/collab/config.js?v=1"></script>
+<script src="site/collab/store.js?v=1"></script>
+<script>
+(async function(){
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const S=await SPC.whenReady();
+const K=SPC.KINDS,KM=Object.fromEntries(K.map(k=>[k.k,k]));
+const fmt=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const addDays=(ds,n)=>{const d=new Date(ds+"T12:00:00");d.setDate(d.getDate()+n);return fmt(d)};
+const STATUS={open:"Open · team answers within 24 h",acknowledged:"Seen · action in progress",pending:"Waiting for review",approved:"Approved",rejected:"Not accepted",changes:"Changes asked"};
+const KIND={comment:"Comment",edit:"Edit suggestion",upload:"Upload",event:"Event"};
+const PAGES=[["./","🕉️","Today"],["vachanamrut-concordance/","📖","Vachanamrut"],["kaal-patrak/","🗓️","Kaal Patrak"],["vicharan/","🗺️","Vicharan"],["panchang.html","🌗","Panchang"],["vedic-time.html","⏳","Vedic time"],["solar-system.html","🪐","Solar system"],["vedas.html","📜","Vedas"],["murti-3d/","🛕","Murti 3D"],["shangaar.html","🌺","Shangaar"],["vachanamrut-concordance/library.html","📚","Library"],["vachanamrut-concordance/timeline.html","🧭","Logbook"]];
+
+if(S.mode==="demo")$("#demo").innerHTML='<div class="demo"><b>Demo mode.</b> Your entries stay in this browser until the site is connected to its database.</div>';
+let SES=await S.session();
+if(!SES){$("#main").insertAdjacentHTML("beforeend",`<div class="card gate"><p class="eyebrow">Members only</p><h2 style="font-family:var(--f-read);margin:0 0 8px">Please sign in</h2><p class="sub">This page shows your own satsang score, tracker and contributions.</p><p style="margin-top:16px"><a class="btn" href="login.html?next=${encodeURIComponent(location.href)}">Sign in · પ્રવેશ</a></p></div>`);return}
+if(!SPC.verified(SES)){location.replace("login.html?next="+encodeURIComponent(location.href));return}
+if(SPC.isAdmin(SES.profile))$("#nav-admin").hidden=false;
+$("#app").hidden=false;
+
+/* ---------- layout model ---------- */
+const WIDGETS={hero:{t:"Overview",gu:"સારાંશ",full:true},tracker:{t:"Today's tracker",gu:"આજની નોંધ",full:true},progress:{t:"Progress chart",gu:"પ્રગતિ"},breakdown:{t:"Where your score comes from",gu:"ગુણ વિભાગ"},
+  heatmap:{t:"Year at a glance",gu:"વર્ષ",full:true},badges:{t:"Milestones",gu:"સિદ્ધિઓ"},goals:{t:"My daily goals",gu:"મારાં લક્ષ્ય"},contribs:{t:"My uploads, edits and comments",gu:"મારું યોગદાન",full:true},shortcuts:{t:"My favourite pages",gu:"પ્રિય પાનાં"},account:{t:"Account",gu:"ખાતું"}};
+const DEF={order:["hero","tracker","progress","breakdown","heatmap","contribs","badges","goals","shortcuts","account"],hidden:[],wide:{},cols:2,density:"comfy",style:"soft",fs:"m",greet:"jsn",range:"30",goals:{},fav:["./","vachanamrut-concordance/","kaal-patrak/","vicharan/"]};
+let L=load();
+function load(){let l=SES.profile&&SES.profile.layout;if(!l)try{l=JSON.parse(localStorage.getItem("spc-layout-"+SES.user.id))}catch(e){}
+  l=Object.assign({},DEF,l||{});Object.keys(WIDGETS).forEach(k=>{if(l.order.indexOf(k)<0)l.order.push(k)});l.order=l.order.filter(k=>WIDGETS[k]);return l}
+let saveT=null;function save(){try{localStorage.setItem("spc-layout-"+SES.user.id,JSON.stringify(L))}catch(e){}clearTimeout(saveT);$("#saved").textContent="Saving…";
+  saveT=setTimeout(async()=>{try{await S.saveProfile({layout:L});$("#saved").textContent="Saved to your account"}catch(e){$("#saved").textContent="Saved on this device"}},500)}
+function applyPrefs(){const g=$("#grid");g.style.setProperty("--cols",L.cols);document.body.classList.toggle("compact",L.density==="compact");
+  ["flat","outline","glass"].forEach(c=>document.body.classList.toggle(c,L.style===c));["fs-s","fs-l"].forEach(c=>document.body.classList.remove(c));if(L.fs!=="m")document.body.classList.add("fs-"+L.fs);
+  $$(".custom [data-p]").forEach(el=>{const p=el.dataset.p;if(el.tagName==="SELECT")el.value=L[p];else el.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(L[p])===b.dataset.v))})}
+$$(".custom .seg").forEach(s=>s.onclick=e=>{const b=e.target.closest("button");if(!b)return;const p=s.dataset.p;L[p]=p==="cols"?+b.dataset.v:b.dataset.v;applyPrefs();save();if(p==="cols")draw()});
+$$(".custom select").forEach(s=>s.onchange=()=>{L[s.dataset.p]=s.value;save();draw()});
+$("#edit").onclick=()=>{const on=!document.body.classList.contains("editing");document.body.classList.toggle("editing",on);$("#edit").setAttribute("aria-pressed",on);$("#edit").textContent=on?"✓ Done customising":"🎨 Customise layout";draw()};
+$("#done").onclick=()=>$("#edit").click();
+$("#reset").onclick=()=>{const keep={goals:L.goals,fav:L.fav};L=Object.assign(JSON.parse(JSON.stringify(DEF)),keep);applyPrefs();save();draw()};
+
+/* ---------- data ---------- */
+let SET,ACTS=[],MINE=[],SC;
+async function data(){SET=await S.getSettings();const from=addDays(SPC.today(),-370);[ACTS,MINE]=await Promise.all([S.listActivities(from),S.listMine()]);SC=SPC.score(ACTS,MINE,SET.points)}
+await data();
+S.on("activity",async()=>{ACTS=await S.listActivities(addDays(SPC.today(),-370));SC=SPC.score(ACTS,MINE,SET.points);draw(["tracker"])});
+S.on("contrib",async()=>{MINE=await S.listMine();SC=SPC.score(ACTS,MINE,SET.points);draw()});
+
+/* ---------- render ---------- */
+let trkDay=SPC.today(),cFilter="all";
+function draw(skip){skip=skip||[];const g=$("#grid");const editing=document.body.classList.contains("editing");
+  const vis=L.order.filter(k=>!L.hidden.includes(k)&&(k!=="tracker"||SET.features.tracker));
+  const keep={};skip.forEach(k=>{const el=g.querySelector(`[data-w="${k}"]`);if(el)keep[k]=el});
+  g.innerHTML="";
+  vis.forEach((k,i)=>{let el=keep[k];if(!el){el=document.createElement("section");el.className="card w";el.dataset.w=k;
+      el.innerHTML=`<h2>${WIDGETS[k].t} <span class="gu">${WIDGETS[k].gu}</span></h2><div class="wb"></div>`;BODY[k](el.querySelector(".wb"),el)}
+    const wide=L.wide[k]!=null?L.wide[k]:!!WIDGETS[k].full;el.classList.toggle("full",wide);if(k==="hero")el.classList.add("hero-w");
+    el.querySelector(".editbar")&&el.querySelector(".editbar").remove();
+    if(editing){const b=document.createElement("div");b.className="editbar";b.innerHTML=`<button class="eb" data-a="up" aria-label="Move ${WIDGETS[k].t} up" ${i?"":"disabled"}>↑</button><button class="eb" data-a="dn" aria-label="Move down" ${i<vis.length-1?"":"disabled"}>↓</button><button class="eb" data-a="wide" aria-label="Wide or narrow">⇔</button><button class="eb" data-a="hide" aria-label="Hide ${WIDGETS[k].t}">👁</button>`;
+      el.appendChild(b);b.onclick=e=>{const a=e.target.closest("[data-a]");if(!a)return;e.stopPropagation();const o=L.order,ix=o.indexOf(k);
+        if(a.dataset.a==="up"){const j=o.indexOf(vis[i-1]);o.splice(ix,1);o.splice(j,0,k)}if(a.dataset.a==="dn"){const j=o.indexOf(vis[i+1]);o.splice(ix,1);o.splice(j,0,k)}
+        if(a.dataset.a==="wide")L.wide[k]=!wide;if(a.dataset.a==="hide")L.hidden.push(k);save();draw()};
+      el.draggable=true;el.ondragstart=e=>{el.classList.add("drag");e.dataTransfer.setData("text/plain",k);e.dataTransfer.effectAllowed="move"};el.ondragend=()=>el.classList.remove("drag");
+      el.ondragover=e=>{e.preventDefault();el.classList.add("over")};el.ondragleave=()=>el.classList.remove("over");
+      el.ondrop=e=>{e.preventDefault();el.classList.remove("over");const from=e.dataTransfer.getData("text/plain");if(!from||from===k)return;const o=L.order;o.splice(o.indexOf(from),1);o.splice(o.indexOf(k),0,from);save();draw()}}
+    else{el.draggable=false;el.ondragstart=el.ondrop=el.ondragover=null}
+    g.appendChild(el)});
+  const hl=$("#hiddenList");hl.innerHTML=L.hidden.length?'<span class="small muted">Hidden:</span>'+L.hidden.map(k=>`<button class="btn ghost sm" data-show="${k}">＋ ${WIDGETS[k].t}</button>`).join(""):"";
+  hl.querySelectorAll("[data-show]").forEach(b=>b.onclick=()=>{L.hidden=L.hidden.filter(x=>x!==b.dataset.show);save();draw()});
+}
+function refresh(...ks){ks.forEach(k=>{const el=document.querySelector(`[data-w="${k}"] .wb`);if(el)BODY[k](el)})}
+
+const tip=$("#tip");function showTip(e,t){tip.textContent=t;tip.style.display="block";tip.style.left=e.clientX+"px";tip.style.top=e.clientY+"px"}function hideTip(){tip.style.display="none"}
+const goal=k=>L.goals[k]!=null?+L.goals[k]:KM[k].goal;
+
+const BODY={
+hero(b){const p=SES.profile||{},s=SC,pct=s.nextAt?Math.min(1,(s.total-s.from)/(s.nextAt-s.from)):1;const r=62,c=2*Math.PI*r;
+  const td=s.byDay[SPC.today()]||0,wk=Object.entries(s.byDay).filter(([d])=>d>addDays(SPC.today(),-7)).reduce((a,[,v])=>a+v,0);
+  const greet={jsn:"જય સ્વામિનારાયણ, ",jay:"Jay Swaminarayan, ",none:""}[L.greet]||"";
+  b.classList.add("hero");
+  b.innerHTML=`<svg class="ring" viewBox="0 0 150 150" role="img" aria-label="Satsang score ${s.total}, level ${s.levelEn}"><circle cx="75" cy="75" r="${r}" fill="none" stroke="var(--sunk)" stroke-width="11"/>
+    <circle cx="75" cy="75" r="${r}" fill="none" stroke="var(--saffron)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}" transform="rotate(-90 75 75)" style="transition:stroke-dashoffset 1s ease"/>
+    <text class="sc" x="75" y="78" text-anchor="middle">${Math.round(s.total)}</text><text class="lv" x="75" y="102" text-anchor="middle">${s.levelGu}</text></svg>
+  <div><p class="hello">${greet}${esc(p.name||SES.user.email)}</p><p class="sub">Satsang score <b>${Math.round(s.total)}</b> · level <b>${s.levelEn}</b> (${s.levelGu})${s.nextAt?` · ${Math.ceil(s.nextAt-s.total)} points to ${s.nextEn}`:" · highest level"}</p>
+  <div class="stats"><div class="stat"><b>${Math.round(td)}</b><span>points today</span></div><div class="stat"><b>${Math.round(wk)}</b><span>this week</span></div><div class="stat"><b>${SPC.streak(s.byDay)}🔥</b><span>day streak</span></div>
+  <div class="stat"><b>${MINE.filter(c=>c.status==="approved").length}<small style="font-size:14px;color:var(--ink-3)">/${MINE.length}</small></b><span>items approved</span></div></div></div>`},
+
+tracker(b){const day=trkDay;const acts=ACTS.filter(a=>a.day===day);const q=k=>acts.filter(a=>a.kind===k).reduce((s,a)=>s+(+a.qty||0),0);
+  const pts=acts.reduce((s,a)=>s+(+a.qty||0)*(+SET.points[a.kind]||0),0);
+  b.innerHTML=`<div class="trk-top"><button class="btn ghost sm" data-d="-1" aria-label="Previous day">‹</button><input type="date" value="${day}" max="${SPC.today()}" aria-label="Day"><button class="btn ghost sm" data-d="1" aria-label="Next day" ${day>=SPC.today()?"disabled":""}>›</button>
+    ${day!==SPC.today()?'<button class="btn ghost sm" data-d="0">Today</button>':""}<span class="grow"></span><span class="small"><b>${Math.round(pts*10)/10}</b> points on this day</span></div>
+    <div class="tiles">${K.filter(k=>!k.auto).map(k=>{const v=q(k.k),g=goal(k.k);return`<div class="tile ${g&&v>=g?"done":""}" data-k="${k.k}"><div class="nm"><span class="ic" aria-hidden="true">${k.icon}</span><span>${k.gu}<small>${k.en}</small></span></div>
+      <div class="ctl"><button data-s="-1" aria-label="Less ${k.en}">−</button><input inputmode="decimal" value="${v}" aria-label="${k.en} (${k.unit})"><button data-s="1" aria-label="More ${k.en}">＋</button></div>
+      ${g?`<div class="bar"><i style="width:${Math.min(100,v/g*100)}%"></i></div>`:""}<span class="u">${k.unit}${g?` · goal ${g}`:""} · ${SET.points[k.k]} pt each</span></div>`}).join("")}</div>
+    <p class="small muted" style="margin:10px 0 0">Quiz and game points are added automatically when you play.</p>`;
+  b.querySelectorAll("[data-d]").forEach(x=>x.onclick=()=>{const d=+x.dataset.d;trkDay=d===0?SPC.today():addDays(trkDay,d);if(trkDay>SPC.today())trkDay=SPC.today();BODY.tracker(b)});
+  b.querySelector("input[type=date]").onchange=e=>{if(e.target.value){trkDay=e.target.value>SPC.today()?SPC.today():e.target.value;BODY.tracker(b)}};
+  b.querySelectorAll(".tile").forEach(t=>{const k=t.dataset.k,inp=t.querySelector("input");let tm=null;
+    const set=v=>{v=Math.max(0,Math.round(v*100)/100);inp.value=v;const g=goal(k);t.classList.toggle("done",!!g&&v>=g);const bar=t.querySelector(".bar i");if(bar)bar.style.width=Math.min(100,v/g*100)+"%";
+      clearTimeout(tm);tm=setTimeout(async()=>{await S.setDayQty(day,k,v);if(day===SPC.today()&&g&&v>=g&&window.navigator.vibrate)navigator.vibrate(20)},350)};
+    t.querySelectorAll("[data-s]").forEach(x=>x.onclick=()=>set((+inp.value||0)+(+x.dataset.s)*KM[k].step));inp.onchange=()=>set(+inp.value||0)})},
+
+progress(b){const n=+L.range||30,days=[];for(let i=n-1;i>=0;i--)days.push(addDays(SPC.today(),-i));
+  const vals=days.map(d=>SC.byDay[d]||0),max=Math.max(10,...vals);const W=640,H=220,pl=34,pb=24,iw=W-pl-8,ih=H-pb-10,bw=iw/n;
+  const avg=vals.map((v,i)=>{const s=vals.slice(Math.max(0,i-6),i+1);return s.reduce((a,b)=>a+b,0)/s.length});
+  const y=v=>10+ih-(v/max)*ih;const ticks=[0,max/2,max].map(v=>Math.round(v));
+  const step=n<=30?7:n<=90?14:60;const lbl=days.map((d,i)=>i%step===0?`<text class="ax" x="${pl+i*bw+bw/2}" y="${H-6}" text-anchor="middle">${new Date(d+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})}</text>`:"").join("");
+  b.innerHTML=`<div class="row" style="margin-bottom:8px"><div class="seg" style="max-width:240px" id="rng">${[30,90,365].map(v=>`<button data-v="${v}" aria-pressed="${n===v}">${v===365?"1 year":v+" days"}</button>`).join("")}</div><span class="grow"></span><span class="small muted">Total in range: <b>${Math.round(vals.reduce((a,b)=>a+b,0))}</b></span></div>
+  <div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Daily satsang points for the last ${n} days">${ticks.map(t=>`<line class="gl" x1="${pl}" x2="${W-8}" y1="${y(t)}" y2="${y(t)}"/><text class="ax" x="${pl-6}" y="${y(t)+4}" text-anchor="end">${t}</text>`).join("")}
+    ${vals.map((v,i)=>`<rect x="${pl+i*bw+bw*.12}" y="${y(v)}" width="${Math.max(1,bw*.76)}" height="${Math.max(0,10+ih-y(v))}" rx="${Math.min(4,bw*.3)}" fill="var(--saffron)" opacity=".85" data-i="${i}"/>`).join("")}
+    <polyline fill="none" stroke="var(--peacock)" stroke-width="2.2" stroke-linejoin="round" points="${avg.map((v,i)=>`${pl+i*bw+bw/2},${y(v)}`).join(" ")}"/>${lbl}</svg></div>
+  <div class="legend"><span><i style="background:var(--saffron)"></i>Points each day</span><span><i style="background:var(--peacock)"></i>7-day average</span></div>`;
+  b.querySelectorAll("rect[data-i]").forEach(r=>{r.onmousemove=e=>{const i=+r.dataset.i;showTip(e,`${new Date(days[i]+"T12:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}: ${Math.round(vals[i]*10)/10} pts`)};r.onmouseleave=hideTip});
+  b.querySelectorAll("#rng button").forEach(x=>x.onclick=()=>{L.range=x.dataset.v;save();BODY.progress(b)})},
+
+breakdown(b){const e=Object.entries(SC.byKind).sort((a,b)=>b[1]-a[1]);if(!e.length){b.innerHTML='<div class="empty">Log something in the tracker to see this fill up.</div>';return}const m=e[0][1];
+  b.innerHTML=`<div class="brk">${e.map(([k,v])=>{const meta=KM[k];return`<div class="r"><span>${meta?meta.icon+" "+meta.en:"✍️ Contributions"}</span><div class="b" style="width:${v/m*100}%;${k==="contrib"?"background:var(--peacock)":""}"></div><span class="v">${Math.round(v)}</span></div>`}).join("")}</div>
+  <p class="small muted" style="margin:12px 0 0">Points per unit are set by the admin. Approved uploads and edits count ${SET.points.upload}.</p>`},
+
+heatmap(b){const end=new Date(SPC.today()+"T12:00"),start=new Date(end);start.setDate(start.getDate()-364-start.getDay());const cs=12,gp=3,cells=[];let d=new Date(start),col=0,months="";let lastM=-1;
+  const vals=Object.values(SC.byDay),mx=Math.max(1,...vals);
+  while(d<=end){const ds=fmt(d),v=SC.byDay[ds]||0,row=d.getDay();if(row===0&&d.getMonth()!==lastM&&d.getDate()<=7){months+=`<text class="ax" x="${30+col*(cs+gp)}" y="10">${d.toLocaleDateString(undefined,{month:"short"})}</text>`;lastM=d.getMonth()}
+    const lv=v?Math.min(4,Math.ceil(v/mx*4)):0;cells.push(`<rect x="${30+col*(cs+gp)}" y="${16+row*(cs+gp)}" width="${cs}" height="${cs}" rx="3" fill="${lv?`color-mix(in srgb,var(--good) ${25+lv*18}%,var(--sunk))`:"var(--sunk)"}" data-d="${ds}" data-v="${Math.round(v)}"/>`);
+    if(row===6)col++;d.setDate(d.getDate()+1)}
+  const active=vals.filter(v=>v>0).length;
+  b.innerHTML=`<div class="hm chart"><svg viewBox="0 0 ${40+(col+1)*(cs+gp)} ${20+7*(cs+gp)}" role="img" aria-label="Days with satsang in the last year: ${active}">${months}<text class="ax" x="0" y="${16+1*(cs+gp)+10}">Mon</text><text class="ax" x="0" y="${16+5*(cs+gp)+10}">Fri</text>${cells.join("")}</svg></div>
+  <p class="small muted" style="margin:8px 0 0">${active} active days in the last year · longest-ever streak shown in Milestones.</p>`;
+  b.querySelectorAll("rect[data-d]").forEach(r=>{r.onmousemove=e=>showTip(e,`${new Date(r.dataset.d+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}: ${r.dataset.v} pts`);r.onmouseleave=hideTip;r.onclick=()=>{trkDay=r.dataset.d;refresh("tracker");document.querySelector('[data-w="tracker"]')?.scrollIntoView({behavior:"smooth",block:"center"})}})},
+
+badges(b){const tot=k=>ACTS.filter(a=>a.kind===k).reduce((s,a)=>s+(+a.qty||0),0);const days=Object.keys(SC.byDay).sort();let best=0,run=0,prev=null;
+  for(const d of days){if(!(SC.byDay[d]>0))continue;run=prev&&addDays(prev,1)===d?run+1:1;best=Math.max(best,run);prev=d}
+  const appr=MINE.filter(c=>c.status==="approved");
+  const B=[["🌱","First step","Log your first entry",ACTS.length>0],["🔥","7-day streak","7 days in a row",best>=7],["🪔","30-day streak","30 days in a row",best>=30],["🕉️","108 days","108-day streak",best>=108],
+    ["📿","108 malas","Total malas",tot("mala")>=108],["📿","1,008 malas","Total malas",tot("mala")>=1008],["📖","10 Vachanamruts","Read 10",tot("vachanamrut")>=10],["📚","All 273","Read every Vachanamrut",tot("vachanamrut")>=273],
+    ["📜","212 shlokas","Full Shikshapatri",tot("shikshapatri")>=212],["🙏","10 hours seva","Seva hours",tot("seva")>=10],["🌙","11 ekadashis","Vrat kept",tot("ekadashi")>=11],["✍️","Contributor","First approved item",appr.length>=1],
+    ["🏅","10 approved","Approved items",appr.length>=10],...SPC.LEVELS.slice(1).map((l,i)=>["🌳",l[2],`Reach ${l[0]} points`,SC.total>=l[0]])];
+  b.innerHTML=`<p class="small muted" style="margin:-4px 0 10px">Best streak: <b>${best}</b> days · ${B.filter(x=>x[3]).length} of ${B.length} earned</p><div class="badges">${B.map(x=>`<div class="bdg ${x[3]?"got":""}" title="${esc(x[2])}"><span class="e" aria-hidden="true">${x[0]}</span>${esc(x[1])}<small>${x[3]?"Earned":esc(x[2])}</small></div>`).join("")}</div>`},
+
+goals(b){b.innerHTML=`<div class="goals">${K.filter(k=>!k.auto).map(k=>`<label>${k.icon} ${k.en}<input type="number" min="0" step="${k.step}" value="${goal(k.k)}" data-k="${k.k}" aria-label="Daily goal for ${k.en} in ${k.unit}"></label>`).join("")}</div><p class="small muted" style="margin:10px 0 0">0 means no daily goal. Goals fill the bars in the tracker.</p>`;
+  b.querySelectorAll("input").forEach(i=>i.onchange=()=>{L.goals[i.dataset.k]=Math.max(0,+i.value||0);save();refresh("tracker")})},
+
+contribs(b){const f=cFilter,rows=MINE.filter(c=>f==="all"||c.status===f||c.kind===f||(f==="open"&&SPC.isOpenComment(c)));const n=s=>MINE.filter(c=>c.status===s).length;
+  b.innerHTML=`<div class="filters">${[["all","All "+MINE.length],["open","Open comments "+MINE.filter(SPC.isOpenComment).length],["pending","Waiting "+n("pending")],["changes","Changes asked "+n("changes")],["approved","Approved "+n("approved")],["rejected","Not accepted "+n("rejected")],["upload","Uploads"],["edit","Edits"],["comment","Comments"]].map(([k,l])=>`<button data-f="${k}" aria-pressed="${f===k}">${l}</button>`).join("")}</div>
+  ${rows.length?rows.map(c=>`<div class="citem" data-id="${c.id}"><div class="meta"><span class="chip ${c.status}">${STATUS[c.status]}</span><b>${KIND[c.kind]||c.kind}</b><span>on <a href="${esc(SPC.BASE+(c.page==="/"?"":c.page.replace(/^\//,"")))}">${esc(c.page)}</a></span><span>· ${new Date(c.created_at).toLocaleString()}</span></div>
+    ${c.target?`<div class="q">${esc(c.target)}</div>`:""}${c.title&&c.kind!=="comment"?`<b>${esc(c.title)}</b>`:""}${c.body?`<p>${esc(c.body)}</p>`:""}<div class="prev fv"></div>
+    ${c.admin_note?`<div class="note"><b>Admin note:</b> ${esc(c.admin_note)}</div>`:""}
+    ${c.kind==="comment"&&window.SPCDue&&SPC.isOpenComment(c)?`<div style="margin-top:6px">${SPCDue(c)} ${c.anchor_label?`<a class="small" href="${esc(SPC.BASE+(c.page==="/"?"":c.page.replace(/^\//,"")))}#spc=${c.id}">📍 ${esc(c.anchor_label.slice(0,70))}</a>`:""}</div>`:""}
+    ${c.status!=="approved"?`<div class="row" style="margin-top:8px"><button class="btn ghost sm" data-ed>Edit</button><button class="btn ghost sm" data-del>${c.kind==="comment"?"Withdraw":"Delete"}</button></div>`:""}</div>`).join(""):'<div class="empty">Nothing here yet. Use the <b>Contribute</b> button at the bottom-left of any page to comment, suggest an edit or upload.</div>'}`;
+  b.querySelectorAll("[data-f]").forEach(x=>x.onclick=()=>{cFilter=x.dataset.f;BODY.contribs(b)});
+  rows.filter(c=>c.file_path).forEach(async c=>{const box=b.querySelector(`[data-id="${c.id}"] .fv`);try{const u=await S.fileUrl(c.file_path);if(u)box.innerHTML=window.SPCPreview?SPCPreview(u,c.file_type,c.file_name):`<a href="${u}" target="_blank" rel="noopener">Open file</a>`}catch(e){box.innerHTML='<span class="small muted">File not available</span>'}});
+  b.querySelectorAll("[data-del]").forEach(x=>x.onclick=async()=>{const id=x.closest("[data-id]").dataset.id;if(!await confirmDlg("Delete this item?","It will be removed for good."))return;await S.deleteMine(id)});
+  b.querySelectorAll("[data-ed]").forEach(x=>x.onclick=()=>{const c=MINE.find(r=>r.id===x.closest("[data-id]").dataset.id);
+    dlg("Edit your "+(KIND[c.kind]||"item").toLowerCase(),`${c.kind!=="comment"?`<label class="field">Title / source<input name="title" value="${esc(c.title)}"></label>`:""}<label class="field">Text<textarea name="body" rows="6">${esc(c.body)}</textarea></label><p class="small muted" style="margin:0">Saving sends it back for review.</p>`,
+      [["Save","btn",async f=>{await S.updateMine(c.id,{title:f.title?f.title.value:c.title,body:f.body.value});return true}]])})},
+
+shortcuts(b){b.innerHTML=`<div class="short">${L.fav.map(h=>{const p=PAGES.find(x=>x[0]===h);return p?`<a href="${p[0]}"><span aria-hidden="true">${p[1]}</span>${p[2]}</a>`:""}).join("")}</div><p style="margin:10px 0 0"><button class="btn ghost sm" id="pickfav">Choose pages</button></p>`;
+  b.querySelector("#pickfav").onclick=()=>dlg("Choose your favourite pages",`<div class="goals">${PAGES.map(p=>`<label><span>${p[1]} ${p[2]}</span><input type="checkbox" style="width:auto" value="${p[0]}" ${L.fav.includes(p[0])?"checked":""}></label>`).join("")}</div>`,
+    [["Save","btn",f=>{L.fav=[...f.querySelectorAll("input:checked")].map(i=>i.value);save();BODY.shortcuts(b);return true}]])},
+
+account(b){const p=SES.profile||{};b.innerHTML=`<form id="acc" style="display:grid;gap:10px"><label class="field">Display name<input name="name" value="${esc(p.name||"")}" maxlength="80"></label>
+  <div class="small muted">${esc(SES.user.email)} · <span class="chip ${p.role}">${esc(p.role||"member")}</span> · member since ${p.created_at?new Date(p.created_at).toLocaleDateString():"—"}</div>
+  <div class="row"><button class="btn sm">Save name</button><button class="btn ghost sm" type="button" id="pw">Change password</button><button class="btn ghost sm" type="button" id="so">Sign out</button></div><div id="accmsg"></div></form>`;
+  b.querySelector("#acc").onsubmit=async e=>{e.preventDefault();try{SES.profile=await S.saveProfile({name:e.target.name.value});b.querySelector("#accmsg").innerHTML='<div class="msg ok">Saved.</div>';refresh("hero")}catch(err){b.querySelector("#accmsg").innerHTML=`<div class="msg bad">${esc(err.message)}</div>`}};
+  b.querySelector("#so").onclick=async()=>{await S.signOut();location.href="login.html"};
+  b.querySelector("#pw").onclick=()=>dlg("Change password",`<label class="field">New password (8+ characters)<input name="pw" type="password" minlength="8" autocomplete="new-password" required></label>`,[["Save","btn",async f=>{await S.updatePassword(f.pw.value);return true}]])}
+};
+
+/* ---------- dialog helpers ---------- */
+function dlg(title,html,actions){const d=$("#dlg");$("#dlgT").textContent=title;$("#dlgB").innerHTML=`<form id="dlgF0" style="display:grid;gap:12px">${html}</form><div id="dlgM"></div>`;const F=$("#dlgF");F.innerHTML="";
+  return new Promise(res=>{(actions||[]).forEach(([l,c,fn])=>{const b=document.createElement("button");b.className=c;b.textContent=l;b.onclick=async()=>{try{const r=await fn($("#dlgF0"));if(r){d.close();res(r)}}catch(e){$("#dlgM").innerHTML=`<div class="msg bad">${esc(e.message)}</div>`}};F.appendChild(b)});
+    const c=document.createElement("button");c.className="btn ghost";c.textContent="Cancel";c.onclick=()=>{d.close();res(false)};F.appendChild(c);d.showModal()})}
+function confirmDlg(t,m){return dlg(t,`<p style="margin:0">${esc(m)}</p>`,[["Yes","btn bad",()=>true]])}
+$("#dlg [data-close]").onclick=()=>$("#dlg").close();
+
+applyPrefs();draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Admin back office</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<link rel="stylesheet" href="site/collab/ui.css?v=1">
+<style>
+.wrap{max-width:1240px}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px;align-items:start}
+.side{position:sticky;top:72px;padding:10px;display:grid;gap:2px}
+.side button{display:flex;align-items:center;gap:10px;border:0;background:none;padding:9px 12px;border-radius:10px;font:inherit;font-size:14.5px;color:var(--ink-2);cursor:pointer;text-align:left}
+.side button:hover{background:var(--sunk);color:var(--ink)}.side button[aria-current=page]{background:var(--ink);color:var(--paper);font-weight:600}
+.side button .n{margin-left:auto;min-width:22px;height:20px;padding:0 6px;border-radius:10px;background:var(--bad);color:#fff;font-size:11.5px;display:grid;place-items:center}
+.side hr{border:0;border-top:1px solid var(--line);margin:6px 4px}
+.panel{display:grid;gap:16px}
+.box{padding:16px 18px}.box h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 12px;font-weight:700;display:flex;gap:8px;align-items:center}
+.box h2 .grow{flex:1}
+.two{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px}
+.qrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--line)}
+.qrow:last-child{border-bottom:0}
+.qrow .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-2);margin-bottom:4px}
+.qrow .txt{font-size:14.5px;white-space:pre-wrap;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.kico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:18px;background:var(--sunk)}
+.kico.upload{background:var(--peacock-soft)}.kico.edit{background:var(--saffron-soft)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tools input,.tools select{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--surface);color:var(--ink)}
+.tools input[type=search]{min-width:200px;flex:1}
+.toggle{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.toggle:last-child{border-bottom:0}.toggle b{display:block;font-size:14.5px}.toggle small{color:var(--ink-3);font-size:13px}
+.sw{appearance:none;width:44px;height:26px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;flex:none;transition:background .2s}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s}
+.sw:checked{background:var(--good)}.sw:checked::after{transform:translateX(18px)}
+.pts{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.pts label{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:var(--sunk);font-size:14px}
+.pts input{width:72px;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:8px;padding:4px 6px;background:var(--surface);color:var(--ink);text-align:right}
+.chart svg{width:100%;height:auto;display:block}.chart .ax{font-size:11px;fill:var(--ink-3)}.chart .gl{stroke:var(--line)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);margin-top:8px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.lead{display:grid;gap:6px}.lead .r{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:center;font-size:14px}.lead .r .bar{height:6px;border-radius:3px;background:var(--saffron);margin-top:3px}
+.code{font-family:ui-monospace,Menlo,monospace;font-size:14px;letter-spacing:.06em;background:var(--sunk);padding:2px 8px;border-radius:6px}
+.diff{display:grid;grid-template-columns:1fr 1fr;gap:10px}.diff>div{border-radius:10px;padding:10px;font-size:14px;white-space:pre-wrap}.diff .a{background:color-mix(in srgb,var(--bad) 10%,transparent)}.diff .b{background:color-mix(in srgb,var(--good) 10%,transparent)}
+.diff h4{margin:0 0 4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.mobnav{display:none}
+@media (max-width:900px){.layout{grid-template-columns:1fr}.side{display:none}.mobnav{display:block;margin-bottom:12px}.two{grid-template-columns:1fr}.diff{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<script>window.SPC_PAGE="admin"</script>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Admin</span></a>
+  <nav class="nav" aria-label="Pages"><a href="./">Site</a><a href="me.html">My Satsang</a><a class="on" href="admin.html">Admin</a></nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+<main class="wrap" id="main">
+  <div id="demo"></div>
+  <div id="gate"></div>
+  <div id="app" hidden>
+    <div class="row" style="margin-bottom:16px"><div class="grow"><p class="eyebrow">વ્યવસ્થા · Back office</p><h1 class="title">Admin</h1></div><span class="small muted" id="who"></span><button class="btn ghost sm" id="reload">↻ Refresh</button></div>
+    <select class="in mobnav" id="mobnav" aria-label="Section"></select>
+    <div class="layout">
+      <nav class="card side" id="side" aria-label="Admin sections"></nav>
+      <div class="panel" id="panel"></div>
+    </div>
+  </div>
+</main>
+<dialog id="dlg"><div class="dh"><h3 id="dlgT"></h3><button class="x" data-close aria-label="Close">×</button></div><div class="db" id="dlgB"></div><div class="df" id="dlgF"></div></dialog>
+
+<script src="site/collab/config.js?v=1"></script>
+<script src="site/collab/store.js?v=1"></script>
+<script>
+(async function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const S=await SPC.whenReady();
+const STATUS={pending:"Waiting",approved:"Approved",rejected:"Not accepted",changes:"Changes asked"};
+const KIND={comment:"Comment",edit:"Edit",upload:"Upload",event:"Event"},KICO={comment:"💬",edit:"✎",upload:"⬆",event:"🗓️"};
+const fmt=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const addDays=(ds,n)=>{const d=new Date(ds+"T12:00:00");d.setDate(d.getDate()+n);return fmt(d)};
+const when=t=>{if(!t)return"—";const s=(Date.now()-Date.parse(t))/1000;if(s<60)return"just now";if(s<3600)return Math.round(s/60)+" min ago";if(s<86400)return Math.round(s/3600)+" h ago";if(s<86400*30)return Math.round(s/86400)+" d ago";return new Date(t).toLocaleDateString()};
+const pageUrl=p=>SPC.BASE+(p==="/"?"":String(p).replace(/^\//,""));
+
+if(S.mode==="demo")$("#demo").innerHTML='<div class="demo"><b>Demo mode.</b> This back office is working on sample data kept in this browser. Once the site is connected to Supabase, the same screens manage the real members and items.</div>';
+const SES=await S.session();
+if(!SES||!SPC.isResolver(SES.profile)){$("#gate").innerHTML=`<div class="card" style="max-width:520px;margin:40px auto;padding:30px;text-align:center"><p class="eyebrow">Admins only</p><h2 style="font-family:var(--f-read);margin:0 0 8px">${SES?"Your account is not an admin":"Please sign in"}</h2><p class="sub">${SES?"Ask the site owner to give you the admin or moderator role.":"Use an admin account to open the back office."}</p><p style="margin-top:16px"><a class="btn" href="login.html?next=${encodeURIComponent(location.href)}">${SES?"Switch account":"Sign in"}</a></p></div>`;return}
+if(!SPC.verified(SES)){location.replace("login.html?next="+encodeURIComponent(location.href));return}
+const ADMIN=SES.profile.role==="admin",STAFF=SPC.isAdmin(SES.profile);
+$("#app").hidden=false;$("#who").innerHTML=`${esc(SES.profile.name||SES.user.email)} · <span class="chip ${SES.profile.role}">${SES.profile.role}</span>`;
+
+/* ---------- data ---------- */
+let D={};
+async function loadAll(){const from=addDays(SPC.today(),-370);
+  if(!STAFF){D={c:[],u:[],a:[],set:await S.getSettings(),inv:[],aud:[],users:{},cm:await S.adminComments()};return}
+  const [c,u,a,set,inv,aud,cm]=await Promise.all([S.adminContributions({}),S.adminUsers(),S.adminActivities(from),S.getSettings(),ADMIN?S.adminInvites():Promise.resolve([]),S.adminAudit().catch(()=>[]),S.adminComments()]);
+  const users=Object.fromEntries(u.map(x=>[x.id,x]));
+  u.forEach(x=>{x.score=SPC.score(a.filter(y=>y.user_id===x.id),c.filter(y=>y.user_id===x.id),set.points);x.nItems=c.filter(y=>y.user_id===x.id).length;x.lastAct=a.filter(y=>y.user_id===x.id).reduce((m,y)=>y.day>m?y.day:m,"")});
+  D={c,u,a,set,inv,aud,users,cm};}
+await loadAll();
+S.on("contrib",()=>{});
+
+/* ---------- navigation ---------- */
+const SECTIONS=[["dash","📊","Dashboard"],["comments","💬","Comment resolution"],["queue","📥","Review queue"],["all","🗂️","All changes"],["users","👥","Members"],["invites","✉️","Invites",true],["site","⚙️","Site controls",true],["points","🏅","Satsang score rules",true],["audit","📜","Activity log"],["data","💾","Data and backup"]];
+let cur=(location.hash||(STAFF?"#dash":"#comments")).slice(1);if(!SECTIONS.some(s=>s[0]===cur)||(!STAFF&&cur!=="comments"))cur=STAFF?"dash":"comments";
+const cmBadge=()=>{const od=D.cm.filter(SPC.isOverdue).length;return od?`<span class="n spc-od" title="Older than 24 hours">⚠ ${od}</span>`:D.cm.length?`<span class="n" style="background:var(--peacock)">${D.cm.length}</span>`:""};
+function nav(){const pend=D.c.filter(x=>x.status==="pending").length;const vis=SECTIONS.filter(s=>(!s[3]||ADMIN)&&(STAFF||s[0]==="comments"));
+  $("#side").innerHTML=vis.map(([k,i,l])=>`<button data-s="${k}" ${k===cur?'aria-current="page"':""}><span aria-hidden="true">${i}</span>${l}${k==="queue"&&pend?`<span class="n">${pend}</span>`:""}${k==="comments"?cmBadge():""}</button>`).join("")+`<hr><button onclick="location.href='me.html'"><span aria-hidden="true">🙏</span>My Satsang</button>`;
+  $("#side").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>go(b.dataset.s));
+  $("#mobnav").innerHTML=vis.map(([k,i,l])=>`<option value="${k}" ${k===cur?"selected":""}>${i} ${l}${k==="queue"&&pend?` (${pend})`:""}</option>`).join("");$("#mobnav").onchange=e=>go(e.target.value)}
+function go(k){cur=k;history.replaceState(null,"","#"+k);nav();R[k]($("#panel"));scrollTo({top:0,behavior:"smooth"})}
+$("#reload").onclick=async()=>{await loadAll();go(cur)};
+
+/* ---------- shared bits ---------- */
+function qrow(c,opts){opts=opts||{};return`<div class="qrow" data-id="${c.id}">${opts.select?`<input type="checkbox" class="pick" aria-label="Select" style="margin-top:10px">`:`<span class="kico ${c.kind}" aria-hidden="true">${KICO[c.kind]||"•"}</span>`}
+  <div><div class="meta"><b>${esc(c.author)}</b><span>${KIND[c.kind]||c.kind}</span><span>on <a href="${esc(pageUrl(c.page))}" target="_blank" rel="noopener">${esc(c.page)}</a></span><span>· ${when(c.created_at)}</span><span class="chip ${c.status}">${STATUS[c.status]}</span>${c.file_name?`<span>📎 ${esc(c.file_name)}</span>`:""}</div>
+  ${c.title&&c.kind!=="comment"?`<b>${esc(c.title)}</b>`:""}<div class="txt">${esc(c.target?"“"+c.target+"” → ":"")}${esc(c.body)}</div></div>
+  <div class="row" style="justify-content:flex-end">${c.status!=="approved"?`<button class="btn good sm" data-q="approved" aria-label="Approve">✓</button>`:""}${c.status!=="rejected"?`<button class="btn bad sm" data-q="rejected" aria-label="Reject">✕</button>`:""}<button class="btn ghost sm" data-open>Open</button></div></div>`}
+function wireRows(root,after){root.querySelectorAll(".qrow").forEach(r=>{const c=D.c.find(x=>x.id===r.dataset.id);
+  r.querySelectorAll("[data-q]").forEach(b=>b.onclick=async()=>{await S.review(c.id,b.dataset.q,"");Object.assign(c,{status:b.dataset.q,reviewed_at:new Date().toISOString()});toast(b.dataset.q==="approved"?"Approved":"Rejected");after&&after()});
+  r.querySelector("[data-open]").onclick=()=>openItem(c,after)})}
+async function openItem(c,after){const u=D.users[c.user_id]||{};
+  const body=`<div class="meta small muted">${esc(c.author)} (${esc(c.email||u.email||"")}) · ${KIND[c.kind]} on <a href="${esc(pageUrl(c.page))}" target="_blank" rel="noopener">${esc(c.page)}</a> · ${new Date(c.created_at).toLocaleString()} · <span class="chip ${c.status}">${STATUS[c.status]}</span></div>
+    ${c.kind==="edit"?`<div class="diff"><div class="a"><h4>Now on the page</h4>${esc(c.target||"(not quoted)")}</div><div class="b"><h4>Suggested</h4>${esc(c.body)}</div></div>${c.title?`<div><b>Source:</b> ${esc(c.title)}</div>`:""}`:
+     `${c.title&&c.kind!=="comment"?`<h3 style="margin:0">${esc(c.title)}</h3>`:""}<div style="white-space:pre-wrap">${esc(c.body)}</div>`}
+    ${c.file_path?`<div class="prev" id="pv"><span class="small muted">Loading file…</span></div><div class="small muted">${esc(c.file_name)} · ${esc(c.file_type)} · ${(c.file_size/1048576).toFixed(2)} MB</div>`:""}
+    <label class="field">Note to ${esc(c.author)} (they will see it)<textarea name="note" rows="3">${esc(c.admin_note||"")}</textarea></label>`;
+  const p=dlg("Review "+(KIND[c.kind]||"item").toLowerCase(),body,[["✓ Approve","btn good",f=>rev("approved",f)],["Ask for changes","btn blue",f=>rev("changes",f)],["✕ Reject","btn bad",f=>rev("rejected",f)],["Delete","btn ghost",async()=>{if(!confirm("Delete this item for good?"))return false;await S.deleteMine(c.id);D.c=D.c.filter(x=>x.id!==c.id);toast("Deleted");after&&after();return true}]]);
+  async function rev(st,f){await S.review(c.id,st,f.note.value);Object.assign(c,{status:st,admin_note:f.note.value,reviewed_at:new Date().toISOString()});toast(STATUS[st]);after&&after();return true}
+  if(c.file_path){try{const url=await S.fileUrl(c.file_path);$("#pv").innerHTML=url?(window.SPCPreview?SPCPreview(url,c.file_type,c.file_name):`<a href="${url}" target="_blank">Open file</a>`)+`<p class="small"><a href="${url}" download="${esc(c.file_name)}">Download</a></p>`:'<span class="small muted">The file is not in this browser (demo sample).</span>'}catch(e){$("#pv").innerHTML='<span class="small muted">Could not load the file.</span>'}}
+  return p}
+function csv(rows,cols){const q=v=>{v=v==null?"":String(v);return/[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};return[cols.join(","),...rows.map(r=>cols.map(c=>q(r[c])).join(","))].join("\n")}
+function download(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:type||"text/plain"}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function toast(t){let el=$("#toast");if(!el){el=document.createElement("div");el.id="toast";el.setAttribute("role","status");el.style.cssText="position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:10px;z-index:60;font-size:14px;box-shadow:var(--shadow)";document.body.appendChild(el)}el.textContent=t;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(()=>el.hidden=true,1800)}
+
+/* ---------- sections ---------- */
+let cmTimer=null;
+const R={
+comments(P){clearInterval(cmTimer);const draw=()=>{const rows=D.cm.slice().sort((a,b)=>a.created_at<b.created_at?-1:1),od=rows.filter(SPC.isOverdue),ack=rows.filter(r=>r.status==="acknowledged").length;
+    const ages=rows.map(r=>Date.now()-Date.parse(r.created_at)),avg=ages.length?ages.reduce((a,b)=>a+b,0)/ages.length/36e5:0;
+    P.innerHTML=`<section class="card box"><h2><span class="grow">Comment / feedback resolution · પ્રતિભાવ નિકાલ</span></h2>
+      <p class="sub" style="margin:0 0 12px">Every comment is answered within 24 hours. Step 1: <b>Acknowledge</b> (the member sees it is being handled). Step 2: take the action, then <b>Resolve and delete</b>. A short note of what was done is kept in the activity log. While any comment is older than 24 hours, newer ones are locked until the overdue ones are cleared, oldest first.</p>
+      <div class="kpis"><div class="card kpi"><div class="v">${rows.length}</div><div class="l">Open comments</div></div><div class="card kpi ${od.length?"hot":""}"><div class="v">${od.length}</div><div class="l">Overdue (over 24 h)</div></div><div class="card kpi"><div class="v">${ack}</div><div class="l">Acknowledged, action in progress</div></div><div class="card kpi"><div class="v">${avg.toFixed(1)} h</div><div class="l">Average age</div></div></div></section>
+      ${od.length?`<div class="card box spc-od"><b>⚠ ${od.length} overdue comment${od.length>1?"s":""}. Resolve ${od.length>1?"these":"this"} first; newer comments are locked.</b></div>`:""}
+      <section class="card box">${rows.length?rows.map(r=>{const late=SPC.isOverdue(r),locked=od.length&&!late;
+        return`<div class="qrow" data-id="${r.id}" style="${late?"background:color-mix(in srgb,var(--bad) 7%,transparent);border-radius:10px;padding-inline:8px":""}"><span class="kico" aria-hidden="true">💬</span>
+        <div><div class="meta"><b>${esc(r.author)}</b><span>on <a href="${esc(pageUrl(r.page))}#spc=${r.id}" target="_blank" rel="noopener">${esc(r.page)}${r.anchor_label?" · 📍 "+esc(r.anchor_label.slice(0,70)):""}</a></span><span>· ${when(r.created_at)}</span><span class="chip ${r.status==="open"?"pending":"changes"}">${r.status==="open"?"Open":"Acknowledged"}</span>${window.SPCDue?SPCDue(r):""}</div>
+          <div class="txt" style="-webkit-line-clamp:6">${esc(r.body)}</div>${r.source_url?`<div class="small">Source on the page: <a href="${esc(r.source_url)}" target="_blank" rel="noopener">${esc(r.source_url.slice(0,80))}</a></div>`:r.anchor?'<div class="small muted">No source link beside this item on the page.</div>':""}
+          <input class="in" data-note placeholder="What was done (kept in the log)" value="${esc(r.admin_note||"")}" style="margin-top:8px;font-size:14px" ${locked?"disabled":""}></div>
+        <div class="row" style="justify-content:flex-end;flex-direction:column;align-items:stretch">${locked?'<span class="small muted" style="max-width:140px">Locked until overdue comments are resolved</span>':
+          r.status==="open"?`<button class="btn blue sm" data-ack>Acknowledge</button>`:`<button class="btn good sm" data-res>Resolve and delete</button>`}</div></div>`}).join(""):'<div class="empty">No open comments. 🙏</div>'}</section>`;
+    P.querySelectorAll(".qrow").forEach(row=>{const r=D.cm.find(x=>x.id===row.dataset.id),note=()=>row.querySelector("[data-note]").value.trim();
+      const a=row.querySelector("[data-ack]");if(a)a.onclick=async()=>{try{await S.ackComment(r.id,note());r.status="acknowledged";r.admin_note=note();toast("Acknowledged");draw();nav()}catch(e){toast(e.message)}};
+      const z=row.querySelector("[data-res]");if(z)z.onclick=async()=>{if(!note()){toast("Write what was done first");row.querySelector("[data-note]").focus();return}if(!confirm("Resolve and delete this comment? The note is kept in the activity log."))return;
+        try{await S.resolveComment(r.id,note());D.cm=D.cm.filter(x=>x.id!==r.id);toast("Resolved");draw();nav()}catch(e){toast(e.message)}}})};
+  draw();cmTimer=setInterval(()=>{if(cur==="comments"&&!P.querySelector("[data-note]:focus"))draw()},30000)},
+
+dash(P){const c=D.c,pend=c.filter(x=>x.status==="pending"),t=SPC.today(),wk=addDays(t,-7);
+  const act7=new Set(D.a.filter(x=>x.day>wk).map(x=>x.user_id));D.u.forEach(u=>{if(u.last_seen&&u.last_seen.slice(0,10)>wk)act7.add(u.id)});
+  const k=(n,l,hot)=>`<div class="card kpi ${hot&&n?"hot":""}"><div class="v">${n}</div><div class="l">${l}</div></div>`;
+  const odc=D.cm.filter(SPC.isOverdue).length;
+  P.innerHTML=`${odc?`<div class="card box spc-od" style="cursor:pointer" id="odb"><b>⚠ ${odc} comment${odc>1?"s are":" is"} older than 24 hours.</b> These must be resolved before any newer comment. Open the comment queue →</div>`:""}<div class="kpis">${k(D.cm.length,"Open comments",1)}${k(odc,"Comments overdue (24 h)",1)}${k(pend.length,"Waiting for review",1)}${k(pend.filter(x=>x.kind==="upload").length,"Uploads waiting",1)}${k(pend.filter(x=>x.kind==="edit").length,"Edit suggestions waiting",1)}
+    ${k(D.u.filter(u=>u.status==="active").length,"Active members")}${k(act7.size,"Members active this week")}${k(D.u.filter(u=>!u.email_verified||!u.phone_verified).length,"Not yet verified",1)}${k(c.filter(x=>x.created_at.slice(0,10)>addDays(t,-30)).length,"Items sent in 30 days")}${k(ADMIN?D.inv.filter(i=>!i.used_by&&!i.revoked&&!(i.expires_at&&Date.parse(i.expires_at)<Date.now())).length:"—","Open invites")}</div>
+  <div class="two"><section class="card box"><h2><span class="grow">Needs your attention · બાકી કામ</span><button class="btn ghost sm" id="toq">Open queue</button></h2><div id="att">${pend.length?pend.slice(0,6).map(x=>qrow(x)).join(""):'<div class="empty">All caught up. 🙏</div>'}</div></section>
+  <section class="card box"><h2>Latest activity</h2><div class="tw"><table class="t"><tbody>${D.aud.slice(0,9).map(a=>`<tr><td class="small muted" style="white-space:nowrap">${when(a.at)}</td><td class="small"><b>${esc((D.users[a.actor]||{}).name||"System")}</b> ${esc(a.action)} <span class="muted">${esc(a.target||"")}</span></td></tr>`).join("")||'<tr><td class="empty">No activity yet</td></tr>'}</tbody></table></div></section></div>
+  <section class="card box"><h2>Items sent per day, last 30 days</h2><div class="chart" id="cch"></div></section>
+  <div class="two"><section class="card box"><h2>Satsang score leaders</h2><div class="lead" id="lead"></div></section><section class="card box"><h2>Top contributors</h2><div class="lead" id="topc"></div></section></div>`;
+  $("#toq").onclick=()=>go("queue");const ob=$("#odb");if(ob)ob.onclick=()=>go("comments");wireRows($("#att"),()=>{R.dash(P);nav()});
+  // stacked bars by kind
+  const days=[];for(let i=29;i>=0;i--)days.push(addDays(t,-i));const kinds=["comment","edit","upload"],col={comment:"var(--peacock)",edit:"var(--saffron)",upload:"var(--good)"};
+  const cnt=days.map(d=>kinds.map(kk=>c.filter(x=>x.kind===kk&&x.created_at.slice(0,10)===d).length));const mx=Math.max(3,...cnt.map(a=>a.reduce((s,v)=>s+v,0)));
+  const W=700,H=180,pl=26,ih=H-34,bw=(W-pl-6)/30;let bars="";cnt.forEach((arr,i)=>{let y=8+ih;arr.forEach((v,j)=>{if(!v)return;const h=v/mx*ih;y-=h;bars+=`<rect x="${pl+i*bw+bw*.15}" y="${y}" width="${bw*.7}" height="${h}" fill="${col[kinds[j]]}" rx="2"><title>${days[i]}: ${v} ${kinds[j]}</title></rect>`})});
+  $("#cch").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Items sent per day"><line class="gl" x1="${pl}" x2="${W}" y1="${8+ih}" y2="${8+ih}"/><line class="gl" x1="${pl}" x2="${W}" y1="8" y2="8"/><text class="ax" x="${pl-4}" y="12" text-anchor="end">${mx}</text><text class="ax" x="${pl-4}" y="${12+ih}" text-anchor="end">0</text>${bars}
+    ${days.map((d,i)=>i%7===0?`<text class="ax" x="${pl+i*bw+bw/2}" y="${H-6}" text-anchor="middle">${new Date(d+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})}</text>`:"").join("")}</svg><div class="legend">${kinds.map(kk=>`<span><i style="background:${col[kk]}"></i>${KIND[kk]}s</span>`).join("")}</div>`;
+  const top=D.u.slice().sort((a,b)=>b.score.total-a.score.total).slice(0,6),m1=Math.max(1,top[0]?top[0].score.total:1);
+  $("#lead").innerHTML=top.map((u,i)=>`<div class="r"><b>${i+1}</b><div>${esc(u.name||u.email)} <span class="small muted">${u.score.levelEn}</span><div class="bar" style="width:${u.score.total/m1*100}%"></div></div><span>${Math.round(u.score.total)}</span></div>`).join("")||'<div class="empty">No members yet</div>';
+  const tc=D.u.slice().sort((a,b)=>b.nItems-a.nItems).filter(u=>u.nItems).slice(0,6),m2=Math.max(1,tc[0]?tc[0].nItems:1);
+  $("#topc").innerHTML=tc.map((u,i)=>`<div class="r"><b>${i+1}</b><div>${esc(u.name||u.email)}<div class="bar" style="width:${u.nItems/m2*100}%;background:var(--peacock)"></div></div><span>${u.nItems}</span></div>`).join("")||'<div class="empty">No contributions yet</div>'},
+
+queue(P){let kind="",q="";const draw=()=>{const rows=D.c.filter(x=>(x.status==="pending"||x.status==="changes")&&(!kind||x.kind===kind)&&(!q||(x.title+x.body+x.author+x.page+x.target).toLowerCase().includes(q)));
+    P.querySelector("#ql").innerHTML=rows.length?rows.map(x=>qrow(x,{select:true})).join(""):'<div class="empty">Nothing is waiting. 🙏</div>';wireRows(P.querySelector("#ql"),()=>{draw();nav()})};
+  P.innerHTML=`<section class="card box"><h2>Review queue · સમીક્ષા</h2><div class="tools"><input type="search" placeholder="Search text, member or page" id="qq"><select id="qk"><option value="">All kinds</option><option value="upload">Uploads</option><option value="edit">Edits</option><option value="comment">Comments</option></select>
+    <label class="small"><input type="checkbox" id="qa"> Select all</label><button class="btn good sm" id="ba">Approve selected</button><button class="btn bad sm" id="br">Reject selected</button></div><div id="ql"></div>
+    <p class="small muted" style="margin:12px 0 0">Approved items become visible to all members on their page and count toward the member's satsang score. Members always see their own items with the status.</p></section>`;
+  P.querySelector("#qq").oninput=e=>{q=e.target.value.toLowerCase();draw()};P.querySelector("#qk").onchange=e=>{kind=e.target.value;draw()};
+  P.querySelector("#qa").onchange=e=>P.querySelectorAll(".pick").forEach(c=>c.checked=e.target.checked);
+  const bulk=async st=>{const ids=[...P.querySelectorAll(".pick:checked")].map(c=>c.closest("[data-id]").dataset.id);if(!ids.length)return toast("Select items first");for(const id of ids){await S.review(id,st,"");const c=D.c.find(x=>x.id===id);c.status=st;c.reviewed_at=new Date().toISOString()}toast(ids.length+" "+STATUS[st].toLowerCase());draw();nav()};
+  P.querySelector("#ba").onclick=()=>bulk("approved");P.querySelector("#br").onclick=()=>bulk("rejected");draw()},
+
+all(P){let st="",kind="",user="",q="";const draw=()=>{const rows=D.c.filter(x=>(!st||x.status===st)&&(!kind||x.kind===kind)&&(!user||x.user_id===user)&&(!q||(x.title+x.body+x.page+x.target).toLowerCase().includes(q)));
+    P.querySelector("#tb").innerHTML=rows.map(x=>`<tr data-id="${x.id}"><td class="small" style="white-space:nowrap">${new Date(x.created_at).toLocaleDateString()}</td><td>${esc(x.author)}</td><td>${KICO[x.kind]} ${KIND[x.kind]}</td><td class="small"><a href="${esc(pageUrl(x.page))}" target="_blank" rel="noopener">${esc(x.page)}</a></td><td class="small">${esc((x.title||x.body).slice(0,90))}</td><td><span class="chip ${x.status}">${STATUS[x.status]}</span></td><td class="small muted">${x.reviewed_at?when(x.reviewed_at):""}</td><td><button class="btn ghost sm" data-o>Open</button></td></tr>`).join("")||'<tr><td colspan="8" class="empty">No items match</td></tr>';
+    P.querySelector("#cnt").textContent=rows.length+" items";P.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>openItem(D.c.find(x=>x.id===b.closest("tr").dataset.id),()=>{draw();nav()}));P._rows=rows};
+  P.innerHTML=`<section class="card box"><h2><span class="grow">All changes, uploads and comments</span><span class="small muted" id="cnt"></span></h2><div class="tools"><input type="search" placeholder="Search" id="aq">
+    <select id="as"><option value="">Any status</option>${Object.entries(STATUS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select><select id="ak"><option value="">All kinds</option>${Object.entries(KIND).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+    <select id="au"><option value="">All members</option>${D.u.map(u=>`<option value="${u.id}">${esc(u.name||u.email)}</option>`).join("")}</select><button class="btn ghost sm" id="ax">⬇ CSV</button></div>
+    <div class="tw"><table class="t"><thead><tr><th>Date</th><th>Member</th><th>Kind</th><th>Page</th><th>What</th><th>Status</th><th>Reviewed</th><th></th></tr></thead><tbody id="tb"></tbody></table></div></section>`;
+  P.querySelector("#aq").oninput=e=>{q=e.target.value.toLowerCase();draw()};P.querySelector("#as").onchange=e=>{st=e.target.value;draw()};P.querySelector("#ak").onchange=e=>{kind=e.target.value;draw()};P.querySelector("#au").onchange=e=>{user=e.target.value;draw()};
+  P.querySelector("#ax").onclick=()=>download("contributions-"+SPC.today()+".csv",csv(P._rows,["created_at","author","email","kind","page","target","title","body","status","admin_note","reviewed_at","file_name"]),"text/csv");draw()},
+
+users(P){let q="";const draw=()=>{const rows=D.u.filter(u=>!q||(u.name+u.email).toLowerCase().includes(q));
+    P.querySelector("#ub").innerHTML=rows.map(u=>`<tr data-id="${u.id}"><td><b>${esc(u.name||"—")}</b><div class="small muted">${esc(u.email)} ${u.email_verified?'<span title="Email verified" style="color:var(--good)">✓</span>':'<span class="chip pending">email not verified</span>'}</div><div class="small muted">${esc(u.phone||"no mobile yet")} ${u.phone_verified?'<span title="Mobile verified" style="color:var(--good)">✓</span>':'<span class="chip pending">mobile not verified</span>'}</div></td>
+      <td>${ADMIN&&u.id!==SES.user.id?`<select class="in" data-role style="padding:4px 6px;font-size:13px;width:auto">${["member","resolver","moderator","admin"].map(r=>`<option ${u.role===r?"selected":""}>${r}</option>`).join("")}</select>`:`<span class="chip ${u.role}">${u.role}</span>`}</td>
+      <td><span class="chip ${u.status==="active"?"approved":"suspended"}">${u.status}</span></td><td class="small">${new Date(u.created_at).toLocaleDateString()}</td><td class="small muted">${when(u.last_seen||(u.lastAct?u.lastAct+"T12:00:00":null))}</td>
+      <td><b>${Math.round(u.score.total)}</b> <span class="small muted">${u.score.levelEn}</span></td><td>${u.nItems}</td>
+      <td><div class="row" style="flex-wrap:nowrap"><button class="btn ghost sm" data-v>View</button>${u.id!==SES.user.id?`<button class="btn ghost sm" data-s>${u.status==="active"?"Pause":"Restore"}</button>`:""}</div></td></tr>`).join("");
+    P.querySelectorAll("tr[data-id]").forEach(tr=>{const u=D.users[tr.dataset.id];
+      const r=tr.querySelector("[data-role]");if(r)r.onchange=async()=>{try{await S.adminSetUser(u.id,{role:r.value});u.role=r.value;toast("Role changed to "+r.value)}catch(e){toast(e.message);r.value=u.role}};
+      const s=tr.querySelector("[data-s]");if(s)s.onclick=async()=>{const ns=u.status==="active"?"suspended":"active";if(ns==="suspended"&&!confirm(`Pause ${u.name||u.email}? They will not be able to sign in or send items.`))return;await S.adminSetUser(u.id,{status:ns});u.status=ns;draw()};
+      tr.querySelector("[data-v]").onclick=()=>viewUser(u)})};
+  P.innerHTML=`<section class="card box"><h2><span class="grow">Members · સભ્યો</span>${ADMIN?'<button class="btn sm" id="inv">✉️ Invite someone</button>':""}</h2><div class="tools"><input type="search" placeholder="Search name or email" id="uq"><button class="btn ghost sm" id="ux">⬇ CSV</button></div>
+    <div class="tw"><table class="t"><thead><tr><th>Member</th><th>Role</th><th>Status</th><th>Joined</th><th>Last seen</th><th>Satsang score</th><th>Items</th><th></th></tr></thead><tbody id="ub"></tbody></table></div>
+    <p class="small muted" style="margin:12px 0 0"><b>member</b> can comment, suggest and upload · <b>resolver</b> (comment / feedback resolution manager) works only the comment queue · <b>moderator</b> can also review items · <b>admin</b> can also manage members, invites and site controls.</p></section>`;
+  P.querySelector("#uq").oninput=e=>{q=e.target.value.toLowerCase();draw()};const iv=P.querySelector("#inv");if(iv)iv.onclick=()=>go("invites");
+  P.querySelector("#ux").onclick=()=>download("members-"+SPC.today()+".csv",csv(D.u.map(u=>Object.assign({},u,{score:Math.round(u.score.total),level:u.score.levelEn})),["name","email","email_verified","phone","phone_verified","role","status","created_at","last_seen","score","level","nItems"]),"text/csv");draw()},
+
+invites(P){const draw=()=>{P.querySelector("#ib").innerHTML=D.inv.map(i=>{const exp=i.expires_at&&Date.parse(i.expires_at)<Date.now();const st=i.revoked?["Revoked","rejected"]:i.used_by?["Used","approved"]:exp?["Expired","rejected"]:["Open","pending"];
+      return`<tr data-code="${esc(i.code)}"><td><span class="code">${esc(i.code)}</span></td><td class="small">${esc(i.email||"Anyone with the code")}</td><td><span class="chip ${i.role}">${esc(i.role)}</span></td><td><span class="chip ${st[1]}">${st[0]}</span>${i.used_by?`<div class="small muted">${esc((D.users[i.used_by]||{}).name||"")}</div>`:""}</td>
+      <td class="small">${i.expires_at?new Date(i.expires_at).toLocaleDateString():"Never"}</td><td class="small muted">${esc(i.note||"")}</td><td><div class="row" style="flex-wrap:nowrap">${st[0]==="Open"?`<button class="btn ghost sm" data-cp>Copy link</button><button class="btn ghost sm" data-rv>Revoke</button>`:""}</div></td></tr>`}).join("")||'<tr><td colspan="7" class="empty">No invites yet</td></tr>';
+    P.querySelectorAll("[data-cp]").forEach(b=>b.onclick=()=>copy(link(b.closest("tr").dataset.code)));
+    P.querySelectorAll("[data-rv]").forEach(b=>b.onclick=async()=>{const code=b.closest("tr").dataset.code;await S.revokeInvite(code);D.inv.find(i=>i.code===code).revoked=true;draw()})};
+  const link=code=>new URL("login.html?invite="+encodeURIComponent(code),SPC.BASE||location.href).href;
+  const copy=t=>{navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>toast("Link copied"),()=>prompt("Copy this link",t))};
+  P.innerHTML=`<section class="card box"><h2>Invite a new member · આમંત્રણ</h2><form id="if" class="row" style="align-items:flex-end">
+    <label class="field grow" style="min-width:200px">Email (optional, locks the invite to this email)<input name="email" type="email" placeholder="name@example.com"></label>
+    <label class="field">Role<select name="role"><option>member</option><option value="resolver">resolver (comment manager)</option><option>moderator</option><option>admin</option></select></label>
+    <label class="field">Expires in<select name="days"><option value="7">7 days</option><option value="30" selected>30 days</option><option value="90">90 days</option><option value="0">Never</option></select></label>
+    <label class="field grow" style="min-width:160px">Note (who is it for)<input name="note" maxlength="120"></label><button class="btn">Create invite</button></form><div id="iout" style="margin-top:12px"></div></section>
+  <section class="card box"><h2>All invites</h2><div class="tw"><table class="t"><thead><tr><th>Code</th><th>For</th><th>Role</th><th>Status</th><th>Expires</th><th>Note</th><th></th></tr></thead><tbody id="ib"></tbody></table></div>
+    <p class="small muted" style="margin:12px 0 0">Each code works once. Without a valid code nobody can create an account.${S.mode==="live"?" The invite email is not sent automatically: copy the link and send it yourself.":""}</p></section>`;
+  P.querySelector("#if").onsubmit=async e=>{e.preventDefault();const f=e.target;try{const i=await S.createInvite({email:f.email.value,role:f.role.value,days:+f.days.value,note:f.note.value});D.inv.unshift(i);f.reset();
+    P.querySelector("#iout").innerHTML=`<div class="msg ok">Invite created: <span class="code">${esc(i.code)}</span><br><span class="small">Send this link: <a href="${esc(link(i.code))}">${esc(link(i.code))}</a></span> <button class="btn sm" id="cpn" type="button">Copy link</button></div>`;
+    P.querySelector("#cpn").onclick=()=>copy(link(i.code));draw()}catch(err){P.querySelector("#iout").innerHTML=`<div class="msg bad">${esc(err.message)}</div>`}};draw()},
+
+site(P){const s=JSON.parse(JSON.stringify(D.set));const F=s.features;
+  const tg=(k,t,d)=>`<div class="toggle"><div><b>${t}</b><small>${d}</small></div><input type="checkbox" class="sw" data-f="${k}" ${F[k]?"checked":""} aria-label="${t}"></div>`;
+  P.innerHTML=`<section class="card box"><h2>Announcement banner</h2><form id="an" style="display:grid;gap:10px"><label class="field">Message shown at the top of every page<input name="text" maxlength="240" value="${esc(s.announcement.text)}" placeholder="e.g. Jay Swaminarayan! Ekadashi on Friday. Satsang sabha at 7 pm."></label>
+    <div class="row"><label class="field">Colour<select name="tone">${[["info","Peacock"],["warn","Saffron"],["good","Green"]].map(([v,l])=>`<option value="${v}" ${s.announcement.tone===v?"selected":""}>${l}</option>`).join("")}</select></label><label class="row small" style="margin-top:18px"><input type="checkbox" class="sw" name="on" ${s.announcement.on?"checked":""}> Show it</label><span class="grow"></span><button class="btn">Save banner</button></div></form></section>
+  <section class="card box"><h2>Features</h2>${tg("comments","Comments","Members can leave comments on pages")}${tg("edits","Edit suggestions","Members can suggest corrections to text")}${tg("uploads","Uploads","Members can upload photos, PDFs, audio and video")}${tg("tracker","Satsang tracker","Daily activity tracker on My Satsang")}
+    ${tg("gate","Members-only site","Visitors who are not signed in are sent to the sign-in page. Note: the page files on GitHub Pages stay public, so this hides the site from casual visitors but is not a lock")}${tg("maintenance","Maintenance mode","Everyone except admins sees a 'back soon' screen")}</section>
+  <section class="card box"><h2>Uploads and limits</h2><form id="up" style="display:grid;gap:12px"><div class="row"><label class="field">Largest file (MB)<input name="maxMB" type="number" min="1" max="${S.mode==="live"?50:500}" value="${s.uploads.maxMB}"></label><label class="field">Items a member can send per hour<input name="perHour" type="number" min="1" max="500" value="${s.rate.perHour}"></label></div>
+    <div class="pts">${["image/jpeg","image/png","image/webp","image/gif","application/pdf","audio/mpeg","audio/mp4","audio/x-m4a","audio/wav","video/mp4","text/plain"].map(t=>`<label><span class="small">${t}</span><input type="checkbox" style="width:auto" name="t" value="${t}" ${s.uploads.types.includes(t)?"checked":""}></label>`).join("")}</div>
+    <p class="small muted" style="margin:0">Every file is checked in the browser before sending: real type matches the name, no programs or scripts, PDFs with scripts are blocked, photo location data is removed, text is scanned for phone numbers and emails. ${S.mode==="live"?"The free Supabase plan allows up to 50 MB per file.":""}</p><div><button class="btn">Save limits</button></div></form></section>`;
+  P.querySelector("#an").onsubmit=async e=>{e.preventDefault();const f=e.target;const v={text:f.text.value.trim(),tone:f.tone.value,on:f.on.checked};await S.setSetting("announcement",v);D.set.announcement=v;toast("Banner saved")};
+  P.querySelectorAll("[data-f]").forEach(x=>x.onchange=async()=>{F[x.dataset.f]=x.checked;await S.setSetting("features",F);D.set.features=Object.assign({},F);toast("Saved")});
+  P.querySelector("#up").onsubmit=async e=>{e.preventDefault();const f=e.target;const u={maxMB:Math.max(1,+f.maxMB.value||50),types:[...f.querySelectorAll("[name=t]:checked")].map(i=>i.value)};await S.setSetting("uploads",u);await S.setSetting("rate",{perHour:Math.max(1,+f.perHour.value||20)});D.set.uploads=u;D.set.rate={perHour:+f.perHour.value};toast("Limits saved")}},
+
+points(P){const p=Object.assign({},D.set.points);
+  P.innerHTML=`<section class="card box"><h2>Points for each activity</h2><form id="pf"><div class="pts">${SPC.KINDS.map(k=>`<label>${k.icon} ${k.en} <span class="small muted">/ ${k.unit.replace(/s$/,"")}</span><input type="number" step="0.1" min="0" name="${k.k}" value="${p[k.k]}"></label>`).join("")}</div>
+    <h2 style="margin-top:18px">Points for approved contributions</h2><div class="pts">${[["upload","Upload"],["edit","Edit suggestion"],["event","Event record"]].map(([k,l])=>`<label>${l}<input type="number" step="1" min="0" name="${k}" value="${p[k]||0}"></label>`).join("")}</div>
+    <div class="row" style="margin-top:14px"><button class="btn">Save score rules</button><button class="btn ghost" type="button" id="pd">Back to defaults</button></div></form></section>
+  <section class="card box"><h2>Levels</h2><div class="tw"><table class="t"><thead><tr><th>Level</th><th>Gujarati</th><th>From points</th><th>Members now</th></tr></thead><tbody>${SPC.LEVELS.map((l,i)=>`<tr><td>${l[2]}</td><td>${l[1]}</td><td>${l[0]}</td><td>${D.u.filter(u=>u.score.level===i).length}</td></tr>`).join("")}</tbody></table></div>
+    <p class="small muted" style="margin:12px 0 0">Score = each tracker entry × its points, plus approved contributions. Quiz and game points arrive from the games pages as "Quiz or game" entries.</p></section>`;
+  P.querySelector("#pf").onsubmit=async e=>{e.preventDefault();const o={};new FormData(e.target).forEach((v,k)=>o[k]=+v||0);await S.setSetting("points",o);D.set.points=o;await loadAll();toast("Score rules saved")};
+  P.querySelector("#pd").onclick=async()=>{await S.setSetting("points",SPC.DEFAULT_SETTINGS.points);D.set.points=SPC.DEFAULT_SETTINGS.points;await loadAll();R.points(P);toast("Defaults restored")}},
+
+audit(P){let q="";const draw=()=>{const rows=D.aud.filter(a=>!q||(a.action+a.target+a.detail+((D.users[a.actor]||{}).name||"")).toLowerCase().includes(q));
+    P.querySelector("#lb").innerHTML=rows.map(a=>`<tr><td class="small" style="white-space:nowrap">${new Date(a.at).toLocaleString()}</td><td>${esc((D.users[a.actor]||{}).name||"System")}</td><td><span class="chip">${esc(a.action)}</span></td><td class="small">${esc(a.target||"")}</td><td class="small muted">${esc(typeof a.detail==="string"?a.detail:JSON.stringify(a.detail||""))}</td></tr>`).join("")||'<tr><td colspan="5" class="empty">No entries</td></tr>'};
+  P.innerHTML=`<section class="card box"><h2>Activity log · who did what</h2><div class="tools"><input type="search" placeholder="Search the log" id="lq"><button class="btn ghost sm" id="lx">⬇ CSV</button></div><div class="tw"><table class="t"><thead><tr><th>When</th><th>Who</th><th>Action</th><th>On</th><th>Details</th></tr></thead><tbody id="lb"></tbody></table></div></section>`;
+  P.querySelector("#lq").oninput=e=>{q=e.target.value.toLowerCase();draw()};P.querySelector("#lx").onclick=()=>download("activity-log-"+SPC.today()+".csv",csv(D.aud,["at","actor","action","target","detail"]),"text/csv");draw()},
+
+data(P){P.innerHTML=`<section class="card box"><h2>Backup</h2><p class="sub" style="margin:0 0 12px">Download everything (members, items, tracker entries, invites, settings, log) as one JSON file. Keep a copy now and then. Uploaded files themselves stay in storage.</p>
+    <div class="row"><button class="btn" id="ex">⬇ Download full backup</button><button class="btn ghost" id="exc">⬇ Items as CSV</button><button class="btn ghost" id="exa">⬇ Tracker entries as CSV</button></div></section>
+  <section class="card box"><h2>Where the data lives</h2>${S.mode==="live"?`<p class="sub" style="margin:0">Supabase project: <a href="${esc((window.SPC_CONFIG||{}).supabaseUrl)}" target="_blank" rel="noopener">${esc((window.SPC_CONFIG||{}).supabaseUrl)}</a>. Open the Supabase dashboard for database backups, storage and the authentication log.</p>`:
+    `<p class="sub" style="margin:0 0 12px">Demo mode: the data is in this browser only. To make it real and shared, connect Supabase (steps in <code>supabase/README.md</code> in the site repository).</p><button class="btn bad" id="rd">Reset demo data</button>`}</section>`;
+  P.querySelector("#ex").onclick=async()=>download("swaminarayan-backup-"+SPC.today()+".json",JSON.stringify(await S.exportAll(),null,1),"application/json");
+  P.querySelector("#exc").onclick=()=>download("contributions-"+SPC.today()+".csv",csv(D.c,["created_at","author","email","kind","page","target","title","body","status","admin_note","reviewed_at","file_name"]),"text/csv");
+  P.querySelector("#exa").onclick=()=>download("tracker-"+SPC.today()+".csv",csv(D.a.map(a=>Object.assign({member:(D.users[a.user_id]||{}).name},a)),["day","member","kind","qty","note"]),"text/csv");
+  const rd=P.querySelector("#rd");if(rd)rd.onclick=async()=>{if(!confirm("Reset the demo? All demo items and entries in this browser are replaced with fresh samples."))return;await S.resetDemo();location.href="login.html"}}
+};
+
+async function viewUser(u){const acts=D.a.filter(a=>a.user_id===u.id),items=D.c.filter(c=>c.user_id===u.id);const days=[];for(let i=29;i>=0;i--)days.push(addDays(SPC.today(),-i));
+  const vals=days.map(d=>u.score.byDay[d]||0),mx=Math.max(5,...vals);
+  dlg(u.name||u.email,`<div class="small muted">${esc(u.email)} · ${esc(u.phone||"no mobile")} · ${u.role} · ${u.status} · joined ${new Date(u.created_at).toLocaleDateString()}</div>
+    <div class="kpis"><div class="card kpi"><div class="v">${Math.round(u.score.total)}</div><div class="l">Satsang score · ${u.score.levelEn}</div></div><div class="card kpi"><div class="v">${SPC.streak(u.score.byDay)}</div><div class="l">Day streak</div></div><div class="card kpi"><div class="v">${items.length}</div><div class="l">Items sent</div></div></div>
+    <div class="chart"><svg viewBox="0 0 300 70" role="img" aria-label="Points per day, last 30 days">${vals.map((v,i)=>`<rect x="${i*10+1}" y="${66-v/mx*60}" width="8" height="${v/mx*60}" rx="2" fill="var(--saffron)"><title>${days[i]}: ${Math.round(v)}</title></rect>`).join("")}</svg></div>
+    <div class="tw"><table class="t"><thead><tr><th>Date</th><th>Kind</th><th>What</th><th>Status</th></tr></thead><tbody>${items.slice(0,20).map(c=>`<tr><td class="small">${new Date(c.created_at).toLocaleDateString()}</td><td>${KIND[c.kind]}</td><td class="small">${esc((c.title||c.body).slice(0,70))}</td><td><span class="chip ${c.status}">${STATUS[c.status]}</span></td></tr>`).join("")||'<tr><td colspan="4" class="empty">No items</td></tr>'}</tbody></table></div>`,
+    ADMIN?[["Send password reset email","btn ghost",async()=>{const r=await S.resetPassword(u.email);toast(r.demo?"Demo mode: no email sent":"Reset email sent");return true}]]:[])}
+
+function dlg(title,html,actions){const d=$("#dlg");$("#dlgT").textContent=title;$("#dlgB").innerHTML=`<form id="dlgF0" style="display:grid;gap:12px" onsubmit="return false">${html}</form><div id="dlgM"></div>`;const F=$("#dlgF");F.innerHTML="";
+  return new Promise(res=>{(actions||[]).forEach(([l,c,fn])=>{const b=document.createElement("button");b.className=c;b.textContent=l;b.onclick=async()=>{b.disabled=true;try{const r=await fn($("#dlgF0"));if(r){d.close();res(r)}}catch(e){$("#dlgM").innerHTML=`<div class="msg bad">${esc(e.message)}</div>`}b.disabled=false};F.appendChild(b)});
+    const c=document.createElement("button");c.className="btn ghost";c.textContent="Close";c.onclick=()=>{d.close();res(false)};F.appendChild(c);d.showModal()})}
+$("#dlg [data-close]").onclick=()=>$("#dlg").close();
+
+nav();R[cur]($("#panel"));
+})();
+</script>
+</body>
+</html>
