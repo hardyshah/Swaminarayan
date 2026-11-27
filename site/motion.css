@@ -1,0 +1,44 @@
+/* Scroll motion for the Swaminarayan site: page transitions, scroll progress, mask-reveal headings, staggered
+   reveals, parallax pictures and gentle scale-in sections. Loaded by vachanamrut-concordance/theme.js after sp.css.
+   Everything is off for prefers-reduced-motion, and for <html data-motion="off"> (set by site/motion.js). */
+
+/* smooth page-to-page transitions in browsers that support cross-document view transitions */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:spm-out .28s cubic-bezier(.4,0,1,1) both}
+::view-transition-new(root){animation:spm-in .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes spm-out{to{opacity:0;transform:translateY(-10px)}}
+@keyframes spm-in{from{opacity:0;transform:translateY(14px)}}
+
+/* thin progress line under the header, driven by scroll position */
+.spm-bar{position:fixed;left:0;top:0;height:3px;width:100%;z-index:60;pointer-events:none;transform-origin:0 50%;transform:scaleX(var(--spm-p,0));
+  background:linear-gradient(90deg,var(--saffron,#b9560c),#d9a93a,var(--peacock,#0e5a61))}
+
+/* headings rise out of a mask */
+.spm-h{clip-path:inset(0 0 100% 0);transform:translateY(.45em)}
+.spm-h.spm-in{clip-path:inset(-0.2em -0.2em -0.3em -0.2em);transform:none;transition:clip-path 1s cubic-bezier(.16,1,.3,1) var(--spm-d,0s),transform 1s cubic-bezier(.16,1,.3,1) var(--spm-d,0s)}
+
+/* blocks fade up, one after another */
+.spm-r{opacity:0;transform:translateY(28px);filter:blur(4px)}
+.spm-r.spm-in{opacity:1;transform:none;filter:none;transition:opacity .8s ease var(--spm-d,0s),transform .9s cubic-bezier(.16,1,.3,1) var(--spm-d,0s),filter .8s ease var(--spm-d,0s)}
+
+/* pictures drift inside their frames as they pass through the screen (CSS scroll timelines, no JS cost) */
+@supports (animation-timeline:view()){
+  .spm-px{animation:spm-px linear both;animation-timeline:view();animation-range:cover 0% cover 100%;will-change:transform}
+  @keyframes spm-px{from{transform:translateY(-7%) scale(1.14)}to{transform:translateY(7%) scale(1.14)}}
+  /* sections settle into place as they enter */
+  .spm-s{animation:spm-s linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+  @keyframes spm-s{from{transform:scale(.965);opacity:.35}to{transform:none;opacity:1}}
+  /* progress bar without JS */
+  .spm-bar{animation:spm-bar linear both;animation-timeline:scroll(root)}
+  @keyframes spm-bar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+/* fallback parallax driven by motion.js */
+.spm-pxj{will-change:transform;transform:translate3d(0,var(--spm-y,0),0) scale(1.14)}
+
+@media (prefers-reduced-motion:reduce){
+  @view-transition{navigation:none}
+  .spm-h,.spm-r,.spm-px,.spm-s,.spm-pxj{clip-path:none!important;opacity:1!important;transform:none!important;filter:none!important;animation:none!important}
+  .spm-bar{display:none}
+}
+html[data-motion="off"] .spm-h,html[data-motion="off"] .spm-r,html[data-motion="off"] .spm-px,html[data-motion="off"] .spm-s,html[data-motion="off"] .spm-pxj{clip-path:none!important;opacity:1!important;transform:none!important;filter:none!important;animation:none!important}
+html[data-motion="off"] .spm-bar{display:none}

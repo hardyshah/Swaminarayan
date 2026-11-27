@@ -171,7 +171,7 @@ function decorate(){
   const hd=document.querySelector(".ttl");if(hd&&hd.parentElement&&!document.querySelector(".sp-mandala"))addMandala(hd.parentElement,300,"right:-60px;top:20px;opacity:.22");
   reveal()}
 let IO=null;
-function reveal(){if(RM.matches||!("IntersectionObserver" in window))return;
+function reveal(){if(window.SPMotion||RM.matches||!("IntersectionObserver" in window))return; // site/motion.js does reveals when loaded
   IO=IO||new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("sp-in");IO.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
   document.querySelectorAll("main .block,main .card,main .dc,main .item,main .statrow>div,main .sech,main .h2,main .pages>a").forEach(el=>{
     if(el.dataset.spr)return;el.dataset.spr=1;const r=el.getBoundingClientRect();if(r.top<innerHeight*.92)return;el.classList.add("sp-rv");IO.observe(el)})}

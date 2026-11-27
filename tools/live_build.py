@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-# Build data/live.json from the official sites of the Nar Narayan Dev Gadi (Kalupur) only.
+# Build data/live.json from the official sites of the Nar Narayan Dev Gadi (Kalupur) and, for the Vadtal panel,
+# the official site of Shree Swaminarayan Mandir Vadtal (Laxminarayan Dev Gadi), vadtalmandir.org, only.
 # Run on a schedule by .github/workflows/live.yml. A source that fails keeps its last good data.
 import datetime,html,json,os,re,sys,urllib.parse,urllib.request
 OUT=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','vachanamrut-concordance','data','live.json')
@@ -8,7 +9,9 @@ CHANNEL='UCSOO8aliEwUKxIVkk5Igz-A'      # youtube.com/@swaminarayantemplekalupur
 KALUPUR='63d045f0d9918f9bc9dea12f'      # Kalupur's id on the darshan server
 DARSHAN=f'https://dailydarshanserver.nnd.media/api/iframe/temple?mode=dark&id={KALUPUR}'
 # nothing is published unless it comes from these hosts...
-HOSTS=('swaminarayan.info','swaminarayan.in','swaminarayan.faith','staticflickr.com','youtube.com','ytimg.com')
+HOSTS=('swaminarayan.info','swaminarayan.in','swaminarayan.faith','staticflickr.com','youtube.com','ytimg.com',
+       'vadtalmandir.org','vadtalmandir.s3.ap-south-1.amazonaws.com')
+VADTAL='https://www.vadtalmandir.org/index.php/dailydarshan/view/video'   # its Daily Darshan page: shangar, shayan, live tabs
 # ...and nothing naming another organisation gets through, whatever the host
 BLOCK=re.compile(r'\bbaps\b|bochasan|akshar[\s-]*purushottam|pramukh\s*swami|mahant\s*swami\s*maharaj|akshardham',re.I)
 UA={'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36',
@@ -65,6 +68,21 @@ def streams():
         o=json.loads(get('https://www.youtube.com/oembed?format=json&url='+urllib.parse.quote(f'https://www.youtube.com/watch?v={i}')))
         if o.get('author_name')=='Kalupur Mandir' and ok(o.get('title')):S.append({'id':i,'t':o['title']})
     return S
+def vadtal():
+    """Today's shangar and shayan photos and the live stream that vadtalmandir.org itself embeds."""
+    page=get(VADTAL);parts=re.split(r'<div id="(sampletab\d)"',page);tabs={parts[i]:parts[i+1] for i in range(1,len(parts),2)}
+    d=re.search(r'id="selecteddate">\s*(\d\d)-(\d\d)-(\d{4})',page)
+    def pics(b):
+        out=[]
+        for n in dict.fromkeys(re.findall(r'https://vadtalmandir\.s3\.ap-south-1\.amazonaws\.com/upload/dailydarshan/(\d+\.jpg)',b)):
+            out.append({'img':f'https://vadtalmandir.s3.ap-south-1.amazonaws.com/upload/dailydarshan/{n}',
+                        'thumb':f'https://vadtalmandir.s3.ap-south-1.amazonaws.com/upload/dailydarshan_thum/{n}'})
+        return out
+    live=list(dict.fromkeys(re.findall(r'youtube\.com/embed/([\w-]{11})',tabs.get('sampletab3','') or page)))[:2]
+    v={'date':f'{d.group(3)}-{d.group(2)}-{d.group(1)}' if d else None,'live':live,
+       'shangar':pics(tabs.get('sampletab1','')),'shayan':pics(tabs.get('sampletab2',''))}
+    if not live and not v['shangar'] and not v['shayan']:return None
+    return v
 def main():
     try:old=json.load(open(OUT,encoding='utf-8'))
     except Exception:old={}
@@ -75,11 +93,11 @@ def main():
             if not v:raise ValueError('empty')
             new[key]=v
         except Exception as e:
-            failed.append(key);print('FAILED',key,repr(e)[:160],file=sys.stderr);new[key]=old.get(key,[])
+            failed.append(key);print('FAILED',key,repr(e)[:160],file=sys.stderr);new[key]=old.get(key,[] if key!='vadtal' else {})
     home={}
     def page():
         home['s']=home.get('s') or get(SITE+'/');return home['s']
-    take('events',lambda:events(page()));take('galleries',lambda:galleries(page()));take('videos',videos);take('streams',streams)
+    take('events',lambda:events(page()));take('galleries',lambda:galleries(page()));take('videos',videos);take('streams',streams);take('vadtal',vadtal)
     print({k:len(v) for k,v in new.items()},'failed:',failed)
     if len(failed)==len(new):sys.exit('every source failed')
     if all(new[k]==old.get(k) for k in new):print('no change');return
