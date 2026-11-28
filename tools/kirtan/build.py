@@ -66,6 +66,54 @@ def infer_singer(s):
         if n.lower() in s.lower(): return n
     return None
 
+# singer names found in the video descriptions ("Singer: ...") for videos whose title names none
+JUNK = re.compile(r"chorus|support the|unknown|ai-assisted|style:|^\W*$|harmonium|સંગીત|shradhey|indresh|lakhbir|shrinathji|"
+                  r"melodious|^\[|vani jairam", re.I)
+FIX = {'Hashmukh Patadiya': 'Hasmukh Patadiya', 'હસમુખ પાટડીયા': 'Hasmukh Patadiya', 'હસમુખ પાટડિયા': 'Hasmukh Patadiya',
+       'હસમુખભાઈ પાટડીયા': 'Hasmukh Patadiya', 'Dinesh Vaghashiya': 'Dinesh Vaghasiya', 'Hemant Joshi': 'Hemant Joshi',
+       'हेमंत जोषी।': 'Hemant Joshi', 'अनमोल खत्री': 'Anmol Khatri', 'Harikrushna Patel': 'Harikrishna Patel',
+       'Harikrishn Patel': 'Harikrishna Patel', 'હરિકૃષ્ણ પટેલ': 'Harikrishna Patel', 'Akshaybhai Vaidya': 'Akshay Vaidya',
+       'Akshaybhai Vaidya, Anilbhai Dholakia': 'Akshay Vaidya, Anilbhai Dholakia', 'Nidhi Dholakiya, Raghuveer Kunchala': 'Nidhi Dholakia, Raghuveer Kunchala',
+       'Lalita Ghodara': 'Lalita Ghodadra', 'Sureshbhai Kadathiya': 'Suresh Kalathiya', 'Kishan Raval': 'Kishan Raval',
+       'Gyanjivandasji Swami - Kundaldham, Pu. Santo': 'Gyanjivandasji Swami - Kundaldham and santo',
+       'are hasmukh patadiya, nirvesh dave, archit patadiya and devutsav manda': 'Hasmukh Patadiya, Nirvesh Dave, Archit Patadiya and Devutsav Mandal',
+       'renowned singer of Cardiff UK Shri Vishrambhai @ Shri Hari Jayanti, Ra': 'Vishrambhai (Cardiff, UK)',
+       'Niraj Pathak A Professional Singer Known As "Kishore Dobara" ( Voice o': 'Niraj Pathak',
+       'Shailesh Maharaj (સ્વર: શૈલેષ મહારાજ)': 'Shailesh Maharaj', 'Hemant bhai virja': 'Hemantbhai Virja',
+       'Mahesh Bhai H Makwana': 'Maheshbhai H. Makwana', 'Hasmukhbhagat Surat': 'Hasmukh Bhagat (Surat)',
+       'Harshukhgiri Bapu Goswami હરશુખગીરી બાપુ ગોસ્વામી': 'Harshukhgiri Bapu Goswami', 'Kirtan Swami Jetpur': 'Kirtan Swami (Jetpur)',
+       'Swami Ramkrinadasji': 'Swami Ramkrishnadasji', 'Purnaswami': 'Purnaswarupdasji Swami', 'Sant Vrund': 'Santvrund',
+       'Lakshmiprasadswami Bagasara': 'Laxmiprasaddasji Swami', 'Sad.shree Laxmiprasaddasji swami': 'Laxmiprasaddasji Swami',
+       'Swami Shree Laxmiprasaddasaji': 'Laxmiprasaddasji Swami', 'Bhajanprakashdasji Swami (SSGD)': 'Bhajanprakashdasji Swami (SSGD)',
+       'Parshad Neelkanth Bhagat': 'Parshad Neelkanth Bhagat', 'ખીમજી ભરવાડ': 'Khimji Bharwad', 'Madhavpriya Swami - Sanskardham': 'Madhavpriya Swami (Sanskardham)',
+       'જયેશ સોની': 'Jayesh Soni', 'ભક્તિ આહીર': 'Bhakti Ahir', 'દયા વેકરીયા': 'Daya Vekariya', 'કિરણ ચોટાઇ લુક્કા': 'Kiran Chotai Lukka',
+       'ઘનશ્યામ ભગત': 'Parshad Ghanshyam Bhagat', 'Tejal Thakor , Pravin Patel': 'Tejal Thakor, Pravin Patel',
+       'Nidhi Dholakia, ArpitaThakkar, Pallavi Jambucha, Tejash Trivedi, Ronak': 'Nidhi Dholakia, Arpita Thakkar, Pallavi Jambucha, Tejash Trivedi and Ronak',
+       'Vinaben,Manjuben,Ushaben,Nandaben,Madhuben': 'Vinaben, Manjuben, Ushaben, Nandaben and Madhuben',
+       'Premvadan Swami and Pujya Shukmuni Swami': 'Premvadan Swami and Shukmuni Swami', 'Shree Hemant Joshi': 'Hemant Joshi',
+       'Premanand Swami': None,
+       'Devprasad Swami - Gadhpurdham': 'Devprasad Swami (Gadhpurdham)', 'Sadguru Shree Prabhucharandasji Swami': 'Prabhucharandasji Swami'}
+def clean_singer(v):
+    v = v.strip()
+    if v in FIX: return FIX[v]
+    if v.startswith('Shree '): v = v[6:]
+    if JUNK.search(v): return None
+    if re.search(r'chhapaiy|chappiy|chapaiy|chhapiy|છપૈયા', v, re.I): return 'Swami Chhapaiyaprakashdasji (Gadhpur)'
+    if 'Gyanjivandas' in v: return 'Gyanjivandasji Swami - Kundaldham'
+    v = re.sub(r'^(name\s*:?-?\s*|by\s+|p\.\s*pu\.\s*|pu\.\s*|pujya\s+|sad\.\s*|પૂ\.\s*|પ\.ભ\.\s*|શા\.સ્વા\.\s*|પાર્ષદવર્ય શ્રી\s*)+', '', v, flags=re.I)
+    v = re.sub(r'[*"_]', '', v)
+    v = re.split(r' based on | is a very |\. This| 👉| \d{2}-\d{2}-\d{2}', v)[0].strip(' .,')
+    if v in FIX: return FIX[v]
+    if v.isupper(): v = v.title()
+    return v or None
+DESC = {}
+for l in open(os.path.join(D, 'desc-singers-raw.txt'), encoding='utf8').read().split('\n'):
+    if '¦' in l:
+        vid, v = l.split('¦', 1)
+        c = clean_singer(v)
+        if c: DESC[vid] = c
+BAD_VID = {'ymZMV0KqOtE', 'r5Ds4rZf2pM', 'nXsN_iNRJ8E', 'zLuftU0oJ_8'}  # descriptions show a non-Swaminarayan bhajan
+
 PICKS = {}
 for line in open(os.path.join(D, 'picks.txt'), encoding='utf8').read().split('\n'):
     if not line.strip():
@@ -83,8 +131,11 @@ for line in open(os.path.join(D, 'picks.txt'), encoding='utf8').read().split('\n
         plt, plid = (PL[int(pl)] if pl != '' else (None, None))
         if EXCL_CH.search(cname) or sname in EXCL_SG or (plt and EXCL_PL.search(plt)):
             continue
+        if vid in BAD_VID:
+            continue
         if not sname:
-            sname = topic_singer(cname) or infer_singer(plt) or infer_singer(cname) or ''
+            sname = DESC.get(vid) or topic_singer(cname) or infer_singer(plt) or infer_singer(cname) or ''
+        sname = FIX.get(sname, sname)
         out.append(dict(v=vid, ch=cname, cid=cid, sg=sname, pl=plt, plid=plid))
     if out:
         PICKS[int(i)] = out

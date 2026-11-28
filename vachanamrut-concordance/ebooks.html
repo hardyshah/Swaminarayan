@@ -461,7 +461,7 @@ function closeDrawer(fromPop){
   if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});
 }
 function bookActions(b,big){
-  return `${WIDE.matches?`<button class="btn${big?" pri":""}" data-read="${b.i}">${big?"Read online":"Read"}</button>`:`<a class="btn${big?" pri":""}" href="${esc(b.u)}" target="_blank" rel="noopener">${big?"Read online ↗":"Read ↗"}</a>`}<a class="btn" href="${esc(b.u)}" target="_blank" rel="noopener" download>${big?"Download PDF":"PDF"}</a>`;
+  return `${WIDE.matches?`<button class="btn${big?" pri":""}" data-read="${b.i}">${big?"Read online":"Read"}</button>`:`<a class="btn${big?" pri":""}" href="${esc(b.u)}" target="_blank" rel="noopener">${big?"Read online ↗":"Read ↗"}</a>`}<a class="btn" href="${esc(b.u)}" target="_blank" rel="noopener" download>${big?"Download PDF":"PDF"}</a>${b.ka?`<a class="btn" href="${esc(b.ka)}" target="_blank" rel="noopener" title="Every kirtan in this book with links to recordings: singer, playlist and channel named">${big?"♪ Kirtans with audio (PDF)":"♪ Audio"}</a>`:""}`;
 }
 function renderDetail(focusBook){
   const g=curG,c=look(g),dr=$("#drawer");
@@ -479,7 +479,7 @@ function renderDetail(focusBook){
      ${g.langs.length>1?`<div class="vchips" role="group" aria-label="Language">${["",...g.langs].map(l=>`<button class="chip" data-vl="${esc(l)}" aria-pressed="${curLang===l}">${esc(l||"All")}<small>${l?g.bs.filter(b=>b.l===l).length:g.bs.length}</small></button>`).join("")}</div>`:""}
      ${vs.map((b,j)=>`<div class="vol" style="--c1:${c.c1};--c2:${c.c2}"><span class="n" aria-hidden="true">${esc(b.v&&!isNaN(+b.v)?b.v:(j+1))}</span><div><b>${esc(b.t)}</b><span>${esc([b.l,b.hw?"Handwritten":""].filter(Boolean).join(" · "))}</span></div><div class="va">${bookActions(b,false)}</div></div>`).join("")}
    </div>`:""}
-   <p class="note">From Shree Swaminarayan Temple Bhuj; the PDF opens from swaminarayan.faith.</p>`;
+   <p class="note">From Shree Swaminarayan Temple Bhuj; the PDF opens from swaminarayan.faith.${g.bs.some(b=>b.ka)?" <b>♪ Kirtans with audio</b> is our index of every kirtan in the book, with its page and recordings on YouTube from sampraday channels (singer and playlist named).":""}</p>`;
   if(!WIDE.matches)$$("#dbody [data-read]").forEach(btn=>{const b=B[+btn.dataset.read];const a=document.createElement("a");a.className=btn.className;a.href=b.u;a.target="_blank";a.rel="noopener";a.textContent=btn.textContent+" ↗";btn.replaceWith(a)});
 }
 function readBook(b){
