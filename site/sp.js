@@ -190,3 +190,6 @@ function start(){ctrlCss();collab();document.body.appendChild(SB);document.body.
   setInterval(sparks,2600);addEventListener("sp-theme",()=>setTimeout(motif,30))}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();
+
+/* Book links (site/books.js): every book name links to its card in the Satsang Library. */
+(function(){try{var me=document.currentScript&&document.currentScript.src;if(!me||window.SPBooks)return;var s=document.createElement("script");s.src=new URL("books.js?v=1",me).href;s.defer=true;document.head.appendChild(s)}catch(e){}})();

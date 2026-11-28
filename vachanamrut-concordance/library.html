@@ -63,6 +63,7 @@ section.shelf h2 span{color:var(--saffron)}
 .cover{width:104px;aspect-ratio:3/4;border-radius:4px;overflow:hidden;background:var(--sunk);border:1px solid var(--line);display:block}
 .cover img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
 .cover.type{display:grid;place-items:center;text-align:center;padding:8px;background:linear-gradient(160deg,var(--saffron-soft),var(--surface));color:var(--saffron-strong);font-family:var(--f-display);font-size:19px;line-height:1.15}
+.cover.type.long{font-size:15px;overflow-wrap:anywhere;hyphens:auto}
 .cover.type.peacock{background:linear-gradient(160deg,var(--peacock-soft),var(--surface));color:var(--peacock)}
 .book h3{font-family:var(--f-read);font-size:21px;font-weight:600;line-height:1.2;margin:0}
 .book .en{font-size:13px;color:var(--ink-2);margin:2px 0 6px}
@@ -93,6 +94,30 @@ section.shelf h2 span{color:var(--saffron)}
 .darshan .main figcaption b{color:var(--saffron-strong);font-size:clamp(17px,3vw,23px)}
 .darshan .cr{grid-column:1/-1;text-align:center;font-size:11.5px;color:var(--ink-3);margin-top:2px}
 .darshan .cr a{color:var(--ink-3);text-decoration:underline}
+/* cited-on-this-site index and the cross-check */
+.cited{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px;font-size:13.5px}
+.cited summary{cursor:pointer;color:var(--peacock);font-weight:600;list-style:none}
+.cited summary::-webkit-details-marker{display:none}
+.cited summary::before{content:"▸ ";color:var(--ink-3)}.cited[open] summary::before{content:"▾ "}
+.cited .n{display:inline-block;min-width:22px;text-align:center;border-radius:999px;background:var(--peacock-soft);color:var(--peacock);font-size:12px;padding:0 6px;margin-left:4px}
+.cited ol{margin:8px 0 0;padding-left:20px;display:grid;gap:6px}
+.cited li{line-height:1.35}.cited li b{font-weight:600;color:var(--ink)}
+.cited .x{color:var(--ink-2);font-size:12.5px;overflow-wrap:anywhere}
+.cited .more{font:inherit;font-size:13px;margin-top:8px;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:3px 10px;cursor:pointer;color:var(--ink-2)}
+.book.hl,.xc.hl{outline:2px solid var(--saffron);outline-offset:3px;transition:outline-color .6s}
+.book,.xc,.shelf{scroll-margin-top:140px}
+.crosscheck .lead{color:var(--ink-2);max-width:75ch;font-size:14.5px}
+.xc-g{margin-top:22px}.xc-g h3{font-family:var(--f-read);font-size:20px;margin:0 0 2px;font-weight:600}
+.xc-g .tag{font-family:var(--f-ui);font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;margin-right:4px;vertical-align:middle}
+.xc-corrected .tag{background:var(--saffron-soft);color:var(--saffron-strong)}.xc-added .tag{background:var(--peacock-soft);color:var(--peacock)}
+.xc-conflict .tag{background:#f6dede;color:#8a2b2b}.xc-confirmed .tag{background:var(--sunk);color:var(--ink-2)}
+:root[data-theme="dark"] .xc-conflict .tag{background:#3a1d1d;color:#f1a7a7}
+.xc-list{display:grid;gap:8px;margin-top:8px}
+.xc{display:grid;grid-template-columns:150px 1fr;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;font-size:14px}
+.xc .when b{display:block;font-weight:600}.xc .when span{display:block;font-size:12.5px;color:var(--ink-2)}
+.xc .what{font-weight:600}.xc .what .gu{font-weight:500;color:var(--ink-2)}
+.xc p{margin:4px 0;color:var(--ink-2);font-size:13.5px}.xc .src{font-size:12.5px;overflow-wrap:anywhere}
+@media (max-width:520px){.xc{grid-template-columns:1fr;gap:4px}}
 footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-3);font-size:13px}
 @media (max-width:520px){.feature{grid-template-columns:96px 1fr}.feature .cover,.cover{width:96px}.book{grid-template-columns:96px 1fr}.feature h3{font-size:23px}}
 </style>
@@ -116,6 +141,7 @@ footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-
     <h1>સત્સંગ ગ્રંથાલય</h1>
     <div class="en">Satsang Library</div>
     <p>Religious texts of Bhagwan Shri Swaminarayan's sampradaya, in one place. The Vachanamrut and the Vachanamrut Nondh can be searched and read on this site. The other books open as the original PDFs, to read in the browser or download.</p>
+    <p>Every book the site quotes has a card here, and each card lists where the site cites it: <b>Cited on this site</b>. On every page of the site a book's name links back to its card. The <a href="#crosscheck">cross-check</a> below shows what the library books confirmed, corrected and added on the site, and where they disagree. For more e-books of the sampradaya see the <a href="ebooks.html">Bhuj e-book catalogue</a>.</p>
   </div>
   <section class="darshan" aria-label="Darshan">
     <figure><img class="ph" src="img/bhaiji-dada.jpg" alt="Bhaiji Dada, wearing a red turban and a flower garland" width="608" height="760"><figcaption><b>ભાઈજી દાદા</b><span>Bhaiji Dada</span></figcaption></figure>
@@ -125,6 +151,7 @@ footer{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--ink-
   </section>
   <div class="filters" id="filters" role="toolbar" aria-label="Show"></div>
   <div id="shelves"></div>
+  <section class="shelf crosscheck" id="crosscheck" data-no-books></section>
 </main>
 <footer class="wrap">Books are reproduced from the published editions; the rights stay with their publishers, named on each card. Vachanamrut Nondh compiled by Ashwin Babubhai Shah, with special guidance / inspiration from Nathji Mandal and (Bhaiji Dada and Dadaji).</footer>
 <script>
@@ -133,10 +160,12 @@ const SHELVES=[
  {k:"scripture",gu:"શાસ્ત્ર",en:"Scriptures"},
  {k:"motabhai",gu:"પૂ. મોટાભાઈના ગ્રંથો",en:"Writings of Pu. Motabhai (Ishwarlal L. Pandya)"},
  {k:"satsang",gu:"સત્સંગ સાહિત્ય",en:"Satsang literature"},
+ {k:"sampradaya",gu:"સંપ્રદાયના ગ્રંથો",en:"Granths of the sampradaya used on this site",f:"Granths used on this site"},
+ {k:"texts",gu:"વેદ, પુરાણ અને જ્યોતિષ",en:"Vedic, Puranic and Jyotish texts cited on this site",f:"Vedic and Jyotish texts"},
 ];
 // p = pages, mb = file size
 const BOOKS=[
- {s:"scripture",feature:true,gu:"વચનામૃત",en:"Vachanamrut",cover:{t:"વચનામૃત"},
+ {s:"scripture",feature:true,id:"vachanamrut",gu:"વચનામૃત",en:"Vachanamrut",cover:{t:"વચનામૃત"},
   desc:"The discourses of Bhagwan Shri Swaminarayan: all 273 Vachanamruts with the Partharo, searchable word by word, with a word index, glossary and the scriptures they cite.",
   meta:[["Edition","Shree Swaminarayan Mandir, Bhuj"],["Pages","704"]],
   acts:[["Read the Vachanamrut","index.html#contents",1],["Search the word index","index.html#index"]]},
@@ -178,23 +207,77 @@ function card(b){
   const cov=b.cover?`<span class="cover type ${b.cover.c||""}" aria-hidden="true">${esc(b.cover.t)}</span>`:`<span class="cover"><img src="books/covers/${b.slug}.jpg" alt="" loading="lazy" width="104" height="139"></span>`;
   const acts=b.acts||[["Read","books/"+b.slug+".pdf",1,1],["Download",pdf,0,0,1]];
   const meta=[...(b.meta||[])];if(b.p&&!b.meta.some(m=>m[0]==="Pages"))meta.push(["Pages",b.p.toLocaleString("en-IN")]);
-  return `<article class="book${b.feature?" feature":""}">
+  const bid=b.slug||b.id;
+  return `<article class="book${b.feature?" feature":""}" id="b-${esc(bid)}">
    <a href="${esc(acts[0][1])}"${acts[0][1].endsWith(".pdf")?' target="_blank" rel="noopener"':""} aria-label="${esc(acts[0][0])}: ${esc(b.en)}">${cov}</a>
    <div><h3>${esc(b.gu)}</h3><div class="en">${esc(b.en)}</div>
     ${b.credit?`<div class="credit">${b.credit}</div>`:""}
     ${b.desc?`<p>${esc(b.desc)}</p>`:""}
     <dl>${meta.map(m=>`<dt>${esc(m[0])}</dt><dd>${esc(m[1])}</dd>`).join("")}${b.mb?`<dt>File</dt><dd>PDF, ${b.mb} MB${b.note?" · "+esc(b.note):""}</dd>`:""}</dl>
+    ${b.note2?`<p class="muted">${esc(b.note2)}</p>`:""}
     <div class="acts">${acts.map(a=>`<a class="btn${a[2]?" primary":""}" href="${esc(a[1])}"${a[1].endsWith(".pdf")&&!a[4]?' target="_blank" rel="noopener"':""}${a[4]?` download="${esc(b.en.split(" · ")[0]+(b.en.includes("Part")?" "+b.en.match(/Part \d+/)[0]:""))}.pdf"`:""}>${esc(a[0])}</a>`).join("")}</div>
+    ${cited(bid)}
    </div></article>`;
 }
-let show="all";
+let show="all",REFS={},XC=null;
+const STAT={corrected:["Corrected on the site","સુધારો","The site had a different date; every source agrees on this one, so the site now uses it."],
+ added:["Added to Kaal Patrak","ઉમેરો","New day pages. Each comes from a library book and no other source contradicts it."],
+ conflict:["Differences, site unchanged","મતભેદ","Two sources disagree. The site keeps its date and both readings are shown here."],
+ confirmed:["Confirmed","સમર્થન","The library books give the same day as the site."]};
+const fmtD=d=>{if(!d)return"";const[y,m,dd]=d.split("-").map(Number);return new Date(Date.UTC(y,m-1,dd)).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"})};
+function cited(id){
+  const r=REFS[id];if(!r||!r.length)return "";
+  const tot=r.length;
+  return `<details class="cited" data-no-books data-id="${esc(id)}"><summary>Cited on this site <span class="n">${tot}</span></summary><ol class="refs"></ol></details>`;
+}
+function fillCited(d){
+  if(d.dataset.done)return;d.dataset.done=1;
+  const r=REFS[d.dataset.id]||[],ol=d.querySelector("ol");
+  const row=e=>`<li><a href="../${esc(e.u)}">${esc(e.p)}${e.s?` · <b>${esc(e.s)}</b>`:""}</a>${e.pdf?` · <a href="../${esc(e.pdf)}" target="_blank" rel="noopener">PDF page</a>`:""}<div class="x">${esc(e.x||"")}${e.n>1&&!e.top?` <span class="muted">(${e.n}×)</span>`:""}</div></li>`;
+  const N=12;ol.innerHTML=r.slice(0,N).map(row).join("");
+  if(r.length>N){const b=document.createElement("button");b.className="more";b.textContent=`Show all ${r.length}`;b.onclick=()=>{ol.innerHTML=r.map(row).join("");b.remove()};d.appendChild(b)}
+}
+function newCard(c){
+  const meta=[];if(c.by)meta.push(["By",c.by]);if(c.pub)meta.push(["Publisher",c.pub]);if(c.year)meta.push(["Date",c.year]);
+  const acts=(c.read||[]).map((r,i)=>[r[0],r[1],i===0?1:0]);
+  return {s:c.shelf,id:c.id,gu:c.gu||c.en,en:c.gu?c.en:"",cover:{t:c.gu||c.en,c:(c.shelf==="texts"?"peacock":"")+((c.gu||c.en).length>9?" long":"")},desc:c.desc,meta,note2:c.note,
+    acts:acts.length?acts:[["Where it is cited","#b-"+c.id]]};
+}
 function draw(){
-  document.getElementById("filters").innerHTML=[["all","All books"],...SHELVES.map(s=>[s.k,s.en.split(" (")[0]])].map(([k,l])=>`<button data-k="${k}" class="${show===k?"on":""}" aria-pressed="${show===k}">${esc(l)}</button>`).join("");
+  document.getElementById("filters").innerHTML=[["all","All books"],...SHELVES.map(s=>[s.k,s.f||s.en.split(" (")[0]])].map(([k,l])=>`<button data-k="${k}" class="${show===k?"on":""}" aria-pressed="${show===k}">${esc(l)}</button>`).join("");
   document.getElementById("shelves").innerHTML=SHELVES.filter(s=>show==="all"||show===s.k).map(s=>{const bs=BOOKS.filter(b=>b.s===s.k);
     return `<section class="shelf" id="${s.k}"><header><h2><span>${esc(s.gu)}</span> · ${esc(s.en)}</h2><span class="muted">${bs.length} ${bs.length===1?"book":"books"}</span></header><div class="grid">${bs.map(card).join("")}</div></section>`}).join("");
+  document.querySelectorAll("details.cited").forEach(d=>d.addEventListener("toggle",()=>d.open&&fillCited(d)));
+}
+function drawXC(){
+  const el=document.getElementById("crosscheck");if(!XC||!el)return;
+  const lab=id=>{const b=BOOKS.find(x=>x.slug===id);return b?b.en.split(" · ")[0]+(b.en.match(/Part \d/)?" "+b.en.match(/Part (\d)/)[1]:""):id};
+  const groups=["corrected","added","conflict","confirmed"].map(k=>{const it=XC.items.filter(x=>x.status===k);
+    return `<section class="xc-g xc-${k}"><h3><span class="tag">${esc(STAT[k][1])}</span> ${esc(STAT[k][0])} <span class="muted">${it.length}</span></h3><p class="muted">${esc(STAT[k][2])}</p><div class="xc-list">${it.map(x=>`
+      <article class="xc" id="xc-${esc(x.id)}"><div class="when">${x.date?`<b>${esc(fmtD(x.date))}</b>`:""}${x.vs?`<span>${esc(x.vs)}</span>`:""}</div>
+      <div><div class="what">${esc(x.en)}${x.gu?` <span class="gu">${esc(x.gu)}</span>`:""}</div>
+      ${x.note?`<p>${esc(x.note)}</p>`:""}
+      <div class="src">${x.refs.map(r=>`<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)}, PDF p. ${r.page}</a>`).join(" · ")}${x.kaal&&x.status!=="conflict"?` · <a href="${esc(x.kaal)}">Kaal Patrak day</a>`:x.kaal?` · <a href="${esc(x.kaal)}">Kaal Patrak, that day</a>`:""}</div></div></article>`).join("")}</div></section>`}).join("");
+  el.innerHTML=`<header><h2><span>ગ્રંથ ચકાસણી</span> · Cross-check of the library books</h2><span class="muted">${XC.items.length} events</span></header>
+    <p class="lead">${esc(XC.meta.method)} Books read: Satsang Prabha 1–4, Nimit Matra 3–4, Amrutvarsha 1–2, Ashtako ane Kirtano. Nimit Matra 1–2 and the Smruti Ank are image scans without text, so they could not be read this way yet.</p>${groups}`;
+}
+function goHash(){
+  const h=decodeURIComponent(location.hash.slice(1));if(!h)return;
+  const el=document.getElementById(h);if(!el)return;
+  if(h.startsWith("b-")){const d=el.querySelector("details.cited");if(d){d.open=true;fillCited(d)}}
+  el.classList.add("hl");setTimeout(()=>el.classList.remove("hl"),2400);
+  el.scrollIntoView({block:"start"});
 }
 document.getElementById("filters").onclick=e=>{const b=e.target.closest("button");if(!b)return;show=b.dataset.k;draw()};
 draw();
+(async()=>{
+  const get=n=>fetch(`data/${n}.json`).then(r=>r.ok?r.json():null).catch(()=>null);
+  const [cards,refs,xc]=await Promise.all([get("books"),get("book-refs"),get("book-crosscheck")]);
+  if(refs)REFS=refs;if(xc)XC=xc;
+  if(cards)cards.forEach(c=>BOOKS.push(newCard(c)));
+  draw();drawXC();goHash();
+})();
+addEventListener("hashchange",()=>{if(location.hash.startsWith("#b-")&&show!=="all"){show="all";draw()}goHash()});
 </script>
 </body>
 </html>
