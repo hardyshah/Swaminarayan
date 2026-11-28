@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sampraday Mindmap</title>
+<meta name="description" content="A mindmap of the resources of the original Swaminarayan Sampraday: Bhagwan Swaminarayan, the NarNarayan Dev (Kalupur) and LaxmiNarayan Dev (Vadtal) gadis, acharyas, temples, scriptures, saints, festivals and official media, each linked to its diocese source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&family=Noto+Serif+Devanagari:wght@400;500;600&family=Noto+Serif+Gujarati:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --good:#2f7d32; --bad:#b3261e;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.06);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:12px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1416; --surface:#151e21; --sunk:#1b262a; --ink:#e6e8e1; --ink-2:#a3aeaa; --ink-3:#71807c; --line:#273439;
+  --saffron:#f0974a; --saffron-strong:#ffb06a; --saffron-soft:#3a2615; --peacock:#6cbcbc; --peacock-soft:#18363a;
+  --good:#7fc783; --bad:#f2958c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+.theme{border:1px solid var(--line);background:none;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+main{padding-block:22px 64px}
+.jay{text-align:center;font-family:var(--f-read);font-weight:600;color:var(--saffron-strong);font-size:clamp(17px,3.4vw,22px);margin:4px 0 18px;letter-spacing:.02em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
+.btn:hover{background:var(--sunk);text-decoration:none}.btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+:root{--c-kal:#b9560c;--c-vad:#0e5a61;--c-bhuj:#6b4fa0;--c-eb:#2f7d32;--c-site:#55625f;--edge:#c9cec2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-kal:#f0974a;--c-vad:#6cbcbc;--c-bhuj:#b9a3ec;--c-eb:#7fc783;--c-site:#a3aeaa;--edge:#34444a}}
+:root[data-theme="dark"]{--c-kal:#f0974a;--c-vad:#6cbcbc;--c-bhuj:#b9a3ec;--c-eb:#7fc783;--c-site:#a3aeaa;--edge:#34444a}
+.hero{padding:22px 24px;background:linear-gradient(160deg,var(--saffron-soft),transparent 65%),var(--surface)}
+.hero h1{font-family:var(--f-display);font-weight:400;color:var(--saffron);font-size:clamp(28px,5.5vw,42px);line-height:1.1;margin:6px 0 4px}
+.hero h1 small{display:block;font-family:var(--f-ui);font-size:clamp(15px,2.6vw,18px);color:var(--ink-2);font-weight:600;letter-spacing:.02em;margin-top:6px}
+.hero p{font-family:var(--f-read);font-size:17px;max-width:70ch;margin:10px 0 0;color:var(--ink)}
+.scope{margin-top:12px;font-size:14px;color:var(--ink-2);border-left:3px solid var(--saffron);padding:4px 0 4px 10px;max-width:72ch}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-size:13.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0 10px}
+.search{flex:1 1 240px;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:0 6px 0 14px;min-width:0}
+.search input{flex:1;min-width:0;border:0;background:none;font:inherit;color:var(--ink);padding:8px 0;outline:none}
+.search output{font-size:13px;color:var(--ink-3);white-space:nowrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:6px 13px;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+/* map */
+.stage{position:relative;height:min(74vh,760px);min-height:440px;overflow:hidden;touch-action:none;cursor:grab;background:
+ radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--ink) 9%,transparent) 1px,transparent 0) 0 0/22px 22px,var(--surface)}
+.stage.drag{cursor:grabbing}
+.stage svg{display:block;width:100%;height:100%;user-select:none;-webkit-user-select:none}
+.edge{fill:none;stroke:var(--edge);stroke-width:1.6}
+.edge.hot{stroke:var(--saffron);stroke-width:2.2}
+.nd{cursor:pointer}
+.nd rect.b{fill:var(--surface);stroke:var(--line);stroke-width:1.2;transition:stroke .15s}
+.nd:hover rect.b{stroke:var(--ink-3)}
+.nd.sel rect.b{stroke:var(--saffron);stroke-width:2.4}
+.nd.hit rect.b{fill:var(--saffron-soft)}
+.nd.dim{opacity:.35}
+.nd .en{font:600 13.5px var(--f-ui);fill:var(--ink)}
+.nd .gu{font:400 12.5px var(--f-ui);fill:var(--ink-2)}
+.nd.big .en{font-size:15.5px}
+.nd.root rect.b{fill:var(--saffron);stroke:var(--saffron)}.nd.root .en,.nd.root .gu{fill:#fff}
+.nd .bar{stroke:none}
+.nd .tog{fill:var(--surface);stroke:var(--ink-3);stroke-width:1.2}
+.nd .togt{font:700 12px var(--f-ui);fill:var(--ink-2);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.zoom{position:absolute;right:12px;bottom:12px;display:grid;gap:6px;z-index:2}
+.zoom button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);font-size:18px;cursor:pointer;color:var(--ink)}
+.hint{position:absolute;left:12px;bottom:12px;font-size:12.5px;color:var(--ink-3);background:color-mix(in srgb,var(--surface) 85%,transparent);padding:3px 9px;border-radius:999px;z-index:1}
+/* detail */
+.detail{position:absolute;top:12px;right:12px;width:min(340px,calc(100% - 24px));z-index:3;padding:14px 16px 14px;display:none}
+.detail.on{display:block}
+.detail .x{position:absolute;top:8px;right:8px;border:0;background:none;font-size:20px;line-height:1;cursor:pointer;color:var(--ink-3);padding:4px 6px}
+.detail .crumbs{font-size:12px;color:var(--ink-3);margin-right:22px}
+.detail h2{margin:4px 0 0;font-size:19px;line-height:1.25;font-weight:700}
+.detail .g{font-family:var(--f-read);font-size:18px;color:var(--saffron-strong);margin-top:2px}
+.detail p{margin:8px 0 0;font-family:var(--f-read);font-size:16px;line-height:1.45}
+.detail .srcrow{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px;color:var(--ink-2);background:var(--paper)}
+.chip i{width:9px;height:9px;border-radius:50%}
+.detail .open{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.detail .url{display:block;margin-top:8px;font-size:12px;color:var(--ink-3);word-break:break-all}
+.detail .kids{margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+.detail .kids button{border:0;background:none;padding:0;color:var(--peacock);cursor:pointer;font:inherit}
+@media (max-width:640px){.detail{top:auto;bottom:0;right:0;left:0;width:auto;border-radius:var(--r) var(--r) 0 0;max-height:60%;overflow:auto}.hint{display:none}.zoom{bottom:auto;top:12px}}
+/* outline */
+.outline{padding:10px 16px 18px;display:none}
+.outline.on{display:block}
+.outline ul{list-style:none;margin:0;padding-left:20px;border-left:1px dashed var(--line)}
+.outline>ul{padding-left:0;border:0}
+.outline li{margin:4px 0}
+.outline summary{cursor:pointer;padding:2px 0}
+.outline summary::marker{color:var(--ink-3)}
+.outline .ol{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.outline .ol a{font-weight:600}
+.outline .ol .gu{color:var(--ink-2);font-size:14.5px}
+.outline .ol .s{font-size:12px;color:var(--ink-3)}
+.outline .note{display:block;font-family:var(--f-read);color:var(--ink-2);font-size:15px;margin:1px 0 2px}
+.outline .leaf{padding-left:16px}
+.outline mark{background:var(--saffron-soft);color:inherit;border-radius:3px}
+/* sources */
+.sources{margin-top:22px;padding:18px 22px}
+.sources h2{margin:4px 0 8px;font-size:20px}
+.sources ul{margin:0;padding-left:18px}.sources li{margin:5px 0}
+.sources .n{color:var(--ink-3);font-size:13px}
+.sources p{color:var(--ink-2);font-size:14px;margin:12px 0 0}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Home</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="./">Today</a>
+    <a href="kaal-patrak/">Kaal Patrak</a>
+    <a href="vicharan/">Vicharan</a>
+    <a href="vachanamrut-concordance/">Vachanamrut</a>
+    <a href="vachanamrut-concordance/library.html">Library</a>
+    <a class="on" href="mindmap.html">Mindmap</a>
+    <a href="panchang.html">Panchang</a>
+    <a href="vedas.html">Vedas</a>
+  </nav>
+  <button class="theme" id="theme" aria-label="Switch theme"></button>
+</div></header>
+
+<main class="wrap">
+  <p class="jay">॥ શ્રી સ્વામિનારાયણો વિજયતેતરામ્ ॥</p>
+
+  <section class="card hero">
+    <div class="eyebrow">સંપ્રદાય નકશો · Sampraday mindmap</div>
+    <h1>સંપ્રદાયનાં સાધનો<small>Resources of the Swaminarayan Sampraday</small></h1>
+    <p>Bhagwan Swaminarayan, the two gadis he established, their acharyas and temples, the scriptures, saints and festivals, and where to read, hear and see each of them. Tap a branch to open it, and tap any item to see where it comes from.</p>
+    <div class="scope">Only the original sampraday as Bhagwan Swaminarayan established it: <b>Shree NarNarayan Dev Gadi</b> (Kalupur, Ahmedabad) and <b>Shree LaxmiNarayan Dev Gadi</b> (Vadtal). Every item links to its source on a diocese website, in a diocese publication, or on this site.</div>
+    <div class="legend" aria-label="Colour key">
+      <span><i style="background:var(--c-kal)"></i>Kalupur (NarNarayan Dev Gadi)</span>
+      <span><i style="background:var(--c-vad)"></i>Vadtal (LaxmiNarayan Dev Gadi)</span>
+      <span><i style="background:var(--c-bhuj)"></i>Bhuj mandir</span>
+      <span><i style="background:var(--c-eb)"></i>Bhuj e-book</span>
+      <span><i style="background:var(--c-site)"></i>This site</span>
+    </div>
+  </section>
+
+  <div class="tools">
+    <label class="search"><span class="vh">Search the mindmap</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search · શોધો (e.g. Gadhada, શિક્ષાપત્રી, Ekadashi)" autocomplete="off"><output id="qn"></output></label>
+    <div class="seg" role="group" aria-label="View"><button id="vMap" aria-pressed="true">Map</button><button id="vList" aria-pressed="false">Outline</button></div>
+    <button class="btn" id="exp">Open all</button>
+    <button class="btn" id="col">Close all</button>
+  </div>
+
+  <section class="card" style="overflow:hidden">
+    <div class="stage" id="stage">
+      <svg id="svg" aria-label="Mindmap of sampraday resources" role="img"><g id="vp"><g id="edges"></g><g id="nodes"></g></g></svg>
+      <div class="hint">Drag to move · scroll or pinch to zoom · tap ⊕ to open a branch</div>
+      <div class="zoom"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button><button id="zfit" aria-label="Fit to screen">⤢</button></div>
+      <aside class="card detail" id="detail" aria-live="polite"></aside>
+    </div>
+    <div class="outline" id="outline"></div>
+  </section>
+
+  <section class="card sources" id="sources">
+    <div class="eyebrow">સંદર્ભ · Sources</div>
+    <h2>Where every item comes from</h2>
+    <ul id="srclist"></ul>
+    <p>Diocese sources only, as for the rest of this site. Dates are as given on the source pages. The Vadtal Gadi website (swaminarayanvadtalgadi.org) now forwards to svg.org. Built from <code>data/mindmap/tree.json</code> by <code>tools/mindmap_build.py</code>.</p>
+  </section>
+</main>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const SVGNS="http://www.w3.org/2000/svg";
+const COL={kal:"var(--c-kal)",vad:"var(--c-vad)",vadm:"var(--c-vad)",bhuj:"var(--c-bhuj)",eb:"var(--c-eb)",site:"var(--c-site)"};
+const ROW=50,PADX=14,GAPX=56,TOG=11;
+let DATA,ROOT,BY={},SEL=null,HITS=[],HI=0;
+const st={k:1,x:40,y:0};
+const cv=document.createElement("canvas").getContext("2d");
+function tw(t,f){cv.font=f;return cv.measureText(t).width}
+const ext=u=>/^https?:/.test(u);
+
+fetch("data/mindmap/tree.json").then(r=>r.json()).then(d=>{DATA=d;ROOT=d.tree;prep(ROOT,null,0);
+  ROOT.open=true;BY.gadis.open=true; // start with the main branches and the two gadis
+  sources();outline();draw();fit(false);
+  const h=decodeURIComponent(location.hash.slice(1));if(h.startsWith("n=")&&BY[h.slice(2)])reveal(BY[h.slice(2)],true);
+}).catch(e=>{$("stage").innerHTML='<p style="padding:20px">Could not load the mindmap data.</p>';console.error(e)});
+
+function prep(n,p,d){n.p=p;n.d=d;BY[n.id]=n;n.open=false;
+  n.br=d<=1?n:p.br; // first-level branch
+  const fe=`600 ${d<=1?15.5:13.5}px Anek Gujarati, system-ui, sans-serif`,fg="400 12.5px Anek Gujarati, system-ui, sans-serif";
+  n.w=Math.ceil(Math.max(tw(n.en,fe),n.gu?tw(n.gu,fg):0))+PADX*2+8;n.w=Math.min(n.w,330);n.h=n.gu?40:30;
+  (n.kids||[]).forEach(k=>prep(k,n,d+1))}
+
+/* ---------- layout: horizontal tidy tree ---------- */
+function layout(){const vis=[],colW=[];let leaf=0;
+  (function walk(n){vis.push(n);colW[n.d]=Math.max(colW[n.d]||0,n.w);
+    if(n.open&&n.kids){n.kids.forEach(walk);n.y=(n.kids[0].y+n.kids[n.kids.length-1].y)/2}
+    else{n.y=leaf*ROW;leaf++}})(ROOT);
+  const xs=[0];for(let i=1;i<colW.length;i++)xs[i]=xs[i-1]+colW[i-1]+GAPX;
+  vis.forEach(n=>n.x=xs[n.d]);return vis}
+
+function el(tag,attrs,parent){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+
+function draw(){const vis=layout(),E=$("edges"),Nd=$("nodes");E.textContent="";Nd.textContent="";
+  const path=new Set();for(let n=SEL;n;n=n.p)path.add(n);
+  const hit=new Set(HITS);
+  vis.forEach(n=>{if(n.p){const a=n.p,x1=a.x+a.w,y1=a.y,x2=n.x,y2=n.y,mx=(x1+x2)/2;
+    el("path",{d:`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`,class:"edge"+(path.has(n)?" hot":"")},E)}});
+  vis.forEach(n=>{const g=el("g",{class:"nd"+(n.d===0?" root":"")+(n.d<=1?" big":"")+(n===SEL?" sel":"")+(hit.has(n)?" hit":"")+(HITS.length&&!hit.has(n)&&!path.has(n)?" dim":""),transform:`translate(${n.x},${n.y-n.h/2})`,tabindex:0,role:"button","aria-label":n.en+(n.gu?", "+n.gu:"")+(n.kids?(n.open?", open":", closed, "+n.kids.length+" items"):"")},Nd);
+    g.dataset.id=n.id;
+    el("rect",{class:"b",width:n.w,height:n.h,rx:10},g);
+    if(n.d>0)el("rect",{class:"bar",x:0,y:6,width:4,height:n.h-12,rx:2,fill:COL[n.src]||"var(--ink-3)"},g);
+    const tx=PADX+(n.d>0?2:0);
+    const t1=el("text",{class:"en",x:tx,y:n.gu?17:19.5},g);t1.textContent=clip(n.en,n.w-tx-8,n.d<=1?15.5:13.5,600);
+    if(n.gu){const t2=el("text",{class:"gu",x:tx,y:33},g);t2.textContent=clip(n.gu,n.w-tx-8,12.5,400)}
+    const tt=el("title",{},g);tt.textContent=n.en+(n.gu?" · "+n.gu:"");
+    if(n.kids){const tg=el("g",{class:"tg",transform:`translate(${n.w},${n.h/2})`},g);
+      el("circle",{class:"tog",r:TOG},tg);const t=el("text",{class:"togt"},tg);t.textContent=n.open?"−":n.kids.length;
+      tg.dataset.tog="1"}
+  })}
+function clip(t,max,size,wt){const f=`${wt} ${size}px Anek Gujarati, system-ui, sans-serif`;if(tw(t,f)<=max)return t;
+  while(t.length>3&&tw(t+"…",f)>max)t=t.slice(0,-1);return t+"…"}
+
+/* ---------- pan / zoom ---------- */
+const stage=$("stage"),vp=$("vp");
+function apply(){vp.setAttribute("transform",`translate(${st.x},${st.y}) scale(${st.k})`)}
+function fit(anim){const b=$("nodes").getBBox(),W=stage.clientWidth,H=stage.clientHeight;if(!b.width)return;
+  const k=Math.min(1.15,Math.max(.25,Math.min((W-60)/(b.width+TOG*2),(H-40)/b.height)));
+  st.k=k;st.x=(W-(b.width+TOG*2)*k)/2-b.x*k;st.y=(H-b.height*k)/2-b.y*k;apply()}
+function zoomAt(f,cx,cy){const k=Math.min(2.5,Math.max(.2,st.k*f));f=k/st.k;st.x=cx-(cx-st.x)*f;st.y=cy-(cy-st.y)*f;st.k=k;apply()}
+function center(n){const W=stage.clientWidth,H=stage.clientHeight;if(st.k<.7)st.k=.85;
+  const off=W>640&&$("detail").classList.contains("on")?170:0;
+  st.x=W/2-off-(n.x+n.w/2)*st.k;st.y=(W>640?H/2:H*.3)-n.y*st.k;apply()}
+stage.addEventListener("wheel",e=>{e.preventDefault();const r=stage.getBoundingClientRect();zoomAt(Math.exp(-e.deltaY*(e.ctrlKey?.01:.0018)),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+const P=new Map();let moved=0,pinch0=null;
+stage.addEventListener("pointerdown",e=>{if(e.target.closest(".detail,.zoom"))return;P.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;
+  if(P.size===2){const [a,b]=[...P.values()];pinch0={d:Math.hypot(a.x-b.x,a.y-b.y),k:st.k}}stage.classList.add("drag")});
+stage.addEventListener("pointermove",e=>{const p=P.get(e.pointerId);if(!p)return;
+  if(P.size===2&&pinch0){P.set(e.pointerId,{x:e.clientX,y:e.clientY});const [a,b]=[...P.values()],r=stage.getBoundingClientRect();
+    zoomAt(pinch0.k*Math.hypot(a.x-b.x,a.y-b.y)/pinch0.d/st.k,(a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top);moved=99;return}
+  const dx=e.clientX-p.x,dy=e.clientY-p.y;moved+=Math.abs(dx)+Math.abs(dy);
+  if(moved>4){if(!stage.hasPointerCapture(e.pointerId))stage.setPointerCapture(e.pointerId);st.x+=dx;st.y+=dy;apply()}
+  P.set(e.pointerId,{x:e.clientX,y:e.clientY})});
+const up=e=>{P.delete(e.pointerId);if(P.size<2)pinch0=null;if(!P.size)stage.classList.remove("drag")};
+stage.addEventListener("pointerup",up);stage.addEventListener("pointercancel",up);
+$("zin").onclick=()=>zoomAt(1.25,stage.clientWidth/2,stage.clientHeight/2);
+$("zout").onclick=()=>zoomAt(.8,stage.clientWidth/2,stage.clientHeight/2);
+$("zfit").onclick=()=>fit();
+
+/* ---------- interaction ---------- */
+$("nodes").addEventListener("click",e=>{if(moved>4)return;const g=e.target.closest(".nd");if(!g)return;const n=BY[g.dataset.id];
+  if(e.target.closest("[data-tog]")){toggle(n);return}
+  if(n.kids&&!n.open)toggle(n,true);select(n)});
+$("nodes").addEventListener("keydown",e=>{const g=e.target.closest(".nd");if(!g)return;const n=BY[g.dataset.id];
+  if(e.key==="Enter"||e.key===" "){e.preventDefault();if(n.kids)toggle(n);select(n);focusNode(n)}});
+function focusNode(n){const g=$("nodes").querySelector(`[data-id="${CSS.escape(n.id)}"]`);if(g)g.focus()}
+function toggle(n,force){n.open=force===undefined?!n.open:force;draw()}
+function select(n,keepView){SEL=n;draw();detail(n);history.replaceState(null,"","#n="+encodeURIComponent(n.id));if(!keepView)ensureVisible(n)}
+function ensureVisible(n){const W=stage.clientWidth,H=stage.clientHeight,sx=n.x*st.k+st.x,sy=n.y*st.k+st.y;
+  if(sx<10||sx+n.w*st.k>W-(W>640?360:10)||sy<H*.12||sy>(W>640?H*.85:H*.4))center(n)}
+function reveal(n,sel){for(let a=n.p;a;a=a.p)a.open=true;if(sel){SEL=n;draw();detail(n);center(n)}else draw()}
+function crumbs(n){const a=[];for(let p=n.p;p;p=p.p)a.unshift(p.en);return a.join(" › ")}
+function detail(n){const D=$("detail"),s=DATA.sources[n.src];
+  D.innerHTML=`<button class="x" aria-label="Close">×</button><div class="crumbs">${esc(crumbs(n))}</div>
+   <h2>${esc(n.en)}</h2>${n.gu?`<div class="g">${esc(n.gu)}</div>`:""}${n.note?`<p>${esc(n.note)}</p>`:""}
+   <div class="srcrow"><a class="btn open" href="${esc(n.url)}"${ext(n.url)?' target="_blank" rel="noopener"':""}>${n.kind==="site"||n.src==="site"?"Open on this site →":"Open the source ↗"}</a>
+   <span class="chip"><i style="background:${COL[n.src]}"></i>${esc(s.t)}</span></div>
+   <span class="url">${esc(ext(n.url)?n.url:new URL(n.url,location.href).pathname)}</span>
+   ${n.kids?`<div class="kids">${n.kids.length} items inside · <button data-a="toggle">${n.open?"close":"open"} this branch</button></div>`:""}`;
+  D.classList.add("on");
+  D.querySelector(".x").onclick=()=>{D.classList.remove("on");SEL=null;draw();history.replaceState(null,"",location.pathname)};
+  const tb=D.querySelector('[data-a="toggle"]');if(tb)tb.onclick=()=>{toggle(n);detail(n)}}
+function setAll(open){(function w(n){if(n.kids){n.open=open||n.d===0;n.kids.forEach(w)}})(ROOT);if(!open)ROOT.kids.forEach(k=>k.open=false);draw();outline(open);fit()}
+$("exp").onclick=()=>setAll(true);$("col").onclick=()=>setAll(false);
+
+/* ---------- search ---------- */
+const fold=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+$("q").addEventListener("input",()=>{const q=fold($("q").value.trim());HITS=[];HI=0;
+  if(q.length>=2){Object.values(BY).forEach(n=>{if(fold(n.en+" "+(n.gu||"")+" "+(n.note||"")).includes(q))HITS.push(n)});HITS.forEach(n=>{for(let a=n.p;a;a=a.p)a.open=true})}
+  $("qn").textContent=q.length>=2?(HITS.length?`${HITS.length} found`:"none"):"";
+  draw();outline(false,q);if(HITS.length)select(HITS[0])});
+$("q").addEventListener("keydown",e=>{if(e.key==="Enter"&&HITS.length){HI=(HI+(e.shiftKey?-1:1)+HITS.length)%HITS.length;$("qn").textContent=`${HI+1} of ${HITS.length}`;select(HITS[HI]);center(HITS[HI])}
+  if(e.key==="Escape"){$("q").value="";$("q").dispatchEvent(new Event("input"))}});
+
+/* ---------- outline view ---------- */
+function outline(openAll,q){const mark=t=>{const e=esc(t);if(!q)return e;const i=fold(t).indexOf(q);return i<0?e:esc(t.slice(0,i))+"<mark>"+esc(t.slice(i,i+q.length))+"</mark>"+esc(t.slice(i+q.length))};
+  const hit=new Set(HITS),inPath=new Set();HITS.forEach(n=>{for(let a=n;a;a=a.p)inPath.add(a)});
+  const row=n=>`<span class="ol"><a href="${esc(n.url)}"${ext(n.url)?' target="_blank" rel="noopener"':""}>${mark(n.en)}</a>${n.gu?`<span class="gu">${mark(n.gu)}</span>`:""}<span class="s">· ${esc(DATA.sources[n.src].t)}</span></span>${n.note?`<span class="note">${mark(n.note)}</span>`:""}`;
+  const li=n=>{if(q&&HITS.length&&!inPath.has(n))return "";
+    return n.kids?`<li><details${openAll||n.d<1||(q&&inPath.has(n))?" open":""}><summary>${row(n)}</summary><ul>${n.kids.map(li).join("")}</ul></details></li>`:`<li class="leaf">${row(n)}</li>`};
+  $("outline").innerHTML=`<ul>${li(ROOT)}</ul>`}
+$("vMap").onclick=()=>view(false);$("vList").onclick=()=>view(true);
+function view(list){$("vMap").setAttribute("aria-pressed",!list);$("vList").setAttribute("aria-pressed",list);
+  $("stage").style.display=list?"none":"";$("outline").classList.toggle("on",list);try{localStorage.setItem("mm-view",list?"list":"map")}catch(e){}if(!list)fit()}
+try{if(localStorage.getItem("mm-view")==="list")setTimeout(()=>view(true))}catch(e){}
+
+/* ---------- sources list ---------- */
+function sources(){const c={};Object.values(BY).forEach(n=>c[n.src]=(c[n.src]||0)+1);
+  $("srclist").innerHTML=Object.entries(DATA.sources).map(([k,s])=>`<li><a href="${esc(s.u)}"${ext(s.u)?' target="_blank" rel="noopener"':""}>${esc(s.t)}</a> <span class="n">· ${esc(ext(s.u)?s.u.replace(/^https?:\/\//,"").replace(/\/$/,""):"hardyshah.github.io/Swaminarayan")} · ${c[k]||0} items</span></li>`).join("")}
+
+addEventListener("resize",()=>{clearTimeout(window.__mmr);window.__mmr=setTimeout(()=>fit(),200)});
+})();
+</script>
+</body>
+</html>
