@@ -190,3 +190,8 @@ function start(){ctrlCss();collab();document.body.appendChild(SB);document.body.
   setInterval(sparks,2600);addEventListener("sp-theme",()=>setTimeout(motif,30))}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();
+
+/* floating "Fact of the day" (site/daily.js) on every page that loads this file */
+(function(){try{const me=document.currentScript&&document.currentScript.src;if(!me||window.SP_NO_DAILY)return;
+  const s=document.createElement("script");s.src=new URL("daily.js?v=1",me).href;s.defer=true;
+  (document.body?Promise.resolve():new Promise(r=>document.addEventListener("DOMContentLoaded",r,{once:true}))).then(()=>document.head.appendChild(s))}catch(e){}})();
