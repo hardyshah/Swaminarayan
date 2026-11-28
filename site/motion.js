@@ -109,6 +109,9 @@ function isDark(){const c=cssColor("--paper","#fff").replace("#","");if(c.length
 function want3d(){
   if(document.querySelector("[data-spm-no3d]")||/solar-system|murti-3d/.test(location.pathname))return false; // pages with their own WebGL
   if(navigator.connection&&navigator.connection.saveData)return false;
+  // only on devices that can carry it: 4 GB+ memory and 4+ cores where the browser reports them (Rangdock3 efficiency rule)
+  if((navigator.deviceMemory&&navigator.deviceMemory<4)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<4))return false;
+  if(root.getAttribute("data-rd-motion")==="paused"||root.getAttribute("data-rd-read")==="darshan")return false;
   try{const c=document.createElement("canvas");return !!(c.getContext("webgl2")||c.getContext("webgl"))}catch(e){return false}}
 async function lotus(g){
   const THREE=await import(new URL("../murti-3d/lib/three.module.min.js",BASE).href);

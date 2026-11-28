@@ -1,5 +1,9 @@
 /* Shared experience layer for the Swaminarayan site: sound (tanpura drone, temple bell), aura, reveal on scroll,
    animated mandala with orbiting words, diya sparks. Choices saved per viewer (sp-snd-drone, sp-snd-bell, sp-snd-vol). */
+/* Rangdock3 layer (rd3.css + rd3.js) for SP_LITE pages too; on full pages theme.js has already loaded it */
+(function(){if(window.SPRD3_LOADING)return;window.SPRD3_LOADING=1;const me=document.currentScript&&document.currentScript.src;if(!me)return;
+  const l=document.createElement("link");l.id="rd3-css";l.rel="stylesheet";l.href=new URL("rd3.css?v=1",me).href;document.head.appendChild(l);
+  const s=document.createElement("script");s.src=new URL("rd3.js?v=1",me).href;s.defer=true;document.head.appendChild(s)})();
 (function(){
 "use strict";
 const SP_SRC=(document.currentScript&&document.currentScript.src)||"";
