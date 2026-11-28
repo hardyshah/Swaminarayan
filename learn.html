@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<script src="vachanamrut-concordance/theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Learn · શીખો</title>
+<meta name="description" content="Courses, activities, a life film, audio and resources on Bhagwan Swaminarayan, every item with its source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Rasa:wght@400;500;600&family=Shrikhand&display=swap">
+<style>
+/* Layout: sticky header, a hero with five section chips and the learner's progress, then five stacked sections:
+   Courses (expandable lesson lists), Activities (one game panel at a time), Watch (life film + mandir videos),
+   Listen (sound, read-aloud, kirtan books) and Resources. Sources sit under every item and again in the footer. */
+:root{
+  --paper:#f3f4ee; --surface:#ffffff; --sunk:#e9ebe3; --ink:#15211f; --ink-2:#55625f; --ink-3:#86918d; --line:#d8dcd1;
+  --saffron:#b9560c; --saffron-strong:#9a4507; --saffron-soft:#f8e2cb; --peacock:#0e5a61; --peacock-soft:#d6e7e6;
+  --good:#2f7d32; --bad:#b3261e;
+  --shadow:0 1px 2px rgba(20,33,31,.06),0 8px 24px rgba(20,33,31,.06);
+  --f-read:"Rasa","Noto Serif Gujarati",Georgia,serif;
+  --f-ui:"Anek Gujarati","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Shrikhand","Anek Gujarati",serif;
+  --r:14px; color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--peacock);text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--ink);white-space:nowrap;margin-right:auto}.brand:hover{text-decoration:none}
+.brand .gu{font-family:var(--f-display);font-size:24px;color:var(--saffron);line-height:1}
+.brand .en{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.nav{display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink-2);padding:6px 10px;border-radius:999px;font-size:14px;font-weight:500}
+.nav a:hover{text-decoration:none;background:var(--sunk);color:var(--ink)}.nav a.on{background:var(--ink);color:var(--paper)}
+main{padding-block:22px 80px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:14px;font-weight:500;color:var(--ink)}
+.btn:hover{border-color:var(--saffron);text-decoration:none}
+.btn.pri{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.btn.pri:hover{background:var(--saffron-strong)}
+.src{font-size:12.5px;color:var(--ink-3);margin:8px 0 0;line-height:1.45}
+.src b{font-weight:600;color:var(--ink-2)}
+.src a{color:var(--ink-2);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--ink-3) 50%,transparent)}
+.gu-t{font-family:var(--f-read);font-weight:500}
+/* hero */
+.hero2{padding:34px 26px 26px;overflow:hidden;position:relative}
+.hero2 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(40px,8vw,64px);line-height:1.05;margin:4px 0 6px;color:var(--saffron)}
+.hero2 h1 span{font-family:var(--f-ui);font-size:.36em;font-weight:600;letter-spacing:.02em;display:block;margin-top:6px;color:var(--ink-2)}
+.hero2 p.lead{max-width:560px;color:var(--ink-2);font-size:17px;margin:6px 0 18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips a{display:flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--line);border-radius:999px;padding:8px 14px 8px 10px;color:var(--ink);font-weight:500}
+.chips a:hover{text-decoration:none;border-color:var(--saffron)}
+.chips a i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--saffron-soft);color:var(--saffron-strong);font-size:14px}
+.chips a small{color:var(--ink-3);font-size:12.5px}
+.stats{display:flex;flex-wrap:wrap;gap:22px;margin-top:22px}
+.stats div{min-width:110px}.stats b{display:block;font-size:26px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stats span{font-size:13px;color:var(--ink-2)}
+/* sections */
+section.sx{margin-top:44px;scroll-margin-top:80px}
+.sech{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sech h2{margin:0;font-size:26px;font-weight:600;line-height:1.15}
+.sech h2 .gu{font-family:var(--f-display);font-weight:400;color:var(--saffron);display:block;font-size:20px;margin-bottom:2px}
+.sub{color:var(--ink-2);margin:-4px 0 14px;max-width:720px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+/* courses */
+.course{padding:0;overflow:hidden}
+.course summary{list-style:none;cursor:pointer;padding:18px 18px 16px;display:grid;gap:6px}
+.course summary::-webkit-details-marker{display:none}
+.course .ico{font-size:28px;line-height:1}
+.course h3{margin:0;font-size:18px;line-height:1.25}
+.course h3 small{display:block;font-family:var(--f-read);font-weight:500;color:var(--saffron-strong);font-size:15px}
+.course p{margin:0;color:var(--ink-2);font-size:14.5px}
+.bar{height:6px;border-radius:999px;background:var(--sunk);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--saffron),var(--peacock));border-radius:inherit;transition:width .5s}
+.meta{font-size:12.5px;color:var(--ink-3);display:flex;justify-content:space-between}
+.course[open]{grid-column:1/-1}
+.lessons{border-top:1px solid var(--line);padding:6px 18px 18px;display:grid;gap:4px}
+.lesson{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.lesson:last-of-type{border-bottom:0}
+.lesson input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--saffron);cursor:pointer}
+.lesson h4{margin:0 0 4px;font-size:16px}
+.lesson h4 small{color:var(--ink-3);font-weight:500;font-size:13px;margin-left:6px}
+.lesson .body{color:var(--ink-2);font-size:15px}
+.lesson .go{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.lesson .go a{font-size:13.5px;border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--ink)}
+.lesson .go a:hover{border-color:var(--saffron);text-decoration:none}
+.lessons .end{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* activities */
+.acts{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-bottom:14px}
+.act{text-align:left;cursor:pointer;padding:14px 16px;display:grid;gap:4px;border:1px solid var(--line)}
+.act[aria-pressed="true"]{border-color:var(--saffron);box-shadow:0 0 0 2px color-mix(in srgb,var(--saffron) 35%,transparent),var(--shadow)}
+.act .ico{font-size:24px}.act b{font-size:16px}.act span{font-size:13.5px;color:var(--ink-2)}
+.act em{font-style:normal;font-size:12.5px;color:var(--saffron-strong);font-weight:600}
+.game{padding:22px;min-height:300px}
+.game .q{font-family:var(--f-read);font-size:clamp(19px,3.2vw,24px);line-height:1.45;margin:6px 0 4px}
+.game .hint{color:var(--ink-2);font-size:14.5px;margin:0 0 14px}
+.opts{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.opt{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;font-size:16px;font-weight:500;transition:transform .15s,border-color .2s,background .2s}
+.opt:hover{border-color:var(--saffron);transform:translateY(-1px)}
+.opt.ok{background:color-mix(in srgb,var(--good) 14%,var(--surface));border-color:var(--good)}
+.opt.no{background:color-mix(in srgb,var(--bad) 12%,var(--surface));border-color:var(--bad)}
+.opt:disabled{cursor:default;transform:none}
+.opt .n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--saffron);color:#fff;font-size:13px;margin-right:8px}
+.res{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--sunk);font-size:15px}
+.res.ok{background:color-mix(in srgb,var(--good) 12%,var(--surface))}.res.no{background:color-mix(in srgb,var(--bad) 9%,var(--surface))}
+.gbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.score{font-size:14px;color:var(--ink-2)}.score b{color:var(--ink);font-variant-numeric:tabular-nums}
+.flip{perspective:1200px;cursor:pointer;margin:6px 0 4px}
+.flip .in{position:relative;min-height:230px;transition:transform .6s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(160deg,var(--saffron-soft),var(--surface) 70%)}
+.flip .b{transform:rotateY(180deg);background:var(--surface);justify-content:flex-start;overflow:auto}
+.flip .f .w{font-family:var(--f-read);font-size:clamp(34px,7vw,52px);font-weight:600;color:var(--saffron-strong);line-height:1.1}
+.flip .f .r{color:var(--ink-2);margin-top:6px}
+.flip .b .g{font-size:18px;font-weight:600;margin-bottom:6px}
+.flip .b p{margin:0 0 8px;color:var(--ink-2);font-size:15px}
+/* watch */
+.film{overflow:hidden;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.stage{position:relative;background:#0f0c0a;aspect-ratio:16/10;overflow:hidden}
+.stage .sv{position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease}
+.stage .sv.on{opacity:1}
+.stage .sv svg{width:100%;height:100%;display:block}
+.stage .sv.on svg{animation:kb 11s ease-out both}
+@keyframes kb{from{transform:scale(1.08) translate(1.5%,1%)}to{transform:scale(1) translate(0,0)}}
+.stage .cap{position:absolute;left:0;right:0;bottom:0;padding:40px 18px 14px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff}
+.stage .cap b{display:block;font-family:var(--f-read);font-size:clamp(18px,3vw,24px);line-height:1.2}
+.stage .cap span{font-size:13.5px;opacity:.85}
+.stage .tick{position:absolute;left:0;top:0;height:3px;background:var(--saffron);width:0}
+.side{padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.side .when{font-size:13px;color:var(--ink-3)}
+.side .yr{font-size:15px;color:var(--ink-2)}
+.side .book{font-family:var(--f-read);font-size:16px;background:var(--sunk);border-radius:10px;padding:10px 12px}
+.ctl{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+.dots{display:flex;flex-wrap:wrap;gap:4px;padding:10px 14px;border-top:1px solid var(--line);grid-column:1/-1}
+.dots button{width:26px;height:8px;border-radius:999px;border:0;background:var(--sunk);cursor:pointer;padding:0}
+.dots button[aria-current="true"]{background:var(--saffron)}
+.vids{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));margin-top:14px}
+.vid{padding:0;overflow:hidden;cursor:pointer;text-align:left;border:1px solid var(--line)}
+.vid .th{aspect-ratio:16/9;background:#111 center/cover no-repeat;position:relative}
+.vid .th::after{content:"▶";position:absolute;inset:0;margin:auto;width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:grid;place-items:center;font-size:18px}
+.vid .th iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid .th.playing::after{display:none}
+.vid .t{padding:10px 12px;font-size:14px;line-height:1.35}
+.vid .t small{display:block;color:var(--ink-3);margin-top:3px}
+/* listen */
+.listen{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.lcard{padding:18px}
+.lcard h3{margin:0 0 4px;font-size:17px}
+.lcard p{margin:0 0 12px;color:var(--ink-2);font-size:14.5px}
+.tog{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:none;width:100%;cursor:pointer;margin-bottom:8px;text-align:left}
+.tog small{display:block;color:var(--ink-3);font-size:12.5px}
+.tog .sw{flex:none;width:38px;height:22px;border-radius:999px;background:var(--line);position:relative;transition:background .25s}
+.tog .sw::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .25s}
+.tog[aria-pressed="true"] .sw{background:var(--saffron)}.tog[aria-pressed="true"] .sw::after{transform:translateX(16px)}
+.say{font-family:var(--f-read);font-size:17px;background:var(--sunk);border-radius:10px;padding:10px 12px;margin:0 0 10px}
+.wave{display:flex;gap:3px;align-items:flex-end;height:22px;margin-left:auto}
+.wave i{width:3px;background:var(--saffron);border-radius:2px;height:30%}
+.speaking .wave i{animation:wv 1s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.15s}.wave i:nth-child(3){animation-delay:.3s}.wave i:nth-child(4){animation-delay:.45s}
+@keyframes wv{0%,100%{height:25%}50%{height:100%}}
+.blist{list-style:none;margin:0;padding:0;display:grid;gap:2px;max-height:300px;overflow:auto}
+.blist a{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border-radius:8px;color:var(--ink);font-size:14.5px}
+.blist a:hover{background:var(--sunk);text-decoration:none}
+.blist small{color:var(--ink-3);white-space:nowrap}
+/* resources */
+.rcol{padding:18px}
+.rcol h3{margin:0 0 10px;font-size:17px}
+.rlist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.rlist li{display:grid;gap:2px}
+.rlist a{font-weight:600}
+.rlist span{font-size:14px;color:var(--ink-2)}
+.rlist small{font-size:12.5px;color:var(--ink-3)}
+footer{border-top:1px solid var(--line);padding-block:24px 90px;color:var(--ink-2);font-size:14px}
+footer p{margin:0 0 10px;max-width:860px}
+@media (max-width:760px){.gbar{padding-right:52px}.film{grid-template-columns:1fr}.hero2{padding:26px 18px 20px}.game{padding:16px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="gu">શ્રી સ્વામિનારાયણ</span><span class="en">Learn</span></a>
+  <nav class="nav" aria-label="Pages">
+    <a href="./">Today</a>
+    <a class="on" href="learn.html">Learn</a>
+    <a href="kaal-patrak/">Kaal Patrak</a>
+    <a href="vicharan/">Vicharan</a>
+    <a href="vachanamrut-concordance/">Vachanamrut</a>
+    <a href="vedic-time.html">Vedic time</a>
+    <a href="panchang.html">Panchang</a>
+    <a href="vachanamrut-concordance/library.html">Library</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <section class="card hero2" id="hero2" aria-labelledby="lh">
+    <div class="eyebrow">શીખો · રમો · જુઓ · સાંભળો</div>
+    <h1 id="lh">શીખો<span>Learn about Bhagwan Swaminarayan</span></h1>
+    <p class="lead">Short courses, games built from the day-by-day record of his life, a life film, sound and read-aloud, and the books behind it all. Every fact shows where it comes from.</p>
+    <div class="chips">
+      <a href="#courses"><i>૧</i>Courses <small>· અભ્યાસ</small></a>
+      <a href="#activities"><i>૨</i>Activities <small>· પ્રવૃત્તિ</small></a>
+      <a href="#watch"><i>૩</i>Watch <small>· જુઓ</small></a>
+      <a href="#listen"><i>૪</i>Listen <small>· સાંભળો</small></a>
+      <a href="#resources"><i>૫</i>Resources <small>· સાધન</small></a>
+    </div>
+    <div class="stats" aria-live="polite">
+      <div><b id="st-les">0</b><span>lessons done · પાઠ</span></div>
+      <div><b id="st-ans">0</b><span>right answers · સાચા જવાબ</span></div>
+      <div><b id="st-best">0</b><span>best streak · સળંગ</span></div>
+      <div><b id="st-days">6,277</b><span>days in the record · દિવસ</span></div>
+    </div>
+  </section>
+
+  <section class="sx" id="courses" aria-labelledby="hc">
+    <div class="sech"><h2 id="hc"><span class="gu">અભ્યાસક્રમ</span>Courses</h2></div>
+    <p class="sub">Four short paths. Open one, read each lesson, follow its links into the site, and tick it off. Your progress stays on this device.</p>
+    <div class="grid" id="courseGrid"></div>
+  </section>
+
+  <section class="sx" id="activities" aria-labelledby="ha">
+    <div class="sech"><h2 id="ha"><span class="gu">પ્રવૃત્તિ</span>Activities</h2></div>
+    <p class="sub">Learn by playing. Each question comes from a real entry, and the answer shows the book and page so you can read more.</p>
+    <div class="acts" id="acts" role="group" aria-label="Choose an activity"></div>
+    <div class="card game" id="game" aria-live="polite"><p class="hint">Loading…</p></div>
+  </section>
+
+  <section class="sx" id="watch" aria-labelledby="hw">
+    <div class="sech"><h2 id="hw"><span class="gu">જુઓ</span>Watch</h2></div>
+    <p class="sub">The life film plays the illustrated scenes of Kaal Patrak in order, with the book's words for each day. Below it are the newest videos from the Kalupur mandir channel.</p>
+    <div class="card film" id="film">
+      <div class="stage" id="stage"><div class="tick" id="tick"></div><div class="cap" id="cap"><b>Loading the film…</b></div></div>
+      <div class="side" id="side"></div>
+      <div class="dots" id="dots" role="tablist" aria-label="Scenes"></div>
+    </div>
+    <div class="vids" id="vids"></div>
+    <p class="src" id="vsrc"></p>
+  </section>
+
+  <section class="sx" id="listen" aria-labelledby="hl">
+    <div class="sech"><h2 id="hl"><span class="gu">સાંભળો</span>Listen</h2></div>
+    <p class="sub">Sit with the tanpura while you read, have a day of his life read aloud, or open a kirtan book and sing along.</p>
+    <div class="listen">
+      <div class="card lcard">
+        <h3>Tanpura and bell · તાનપુરો</h3>
+        <p>A soft Sa–Pa drone and a temple bell, made in your browser. Nothing is downloaded.</p>
+        <button type="button" class="tog" id="tgDrone" aria-pressed="false"><span>Tanpura drone<small>Sa Pa Sa' Sa, slow cycle</small></span><i class="sw"></i></button>
+        <button type="button" class="tog" id="tgBell" aria-pressed="false"><span>Ring the bell<small>ઘંટ · one strike</small></span><i class="sw"></i></button>
+      </div>
+      <div class="card lcard" id="readCard">
+        <h3>Hear a day of his life · વાંચી સંભળાવો</h3>
+        <p>Your device reads the book's words for one day aloud. Gujarati needs a Gujarati voice on your device; if there is none, the English summary of that year is read instead.</p>
+        <div class="say" id="sayTxt">…</div>
+        <div class="src" id="saySrc"></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap">
+          <button type="button" class="btn pri" id="sayGo">▶ Read aloud</button>
+          <button type="button" class="btn" id="sayNext">Another day ↻</button>
+          <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+      </div>
+      <div class="card lcard">
+        <h3>Kirtan books · કીર્તન</h3>
+        <p>Words of kirtans, ashtaks and prayers to sing along with, from the Bhuj mandir's free e-books.</p>
+        <ul class="blist" id="kirtans"></ul>
+        <p class="src"><b>Source:</b> <a href="https://www.swaminarayan.faith/scriptures/ebooks" target="_blank" rel="noopener">swaminarayan.faith e-books</a>, Shree Swaminarayan Temple Bhuj, and the site's <a href="vachanamrut-concordance/library.html">Satsang library</a>. Recorded kirtans will be added here once the audio catalogue is ready.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sx" id="resources" aria-labelledby="hr">
+    <div class="sech"><h2 id="hr"><span class="gu">સાધન</span>Resources</h2></div>
+    <p class="sub">The books and places this site draws on, so you can go to the source yourself.</p>
+    <div class="grid" id="resGrid"></div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Sources.</b> Day-by-day text, quiz questions and the words under each film scene: <i>શ્રી સ્વામિનારાયણમ્</i> (Shri Swaminarayanam), ed. Shastri Swami Nirgundasji, Shri Sahajanand Gurukul, Asarva, 2015, as transcribed in <a href="kaal-patrak/">Kaal Patrak</a>; the text remains the copyright of Shri Sahajanand Gurukul, Asarva. Page numbers link to the page scan. Life events before 1781: <i>Bhaktachintamani</i> (Nishkulanand Swami), as cited on each event.</p>
+  <p>Vachanamrut places and dates: the Vachanamrut, via the site's <a href="vachanamrut-concordance/timeline.html">logbook</a>. Word cards: the <a href="vachanamrut-concordance/">Vachanamrut concordance</a> glossary, with the Vachanamruts where each word matters most. Year notes: Kaal Patrak's summaries of the book and the traditional granths.</p>
+  <p>Videos: the Shree Swaminarayan Mandir Kalupur YouTube channel, refreshed every three hours. E-books: Shree Swaminarayan Temple Bhuj (swaminarayan.faith). Film pictures are illustrations drawn for this site, not historical images.</p>
+</div></footer>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const GD="૦૧૨૩૪૫૬૭૮૯",gu=n=>String(n).replace(/\d/g,d=>GD[d]);
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmt=z=>{const [y,m,d]=z.split("-").map(Number);return `${d} ${MON[m-1]} ${y}`};
+const kaalDay=z=>{const [y,m,d]=z.split("-").map(Number);return `kaal-patrak/#d${y}-${m}-${d}`};
+const printed=pg=>pg-(pg<50?34:pg<78?32:33);
+const scan=pg=>pg<543?`kaal-patrak/ss/p-${String(pg===78?77:pg).padStart(3,"0")}.jpg`:null;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(k,d){try{const v=localStorage.getItem("sp-learn-"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},put(k,v){try{localStorage.setItem("sp-learn-"+k,JSON.stringify(v))}catch(e){}}};
+const PAKSHA={sud:"સુદ",vad:"વદ"};
+const MASA={Chaitra:"ચૈત્ર",Vaishakh:"વૈશાખ",Jeth:"જેઠ",Ashadh:"અષાઢ",Shravan:"શ્રાવણ",Bhadarvo:"ભાદરવો",Aso:"આસો",Kartak:"કારતક",Magshar:"માગશર",Posh:"પોષ",Maha:"મહા",Fagan:"ફાગણ"};
+const tithiGu=r=>`${MASA[r[1]]||r[1]} ${PAKSHA[r[2]]||r[2]} ${gu(r[3])}`;
+// a source line for one day row: [date, masa, paksha, tithi, text, pg]
+const bookSrc=r=>`<b>Source:</b> Shri Swaminarayanam, ${scan(r[5])?`<a href="${scan(r[5])}" target="_blank" rel="noopener">page ${printed(r[5])}</a>`:`page ${printed(r[5])}`} · <a href="${kaalDay(r[0])}">this day in Kaal Patrak</a>`;
+
+let LIFE=null,GLOSS=[],HIST=null,LIVE=null,EBOOKS=null,BIBLIO=[];
+const J=u=>fetch(u).then(r=>{if(!r.ok)throw new Error(u);return r.json()});
+
+/* ---------------- progress ---------------- */
+const P={done:store.get("done",{}),ans:store.get("ans",0),best:store.get("best",0),streak:0};
+function paintStats(){$("st-les").textContent=Object.values(P.done).filter(Boolean).length;$("st-ans").textContent=P.ans;$("st-best").textContent=P.best}
+function answered(ok){if(ok){P.ans++;P.streak++;if(P.streak>P.best)P.best=P.streak}else P.streak=0;store.put("ans",P.ans);store.put("best",P.best);paintStats();
+  if(window.SP_SOUND&&ok)try{SP_SOUND.bell()}catch(e){}}
+
+/* ---------------- courses ---------------- */
+function yearNote(y){return LIFE&&LIFE.years[y]?esc(LIFE.years[y]):""}
+function COURSES(){return [
+ {id:"life",ico:"🪔",en:"The life of Shri Hari in seven steps",gu:"શ્રીહરિનું જીવન",p:"From Chhapaiya to Gadhada: the main turns of his life, each with the days the book records.",
+  lessons:[
+   {t:"Birth and childhood in Chhapaiya",y:"1781–1785",body:()=>yearNote(1781),go:[["The day of his birth",kaalDay("1781-04-02")],["1781 in Kaal Patrak","kaal-patrak/#y1781"]],src:"Kaal Patrak year note, from Shri Swaminarayanam"},
+   {t:"Growing up in Ayodhya",y:"1786–1792",body:()=>yearNote(1790)||yearNote(1789),go:[["1790 in Kaal Patrak","kaal-patrak/#y1790"]],src:"Kaal Patrak year note, from Shri Swaminarayanam"},
+   {t:"Leaving home as Nilkanth Varni",y:"1792",body:()=>yearNote(1792),go:[["The day he left home",kaalDay("1792-06-29")],["His route on the map","vicharan/"]],src:"Kaal Patrak; Vicharan map"},
+   {t:"Seven years of walking",y:"1792–1799",body:()=>yearNote(1795)||yearNote(1796),go:[["1795 in Kaal Patrak","kaal-patrak/#y1795"],["Vicharan map","vicharan/"]],src:"Kaal Patrak year notes"},
+   {t:"Loj, and meeting Ramanand Swami",y:"1799–1801",body:()=>yearNote(1799)+" "+yearNote(1800),go:[["Arrival at Loj",kaalDay("1799-08-21")],["1800 in Kaal Patrak","kaal-patrak/#y1800"]],src:"Kaal Patrak year notes; Shri Swaminarayanam"},
+   {t:"Leading the satsang",y:"1802–1818",body:()=>yearNote(1802),go:[["1802 in Kaal Patrak","kaal-patrak/#y1802"]],src:"Kaal Patrak year note"},
+   {t:"The Vachanamrut years and the last days",y:"1819–1830",body:()=>yearNote(1819)+" "+yearNote(1830),go:[["All 273 Vachanamruts by date","vachanamrut-concordance/timeline.html"],["1830 in Kaal Patrak","kaal-patrak/#y1830"]],src:"Kaal Patrak year notes; the Vachanamrut"}],
+  quiz:"year"},
+ {id:"vach",ico:"📜",en:"Reading the Vachanamrut",gu:"વચનામૃત વાંચન",p:"Where the discourses were given, the key words they use, and how to find any word in all 273.",
+  lessons:[
+   {t:"What the Vachanamrut is",y:"1819–1829",body:()=>"273 discourses of Shriji Maharaj, written down as they were given, each with the date, the place and who was present. They were given in Gadhada, Sarangpur, Kariyani, Loya, Panchala, Vartal, Ahmedabad and a few other villages.",go:[["Logbook of all 273","vachanamrut-concordance/timeline.html"]],src:"The Vachanamrut, via the site's logbook"},
+   {t:"Where they were given",y:"",body:()=>{if(!HIST)return"";const c={};HIST.vach.forEach(v=>c[v[4]]=(c[v[4]]||0)+1);return "By place: "+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([p,n])=>`${p} ${n}`).join(", ")+"."},go:[["Try the place game","#activities"]],src:"Counted from the Vachanamrut headings"},
+   {t:"Five eternal entities",y:"",body:()=>{const g=GLOSS.find(x=>x.roman==="ishvar");return g?esc(g.definition):""},go:[["Word cards","#activities"],["Concordance","vachanamrut-concordance/"]],src:"Vachanamrut concordance glossary"},
+   {t:"Finding every use of a word",y:"",body:()=>"The concordance lists every place a word appears, with the sentence around it. Search a word you heard in katha and read it in each Vachanamrut where it occurs.",go:[["Open the concordance","vachanamrut-concordance/"]],src:"Vachanamrut concordance"},
+   {t:"The scriptures he quoted",y:"",body:()=>BIBLIO.length?"Most cited: "+BIBLIO.slice(0,5).map(b=>`${esc(b.en)} (${b.count})`).join(", ")+".":"",go:[["Concordance","vachanamrut-concordance/"]],src:"Vachanamrut concordance bibliography"}],
+  quiz:"place"},
+ {id:"time",ico:"🌙",en:"Time the Vedic way",gu:"વૈદિક સમય",p:"Tithi, ghadi, choghadiya and the sky behind them, so the dates in his life make sense.",
+  lessons:[
+   {t:"Ghadi, prahar and muhurt",y:"",body:()=>"A day runs from sunrise to sunrise. It has 60 ghadis of 24 minutes, 8 prahars and 30 muhurts. The home page shows them live for your place.",go:[["Vedic vs clock time","vedic-time.html"],["Today, live","./"]],src:"Vedic time page and its sources"},
+   {t:"Tithi and the moon",y:"",body:()=>"A tithi is the time the moon takes to gain 12° on the sun, so tithis vary in length and one can be skipped or repeated. That is why every day in his life carries both a tithi and a date.",go:[["Panchang science","panchang.html"]],src:"Panchang science page"},
+   {t:"The sky above",y:"",body:()=>"See the sun, moon and planets move, and the 27 nakshatras behind them.",go:[["Solar system, live","solar-system.html"]],src:"Solar system page"},
+   {t:"Reading a day in Kaal Patrak",y:"",body:()=>"Open any day: you see the tithi from the book, the date, the place, and the book's own words with its page.",go:[["Today in Kaal Patrak","kaal-patrak/"]],src:"Kaal Patrak"}],
+  quiz:"order"},
+ {id:"seva",ico:"🌸",en:"Seva and darshan at home",gu:"ઘેર સેવા",p:"Dress Thakorji, print a murti, sing kirtans and join the mandir's live darshan.",
+  lessons:[
+   {t:"Shangaar for Thakorji",y:"",body:()=>"Design a shangaar in colours and patterns of your choice, or count the shangaar in a darshan photo.",go:[["Shangaar designer","shangaar.html"]],src:"Shangaar designer"},
+   {t:"A murti for your home mandir",y:"",body:()=>"Free 3D models and print files, from 4 inches to 1 metre.",go:[["Murti 3D","murti-3d/"]],src:"Murti 3D page"},
+   {t:"Sing a kirtan",y:"",body:()=>"Turn on the tanpura below and open a kirtan book to sing along.",go:[["Listen","#listen"]],src:"swaminarayan.faith e-books"},
+   {t:"Live darshan",y:"",body:()=>"Daily darshan, events and videos from Kalupur.",go:[["Live from the mandir","vachanamrut-concordance/live.html"]],src:"Shree Swaminarayan Mandir Kalupur"}],
+  quiz:"words"}]}
+function renderCourses(){const C=COURSES();$("courseGrid").innerHTML=C.map(c=>{const n=c.lessons.length,d=c.lessons.filter((l,i)=>P.done[c.id+i]).length;
+  return `<details class="card course" data-c="${c.id}"><summary><span class="ico" aria-hidden="true">${c.ico}</span><h3><small>${c.gu}</small>${c.en}</h3><p>${c.p}</p>
+   <div class="bar"><i style="width:${d/n*100}%"></i></div><div class="meta"><span>${n} lessons</span><span>${d} of ${n} done</span></div></summary>
+   <div class="lessons">${c.lessons.map((l,i)=>`<div class="lesson"><input type="checkbox" data-k="${c.id+i}" ${P.done[c.id+i]?"checked":""} aria-label="Mark lesson done: ${esc(l.t)}">
+    <div><h4>${i+1}. ${esc(l.t)}${l.y?`<small>${l.y}</small>`:""}</h4><div class="body">${l.body()}</div>
+    <div class="go">${l.go.map(([t,u])=>`<a href="${u}">${esc(t)} →</a>`).join("")}</div><p class="src"><b>Source:</b> ${esc(l.src)}</p></div></div>`).join("")}
+    <div class="end"><button type="button" class="btn pri" data-quiz="${c.quiz}">Check yourself →</button><span class="src" style="margin:0">A short activity on this course.</span></div></div></details>`}).join("");}
+$("courseGrid").addEventListener("change",e=>{const k=e.target.dataset.k;if(!k)return;P.done[k]=e.target.checked;store.put("done",P.done);paintStats();
+  const det=e.target.closest(".course"),c=COURSES().find(x=>x.id===det.dataset.c),n=c.lessons.length,d=c.lessons.filter((l,i)=>P.done[c.id+i]).length;
+  det.querySelector(".bar i").style.width=d/n*100+"%";det.querySelector(".meta span:last-child").textContent=`${d} of ${n} done`});
+$("courseGrid").addEventListener("click",e=>{const b=e.target.closest("[data-quiz]");if(!b)return;startAct(b.dataset.quiz);$("activities").scrollIntoView({behavior:"smooth"})});
+
+/* ---------------- activities ---------------- */
+const ACTS=[
+ {k:"year",ico:"📅",en:"Which year?",gu:"કયું વર્ષ?",d:"Read a day from his life and guess the year."},
+ {k:"order",ico:"🧭",en:"Put in order",gu:"ક્રમમાં ગોઠવો",d:"Tap four events from first to last."},
+ {k:"place",ico:"📍",en:"Where was it said?",gu:"ક્યાં કહ્યું?",d:"Match a Vachanamrut to its village."},
+ {k:"words",ico:"🃏",en:"Word cards",gu:"શબ્દ કાર્ડ",d:"Key words of the Vachanamrut, front and back."}];
+let CUR=null;
+function renderActs(){$("acts").innerHTML=ACTS.map(a=>`<button type="button" class="card act" data-a="${a.k}" aria-pressed="${CUR===a.k}"><span class="ico" aria-hidden="true">${a.ico}</span><b>${a.en}</b><em>${a.gu}</em><span>${a.d}</span></button>`).join("")}
+$("acts").addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(b)startAct(b.dataset.a)});
+function startAct(k){CUR=k;renderActs();({year:qYear,order:qOrder,place:qPlace,words:qWords})[k]()}
+const scoreBar=next=>`<div class="gbar"><span class="score">Right answers <b>${P.ans}</b> · streak <b>${P.streak}</b> · best <b>${P.best}</b></span><button type="button" class="btn pri" id="gNext">${next||"Next →"}</button></div>`;
+function wireOpts(onPick){$("game").querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>onPick(b)));}
+// 1. which year
+function qYear(){const rows=LIFE.rows.filter(r=>r[4].length>25&&r[4].length<220);const r=pick(rows),y=+r[0].slice(0,4);
+  const cand=new Set([y]);while(cand.size<4){const o=y+Math.round((Math.random()*2-1)*8);if(o>=1781&&o<=1830)cand.add(o)}
+  const opts=[...cand].sort((a,b)=>a-b);
+  $("game").innerHTML=`<div class="eyebrow">Which year? · કયું વર્ષ?</div><p class="q gu-t">${esc(r[4])}</p><p class="hint">Tithi: ${tithiGu(r)}. Pick the year this happened.</p>
+   <div class="opts">${opts.map(o=>`<button type="button" class="opt" data-v="${o}">${o} <small style="color:var(--ink-3)">· ${gu(o)}</small></button>`).join("")}</div><div id="gRes"></div>`;
+  wireOpts(b=>{const ok=+b.dataset.v===y;$("game").querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(+x.dataset.v===y)x.classList.add("ok")});if(!ok)b.classList.add("no");answered(ok);
+    $("gRes").innerHTML=`<div class="res ${ok?"ok":"no"}">${ok?"Right!":"Not quite."} It was <b>${fmt(r[0])}</b>, ${tithiGu(r)}.${LIFE.years[y]?`<br><span style="color:var(--ink-2)">${y}: ${esc(LIFE.years[y])}</span>`:""}<p class="src">${bookSrc(r)}</p></div>`+scoreBar();$("gNext").onclick=qYear});}
+// 2. put in order: scenes and dated events
+function qOrder(){const pool=[...LIFE.scenes.map(s=>({date:s.date,t:s.en,g:s.gu,src:"scene"})),...LIFE.events.filter(e=>e.date>="1781").map(e=>({date:e.date,t:e.title,g:e.place,src:e.src}))];
+  let set;do{set=shuffle(pool).slice(0,4)}while(new Set(set.map(s=>s.date.slice(0,4))).size<4);
+  const right=set.slice().sort((a,b)=>a.date<b.date?-1:1);let picked=[];
+  const draw=()=>{$("game").innerHTML=`<div class="eyebrow">Put in order · ક્રમમાં ગોઠવો</div><p class="q">Tap the events from first to last.</p><p class="hint">Tap again to undo.</p>
+   <div class="opts" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">${set.map((s,i)=>{const n=picked.indexOf(i);return `<button type="button" class="opt" data-i="${i}">${n>=0?`<span class="n">${n+1}</span>`:""}${esc(s.t)}<br><small style="color:var(--ink-3)">${esc(s.g||"")}</small></button>`}).join("")}</div><div id="gRes"></div>`;
+   wireOpts(b=>{const i=+b.dataset.i,n=picked.indexOf(i);if(n>=0)picked.splice(n,1);else picked.push(i);if(picked.length<4){draw();return}
+     const ok=picked.every((i,k)=>set[i]===right[k]);draw();$("game").querySelectorAll(".opt").forEach(x=>{x.disabled=true;const i=+x.dataset.i;x.classList.add(set[i]===right[picked.indexOf(i)]?"ok":"no")});answered(ok);
+     $("gRes").innerHTML=`<div class="res ${ok?"ok":"no"}">${ok?"Right order!":"Here is the right order:"}<ol style="margin:8px 0 0;padding-left:20px">${right.map(s=>`<li>${fmt(s.date)} · ${esc(s.t)} <a href="${kaalDay(s.date)}">open the day</a></li>`).join("")}</ol>
+      <p class="src"><b>Source:</b> dates from Kaal Patrak (Shri Swaminarayanam${right.some(s=>s.src!=="scene")?"; Bhaktachintamani and other granths as cited on each event":""}).</p></div>`+scoreBar();$("gNext").onclick=qOrder})};draw()}
+// 3. where was this Vachanamrut given
+function qPlace(){const v=pick(HIST.vach),places=[...new Set(HIST.vach.map(x=>x[4]))];const opts=shuffle([v[4],...shuffle(places.filter(p=>p!==v[4])).slice(0,3)]);
+  $("game").innerHTML=`<div class="eyebrow">Where was it said? · ક્યાં કહ્યું?</div><p class="q gu-t">${esc(v[5])}</p><p class="hint">Vachanamrut given on ${fmt(v[3])}. In which village?</p>
+   <div class="opts">${opts.map(o=>`<button type="button" class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div><div id="gRes"></div>`;
+  wireOpts(b=>{const ok=b.dataset.v===v[4];$("game").querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(x.dataset.v===v[4])x.classList.add("ok")});if(!ok)b.classList.add("no");answered(ok);
+    $("gRes").innerHTML=`<div class="res ${ok?"ok":"no"}">${ok?"Right!":"Not quite."} This is Vachanamrut <b>${esc(v[0])}</b>, given in ${esc(v[4])}.<p class="src"><b>Source:</b> the Vachanamrut, ${esc(v[0])} · <a href="vachanamrut-concordance/#v-${esc(v[0])}">read it in the concordance</a> · <a href="${kaalDay(v[3])}">that day in Kaal Patrak</a></p></div>`+scoreBar();$("gNext").onclick=qPlace});}
+// 4. word cards
+let WI=0,WORDS=[];
+function qWords(){if(!WORDS.length)WORDS=shuffle(GLOSS);const g=WORDS[WI%WORDS.length];
+  $("game").innerHTML=`<div class="eyebrow">Word cards · શબ્દ કાર્ડ · ${WI%WORDS.length+1} of ${WORDS.length}</div>
+   <div class="flip" id="flip" role="button" tabindex="0" aria-label="Turn the card"><div class="in"><div class="f"><div class="w">${esc(g.term)}</div><div class="r">${esc(g.iast||g.roman)} · tap to turn</div></div>
+   <div class="b"><div class="g">${esc(g.gloss)}</div><p>${esc(g.definition)}</p><p class="src"><b>Source:</b> Vachanamrut concordance glossary · used ${g.occurrences} times · key Vachanamruts: ${(g.keyVachanamruts||[]).slice(0,5).map(k=>`<a href="vachanamrut-concordance/#v-${esc(k)}">${esc(k)}</a>`).join(", ")}</p></div></div></div>
+   <div class="gbar"><span class="score">Knew it <b>${store.get("knew",0)}</b></span><span style="display:flex;gap:6px"><button type="button" class="btn" id="wAgain">Again</button><button type="button" class="btn pri" id="wKnew">I knew it →</button></span></div>`;
+  const f=$("flip");const turn=()=>f.classList.toggle("on");f.onclick=turn;f.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();turn()}};
+  $("wAgain").onclick=()=>{WORDS.push(g);WI++;qWords()};$("wKnew").onclick=()=>{store.put("knew",store.get("knew",0)+1);answered(true);WI++;qWords()}}
+
+/* ---------------- watch: life film ---------------- */
+let SC=[],SV={},FI=0,FT=null,PLAY=false;const DUR=10000;
+function rowFor(z){return LIFE.rows.find(r=>r[0]===z)||LIFE.rows.find(r=>r[0]>z)}
+function showScene(i){FI=(i+SC.length)%SC.length;const s=SC[FI],r=rowFor(s.date),y=+s.date.slice(0,4);
+  const st=$("stage");st.querySelectorAll(".sv").forEach(n=>n.classList.remove("on"));
+  let sv=st.querySelector(`.sv[data-i="${FI}"]`);if(!sv){sv=document.createElement("div");sv.className="sv";sv.dataset.i=FI;sv.innerHTML=SV[s.date]||"";st.insertBefore(sv,$("cap"))}
+  requestAnimationFrame(()=>sv.classList.add("on"));
+  $("cap").innerHTML=`<b>${esc(s.gu)}</b><span>${esc(s.en)} · ${fmt(s.date)}</span>`;
+  $("side").innerHTML=`<div class="when">Scene ${FI+1} of ${SC.length} · ${fmt(s.date)}${r&&r[0]===s.date?` · ${tithiGu(r)}`:""}</div>
+   ${r?`<div class="book">${esc(r[4])}</div><p class="src" style="margin:0">${bookSrc(r)}</p>`:""}
+   ${LIFE.years[y]?`<div class="yr"><b>${y}.</b> ${esc(LIFE.years[y])}</div>`:""}
+   <div class="ctl"><button type="button" class="btn" id="fPrev" aria-label="Previous scene">‹</button><button type="button" class="btn pri" id="fPlay">${PLAY?"❚❚ Pause":"▶ Play"}</button><button type="button" class="btn" id="fNext" aria-label="Next scene">›</button>
+   <button type="button" class="btn" id="fSay" title="Read the caption aloud">🔊</button></div>`;
+  $("fPrev").onclick=()=>{showScene(FI-1);restart()};$("fNext").onclick=()=>{showScene(FI+1);restart()};$("fPlay").onclick=()=>{PLAY=!PLAY;restart();showScene(FI)};
+  $("fSay").onclick=()=>speak(`${s.en}. ${fmt(s.date)}. ${LIFE.years[y]||""}`,"en");
+  $("dots").querySelectorAll("button").forEach((b,k)=>b.setAttribute("aria-current",k===FI));
+  const t=$("tick");t.style.transition="none";t.style.width="0";if(PLAY){requestAnimationFrame(()=>{t.style.transition=`width ${DUR}ms linear`;t.style.width="100%"})}}
+function restart(){clearInterval(FT);if(PLAY&&document.documentElement.dataset.spAnim!=="off")FT=setInterval(()=>showScene(FI+1),DUR)}
+function initFilm(){SC=LIFE.scenes;$("dots").innerHTML=SC.map((s,i)=>`<button type="button" role="tab" aria-label="${esc(s.en)}, ${s.date.slice(0,4)}" title="${esc(s.en)} · ${s.date.slice(0,4)}"></button>`).join("");
+  $("dots").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;showScene([...$("dots").children].indexOf(b));restart()});
+  J("data/learn/scenes.json").then(d=>{SV=d;showScene(0)}).catch(()=>{showScene(0)});}
+function initVideos(){const vs=(LIVE&&LIVE.videos||[]).filter(v=>!v.live).slice(0,8);
+  if(!vs.length){$("vids").innerHTML="";return}
+  $("vids").innerHTML=vs.map(v=>`<button type="button" class="card vid" data-id="${esc(v.id)}"><div class="th" style="background-image:url('https://i.ytimg.com/vi/${esc(v.id)}/hqdefault.jpg')"></div><div class="t">${esc(v.t)}<small>${v.date?fmt(v.date):""}</small></div></button>`).join("");
+  $("vsrc").innerHTML=`<b>Source:</b> <a href="https://www.youtube.com/channel/UCSOO8aliEwUKxIVkk5Igz-A" target="_blank" rel="noopener">Shree Swaminarayan Mandir Kalupur on YouTube</a>, updated ${LIVE.updated?esc(LIVE.updated.replace("T"," ").replace("Z"," UTC")):""}. More in <a href="vachanamrut-concordance/live.html">Live from the mandir</a>.`;
+  $("vids").addEventListener("click",e=>{const b=e.target.closest(".vid");if(!b)return;const th=b.querySelector(".th");if(th.classList.contains("playing"))return;th.classList.add("playing");
+    th.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.id)}?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;})}
+
+/* ---------------- listen ---------------- */
+let VOICES=[];function loadVoices(){try{VOICES=speechSynthesis.getVoices()}catch(e){}}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function speak(text,lang){if(!("speechSynthesis" in window)){alertBox("Read-aloud is not available in this browser.");return false}
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const v=VOICES.find(v=>v.lang&&v.lang.toLowerCase().startsWith(lang==="gu"?"gu":"en-in"))||VOICES.find(v=>v.lang&&v.lang.toLowerCase().startsWith(lang==="gu"?"gu":"en"));
+  if(lang==="gu"&&!(v&&v.lang.toLowerCase().startsWith("gu")))return false;
+  if(v)u.voice=v;u.lang=v?v.lang:(lang==="gu"?"gu-IN":"en-IN");u.rate=.92;const card=$("readCard");card.classList.add("speaking");u.onend=u.onerror=()=>card.classList.remove("speaking");speechSynthesis.speak(u);return true}
+function alertBox(t){$("saySrc").insertAdjacentHTML("beforeend",`<br><b>${esc(t)}</b>`)}
+let SAY=null;
+function nextSay(){const today=new Date(),md=`-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+  const same=LIFE.rows.filter(r=>r[0].endsWith(md)&&r[4].length>20);SAY=SAY===null&&same.length?pick(same):pick(LIFE.rows.filter(r=>r[4].length>30));
+  $("sayTxt").textContent=SAY[4];$("saySrc").innerHTML=`${fmt(SAY[0])} · ${tithiGu(SAY)}<br>${bookSrc(SAY)}`}
+$("sayNext").onclick=nextSay;
+$("sayGo").onclick=()=>{if(!SAY)return;if(!speak(SAY[4],"gu")){const y=SAY[0].slice(0,4);speak(`${fmt(SAY[0])}. ${LIFE.years[y]||""}`,"en");$("saySrc").insertAdjacentHTML("beforeend",`<br><small>No Gujarati voice on this device, so the English note for ${y} was read.</small>`)}};
+function initSound(){const d=$("tgDrone"),b=$("tgBell");
+  const paint=()=>{let on=false;try{on=localStorage.getItem("sp-snd-drone")==="1"}catch(e){}d.setAttribute("aria-pressed",on)};paint();
+  d.onclick=()=>{const sb=document.querySelector(".sp-sb");if(sb){sb.click();setTimeout(paint,50)}};
+  b.onclick=()=>{if(window.SP_SOUND)SP_SOUND.bell();b.setAttribute("aria-pressed","true");setTimeout(()=>b.setAttribute("aria-pressed","false"),900)}}
+function initKirtans(){const ks=(EBOOKS&&EBOOKS.books||[]).filter(b=>b.c==="Kirtan & prayer");
+  $("kirtans").innerHTML=`<li><a href="vachanamrut-concordance/books/ashtako-ane-kirtano.pdf" target="_blank" rel="noopener"><span>અષ્ટકો અને કીર્તનો · Ashtaks and kirtans</span><small>PDF · on this site</small></a></li>`+
+   ks.map(b=>`<li><a href="${esc(b.u)}" target="_blank" rel="noopener"><span>${b.gu?esc(b.gu)+" · ":""}${esc(b.t)}</span><small>${esc(b.l||"")} PDF</small></a></li>`).join("")}
+
+/* ---------------- resources ---------------- */
+function initResources(){const cats={};(EBOOKS&&EBOOKS.books||[]).forEach(b=>cats[b.c]=(cats[b.c]||0)+1);
+  const col=(h,items)=>`<div class="card rcol"><h3>${h}</h3><ul class="rlist">${items.map(i=>`<li><a href="${i.u}"${/^https?:/.test(i.u)?' target="_blank" rel="noopener"':""}>${i.t}</a><span>${i.d}</span>${i.s?`<small>${i.s}</small>`:""}</li>`).join("")}</ul></div>`;
+  $("resGrid").innerHTML=
+   col("Primary texts · મૂળ ગ્રંથ",[
+     {t:"Shri Swaminarayanam · શ્રી સ્વામિનારાયણમ્",u:"kaal-patrak/",d:"The day-by-day register of his life, April 1781 to June 1830.",s:"Shri Sahajanand Gurukul, Asarva, 2015 · read page by page in Kaal Patrak"},
+     {t:"Vachanamrut · વચનામૃત",u:"vachanamrut-concordance/",d:"All 273 discourses, searchable word by word.",s:"Concordance built on this site"},
+     {t:"Vachanamrut nondh",u:"vachanamrut-concordance/books/vachanamrut-nondh.pdf",d:"Notes on the text and its readings.",s:"PDF on this site"},
+     {t:"Shrimad Bhagwat Mahapuran",u:"vachanamrut-concordance/books/shrimad-bhagwat-mahapuran.pdf",d:"The Purana he quoted most often.",s:BIBLIO[0]?`Cited ${BIBLIO[0].count} times in the Vachanamrut`:"PDF on this site"}]) +
+   col("Satsang library · ગ્રંથાલય",Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([c,n])=>({t:esc(c),u:"vachanamrut-concordance/library.html",d:`${n} free e-books`,s:"Shree Swaminarayan Temple Bhuj"})) ) +
+   col("On this site · આ સાઇટ પર",[
+     {t:"Kaal Patrak",u:"kaal-patrak/",d:"Every day of his life with tithi, place and the book's page."},
+     {t:"Vicharan map",u:"vicharan/",d:"The villages he visited, on the map, by date."},
+     {t:"Vachanamrut logbook",u:"vachanamrut-concordance/timeline.html",d:"All 273 Vachanamruts by date."},
+     {t:"The Vedas",u:"vedas.html",d:"All 10,552 Rigveda mantras to read and hear."},
+     {t:"Panchang science",u:"panchang.html",d:"How tithi, nakshatra and yoga are worked out."}]) +
+   col("Official sources · સત્તાવાર",[
+     {t:"swaminarayan.info",u:"https://www.swaminarayan.info",d:"Shree Swaminarayan Mandir Kalupur, Nar Narayan Dev Gadi: events and news."},
+     {t:"swaminarayan.in",u:"https://www.swaminarayan.in",d:"Kalupur mandir photo galleries."},
+     {t:"swaminarayan.faith",u:"https://www.swaminarayan.faith",d:"Shree Swaminarayan Temple Bhuj: his life, scriptures and e-books."},
+     {t:"Kalupur mandir on YouTube",u:"https://www.youtube.com/channel/UCSOO8aliEwUKxIVkk5Igz-A",d:"Live darshan, katha and festivals."}]);}
+
+/* ---------------- start ---------------- */
+paintStats();renderActs();
+Promise.all([J("data/learn/life.json"),J("vachanamrut-concordance/data/glossary.json").catch(()=>[]),J("data/home/history.json").catch(()=>null),
+  J("vachanamrut-concordance/data/live.json").catch(()=>null),J("vachanamrut-concordance/data/ebooks.json").catch(()=>null),J("vachanamrut-concordance/data/biblio.json").catch(()=>[])])
+.then(([l,g,h,lv,eb,bi])=>{LIFE=l;GLOSS=g||[];HIST=h;LIVE=lv;EBOOKS=eb;BIBLIO=(bi||[]).slice().sort((a,b)=>b.count-a.count);
+  $("st-days").textContent=LIFE.rows.length.toLocaleString("en-IN");
+  renderCourses();startAct("year");initFilm();initVideos();nextSay();initSound();initKirtans();initResources();
+  if(location.hash){const t=document.querySelector(location.hash);if(t)t.scrollIntoView()}})
+.catch(e=>{$("game").innerHTML=`<p class="hint">The learning data could not be loaded (${esc(e.message)}). Please reload the page.</p>`});
+</script>
+</body>
+</html>

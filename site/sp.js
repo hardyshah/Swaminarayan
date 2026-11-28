@@ -67,7 +67,7 @@ new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.no
    side, and common labels are swapped from a small dictionary. Text that exists in one language only stays as it is. */
 const GU=/[઀-૿]/,LA=/[A-Za-z]/;
 const kind=t=>{const g=GU.test(t),l=LA.test(t);return g&&!l?"g":l&&!g?"l":g&&l?"m":"n"};
-const DICT={"Today":"આજ","Home":"મુખ્ય પાનું","Vedic time":"વૈદિક સમય","Panchang":"પંચાંગ","Vedas":"વેદ","Solar system":"સૂર્યમંડળ","Kaal Patrak":"કાળ પત્રક","Vicharan":"વિચરણ","Vachanamrut":"વચનામૃત","Logbook":"નોંધપોથી","Library":"પુસ્તકાલય","Live":"જીવંત","● Live":"● જીવંત",
+const DICT={"Today":"આજ","Learn":"શીખો","Home":"મુખ્ય પાનું","Vedic time":"વૈદિક સમય","Panchang":"પંચાંગ","Vedas":"વેદ","Solar system":"સૂર્યમંડળ","Kaal Patrak":"કાળ પત્રક","Vicharan":"વિચરણ","Vachanamrut":"વચનામૃત","Logbook":"નોંધપોથી","Library":"પુસ્તકાલય","Live":"જીવંત","● Live":"● જીવંત",
  "Search":"શોધો","Sources":"સંદર્ભ","Contents":"અનુક્રમ","Glossary":"શબ્દકોશ","Index":"સૂચિ","Timeline":"સમયરેખા","E-books":"ઈ-પુસ્તકો","Nondh":"નોંધ","List":"યાદી","Cloud":"શબ્દ-વાદળ","Table view":"કોષ્ટક","Clear":"સાફ કરો","Close":"બંધ","Cancel":"રદ","Delete":"કાઢી નાખો","Go":"જાઓ","Go to year":"વર્ષ પર જાઓ","Century":"સદી","Deep time":"ઊંડો સમય","Whole month":"આખો મહિનો","Whole year":"આખું વર્ષ",
  "Open this day":"આ દિવસ ખોલો","Next day ›":"આવતો દિવસ ›","‹ Previous day":"‹ ગયો દિવસ","Page ›":"પાનું ›","‹ Page":"‹ પાનું","← Back":"← પાછા","See all ›":"બધું જુઓ ›","Another one ↻":"બીજું ↻","All sections":"બધા વિભાગ","Clear highlight":"પ્રકાશ હટાવો","Show the full opening":"આખી શરૂઆત બતાવો",
  "Use my location":"મારું સ્થાન વાપરો","Back to Ahmedabad":"અમદાવાદ પાછા","▶ Play a month":"▶ એક માસ ચલાવો","Now":"હમણાં","All India":"આખું ભારત","Gujarat":"ગુજરાત","Saurashtra":"સૌરાષ્ટ્ર","Zoom here":"અહીં મોટું કરો","All days ↓":"બધા દિવસ ↓","Show all days ✕":"બધા દિવસ બતાવો ✕",
@@ -120,6 +120,19 @@ new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.no
 
 /* controls CSS, injected so pages without sp.css (Kaal Patrak, Vicharan) get it too */
 const CTRL_CSS=`.sp-lh{display:none!important}
+html[data-sp-anim="off"] *,html[data-sp-anim="off"] *::before,html[data-sp-anim="off"] *::after{animation:none!important;transition:none!important}
+html[data-sp-anim="off"] .sp-rv{opacity:1!important;transform:none!important}
+.sp-tm .vis{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.sp-tm .vis.fl{grid-template-columns:repeat(2,1fr)}
+.sp-tm .vis button{border:1px solid var(--sp-line,rgba(0,0,0,.14));background:none;border-radius:10px;padding:6px 4px;cursor:pointer;font:inherit;font-size:12.5px;color:inherit;display:flex;flex-direction:column;align-items:center;gap:4px;line-height:1.15}
+.sp-tm .vis button small{display:block;font-size:11px;opacity:.7}
+.sp-tm .vis button[aria-checked="true"]{border-color:var(--sp-acc,#c2410c);box-shadow:inset 0 0 0 1px var(--sp-acc,#c2410c);background:color-mix(in srgb,var(--sp-acc,#c2410c) 10%,transparent)}
+.sp-tm .vis i{width:100%;height:26px;border-radius:7px;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.sp-tm .sw-aura{background:radial-gradient(circle at 20% 20%,#f8d8b0,transparent 60%),radial-gradient(circle at 85% 40%,#bfe0dd,transparent 60%),#fbf7f0}
+.sp-tm .sw-lotus{background:radial-gradient(circle,#e8a46a 1.4px,transparent 1.6px) 0 0/9px 9px,#fbf5ec}
+.sp-tm .sw-mandala{background:repeating-radial-gradient(circle at 50% 50%,#e6b283 0 1px,transparent 1px 5px),#fbf5ec}
+.sp-tm .sw-stars{background:radial-gradient(#fff 1px,transparent 1.4px) 0 0/11px 9px,radial-gradient(#fff8 1px,transparent 1.3px) 5px 4px/13px 11px,linear-gradient(#1c2340,#3a2a4a)}
+.sp-tm .sw-silk{background:conic-gradient(from 40deg,#f6d6b8,#d9ecea,#efd7ea,#f6d6b8)}
+.sp-tm .sw-plain{background:#f6f4ef}
 .sp-tm .snd,.sp-tm .lng{display:grid;gap:6px}.sp-tm .lng{grid-template-columns:1fr 1fr 1fr;gap:4px}
 .sp-tm .lng button{border:1px solid var(--sp-line,rgba(0,0,0,.14));background:none;border-radius:10px;padding:7px 4px;cursor:pointer;font:inherit;font-size:12.5px;color:inherit}
 .sp-tm .lng button[aria-pressed="true"]{background:var(--sp-acc,#c2410c);border-color:var(--sp-acc,#c2410c);color:#fff}
@@ -137,6 +150,25 @@ const CTRL_CSS=`.sp-lh{display:none!important}
 function ctrlCss(){if(document.getElementById("sp-ctrl-css"))return;const st=document.createElement("style");st.id="sp-ctrl-css";
   const M=window.SP_THEME_MAP||{};const v=k=>M[k]?`var(${M[k]})`:"";
   st.textContent=`:root{${M.acc?`--sp-acc:${v("acc")};`:""}${M.line?`--sp-line:${v("line")};`:""}${M.card?`--sp-card:${v("card")};`:""}${M.ink?`--sp-ink:${v("ink")};`:""}}`+CTRL_CSS;document.head.appendChild(st)}
+
+/* ---------------- background and motion: chosen in the theme menu, saved per viewer (sp-bg, sp-anim, sp-float) ---------------- */
+const V={bg:get("sp-bg","aura"),anim:get("sp-anim",RM.matches?"calm":"full"),float:get("sp-float","diya")};
+const BGS=[["aura","Aura","આભા"],["lotus","Lotus","કમળ"],["mandala","Mandala","મંડળ"],["stars","Starry sky","તારા"],["silk","Silk","રેશમ"],["plain","Plain","સાદું"]];
+const ANIMS=[["full","Full","પૂર્ણ"],["calm","Calm","શાંત"],["off","Off","બંધ"]];
+const FLOATS=[["diya","Diya sparks","દીવા"],["petals","Petals","પાંખડી"],["stars","Stars","તારા"],["none","None","નહીં"]];
+if(!BGS.some(b=>b[0]===V.bg))V.bg="aura";if(!ANIMS.some(b=>b[0]===V.anim))V.anim="full";if(!FLOATS.some(b=>b[0]===V.float))V.float="diya";
+function paintVis(){document.querySelectorAll(".sp-tm .vis [data-vk]").forEach(b=>b.setAttribute("aria-checked",V[b.dataset.vk]===b.dataset.vv))}
+function applyVis(){const r=document.documentElement;r.setAttribute("data-sp-bg",V.bg);r.setAttribute("data-sp-anim",V.anim);r.setAttribute("data-sp-float",V.float);
+  if(V.anim!=="full")document.querySelectorAll(".sp-spark").forEach(n=>n.remove());paintVis();try{dispatchEvent(new Event("sp-visual"))}catch(e){}}
+applyVis();
+const visRow=(k,list,cls)=>`<div class="vis ${cls||""}" role="radiogroup">${list.map(([v,en,gu])=>`<button type="button" role="radio" data-vk="${k}" data-vv="${v}">${cls==="bgs"?`<i class="sw-${v}"></i>`:""}<span>${en}<small>${gu}</small></span></button>`).join("")}</div>`;
+new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.nodeType===1&&n.classList.contains("sp-tm")&&!n.querySelector(".vis")){
+  const g=document.createElement("div");g.className="grp";
+  g.innerHTML=(window.SP_LITE?"":`<h3>Background · પૃષ્ઠભૂમિ</h3>${visRow("bg",BGS,"bgs")}`)+`<h3 style="margin-top:12px">Animation · ગતિ</h3>${visRow("anim",ANIMS)}`+
+    (window.SP_LITE?"":`<h3 style="margin-top:12px">Floating · તરતું</h3>${visRow("float",FLOATS,"fl")}`);
+  n.appendChild(g);
+  g.addEventListener("click",e=>{const b=e.target.closest("[data-vk]");if(!b)return;e.stopPropagation();V[b.dataset.vk]=b.dataset.vv;put("sp-"+b.dataset.vk,b.dataset.vv);applyVis()});
+  paintVis()}}}).observe(document.documentElement,{childList:true,subtree:true});
 
 /* ---------------- visuals ---------------- */
 // a small lotus motif, tinted by the theme, for the aura texture
@@ -171,22 +203,24 @@ function decorate(){
   const hd=document.querySelector(".ttl");if(hd&&hd.parentElement&&!document.querySelector(".sp-mandala"))addMandala(hd.parentElement,300,"right:-60px;top:20px;opacity:.22");
   reveal()}
 let IO=null;
-function reveal(){if(RM.matches||!("IntersectionObserver" in window))return;
+function reveal(){if(V.anim==="off"||RM.matches||!("IntersectionObserver" in window))return;
   IO=IO||new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("sp-in");IO.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
   document.querySelectorAll("main .block,main .card,main .dc,main .item,main .statrow>div,main .sech,main .h2,main .pages>a").forEach(el=>{
     if(el.dataset.spr)return;el.dataset.spr=1;const r=el.getBoundingClientRect();if(r.top<innerHeight*.92)return;el.classList.add("sp-rv");IO.observe(el)})}
-function sparks(){if(RM.matches)return;if(!document.getElementById("hero2")&&!document.querySelector(".live"))return;
-  if(document.querySelectorAll(".sp-spark").length>7||document.hidden)return;
-  const s=document.createElement("i");s.className="sp-spark";const sz=3+Math.random()*5;
-  s.style.cssText=`left:${Math.random()*100}vw;width:${sz}px;height:${sz}px;--dx:${(Math.random()*16-8).toFixed(1)}vw;animation-duration:${14+Math.random()*12}s`;
+function sparks(){if(RM.matches&&V.anim==="full")return;if(V.anim==="off"||V.float==="none")return;if(V.anim==="calm"&&Math.random()<.5)return;
+  if(!document.getElementById("hero2")&&!document.querySelector(".live"))return;
+  if(document.querySelectorAll(".sp-spark").length>(V.float==="stars"?14:7)||document.hidden)return;
+  const s=document.createElement("i");s.className="sp-spark sp-f-"+V.float;const sz=V.float==="petals"?8+Math.random()*8:3+Math.random()*5;
+  s.style.cssText=`left:${Math.random()*100}vw;${V.float==="stars"?`top:${Math.random()*90}vh;`:""}width:${sz}px;height:${V.float==="petals"?sz*.6:sz}px;--dx:${(Math.random()*16-8).toFixed(1)}vw;--rot:${Math.round(Math.random()*720-360)}deg;animation-duration:${(V.float==="stars"?4:14)+Math.random()*(V.float==="stars"?5:12)}s`;
   document.body.appendChild(s);s.addEventListener("animationend",()=>s.remove())}
 function collab(){if(window.__spcWidget||!SP_SRC)return;const c=document.createElement("script");c.src=SP_SRC.replace(/sp\.js(\?.*)?$/,"collab/collab.js?v=1");c.defer=true;document.head.appendChild(c)}
 function start(){ctrlCss();collab();document.body.appendChild(SB);document.body.appendChild(LB);paintSnd();paintLang();
   if(L.mode!=="both")applyLang(document.body);langObserve();
   if(window.SP_LITE)return; // Kaal Patrak and Vicharan keep their own look: sound, language and theme only
   const a=document.createElement("div");a.className="sp-aura";a.setAttribute("aria-hidden","true");document.body.prepend(a);
+  const bm=document.createElement("div");bm.className="sp-bgm";bm.setAttribute("aria-hidden","true");bm.innerHTML=mandala();document.body.prepend(bm);
   motif();decorate();
   let t=null;new MutationObserver(ms=>{if(!ms.some(m=>!(m.target.closest&&m.target.closest('.live,.vt,.sched,.spc,.sp-mandala,.sp-orbit'))&&![...m.addedNodes].every(n=>n.classList&&n.classList.contains('sp-spark'))))return;clearTimeout(t);t=setTimeout(decorate,80)}).observe(document.body,{childList:true,subtree:true});
-  setInterval(sparks,2600);addEventListener("sp-theme",()=>setTimeout(motif,30))}
+  setInterval(sparks,V.float==="stars"?1300:2600);addEventListener("sp-theme",()=>setTimeout(motif,30))}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();
