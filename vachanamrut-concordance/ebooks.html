@@ -85,33 +85,53 @@ button,select,input{font:inherit;color:inherit}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
 .seg button{border:0;background:none;padding:6px 10px;cursor:pointer;color:var(--ink-3);display:grid;place-items:center}
 .seg button[aria-pressed="true"]{background:var(--sunk);color:var(--ink)}
-/* covers */
-.cover{--c1:#8a2c0d;--c2:#4a1404;position:relative;display:block;aspect-ratio:2/3;border-radius:4px 9px 9px 4px;overflow:hidden;color:var(--cream);
-  background:radial-gradient(120% 70% at 50% 18%,color-mix(in srgb,var(--c1) 70%,#fff 12%),transparent 70%),linear-gradient(165deg,var(--c1),var(--c2));
-  box-shadow:inset 5px 0 0 rgba(0,0,0,.18),inset 6px 0 0 rgba(255,255,255,.08),0 1px 1px rgba(0,0,0,.18),0 8px 18px -8px rgba(0,0,0,.45);
-  container-type:inline-size;text-align:center;user-select:none}
-.cover::before{content:"";position:absolute;inset:6% 7% 6% 10%;border:1px solid color-mix(in srgb,var(--gold) 70%,transparent);border-radius:3px;pointer-events:none}
-.cover .in{position:absolute;inset:9% 10% 9% 13%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:2cqw}
-.cover .lg{font:700 6.6cqw/1 var(--f-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
-.cover .mo{width:40cqw;height:40cqw;color:var(--gold);flex:none}
-.cover .mo svg{width:100%;height:100%;display:block}
-.cover .gu{font:700 10.5cqw/1.12 var(--f-ui);text-wrap:balance;overflow-wrap:anywhere;text-shadow:0 1px 2px rgba(0,0,0,.35)}
-.cover .gu.long{font-size:8.6cqw}
-.cover .gu.xl{font-size:7.2cqw}
-.cover .ti{font:600 9cqw/1.12 var(--f-read);text-wrap:balance;text-shadow:0 1px 2px rgba(0,0,0,.35)}
-.cover .gu + .ti{font:500 6.8cqw/1.15 var(--f-read);opacity:.9;margin-top:1.5cqw}
-.cover .ft{font:600 6.2cqw/1.1 var(--f-ui);color:var(--gold);letter-spacing:.05em}
-.cover .tt{display:flex;flex-direction:column;align-items:center}
-/* the official cover, linked from swaminarayan.faith; shown whole on a white card (many are photos of the book on white) */
+/* covers: each book gets a drawn cover. A deep print colour per subject, a fine-line motif that says what the
+   book is (lotus sabha for the Vachanamrut, tanpura for kirtan, chariot wheel for the Gita, orbits for jyotish...),
+   a soft halo and ring field behind it, and the title on a frosted label. The publisher's photo stays one tap away. */
+.cover{--c1:#8a2c0d;--c2:#4a1404;--glow:#ffd98a;position:relative;display:block;aspect-ratio:2/3;border-radius:5px 11px 11px 5px;overflow:hidden;color:var(--cream);
+  background:
+    radial-gradient(70% 42% at var(--gx,50%) 36%,color-mix(in srgb,var(--glow) 30%,transparent),transparent 72%),
+    repeating-radial-gradient(circle at 50% 36%,transparent 0 7cqw,color-mix(in srgb,var(--glow) 9%,transparent) 7cqw calc(7cqw + 1px)),
+    linear-gradient(var(--ga,172deg),color-mix(in srgb,var(--c1) 88%,#fff 6%) 0%,var(--c1) 38%,var(--c2) 100%);
+  box-shadow:inset 4px 0 0 rgba(0,0,0,.22),inset 5px 0 0 rgba(255,255,255,.10),inset 0 0 0 1px rgba(255,255,255,.06),0 1px 1px rgba(0,0,0,.18),0 10px 22px -10px rgba(0,0,0,.5);
+  container-type:inline-size;text-align:center;user-select:none;isolation:isolate}
+/* a slow sheen crosses the cover on hover, like light on foil */
+.cover::after{content:"";position:absolute;inset:-40% -60%;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.14) 50%,transparent 58%);transform:translateX(-60%);transition:transform .9s cubic-bezier(.2,.7,.2,1);pointer-events:none;z-index:3}
+.tile:hover .cover::after,.tile:focus-visible .cover::after{transform:translateX(60%)}
+.cover::before{content:"";position:absolute;inset:5% 6% 5% 9%;border:1px solid color-mix(in srgb,var(--gold) 45%,transparent);border-radius:4px;pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) top/100% 34% no-repeat,linear-gradient(#000 0 0) bottom/100% 8% no-repeat;mask:linear-gradient(#000 0 0) top/100% 34% no-repeat,linear-gradient(#000 0 0) bottom/100% 8% no-repeat}
+.cover .in{position:absolute;inset:8% 9% 7% 12%;display:flex;flex-direction:column;align-items:center;gap:2cqw;z-index:1}
+.cover .lg{font:700 5.6cqw/1 var(--f-ui);letter-spacing:.16em;text-transform:uppercase;color:color-mix(in srgb,var(--gold) 88%,#fff);opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cover .mo{width:52cqw;height:52cqw;color:var(--gold);flex:none;margin:3cqw 0 auto;filter:drop-shadow(0 0 3cqw color-mix(in srgb,var(--glow) 55%,transparent));transition:filter .4s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.tile:hover .cover .mo{filter:drop-shadow(0 0 5cqw color-mix(in srgb,var(--glow) 80%,transparent));transform:translateY(-1.5cqw) scale(1.03)}
+.cover .mo svg{width:100%;height:100%;display:block;overflow:visible}
+.cover .tt{display:flex;flex-direction:column;align-items:center;width:calc(100% + 6cqw);padding:3.6cqw 3cqw 3cqw;border-radius:3.5cqw;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));border:1px solid color-mix(in srgb,var(--gold) 32%,transparent);
+  -webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2);box-shadow:0 6px 18px -8px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)}
+.cover .tt .gu{margin:0;color:inherit}
+.cover .tt .gu{font:700 10cqw/1.15 var(--f-ui);text-wrap:balance;overflow-wrap:anywhere;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.cover .tt .gu.long{font-size:8.4cqw}
+.cover .tt .gu.xl{font-size:7cqw}
+.cover .ti{font:600 8.4cqw/1.12 var(--f-read);text-wrap:balance;overflow-wrap:anywhere;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.cover .gu + .ti{font:500 6.4cqw/1.15 var(--f-read);opacity:.88;margin-top:1.2cqw}
+.cover .ft{font:600 5.6cqw/1.1 var(--f-ui);color:var(--gold);letter-spacing:.08em;min-height:1.1em;margin-top:2.4cqw}
+/* "on this site" seal, top right */
+.cover .seal{position:absolute;top:4.5%;right:5.5%;width:12cqw;height:12cqw;border-radius:50%;display:grid;place-items:center;z-index:2;
+  background:color-mix(in srgb,var(--gold) 92%,#fff);color:var(--c2);box-shadow:0 0 0 1.2cqw color-mix(in srgb,var(--gold) 25%,transparent),0 2px 6px rgba(0,0,0,.35)}
+.cover .seal svg{width:62%;height:62%}
+/* the official cover from swaminarayan.faith, when chosen: shown whole on a white card */
 .cover.real{background:#fff;color:#2b2014;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 1px rgba(0,0,0,.12),0 8px 18px -8px rgba(0,0,0,.4)}
-.cover.real::before,.cover.real .in{display:none}
+.cover.real::before,.cover.real .in,.cover.real .seal{display:none}
 .cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:5%;box-sizing:border-box}
-.cover .vb{position:absolute;right:6%;bottom:5%;background:rgba(20,16,10,.78);color:#fff;font:600 max(10px,6.4cqw)/1 var(--f-ui);padding:.45em .7em;border-radius:999px;white-space:nowrap}
+.cover .vb{position:absolute;right:6%;bottom:5%;background:rgba(20,16,10,.78);color:#fff;font:600 max(10px,6.4cqw)/1 var(--f-ui);padding:.45em .7em;border-radius:999px;white-space:nowrap;z-index:2}
 .row .mini .cover>img{padding:2px}
+.row .mini .cover .in,.row .mini .cover .seal{display:none}
+.row .mini .cover .mo2{position:absolute;inset:18%;color:var(--gold)}
 .stack{position:relative}
-.stack.many::before,.stack.many::after{content:"";position:absolute;inset:0;border-radius:4px 9px 9px 4px;background:color-mix(in srgb,var(--cc,#8a2c0d) 55%,#000 20%);z-index:-1;transition:transform .25s ease}
+.stack.many::before,.stack.many::after{content:"";position:absolute;inset:0;border-radius:5px 11px 11px 5px;background:color-mix(in srgb,var(--cc,#8a2c0d) 55%,#000 20%);z-index:-1;transition:transform .25s ease}
 .stack.many::before{transform:translate(6px,-5px) rotate(2deg);opacity:.5}
 .stack.many::after{transform:translate(3px,-2.5px) rotate(1deg);opacity:.8}
+@media (prefers-reduced-motion:reduce){.cover::after{display:none}.tile:hover .cover .mo{transform:none}}
 .tile{display:flex;flex-direction:column;gap:8px;background:none;border:0;padding:0;text-align:left;cursor:pointer;color:var(--ink);isolation:isolate;min-width:0}
 .tile .stack{transition:transform .25s cubic-bezier(.2,.7,.2,1)}
 .tile:hover .stack,.tile:focus-visible .stack{transform:translateY(-4px)}
@@ -199,6 +219,40 @@ main{padding-block:18px 10px;min-height:60vh}
 .reader iframe{flex:1;width:100%;border:0;background:var(--sunk)}
 .reader .rbar{display:flex;gap:8px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-2)}
 .reader .rbar b{color:var(--ink);font-weight:600;margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* covers toggle */
+.covt{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 11px;font-size:13.5px;display:inline-flex;gap:6px;align-items:center;cursor:pointer;color:var(--ink-3);min-height:34px}
+.covt[aria-pressed="true"]{background:var(--sunk);color:var(--ink);border-color:var(--ink-3)}
+.head .sub .linkb{font-size:inherit;white-space:nowrap}
+.lede{color:var(--ink-2);font-size:14.5px;max-width:72ch;margin:-4px 0 16px;line-height:1.6}
+.sealx{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--gold);color:#3a1d06;vertical-align:-3px}
+.sealx svg{width:12px;height:12px}
+/* drawer: about the book and where the site uses it */
+.dinfo{padding:4px 18px 6px}
+.dinfo .desc{font-family:var(--f-read);font-size:16.5px;line-height:1.6;margin:10px 0 12px;color:var(--ink)}
+.dinfo dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 12px;font-size:14px}
+.dinfo dt{color:var(--ink-3)}
+.dinfo dd{margin:0;color:var(--ink-2)}
+.dinfo .rd{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.dinfo h3{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 8px;font-weight:600}
+.used{display:flex;flex-wrap:wrap;gap:6px}
+.uchip{font-size:13px;border-radius:999px;padding:5px 12px;background:var(--peacock-soft);color:var(--peacock);font-weight:500;min-height:32px;display:inline-flex;align-items:center}
+.uchip:hover{text-decoration:none;filter:brightness(.97)}
+.offc{display:flex;gap:12px;align-items:center;margin:16px 0 4px;font-size:12.5px;color:var(--ink-3)}
+.offc img{width:56px;border-radius:4px;box-shadow:0 0 0 1px var(--line);background:#fff}
+/* sources by page */
+.kinds{flex-wrap:wrap;overflow:visible;margin-bottom:16px}
+.srcs{columns:3 300px;column-gap:16px}
+.spage{break-inside:avoid;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 16px 10px;margin:0 0 16px;box-shadow:var(--shadow)}
+.spage h3{margin:0 0 8px;font-family:var(--f-read);font-size:19px;font-weight:600;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.spage h3 a{color:var(--ink)}
+.spage h3 span{font:500 13px var(--f-ui);color:var(--saffron-strong)}
+.spage ul{list-style:none;margin:0;padding:0}
+.spage li{display:grid;grid-template-columns:76px 1fr;gap:8px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.35}
+.spage li:first-child{border-top:0}
+.spage .kt{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.spage .k-book .kt{color:var(--saffron-strong)}
+.spage .k-sampraday .kt{color:var(--peacock)}
+.spage .k-book a{color:var(--ink);font-weight:600}
 footer{border-top:1px solid var(--line);padding-block:18px 36px;color:var(--ink-3);font-size:12.5px;margin-top:30px}
 @media (max-width:760px){
   .head .wrap{grid-template-columns:1fr;padding-block:16px 14px}
@@ -217,6 +271,8 @@ footer{border-top:1px solid var(--line);padding-block:18px 36px;color:var(--ink-
   .cat{grid-template-columns:36px 1fr;padding:8px}
   .cat .sw{width:36px;height:36px}.cat .sw svg{width:22px;height:22px}
   .cat em{display:none}
+  .covt span{display:none}
+  .ctl .sel{min-width:0}
   .cat b{font-size:13.5px}
   .drawer{top:auto;left:0;width:100vw;height:min(90vh,90dvh);border-radius:18px 18px 0 0;transform:translateY(102%)}
   .drawer.open{transform:none}
@@ -242,6 +298,26 @@ footer{border-top:1px solid var(--line);padding-block:18px 36px;color:var(--ink-
   <symbol id="m-book" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M50 30c-10-6-24-8-34-6v46c10-2 24 0 34 6c10-6 24-8 34-6V24c-10-2-24 0-34 6z"/><path d="M50 30v46"/><path d="M24 36c6 0 12 1 18 3M24 46c6 0 12 1 18 3M58 39c6-2 12-3 18-3M58 49c6-2 12-3 18-3"/></g></symbol>
   <symbol id="m-scroll" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M26 20h46a8 8 0 0 1 0 16H34"/><path d="M26 20a8 8 0 0 0 0 16h8v44a8 8 0 0 0 8 8h38a8 8 0 0 0 0-16H44"/><path d="M44 46h24M44 56h24M44 66h16"/></g></symbol>
   <symbol id="m-quill" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M78 16C50 22 34 42 28 72l8-4c4-16 14-30 30-38c-12 12-20 26-24 42c18-10 30-30 36-56z"/><path d="M28 72l-8 14"/><path d="M18 86h40"/></g></symbol>
+  <symbol id="m-sabha" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 86h64M22 86V48a28 28 0 0 1 56 0v38"/><path d="M30 86V52M70 86V52"/><path d="M27 40a24 24 0 0 1 46 0" opacity=".55"/><circle cx="50" cy="30" r="3.2" fill="currentColor"/><path d="M50 52c5 7 5 16 0 25c-5-9-5-18 0-25z"/><path d="M50 77c-3-8-9-13-17-15c0 9 7 15 17 15z"/><path d="M50 77c3-8 9-13 17-15c0 9-7 15-17 15z"/><path d="M38 81h24"/></g></symbol>
+  <symbol id="m-tanpura" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="44" cy="70" r="17"/><circle cx="44" cy="70" r="6" opacity=".6"/><path d="M40 54V12h8v42"/><path d="M40 18h-5M40 27h-5M48 22h5M48 31h5"/><path d="M42.5 14v73M45.5 14v73" stroke-width="1"/><path d="M74 26v18M74 26l9-3v16" /><circle cx="71" cy="44" r="3.4" fill="currentColor"/><circle cx="80" cy="39" r="3.4" fill="currentColor"/><path d="M66 60c4 2 6 6 6 10M72 56c6 3 9 9 9 15" opacity=".6"/></g></symbol>
+  <symbol id="m-flute" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 76L79 40M20 81L82 45"/><path d="M17 76l3 5M79 40l3 5"/><circle cx="46" cy="61.5" r="1.6" fill="currentColor"/><circle cx="53" cy="57.5" r="1.6" fill="currentColor"/><circle cx="60" cy="53.5" r="1.6" fill="currentColor"/><circle cx="67" cy="49.5" r="1.6" fill="currentColor"/><path d="M33 60C36 42 46 28 60 18"/><ellipse cx="62" cy="16" rx="8" ry="11" transform="rotate(38 62 16)"/><ellipse cx="62" cy="16" rx="3.4" ry="5" transform="rotate(38 62 16)" fill="currentColor"/><path d="M40 44l-8-4M44 37l-8-5M49 31l-6-6" opacity=".6"/></g></symbol>
+  <symbol id="m-wheel" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="27" opacity=".55"/><circle cx="50" cy="50" r="6"/><path d="M50 23v21M50 56v21M23 50h21M56 50h21M31 31l14.8 14.8M54.2 54.2L69 69M69 31L54.2 45.8M45.8 54.2L31 69"/><path d="M50 10v6M50 84v6M10 50h6M84 50h6" opacity=".6"/></g></symbol>
+  <symbol id="m-om" viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="2.2" opacity=".55"/><circle cx="50" cy="50" r="31" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><text x="50" y="67" text-anchor="middle" font-size="50" fill="currentColor" font-family="'Noto Sans Devanagari','Kohinoor Devanagari',serif">ॐ</text></symbol>
+  <symbol id="m-moon" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M58 16a34 34 0 1 0 26 52A27 27 0 1 1 58 16z"/><path d="M76 20v8M72 24h8M84 40v6M81 43h6" /><circle cx="68" cy="34" r="1.6" fill="currentColor"/></g></symbol>
+  <symbol id="m-tulsi" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 66h40M34 66l4 20h24l4-20"/><path d="M42 74h16" opacity=".6"/><path d="M50 66V30"/><path d="M50 58c-11 0-17-6-17-13c11 0 17 6 17 13zM50 58c11 0 17-6 17-13c-11 0-17 6-17 13z"/><path d="M50 45c-8 0-13-5-13-10c8 0 13 5 13 10zM50 45c8 0 13-5 13-10c-8 0-13 5-13 10z"/><path d="M50 32c-4-6-4-12 0-17c4 5 4 11 0 17z"/></g></symbol>
+  <symbol id="m-gada" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="32" r="16"/><path d="M34 32h32M50 16v32M39 21l22 22M61 21L39 43" opacity=".55"/><circle cx="50" cy="12" r="3"/><path d="M50 48v36M44 86h12M46 62h8M46 70h8"/></g></symbol>
+  <symbol id="m-mountain" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 82l26-44 12 18 10-14 32 40z"/><path d="M30 48l6-10 6 10-6-3z" opacity=".7"/><circle cx="74" cy="24" r="7"/><path d="M58 26l0-12 7 3-7 3" /><path d="M6 88h88" opacity=".6"/></g></symbol>
+  <symbol id="m-feather" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M50 92C48 62 50 42 53 22"/><ellipse cx="53" cy="24" rx="15" ry="19"/><ellipse cx="53" cy="24" rx="8.5" ry="11.5"/><ellipse cx="53" cy="24" rx="3.6" ry="5.2" fill="currentColor"/><path d="M50 74l-14-11M50 74l14-11M50 62l-12-10M50 62l12-10" opacity=".65"/></g></symbol>
+  <symbol id="m-path" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 84C32 74 24 56 44 50S72 34 84 18" stroke-dasharray="1 7"/><ellipse cx="22" cy="80" rx="3" ry="5" transform="rotate(-40 22 80)"/><ellipse cx="29" cy="74" rx="3" ry="5" transform="rotate(-40 29 74)"/><ellipse cx="46" cy="49" rx="3" ry="5" transform="rotate(-60 46 49)"/><ellipse cx="54" cy="47" rx="3" ry="5" transform="rotate(-60 54 47)"/><path d="M84 8c-6 0-10 4-10 9c0 7 10 15 10 15s10-8 10-15c0-5-4-9-10-9z"/><circle cx="84" cy="17" r="3"/></g></symbol>
+  <symbol id="m-scales" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="15" r="3"/><path d="M50 18v64M34 86h32M20 30h60"/><path d="M20 30L11 54M20 30l9 24M80 30l-9 24M80 30l9 24"/><path d="M9 54a11 6 0 0 0 22 0zM69 54a11 6 0 0 0 22 0z"/></g></symbol>
+  <symbol id="m-conch" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M28 72c-8-22 6-48 32-50c16-1 24 12 19 23c-4 8-14 10-20 5c-5-4-3-11 3-11"/><path d="M28 72c12 8 30 6 42-6c5-5 8-12 9-21"/><path d="M28 72l-10 10M36 77l-5 11M45 79l-1 11" /><path d="M44 46c4-8 12-12 20-11" opacity=".55"/></g></symbol>
+  <symbol id="m-fire" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 70h68l-8 16H24z"/><path d="M22 78h56" opacity=".55"/><path d="M50 66c-15-7-13-23-2-35c0 10 6 12 8 5c7 8 11 21-6 30z"/><path d="M34 66c-7-4-7-11 0-17c0 6 4 8 6 6c2 4 1 9-6 11zM66 66c7-4 7-11 0-17c0 6-4 8-6 6c-2 4-1 9 6 11z"/></g></symbol>
+  <symbol id="m-orbit" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="8"/><circle cx="50" cy="50" r="3" fill="currentColor"/><ellipse cx="50" cy="50" rx="40" ry="15" transform="rotate(-22 50 50)"/><ellipse cx="50" cy="50" rx="25" ry="9.5" transform="rotate(-22 50 50)" opacity=".7"/><circle cx="85" cy="37" r="4" fill="currentColor"/><circle cx="29" cy="60" r="2.8" fill="currentColor"/><path d="M50 8v6M50 86v6" opacity=".5"/></g></symbol>
+  <symbol id="m-drop" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M26 44a12 12 0 0 1 20-12a15 15 0 0 1 28 6a10 10 0 0 1-1 20H28a10 10 0 0 1-2-14z"/><path d="M36 66c-3 5-4 7-4 9a4 4 0 0 0 8 0c0-2-1-4-4-9zM50 70c-3 5-4 7-4 9a4 4 0 0 0 8 0c0-2-1-4-4-9zM64 66c-3 5-4 7-4 9a4 4 0 0 0 8 0c0-2-1-4-4-9z"/></g></symbol>
+  <symbol id="m-rays" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 72h72"/><path d="M30 72a20 20 0 0 1 40 0"/><path d="M23.0 70.0L10.0 70.0M25.1 59.7L13.0 54.7M30.9 50.9L21.7 41.7M39.7 45.1L34.7 33.0M50.0 43.0L50.0 30.0M60.3 45.1L65.3 33.0M69.1 50.9L78.3 41.7M74.9 59.7L87.0 54.7M77.0 70.0L90.0 70.0"/><path d="M28 82h44M38 90h24" opacity=".6"/></g></symbol>
+  <symbol id="m-calendar" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="24" width="64" height="58" rx="5"/><path d="M18 38h64M34 18v12M66 18v12"/><g fill="currentColor" stroke="none"><circle cx="30" cy="50" r="2.2"/><circle cx="43" cy="50" r="2.2"/><circle cx="57" cy="50" r="2.2"/><circle cx="70" cy="50" r="2.2"/><circle cx="30" cy="62" r="2.2"/><circle cx="43" cy="62" r="2.2"/><circle cx="70" cy="62" r="2.2"/><circle cx="30" cy="73" r="2.2"/><circle cx="43" cy="73" r="2.2"/><circle cx="57" cy="73" r="2.2"/></g><circle cx="57" cy="62" r="6"/></g></symbol>
+  <symbol id="m-nondh" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="30" stroke-dasharray="2 5" opacity=".6"/><circle cx="50" cy="50" r="7"/><circle cx="50" cy="20" r="4"/><circle cx="76" cy="35" r="4"/><circle cx="76" cy="65" r="4"/><circle cx="50" cy="80" r="4"/><circle cx="24" cy="65" r="4"/><circle cx="24" cy="35" r="4"/><path d="M50 43V24M56 46l16-9M56 54l16 9M50 57v19M44 54l-16 9M44 46l-16-9"/></g></symbol>
+  <symbol id="m-bow" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 12c30 18 30 58 0 76"/><path d="M32 12v76" stroke-width="1.2"/><path d="M14 50h62M70 44l8 6-8 6M18 45l-4 5 4 5"/></g></symbol>
  </defs>
 </svg>
 <header class="top"><div class="wrap">
@@ -281,6 +357,7 @@ footer{border-top:1px solid var(--line);padding-block:18px 36px;color:var(--ink-
     <select class="sel" id="lang"></select>
     <label class="vh" for="sort">Sort</label>
     <select class="sel" id="sort"><option value="az">A to Z</option><option value="vols">Most books</option><option value="lang">Language</option></select>
+    <button class="covt" id="covers" aria-pressed="false" aria-label="Show the publisher's cover photos" title="Show the publisher's cover photos instead of the drawn covers"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="13" height="18" rx="2"/><path d="M8 15l3-3 3 3 2-2"/><circle cx="10" cy="8" r="1.5"/></svg><span>Photos</span></button>
     <div class="seg" role="group" aria-label="View">
       <button id="vgrid" aria-pressed="true" title="Covers" aria-label="Show covers"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="9" rx="1"/><rect x="3" y="15" width="7" height="6" rx="1"/><rect x="14" y="15" width="7" height="6" rx="1"/></svg></button>
       <button id="vlist" aria-pressed="false" title="List" aria-label="Show as a list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></button>
@@ -289,7 +366,7 @@ footer{border-top:1px solid var(--line);padding-block:18px 36px;color:var(--ink-
 </div></div>
 
 <main class="wrap" id="view" tabindex="-1"></main>
-<footer class="wrap">E-books © Shree Swaminarayan Temple Bhuj, all rights reserved. Titles, languages and series are as listed on <a href="https://www.swaminarayan.faith/scriptures/ebooks" target="_blank" rel="noopener">swaminarayan.faith/scriptures/ebooks</a>. Cover images are shown from their site, not copied; the categories are added by this page, which is only an index to their books.</footer>
+<footer class="wrap">E-books © Shree Swaminarayan Temple Bhuj, all rights reserved. Titles, languages and series are as listed on <a href="https://www.swaminarayan.faith/scriptures/ebooks" target="_blank" rel="noopener">swaminarayan.faith/scriptures/ebooks</a>; the publisher's cover photos are shown from their site, not copied. The other books are the ones this site's pages are built from or quote, each with its publisher and link; sampraday books come only from the original NarNarayan Dev (Kalupur) and LaxmiNarayan Dev (Vadtal) dioceses, and books kept in the <a href="library.html">Satsang Library</a> stay the copyright of their publishers. Covers and categories are drawn by this page. The list is built by tools/ebooks/build_site_refs.py.</footer>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title" hidden>
@@ -306,17 +383,35 @@ const WIDE=matchMedia("(min-width:900px) and (pointer:fine)");
 const PAGE=24;
 /* category look: cover colours (deep, print-like, same in both themes) and a motif */
 const CAT={
- "Vachanamrut":{c1:"#9b3412",c2:"#4d1606",m:"lotus",gu:"વચનામૃત"},
- "Shikshapatri":{c1:"#8a2346",c2:"#430b20",m:"scroll",gu:"શિક્ષાપત્રી"},
- "Satsangi Jivan":{c1:"#24558a",c2:"#0f2747",m:"mandala",gu:"સત્સંગિજીવન"},
- "Nishkulanand Kavya":{c1:"#2f6a3e",c2:"#12301b",m:"leaf",gu:"નિષ્કુળાનંદ કાવ્ય"},
- "Bhagwat & Gita":{c1:"#0f6670",c2:"#06292e",m:"chakra",gu:"ભાગવત અને ગીતા"},
- "Kirtan & prayer":{c1:"#b06208",c2:"#562c00",m:"diya",gu:"કીર્તન અને પ્રાર્થના"},
- "Life & leela of Shriji":{c1:"#6a3496",c2:"#2e1146",m:"sun",gu:"શ્રીજીની લીલા"},
- "Rites, vrat & seva":{c1:"#7d5a1f",c2:"#3a280a",m:"kalash",gu:"વિધિ, વ્રત, સેવા"},
- "Children":{c1:"#d4572a",c2:"#7a2309",m:"star",gu:"બાળકો માટે"},
- "Teachings & commentary":{c1:"#3d4d63",c2:"#161e2a",m:"book",gu:"ઉપદેશ અને ભાષ્ય"}};
-const HW={c1:"#5b4636",c2:"#231910",m:"quill"};
+ "Vachanamrut":{c1:"#a23a12",c2:"#4d1606",m:"sabha",gu:"વચનામૃત",glow:"#ffc98a"},
+ "Shikshapatri":{c1:"#8a2346",c2:"#430b20",m:"scroll",gu:"શિક્ષાપત્રી",glow:"#ffc2cf"},
+ "Satsangi Jivan":{c1:"#24558a",c2:"#0f2747",m:"mandala",gu:"સત્સંગિજીવન",glow:"#bcd8ff"},
+ "Nishkulanand Kavya":{c1:"#2f6a3e",c2:"#12301b",m:"leaf",gu:"નિષ્કુળાનંદ કાવ્ય",glow:"#c9f0b4"},
+ "Bhagwat & Gita":{c1:"#0f6670",c2:"#06292e",m:"flute",gu:"ભાગવત અને ગીતા",glow:"#a8f0ea"},
+ "Kirtan & prayer":{c1:"#b06208",c2:"#562c00",m:"tanpura",gu:"કીર્તન અને પ્રાર્થના",glow:"#ffd98a"},
+ "Life & leela of Shriji":{c1:"#6a3496",c2:"#2e1146",m:"sun",gu:"શ્રીજીની લીલા",glow:"#e4c6ff"},
+ "Rites, vrat & seva":{c1:"#7d5a1f",c2:"#3a280a",m:"kalash",gu:"વિધિ, વ્રત, સેવા",glow:"#ffe4a3"},
+ "Children":{c1:"#d4572a",c2:"#7a2309",m:"star",gu:"બાળકો માટે",glow:"#ffd0b0"},
+ "Teachings & commentary":{c1:"#3d4d63",c2:"#161e2a",m:"book",gu:"ઉપદેશ અને ભાષ્ય",glow:"#cfe0f5"},
+ "Shastras cited in the Vachanamrut":{c1:"#4a3a86",c2:"#1a1238",m:"om",gu:"વચનામૃતમાં શાસ્ત્રો",glow:"#d6ccff"},
+ "Veda & Jyotish":{c1:"#1f4a6e",c2:"#08182a",m:"orbit",gu:"વેદ અને જ્યોતિષ",glow:"#b8e2ff"}};
+const HW={c1:"#5b4636",c2:"#231910",m:"quill",glow:"#f3dcb8"};
+/* a motif from the book's own subject, before the category's: first match wins */
+const MOTIF=[[/hanuman/i,"gada"],[/ekadashi|vrat|jagran/i,"moon"],[/nitya niyam/i,"rays"],[/kirtan|bhajan|ashtak|chosath/i,"tanpura"],[/kapil gita/i,"lotus"],[/gita|bhagwad|bhagavad/i,"wheel"],[/bhagvad|bhagwat|skand/i,"flute"],
+ [/vachanamrut|vachnamrut/i,"sabha"],[/shikshapatri|shikhapatri/i,"scroll"],[/maha mantra|kavach|mantra/i,"om"],[/namavali|sahastranam/i,"beads"],
+ [/mahapooja|seva riti|ritual|thakorji/i,"diya"],[/ekadashi|vrat|jagran/i,"moon"],[/tulsi/i,"tulsi"],[/hanuman/i,"gada"],[/yatra|dhama/i,"mountain"],
+ [/bal charit|ghanshyam|ghansyham|janmangal/i,"feather"],[/kutch|timeline/i,"path"],[/funeral|sanskar|religious rites/i,"kalash"],
+ [/fun book|comic|kids/i,"star"],[/health|vyasan/i,"leaf"],[/vidur|niti/i,"scales"],[/vasudev/i,"conch"],[/philosophy|sutra|sutar|shutra/i,"om"]];
+function motif(g,b){const t=(b?b.t:g.k)+" "+g.k;const own=(b||g.bs[0]).m||g.bs.find(x=>x.m)?.m;if(own)return own;
+  for(const[re,m]of MOTIF)if(re.test(t))return m;return (g.hw?HW:look(g)).m}
+// beads (a mala) and the 27 nakshatras are drawn in a loop
+(function(){const d=document.querySelector("svg defs");if(!d)return;const ns="http://www.w3.org/2000/svg";
+  const pt=(r,a)=>[50+r*Math.cos(a),50+r*Math.sin(a)].map(v=>v.toFixed(1));
+  let b='<g fill="none" stroke="currentColor" stroke-width="2.2">';for(let i=0;i<21;i++){const a=-Math.PI/2+(i+.5)*2*Math.PI/22;const[x,y]=pt(30,a);b+=`<circle cx="${x}" cy="${y}" r="3.6"/>`}
+  b+='<circle cx="50" cy="80" r="5" fill="currentColor"/><path d="M50 85v8M46 93h8" stroke-linecap="round"/></g>';
+  let n='<g fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="50" cy="50" r="38" opacity=".5"/><circle cx="50" cy="50" r="22"/><path d="M50 36l3 9 9 1-7 6 2 9-7-5-7 5 2-9-7-6 9-1z" stroke-linejoin="round"/>';
+  for(let i=0;i<27;i++){const a=-Math.PI/2+i*2*Math.PI/27;const[x,y]=pt(30,a);n+=`<circle cx="${x}" cy="${y}" r="${i%9===0?2.8:1.6}" fill="currentColor" stroke="none"/>`}n+="</g>";
+  for(const[id,body]of[["beads",b],["stars",n]]){const s=document.createElementNS(ns,"symbol");s.id="m-"+id;s.setAttribute("viewBox","0 0 100 100");s.innerHTML=body;d.appendChild(s)}})();
 const LMAIN=["Gujarati","English","Sanskrit","Hindi"];
 const CORE=["Vachanamrut","Shikshapatri","Satsangi Jivan","Bhakta Chintamani","Shreemad Bhagwad Gita","Hari Gita","Vachnamrut Gutko","Nishkulanand Kavya","Shree Shikshapatri Bhashya","Vasudev Mahatmya"];
 const DAILY=["Nitya Niyam","Kirtan Ratnavali","Janamangal Namavali","Swaminarayan Maha Mantra","Hajari Kirtanavali","Shree Hari Kavach","Hanuman Chalisa","Badrinathdasji Krut Kirtanavli","Ghanshyam Bal Charitra","Bal Charitra"];
@@ -335,7 +430,10 @@ function hit(g,q){
     return g.hay.includes(w)||(k.length>=2&&(" "+g.sk).includes(" "+k))||(k.length>=4&&g.sk.replace(/ /g,"").includes(k.replace(/ /g,"")))});
 }
 let D,B,GROUPS=[],GBY={};
-const S={tab:"featured",q:"",lang:"",sort:"az",view:"grid",shown:PAGE};
+const COVERS_KEY="eb-covers";
+const S={tab:"featured",q:"",lang:"",sort:"az",view:"grid",shown:PAGE,covers:(()=>{try{return localStorage.getItem(COVERS_KEY)||"drawn"}catch(e){return "drawn"}})(),kind:""};
+let SB={books:[],cats:[],cites:{},pages:[]};
+const USED=["Shri Swaminarayanam","Bhakta Chintamani","Vachanamrut","Vachanamrut Nondh","Shri Harililamrut","Shikshapatri","Shrimad Bhagwat Mahapuran","Desh Vibhag no Lekh","Ashtako ane Kirtano","The Vedas","Surya Siddhanta","Nimit Matra","Satsang Prabha"];
 function buildGroups(){
   const m=new Map();
   B.forEach((b,i)=>{b.i=i;if(!m.has(b.g))m.set(b.g,[]);m.get(b.g).push(b)});
@@ -345,23 +443,28 @@ function buildGroups(){
     const gu=bs.find(b=>b.gu)?.gu||null;
     bs.sort((a,b)=>(+a.v||0)-(+b.v||0)||a.l.localeCompare(b.l)||a.t.localeCompare(b.t));
     const hay=[k,gu,...bs.map(b=>b.t+" "+(b.s||"")),cat,...langs].join(" ");
-    return {k,id:k.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),bs,cat,langs,gu,hw:bs.every(b=>b.hw),hay:hay.toLowerCase(),sk:skel(hay)};
+    const info=bs.find(b=>b.d)||null,cites=SB.cites[k]||[];
+    return {k,id:k.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),bs,cat,langs,gu,hw:bs.every(b=>b.hw),info,cites,own:bs.some(b=>b.own),
+      hay:(hay+" "+(info?info.d+" "+(info.by||""):"")).toLowerCase(),sk:skel(hay)};
   });
   GROUPS.forEach(g=>GBY[g.id]=g);
 }
 /* ---------- covers ---------- */
 const look=g=>CAT[g.cat]||CAT["Teachings & commentary"];
+const SEAL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 function coverHTML(g,b){
-  const c=look(g);
+  const c=g.hw?{...look(g),...HW}:look(g);
   const title=(b?b.t:g.k).replace(/\s*Handwritten$/,"");
   const gu=b?(b.gu||g.gu):g.gu;
   const lang=b?b.l:(g.langs.length>2?`${g.langs.length} languages`:g.langs.join(" · "));
   const foot=b?(b.v?(isNaN(+b.v)?b.v:`Part ${b.v}`):(b.hw?"Handwritten":"")):(g.bs.length>1?`${g.bs.length} books`:(g.hw?"Handwritten":""));
-  const gs=gu?gu.replace(/\s*\(હસ્તપ્રત\)/,""):"";
-  const img=b?b.img:g.bs[0].img;
+  let gs=gu?gu.replace(/\s*\(હસ્તપ્રત\)/,""):"";if(!b&&g.bs.length>1)gs=gs.replace(/\s*[૦-૯]+$/,"");
+  const img=S.covers==="official"?(b?b.img:g.bs[0].img):null;
   const vb=b?(b.v&&g.bs.length>1?(isNaN(+b.v)?b.v:`Part ${b.v}`):""):(g.bs.length>1?`${g.bs.length} books`:"");
-  return `<span class="cover${img?" real":""}" style="--c1:${c.c1};--c2:${c.c2}" aria-hidden="true">${img?`<img src="${esc(img)}?width=360" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">${vb?`<span class="vb">${esc(vb)}</span>`:""}`:""}<span class="in">
-    <span class="lg">${esc(lang)}</span><span class="mo"><svg><use href="#m-${c.m}"/></svg></span>
+  const own=b?b.own:g.own;
+  let h=0;for(const ch of title)h=(h*31+ch.codePointAt(0))>>>0;
+  return `<span class="cover${img?" real":""}" style="--c1:${c.c1};--c2:${c.c2};--glow:${c.glow||"#ffd98a"};--ga:${160+h%26}deg;--gx:${42+h%17}%" aria-hidden="true">${img?`<img src="${esc(img)}?width=360" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">${vb?`<span class="vb">${esc(vb)}</span>`:""}`:""}${own?`<span class="seal" title="On this site">${SEAL}</span>`:""}<span class="in">
+    <span class="lg">${esc(lang)}</span><span class="mo"><svg><use href="#m-${motif(g,b)}"/></svg></span>
     <span class="tt">${gs?`<span class="gu${gs.length>12?" xl":gs.length>9?" long":""}">${esc(gs)}</span>`:""}<span class="ti">${esc(title)}</span></span>
     <span class="ft">${esc(foot)}</span></span></span>`;
 }
@@ -375,23 +478,23 @@ function tileHTML(g,bs){
 }
 function rowHTML(g,bs){
   bs=bs||g.bs;const c=look(g),one=bs.length===1&&g.bs.length>1?bs[0]:null;
-  return `<button class="row" data-g="${esc(g.id)}"${one?` data-b="${one.i}"`:""}><span class="mini">${(one||g.bs[0]).img?`<span class="cover real"><img src="${esc((one||g.bs[0]).img)}?width=80" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>`:`<span class="cover" style="--c1:${c.c1};--c2:${c.c2}"></span>`}</span>
+  return `<button class="row" data-g="${esc(g.id)}"${one?` data-b="${one.i}"`:""}><span class="mini">${S.covers==="official"&&(one||g.bs[0]).img?`<span class="cover real"><img src="${esc((one||g.bs[0]).img)}?width=80" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>`:`<span class="cover" style="--c1:${c.c1};--c2:${c.c2};--glow:${c.glow||"#ffd98a"}"><svg class="mo2"><use href="#m-${motif(g,one)}"/></svg></span>`}</span>
     <span><b>${esc(one?one.t:g.k)}${g.gu?`<span class="gu">${esc(g.gu)}</span>`:""}</b><span>${esc(g.cat)} · ${esc(one?one.l:subOf(g,bs))}</span></span><em>${bs.length>1?bs.length+" books ›":"Open ›"}</em></button>`;
 }
 /* ---------- state → view ---------- */
 const langOK=b=>!S.lang||(S.lang==="other"?!LMAIN.includes(b.l):b.l===S.lang);
-function inTab(g,t){return t==="all"||t==="featured"?true:t==="hw"?g.hw:g.cat===t}
+function inTab(g,t){return t==="all"||t==="featured"?true:t==="hw"?g.hw:t==="site"?g.cites.length>0||g.own:g.cat===t}
 function list(t){
   return GROUPS.filter(g=>inTab(g,t)&&(!S.q||hit(g,S.q))).map(g=>({g,bs:g.bs.filter(langOK)})).filter(x=>x.bs.length);
 }
 function tabs(){
   const n=t=>list(t).length;
-  const T=[["featured","★ Featured",null,null],["all","All books",null,n("all")],...D.cats.filter(c=>CAT[c]).map(c=>[c,c,CAT[c].c1,n(c)]),["hw","Manuscripts",HW.c1,n("hw")]];
-  $("#tabs").innerHTML=T.filter(([t,,,k])=>t==="featured"&&!S.q||t==="all"||k||S.tab===t).map(([t,l,col,k])=>`<button class="tab" role="tab" data-t="${esc(t)}" aria-selected="${S.tab===t}" tabindex="${S.tab===t?0:-1}">${col?`<i style="background:${col}"></i>`:""}${esc(l)}${k!=null?`<small>${k}</small>`:""}</button>`).join("");
+  const T=[["featured","★ Featured",null,null],["all","All books",null,n("all")],["site","◆ Used on this site",null,n("site")],["sources","Sources by page",null,S.q?null:SB.pages.length],...D.cats.filter(c=>CAT[c]).map(c=>[c,c,CAT[c].c1,n(c)]),["hw","Manuscripts",HW.c1,n("hw")]];
+  $("#tabs").innerHTML=T.filter(([t,,,k])=>t==="featured"&&!S.q||t==="all"||t==="sources"&&!S.q||k||S.tab===t).map(([t,l,col,k])=>`<button class="tab" role="tab" data-t="${esc(t)}" aria-selected="${S.tab===t}" tabindex="${S.tab===t?0:-1}">${col?`<i style="background:${col}"></i>`:""}${esc(l)}${k!=null?`<small>${k}</small>`:""}</button>`).join("");
   const on=$("#tabs [aria-selected=true]");if(on)on.scrollIntoView({block:"nearest",inline:"nearest"});
 }
 function langs(){
-  const base=GROUPS.filter(g=>inTab(g,S.tab==="featured"?"all":S.tab)&&(!S.q||hit(g,S.q)));
+  const base=GROUPS.filter(g=>inTab(g,S.tab==="featured"||S.tab==="sources"?"all":S.tab)&&(!S.q||hit(g,S.q)));
   const nb=f=>base.reduce((a,g)=>a+g.bs.filter(f).length,0);
   const L=[["","All languages",nb(()=>true)],...LMAIN.map(l=>[l,l,nb(b=>b.l===l)]),["other","Other languages",nb(b=>!LMAIN.includes(b.l))]];
   $("#lang").innerHTML=L.filter(([v,,k])=>k||S.lang===v||!v).map(([v,l,k])=>`<option value="${v}"${S.lang===v?" selected":""}>${esc(l)} (${k})</option>`).join("");
@@ -405,7 +508,7 @@ function shelf(title,gu,keys,t){
 function featured(){
   const cats=[...D.cats.filter(c=>CAT[c]).map(c=>({t:c,l:c,gu:CAT[c].gu,c1:CAT[c].c1,c2:CAT[c].c2,m:CAT[c].m,n:GROUPS.filter(g=>g.cat===c).length,b:GROUPS.filter(g=>g.cat===c).reduce((a,g)=>a+g.bs.length,0)})),
     {t:"hw",l:"Handwritten manuscripts",gu:"હસ્તપ્રતો",...HW,n:GROUPS.filter(g=>g.hw).length,b:B.filter(b=>b.hw).length}];
-  return shelf("Core scriptures","મુખ્ય શાસ્ત્રો",CORE,"all")+
+  return shelf("Used to build this site","આ સાઇટ જેના આધારે બની",USED,"site")+shelf("Core scriptures","મુખ્ય શાસ્ત્રો",CORE,"all")+
     `<section class="shelf"><div class="vhead"><h2>Browse by category <small>વિભાગ પ્રમાણે</small></h2><button class="linkb" data-go="all">All ${GROUPS.length} titles ›</button></div>
      <div class="cats">${cats.map(c=>`<button class="cat" data-go="${esc(c.t)}" style="--c1:${c.c1};--c2:${c.c2}"><span class="sw"><svg><use href="#m-${c.m}"/></svg></span><span><b>${esc(c.l)}</b><span>${esc(c.gu)}</span></span><em>${c.b}</em></button>`).join("")}</div></section>`+
     shelf("Daily prayer and for children","નિત્ય નિયમ અને બાળકો",DAILY,"Kirtan & prayer");
@@ -424,10 +527,12 @@ function render(keepScroll){
   const v=$("#view");
   $("#kbd").hidden=!!S.q;$("#qclear").hidden=!S.q;
   if(S.tab==="featured"&&!S.q){v.innerHTML=`<div class="fade">${featured()}</div>`;fitShelves();return}
+  if(S.tab==="sources"&&!S.q){v.innerHTML=`<div class="fade">${sourcesView()}</div>`;return}
   const xs=sorted(list(S.tab));
   const books=xs.reduce((a,x)=>a+x.bs.length,0);
   const c=CAT[S.tab]||(S.tab==="hw"?HW:null);
-  const title=S.tab==="all"||S.tab==="featured"?(S.q?"Search results":"All books"):S.tab==="hw"?"Handwritten manuscripts":S.tab;
+  const intro=S.tab==="site"?`<p class="lede">Every book the pages of this site are built from or quote, with where each one is used. A <span class="sealx">${SEAL}</span> marks books kept on this site. Sampraday books come only from the original NarNarayan Dev (Kalupur) and LaxmiNarayan Dev (Vadtal) dioceses.</p>`:"";
+  const title=S.tab==="all"||S.tab==="featured"?(S.q?"Search results":"All books"):S.tab==="hw"?"Handwritten manuscripts":S.tab==="site"?"Used on this site":S.tab;
   const filt=[S.q?`“${S.q}”`:"",S.lang?$("#lang").selectedOptions[0]?.textContent.replace(/\s*\(\d+\)$/,""):""].filter(Boolean).join(" · ");
   const head=`<div class="vhead"><h2>${c?`<i style="background:${c.c1}"></i>`:""}${esc(title)} <small>${xs.length} ${xs.length===1?"title":"titles"} · ${books} books${filt?" · "+esc(filt):""}</small></h2>
     <div class="r">${S.q||S.lang||S.tab!=="all"?`<button class="linkb" id="clearall">Clear</button>`:""}</div></div>`;
@@ -435,7 +540,7 @@ function render(keepScroll){
   const page=xs.slice(0,S.shown);
   const body=S.view==="list"?`<div class="list">${page.map(x=>rowHTML(x.g,x.bs)).join("")}</div>`:`<div class="grid">${page.map(x=>tileHTML(x.g,x.bs)).join("")}</div>`;
   const rest=xs.length-page.length;
-  v.innerHTML=head+`<div class="fade">${body}</div>`+(rest>0?`<div class="more"><button class="btn" id="more">Show ${Math.min(rest,PAGE)} more <span style="color:var(--ink-3);font-weight:500">· ${rest} left</span></button></div>`:"");
+  v.innerHTML=head+intro+`<div class="fade">${body}</div>`+(rest>0?`<div class="more"><button class="btn" id="more">Show ${Math.min(rest,PAGE)} more <span style="color:var(--ink-3);font-weight:500">· ${rest} left</span></button></div>`:"");
 }
 function go(t,focus){
   S.tab=t;S.shown=PAGE;render();
@@ -463,6 +568,46 @@ function closeDrawer(fromPop){
 function bookActions(b,big){
   return `${WIDE.matches?`<button class="btn${big?" pri":""}" data-read="${b.i}">${big?"Read online":"Read"}</button>`:`<a class="btn${big?" pri":""}" href="${esc(b.u)}" target="_blank" rel="noopener">${big?"Read online ↗":"Read ↗"}</a>`}<a class="btn" href="${esc(b.u)}" target="_blank" rel="noopener" download>${big?"Download PDF":"PDF"}</a>${b.ka?`<a class="btn" href="${esc(b.ka)}" target="_blank" rel="noopener" title="Every kirtan in this book with links to recordings: singer, playlist and channel named">${big?"♪ Kirtans with audio (PDF)":"♪ Audio"}</a>`:""}`;
 }
+/* books from outside the Bhuj catalogue may be a page, a print book with no copy online, or a PDF that can't be framed */
+const FRAMEABLE=u=>/\.pdf($|[?#])/i.test(u)&&(/^books\//.test(u)||/swaminarayan\.faith/.test(u));
+const ext=u=>/^https?:/.test(u)?' target="_blank" rel="noopener"':"";
+function acts(b,big){
+  if(!b.u)return big?`<span class="pill">Print book: no copy online</span>`:"";
+  if(FRAMEABLE(b.u))return bookActions(b,big);
+  const pdf=/\.pdf/i.test(b.u);
+  const named=(b.rd||[]).find(r=>r[1]===b.u);
+  return `<a class="btn${big?" pri":""}" href="${esc(b.u)}"${ext(b.u)}>${esc(named&&big?named[0]:pdf?(big?"Open PDF":"PDF"):"Open")}${/^https?:/.test(b.u)?" ↗":""}</a>`;
+}
+function srcOf(g){
+  const b=g.bs.find(x=>x.u)||g.bs[0];
+  if(!b.u)return "A print book with no official copy online; this site quotes it where shown above.";
+  if(/swaminarayan\.faith/.test(b.u))return "From Shree Swaminarayan Temple Bhuj; the PDF opens from swaminarayan.faith.";
+  if(/^books\//.test(b.u))return "Kept on this site in the Satsang Library; the rights stay with the publisher named above.";
+  if(!/^https?:/.test(b.u))return "Opens on this site.";
+  try{return "Opens from "+new URL(b.u).hostname.replace(/^www\./,"")+"."}catch(e){return ""}
+}
+function detailInfo(g,one){
+  const i=(one&&one.d?one:null)||g.info;const img=(one||g.bs[0]).img;
+  const rows=i?[["By",i.by],["Publisher",i.pub],["Year",i.yr],["Pages",i.pages&&i.pages.toLocaleString()]].filter(r=>r[1]):[];
+  return `${i||g.cites.length||img?`<div class="dinfo">
+    ${i?`<p class="desc">${esc(i.d)}</p>`:""}
+    ${rows.length?`<dl>${rows.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`:""}
+    ${i&&i.rd&&i.rd.filter(r=>r[1]!==i.u).length?`<div class="rd">${i.rd.filter(r=>r[1]!==i.u).map(([l,u])=>`<a class="btn" href="${esc(u)}"${ext(u)}>${esc(l)}${/^https?:/.test(u)?" ↗":""}</a>`).join("")}</div>`:""}
+    ${g.cites.length?`<h3>Used on this site</h3><div class="used">${g.cites.map(([l,u])=>`<a class="uchip" href="${esc(u)}">${esc(l)} ›</a>`).join("")}</div>`:""}
+    ${img&&S.covers!=="official"?`<figure class="offc"><img src="${esc(img)}?width=160" alt="Publisher's cover of ${esc(g.k)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"><figcaption>Publisher's cover, from swaminarayan.faith</figcaption></figure>`:""}
+  </div>`:""}`;
+}
+const KIND={book:"Book",sampraday:"Sampraday",reference:"Reference",science:"Science",video:"Video"};
+function sourcesView(){
+  const all=SB.pages.reduce((a,p)=>a+p.s.length,0);
+  const kinds=Object.keys(KIND).filter(k=>SB.pages.some(p=>p.s.some(x=>x[2]===k)));
+  const ps=SB.pages.map(p=>({...p,s:p.s.filter(x=>!S.kind||x[2]===S.kind)})).filter(p=>p.s.length);
+  return `<div class="vhead"><h2>Sources by page <small>${SB.pages.length} pages · ${all} sources</small></h2></div>
+   <p class="lede">Every book and source each page of this site uses, in one place. Books open their card here; other sources open in a new tab. Sampraday sources come only from the original NarNarayan Dev (Kalupur) and LaxmiNarayan Dev (Vadtal) dioceses; the science pages also cite encyclopaedias, NASA and research papers.</p>
+   <div class="vchips kinds" role="group" aria-label="Show">${["",...kinds].map(k=>`<button class="chip" data-kind="${k}" aria-pressed="${S.kind===k}">${k?KIND[k]:"All"}<small>${k?SB.pages.reduce((a,p)=>a+p.s.filter(x=>x[2]===k).length,0):all}</small></button>`).join("")}</div>
+   <div class="srcs">${ps.map(p=>`<section class="spage"><h3><a href="${esc(p.u)}">${esc(p.t)}</a><span>${esc(p.gu)}</span></h3>
+     <ul>${p.s.map(([t,u,k])=>`<li class="k-${k}"><span class="kt">${KIND[k]}</span>${k==="book"?`<a href="${esc(u)}" data-open>${esc(t)}</a>`:`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} <span aria-hidden="true">↗</span></a>`}</li>`).join("")}</ul></section>`).join("")}</div>`;
+}
 function renderDetail(focusBook){
   const g=curG,c=look(g),dr=$("#drawer");
   dr.classList.remove("reading");$("#dback").hidden=true;$("#dnew").hidden=true;
@@ -473,13 +618,14 @@ function renderDetail(focusBook){
      <div class="stack${g.bs.length>1?" many":""}" style="--cc:${c.c1}">${coverHTML(g,one||null)}</div>
      <div>${g.gu?`<p class="gu">${esc(g.gu)}</p>`:""}<h2 id="d-title">${esc(one&&g.bs.length>1?one.t:g.k)}</h2>
       <div class="meta"><span class="pill"><i style="background:${c.c1}"></i>${esc(g.cat)}</span>${(one?[one.l]:g.langs.length>3?[g.langs.length+" languages"]:g.langs).map(l=>`<span class="pill">${esc(l)}</span>`).join("")}${g.bs.length>1?`<span class="pill">${g.bs.length} books</span>`:""}${(one||g).hw?`<span class="pill">Handwritten</span>`:""}</div>
-      <div class="acts">${one?bookActions(one,true):`<button class="btn pri" data-read="${g.bs[0].i}">${WIDE.matches?"Start reading":"Open the first book"}</button>`}</div>
+      <div class="acts">${one?acts(one,true):FRAMEABLE(g.bs[0].u||"")?`<button class="btn pri" data-read="${g.bs[0].i}">${WIDE.matches?"Start reading":"Open the first book"}</button>`:acts(g.bs.find(b=>b.u)||g.bs[0],true)}</div>
      </div></div>
+   ${detailInfo(g,one)}
    ${g.bs.length>1?`<div class="vols"><h3><span>Books in this series</span><span>${vs.length}</span></h3>
      ${g.langs.length>1?`<div class="vchips" role="group" aria-label="Language">${["",...g.langs].map(l=>`<button class="chip" data-vl="${esc(l)}" aria-pressed="${curLang===l}">${esc(l||"All")}<small>${l?g.bs.filter(b=>b.l===l).length:g.bs.length}</small></button>`).join("")}</div>`:""}
-     ${vs.map((b,j)=>`<div class="vol" style="--c1:${c.c1};--c2:${c.c2}"><span class="n" aria-hidden="true">${esc(b.v&&!isNaN(+b.v)?b.v:(j+1))}</span><div><b>${esc(b.t)}</b><span>${esc([b.l,b.hw?"Handwritten":""].filter(Boolean).join(" · "))}</span></div><div class="va">${bookActions(b,false)}</div></div>`).join("")}
+     ${vs.map((b,j)=>`<div class="vol" style="--c1:${c.c1};--c2:${c.c2}"><span class="n" aria-hidden="true">${esc(b.v&&!isNaN(+b.v)?b.v:(j+1))}</span><div><b>${esc(b.t)}</b><span>${esc([b.l,b.hw?"Handwritten":""].filter(Boolean).join(" · "))}</span></div><div class="va">${acts(b,false)}</div></div>`).join("")}
    </div>`:""}
-   <p class="note">From Shree Swaminarayan Temple Bhuj; the PDF opens from swaminarayan.faith.${g.bs.some(b=>b.ka)?" <b>♪ Kirtans with audio</b> is our index of every kirtan in the book, with its page and recordings on YouTube from sampraday channels (singer and playlist named).":""}</p>`;
+   <p class="note">${esc(srcOf(g))}${g.bs.some(b=>b.ka)?" <b>♪ Kirtans with audio</b> is our index of every kirtan in the book, with its page and recordings on YouTube from sampraday channels (singer and playlist named).":""}</p>`;
   if(!WIDE.matches)$$("#dbody [data-read]").forEach(btn=>{const b=B[+btn.dataset.read];const a=document.createElement("a");a.className=btn.className;a.href=b.u;a.target="_blank";a.rel="noopener";a.textContent=btn.textContent+" ↗";btn.replaceWith(a)});
 }
 function readBook(b){
@@ -494,8 +640,11 @@ function setQ(v){S.q=v.trim();$("#q").value=v;if(S.q)S.tab="all";S.shown=PAGE;re
 async function boot(){
   try{D=await fetch("data/ebooks.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})}
   catch(err){$("#view").innerHTML=`<div class="empty"><b>Could not load the books</b>${esc(err.message)}. Please reload the page.</div>`;return}
-  B=D.books;buildGroups();
-  $("#sub").innerHTML=`<b>${B.length}</b> free e-books in <b>${GROUPS.length}</b> titles and series, ${new Set(B.map(b=>b.l)).size} languages. Published by <b>Shree Swaminarayan Temple Bhuj</b>, who hold all rights; each opens from <a href="https://www.swaminarayan.faith/scriptures/ebooks" target="_blank" rel="noopener">swaminarayan.faith</a>.`;
+  try{SB=await fetch("data/site-books.json").then(r=>r.ok?r.json():SB)}catch(e){}
+  SB.books.forEach(b=>{b.site=true});
+  for(const c of SB.cats)if(!D.cats.includes(c))D.cats.splice(D.cats.length-1,0,c);  // before "Other"
+  B=[...D.books,...SB.books];buildGroups();
+  $("#sub").innerHTML=`<b>${D.books.length}</b> free e-books from <b>Shree Swaminarayan Temple Bhuj</b> (<a href="https://www.swaminarayan.faith/scriptures/ebooks" target="_blank" rel="noopener">swaminarayan.faith</a>, all rights theirs), and <b>${SB.books.length}</b> more books this site is built from: <b>${GROUPS.length}</b> titles in ${new Set(B.map(b=>b.l)).size} languages. <button class="linkb" data-go="sources">Sources by page ›</button>`;
   render();
   let rz;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(fitShelves,120)});
   $("#q").addEventListener("input",e=>setQ(e.target.value));
@@ -506,16 +655,22 @@ async function boot(){
     const ts=$$("#tabs .tab"),i=ts.findIndex(t=>t.getAttribute("aria-selected")==="true");
     const j=e.key==="Home"?0:e.key==="End"?ts.length-1:(i+(e.key==="ArrowRight"?1:-1)+ts.length)%ts.length;go(ts[j].dataset.t);$("#tabs [aria-selected=true]").focus()});
   $("#lang").onchange=e=>{S.lang=e.target.value;S.shown=PAGE;render()};
-  $("#sort").onchange=e=>{S.sort=e.target.value;if(S.tab==="featured")S.tab="all";render()};
-  const setView=v=>{S.view=v;$("#vgrid").setAttribute("aria-pressed",v==="grid");$("#vlist").setAttribute("aria-pressed",v==="list");if(S.tab==="featured")S.tab="all";render()};
+  $("#sort").onchange=e=>{S.sort=e.target.value;if(S.tab==="featured"||S.tab==="sources")S.tab="all";render()};
+  const setView=v=>{S.view=v;$("#vgrid").setAttribute("aria-pressed",v==="grid");$("#vlist").setAttribute("aria-pressed",v==="list");if(S.tab==="featured"||S.tab==="sources")S.tab="all";render()};
   $("#vgrid").onclick=()=>setView("grid");$("#vlist").onclick=()=>setView("list");
+  $("#sub").addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)go(g.dataset.go,true)});
+  $("#covers").onclick=()=>{S.covers=S.covers==="official"?"drawn":"official";try{localStorage.setItem(COVERS_KEY,S.covers)}catch(e){}
+    $("#covers").setAttribute("aria-pressed",S.covers==="official");render()};
+  $("#covers").setAttribute("aria-pressed",S.covers==="official");
   $("#view").addEventListener("click",e=>{
+    const k=e.target.closest("[data-kind]");if(k){S.kind=k.dataset.kind;render();return}
     const t=e.target.closest(".tile,.row");if(t){openDrawer(t.dataset.g,t.dataset.b!=null?+t.dataset.b:null);return}
     const g=e.target.closest("[data-go]");if(g){go(g.dataset.go,true);return}
     if(e.target.closest("#more")){S.shown+=PAGE;render();return}
     if(e.target.closest("#clearall")){S.lang="";S.tab="featured";setQ("")}
   });
-  $("#dbody").addEventListener("click",e=>{const r=e.target.closest("[data-read]");if(r&&r.tagName==="BUTTON"){readBook(B[+r.dataset.read]);return}
+  $("#dbody").addEventListener("click",e=>{const u=e.target.closest(".uchip");if(u&&/^#/.test(u.getAttribute("href"))){return}
+    const r=e.target.closest("[data-read]");if(r&&r.tagName==="BUTTON"){readBook(B[+r.dataset.read]);return}
     const v=e.target.closest("[data-vl]");if(v){curLang=v.dataset.vl;renderDetail(null)}});
   $("#dback").onclick=()=>{renderDetail(null);$("#dclose").focus()};
   $("#dclose").onclick=()=>closeDrawer();$("#scrim").onclick=()=>closeDrawer();
