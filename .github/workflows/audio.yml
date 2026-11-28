@@ -1,0 +1,41 @@
+name: Audio catalogue
+on:
+  schedule:
+    - cron: '41 2 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - tools/audio_build.py
+      - .github/workflows/audio.yml
+permissions:
+  contents: write
+concurrency: audio-catalogue
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/audio_build.py
+      - name: Summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('data/audio/bhaktisound.json'))
+          A=d['albums'];n=sum(len(a['t']) for a in A)
+          print(f"**{len(A)} albums, {n} tracks, {len(d['artists'])} artists** (built {d['built']})\n")
+          for a in A[:15]:print(f"- {a['n']} ({len(a['t'])} tracks)")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bhaktisound
+          path: data/audio/bhaktisound.json
+      - name: Commit if anything changed
+        if: github.event_name != 'pull_request'
+        run: |
+          git add data/audio
+          git diff --cached --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Refresh audio catalogue"
+          git push
